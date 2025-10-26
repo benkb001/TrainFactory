@@ -1,0 +1,205 @@
+namespace TrainGame.ECS; 
+
+using System.Collections.Generic;
+using System; 
+using System.Linq;
+using System.Drawing; 
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Color = Microsoft.Xna.Framework.Color; 
+
+using _Color = System.Drawing.Color; 
+using _Rectangle = System.Drawing.Rectangle;
+
+using TrainGame.Constants; 
+using TrainGame.Components; 
+using TrainGame.Utils; 
+
+public partial class World {
+    private EntityManager em = new(); 
+    private ComponentManager cm = new(); 
+    private SystemManager sm = new(); 
+
+    private GraphicsDeviceManager _graphics {get;}
+    private GraphicsDevice graphicsDevice; 
+    private SpriteBatch _spriteBatch {get;}
+    private Dictionary<string, Texture2D> textures = new(); 
+
+    private SpriteFont font; 
+    private Camera camera; 
+    private Vector2 targetCameraPosition; 
+    private bool targetCameraPositionIsCurrent; 
+    private int trackedEntity = -1;
+    private GameClock gameClock = new GameClock(); 
+    private Texture2D _pixel;
+
+    //TODO: consider replacing with checks for specific variables being null
+    private bool isTest = false;  
+
+    public World() { 
+        isTest = true; 
+    }
+
+    public World(GraphicsDeviceManager gm, GraphicsDevice gd, SpriteBatch s) {
+        _graphics = gm; 
+        graphicsDevice = gd; 
+        _spriteBatch = s; 
+
+        camera = new Camera(graphicsDevice.Viewport);
+        camera.Position = new Vector2(gd.Viewport.Width / 2, gd.Viewport.Height / 2); 
+        camera.UpdateCamera(graphicsDevice.Viewport); 
+    }
+
+    public void AddComponentType<T>() {
+        cm.Register<T>(); 
+    }
+
+    public int AddEntity(bool setScene = true) {
+        if (SystemCount() == 0) {
+            throw new InvalidOperationException("Must add systems before entities");
+        }
+        int e = em.Add(); 
+        
+        //Don't love it but hey
+        if (setScene) {
+            SetComponent<Active>(e, Active.Get()); 
+            SetComponent<Scene>(e, new Scene(0)); 
+        }
+            
+        return e; 
+    }
+
+    public _System AddSystem(Type[] ts, Action<World, int> transformer) {
+        bool[] signature = cm.GetSignature(ts); 
+        return sm.Register(signature, transformer);
+    }
+
+    public _System AddSystem(Type[] ts, Action<World> update) {
+        bool[] signature = cm.GetSignature(ts); 
+        return sm.Register(signature, update);
+    }
+
+    public void Clear() {
+        foreach (int i in em.GetEntities()) {
+            RemoveEntity(i); 
+        }
+    }
+
+    public bool ComponentContainsEntity<T>(int e) {
+        return cm.ComponentContainsEntity<T>(e); 
+    }
+
+    public int ComponentEntityCount<T>() {
+        return cm.EntityCount<T>(); 
+    }
+
+    public bool ComponentTypeIsRegistered<T>() {
+        return cm.ComponentTypeIsRegistered<T>(); 
+    }
+
+    public int EntityCount() {
+        return em.EntityCount(); 
+    }
+
+    public bool EntityExists(int e) {
+        return em.EntityExists(e); 
+    }
+
+    public T GetComponent<T>(int entity) {
+        return cm.GetComponent<T>(entity); 
+    }
+
+    public Dictionary<int, T> GetComponentArray<T>() {
+        return cm.GetComponentArray<T>().GetEntities(); 
+    }
+
+    public int GetComponentIndex<T>() {
+        return cm.GetComponentIndex<T>(); 
+    }
+
+    public int GetComponentTypeCount() {
+        return cm.GetComponentTypeCount(); 
+    }
+
+    public List<int> GetEntities<T>() {
+        return cm.GetComponentArray<T>().GetEntities().Keys.ToList(); 
+    }
+
+    public List<int> GetEntities() {
+        return em.GetEntities(); 
+    }
+
+    public double GetSecondsPassed() {
+        return gameClock.TotalSeconds; 
+    }
+
+    public void RemoveComponent<T>(int e) {
+        bool[] signature = em.GetSignature(e); 
+        
+        signature = cm.RemoveComponent<T>(e, signature); 
+
+        SetSignature(e, signature); 
+    }
+
+    public void RemoveEntity(int entity) {
+        em.RemoveEntity(entity); 
+        cm.RemoveEntity(entity); 
+        sm.RemoveEntity(entity); 
+    }
+
+    public void SetSignature(int entity, bool[] signature) {
+        em.SetEntitySignature(entity, signature); 
+        sm.SetEntitySignature(entity, signature); 
+    }
+
+    public int SetComponent<T>(int e, T c) {
+        bool[] signature = em.GetSignature(e); 
+        signature = cm.AddComponent<T>(e, signature, c);
+        SetSignature(e, signature); 
+
+        return e; 
+    }
+
+    public void SetTargetCameraPosition(Vector2 v) {
+        targetCameraPosition = v; 
+        targetCameraPositionIsCurrent = true; 
+    }
+
+    public void SetTargetCameraPositionToScreenOrigin() {
+        targetCameraPosition = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2); 
+        targetCameraPositionIsCurrent = true; 
+    }
+
+    public int SystemCount() {
+        return sm.SystemCount(); 
+    }
+
+    public void Update() {
+        sm.Update(this); 
+        
+        if (!isTest) {
+            if (cm.ComponentContainsEntity<Frame>(trackedEntity)) {
+                Frame f = cm.GetComponent<Frame>(trackedEntity); 
+                camera.Position = new Vector2(f.GetX(), f.GetY()); 
+            } else if (targetCameraPositionIsCurrent) {
+                camera.Position = targetCameraPosition; 
+                targetCameraPositionIsCurrent = false; 
+            }
+            camera.UpdateCamera(graphicsDevice.Viewport); 
+        }
+        VirtualMouse.UpdatePrevFrame(); 
+    }
+
+    //helpers 
+    public int AddButton(float x, float y, float width, float aspectRatio, int depth, Texture2D spr) {
+        int e = AddEntity(); 
+        SetComponent<Frame>(e, new Frame(x, y, width, width * aspectRatio)); 
+        SetComponent<Sprite>(e, new Sprite(spr, depth)); 
+        SetComponent<Button>(e, new Button()); 
+        return e; 
+    }
+}

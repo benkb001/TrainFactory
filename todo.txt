@@ -1,0 +1,24 @@
+* Make drawing System based
+* Implement better click for buttons 
+* Make stepper fast when you hold down
+* Add tests for untested files 
+
+* Add optional headers to TextBox
+* Add SpaceEven to LinearLayout
+
+* Something for tiling
+* Make a basic inventory system (eg moving items from backpack to cargo)
+* Build a basic city view
+* Make a city component (name, cargo, connected cities) 
+* Add a train 
+* Make it so you can move the train by clicking 
+* Add cargo that can be picked up/dropped off 
+* Implement day-cycle
+* Add basic save/load 
+
+* Make player able to hold a tool 
+* Add a scrollable toolbar 
+* Make player able to use a tool 
+
+* Implement dialogue
+* Augment Sprite/DrawSystem to handle animation/spritesheets

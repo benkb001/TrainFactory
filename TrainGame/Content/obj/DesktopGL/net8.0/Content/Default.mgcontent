@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/Default.spritefont</SourceFile>
+  <SourceTime>2025-10-20T20:40:48.1949798-04:00</SourceTime>
+  <DestFile>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/bin/DesktopGL/Content/Default.xnb</DestFile>
+  <DestTime>2025-10-20T20:43:47.9435654-04:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2025-06-02T06:31:02-04:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2025-06-02T06:31:02-04:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
