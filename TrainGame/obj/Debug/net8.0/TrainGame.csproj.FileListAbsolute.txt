@@ -34,3 +34,4 @@
 /Users/benkb01/Code/TrainGameFactory/TrainGame/bin/Debug/net8.0/Content/Content/Images/button.xnb
 /Users/benkb01/Code/TrainGameFactory/TrainGame/bin/Debug/net8.0/Content/Default.xnb
 /Users/benkb01/Code/TrainGameFactory/TrainGame/bin/Debug/net8.0/MonoGame.Extended.dll
+/Users/benkb01/Code/TrainGameFactory/TrainGame/obj/Debug/net8.0/TrainGame.sourcelink.json

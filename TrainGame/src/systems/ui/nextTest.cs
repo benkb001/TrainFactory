@@ -39,9 +39,9 @@ public static class NextDrawTestUISystem {
             int label = w.AddEntity(); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
             w.SetComponent<Outline>(label, new Outline(10, Color.White)); 
-            w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to test 10"));
+            w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(9)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(15)); 
 
         }, 
         [2] = (w) => {
@@ -338,6 +338,24 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Button>(pauseButton, new Button()); 
             w.SetComponent<PauseButton>(pauseButton, PauseButton.Get()); 
             w.SetComponent<TextBox>(pauseButton, new TextBox("Pause")); 
+            AddNextTestButton(w, 15); 
+        }, 
+        [16] = (w) => {
+            int inv = w.AddEntity(); 
+            Inventory i = new Inventory("Test", 2, 2);
+            i.Add(new Inventory.Item(ItemId: "Apple", Count: 1)); 
+            i.Add(new Inventory.Item(ItemId: "Apple", Count: 1), 1, 0); 
+            w.SetComponent<Inventory>(inv, i); 
+
+            int msg = w.AddEntity(); 
+            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100, 100, Vector2.Zero, i, inv, 5f));
+
+            int other_inv_entity = w.AddEntity(); 
+            Inventory inv_other = new Inventory("Other", 2, 2); 
+            int other_msg = w.AddEntity(); 
+            w.SetComponent<Inventory>(other_inv_entity, inv_other); 
+            w.SetComponent<DrawInventoryMessage>(other_msg, new DrawInventoryMessage(100, 100, new Vector2(0, 100), inv_other, other_inv_entity, 5f)); 
+            
         }
     };
 

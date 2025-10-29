@@ -30,6 +30,12 @@ public class Draggable {
         dragState = DragState.Held; 
     }
 
+    public void Drop() {
+        if (IsHeld()) {
+            dragState = DragState.BeingDropped; 
+        }
+    }
+
     public void Release() {
         dragState = DragState.Released; 
     }
@@ -41,9 +47,14 @@ public class Draggable {
     public bool IsReleased() {
         return dragState == DragState.Released; 
     }
+
+    public bool IsBeingDropped() {
+        return dragState == DragState.BeingDropped; 
+    }
 }
 
 public static class DragState {
     public static int Released = 0; 
     public static int Held = 1;
+    public static int BeingDropped = 2; 
 }

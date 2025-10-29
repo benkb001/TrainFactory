@@ -28,9 +28,13 @@ public class DragSystem() {
             f.SetCoordinates(w.GetWorldMouseCoordinates() - draggable.RelativeClickPosition); 
         }
 
-        if (!VirtualMouse.LeftPressed() && draggable.IsHeld()) {
+        if (draggable.IsBeingDropped()) {
             draggable.Release(); 
             f.SetCoordinates(draggable.SnapPosition); 
+        }
+
+        if (!VirtualMouse.LeftPressed() && draggable.IsHeld()) {
+            draggable.Drop(); 
         }
     }; 
 

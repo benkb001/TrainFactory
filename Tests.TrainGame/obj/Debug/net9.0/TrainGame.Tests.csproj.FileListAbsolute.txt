@@ -122,3 +122,4 @@
 /Users/benkb01/Code/TrainGameFactory/Tests.TrainGame/bin/Debug/net9.0/Content/Content/Images/button.xnb
 /Users/benkb01/Code/TrainGameFactory/Tests.TrainGame/bin/Debug/net9.0/Content/Default.xnb
 /Users/benkb01/Code/TrainGameFactory/Tests.TrainGame/bin/Debug/net9.0/MonoGame.Extended.dll
+/Users/benkb01/Code/TrainGameFactory/Tests.TrainGame/obj/Debug/net9.0/TrainGame.Tests.sourcelink.json

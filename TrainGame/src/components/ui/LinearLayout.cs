@@ -90,4 +90,13 @@ public class LinearLayout {
     public bool RemoveChild(int e) {
         return children.Remove(e); 
     }
+
+    public bool SwapChild(int prev, int newChild) {
+        int idx = children.IndexOf(prev); 
+        bool exists = (idx != -1);
+        if (exists) {
+            children[idx] = newChild; 
+        }
+        return exists; 
+    }
 }

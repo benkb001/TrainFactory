@@ -18,8 +18,11 @@ public static class RegisterComponents {
         w.AddComponentType<CardinalMovement>(); 
         w.AddComponentType<Collidable>(); 
         w.AddComponentType<Draggable>(); 
+        w.AddComponentType<DrawInventoryMessage>(); 
         w.AddComponentType<Frame>(); 
         w.AddComponentType<GameClockView>(); 
+        w.AddComponentType<Inventory>(); 
+        w.AddComponentType<Inventory.Item>(); 
         w.AddComponentType<Message>(); 
         w.AddComponentType<LinearLayout>(); 
         w.AddComponentType<Lines>(); 
