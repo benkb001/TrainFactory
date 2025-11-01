@@ -46,22 +46,17 @@ public class InventoryDragSystem() {
             }
 
             if (closest.Length() < 30f) {
-                int targetRow = targetItem.Row; 
-                int targetCol = targetItem.Column; 
-                int curRow = curItem.Row; 
-                int curCol = curItem.Column; 
-                targetInv.Take(targetItem.Row, targetItem.Column); 
-                curItem.Inv.Take(curItem.Row, curItem.Column); 
-
-                if (targetItem.ItemId == curItem.ItemId) {
-                    curItem.Count += targetItem.Count;
-                    targetItem.Count = 0; 
-                    targetItem.ItemId = ""; 
-                }
-                
-                targetInv.Add(curItem, targetRow, targetCol); 
-                curItem.Inv.Add(targetItem, curRow, curCol);
-                d.SnapPosition = targetVector; 
+                int invOrganizeMsgEntity = w.AddEntity(); 
+                w.SetComponent<InventoryOrganizeMessage>(invOrganizeMsgEntity, new InventoryOrganizeMessage(
+                    targetItem.Row, 
+                    targetItem.Column, 
+                    curItem.Row, 
+                    curItem.Column, 
+                    targetItem, 
+                    curItem, 
+                    d, 
+                    targetVector
+                )); 
             }
         }
     }; 

@@ -32,7 +32,6 @@ public static class SceneSystem {
             }
             
         };
-
         world.AddSystem(ts, update); 
     }
 

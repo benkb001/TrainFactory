@@ -35,11 +35,13 @@ public static class RegisterSystems {
         
         ToastSystem.Register(w); 
 
-        InventoryUISystem.RegisterUpdate(w); 
+        InventoryControlSystem.RegisterUpdate(w); 
+        
         LinearLayoutSystem.Register(w); 
 
         DragSystem.Register(w); 
         InventoryDragSystem.Register(w); 
+        InventoryControlSystem.RegisterOrganize(w); 
         
         ButtonSystem.RegisterUnclick(w);
     }

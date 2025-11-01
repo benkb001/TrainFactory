@@ -32,10 +32,10 @@ public static class InventoryUISystem {
             int rows = inv.GetRows(); 
             int cols = inv.GetCols(); 
             float rowWidth = dm.Width - (dm.Padding * 2); 
-            float rowHeight = (dm.Height / rows) - (dm.Padding * (rows + 1)); 
+            float rowHeight = (dm.Height - dm.Padding * (rows + 1)) / rows; 
 
             float cellHeight = rowHeight - dm.Padding * 2;
-            float cellWidth = (rowWidth / cols) - (dm.Padding * (cols + 1)); 
+            float cellWidth = (rowWidth  - (dm.Padding * (cols + 1))) / cols; 
 
             for (int i = 0; i < rows; i++) {
                 int row = w.AddEntity(); 
@@ -64,45 +64,6 @@ public static class InventoryUISystem {
             }
             w.RemoveEntity(e); 
         };
-        world.AddSystem(ts, tf); 
-    }
-
-    public static void RegisterUpdate(World world) {
-        Type[] ts = [typeof(Frame), typeof(LinearLayout), typeof(Inventory), typeof(Active)]; 
-
-        Action<World, int> tf = (w, e) => {
-            Inventory inv = w.GetComponent<Inventory>(e);
-            LinearLayout ll = w.GetComponent<LinearLayout>(e); 
-            Frame f = w.GetComponent<Frame>(e); 
-
-            int rows = inv.GetRows(); 
-            int cols = inv.GetCols(); 
-            float llWidth = f.GetWidth(); 
-            float llHeight = f.GetHeight(); 
-
-            float rowWidth = llWidth - (ll.Padding * 2); 
-            float rowHeight = (llHeight / rows) - (ll.Padding * (rows + 1)); 
-
-            float cellHeight = rowHeight - ll.Padding * 2;
-            float cellWidth = (rowWidth / cols) - (ll.Padding * (cols + 1)); 
-
-            string invId = inv.GetId(); 
-            List<int> row_entities = ll.GetChildren(); 
-            Random r = new Random(); 
-            for (int row_index = 0; row_index < row_entities.Count; row_index++) {
-                int row = row_entities[row_index]; 
-                LinearLayout rowLL = w.GetComponent<LinearLayout>(row); 
-                List<int> children = rowLL.GetChildren(); 
-                for (int j = 0; j < children.Count; j++) {
-                    int c = children[j]; 
-                    Inventory.Item i = inv.Get(row_index, j); 
-
-                    w.GetComponent<TextBox>(c).Text = i.ToString(); 
-                    w.SetComponent<Inventory.Item>(c, i);
-                }
-            }
-        };
-
         world.AddSystem(ts, tf); 
     }
 }

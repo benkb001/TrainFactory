@@ -41,7 +41,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(10, Color.White)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(15)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(13)); 
 
         }, 
         [2] = (w) => {
@@ -315,13 +315,13 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Frame>(outerButton, new Frame(0, 0, 400, 400)); 
             w.SetComponent<Outline>(outerButton, new Outline()); 
             w.SetComponent<TextBox>(outerButton, new TextBox("Clicking on this box, outside the inner box, should advance to the next step"));
-            w.SetComponent<Button>(outerButton, new Button()); 
+            w.SetComponent<Button>(outerButton, new Button(Depth: 0)); 
             w.SetComponent<NextDrawTestButton>(outerButton, new NextDrawTestButton(14)); 
 
             int innerButton = w.AddEntity(); 
             w.SetComponent<Frame>(innerButton, new Frame(100, 100, 100, 100)); 
             w.SetComponent<Outline>(innerButton, new Outline()); 
-            w.SetComponent<Button>(innerButton, new Button()); 
+            w.SetComponent<Button>(innerButton, new Button(Depth: -1)); 
             w.SetComponent<TextBox>(innerButton, new TextBox("Clicking inside the inner box should do nothing")); 
 
             AddNextTestButton(w, 14); 

@@ -4,8 +4,8 @@ public class Button {
     public bool Clicked = false; 
     public int Depth = 0; 
 
-    public Button(bool b = false, int d = 0) {
-        Clicked = b; 
-        Depth = d; 
+    public Button(bool Clicked = false, int Depth = 0) {
+        this.Clicked = Clicked; 
+        this.Depth = Depth; 
     }
 }

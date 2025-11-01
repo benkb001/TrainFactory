@@ -15,6 +15,7 @@ using TrainGame.Utils;
 public class NextDrawTestSystemTest {
     [Fact]
     public void NextDrawTest_ShouldMoveButtonWhenClickedFirst() {
+        VirtualMouse.Reset(); 
         World w = new World(); 
         RegisterComponents.All(w); 
         
@@ -40,5 +41,6 @@ public class NextDrawTestSystemTest {
         //It's two here because clicking the button creates a NextTestControl component attached to a different entity
         //Then that entity gets cleared and the new button is made. 
         Assert.False(w.GetComponent<Frame>(2).GetX() == 0); 
+        VirtualMouse.Reset(); 
     }
 }

@@ -23,6 +23,7 @@ public static class RegisterComponents {
         w.AddComponentType<GameClockView>(); 
         w.AddComponentType<Inventory>(); 
         w.AddComponentType<Inventory.Item>(); 
+        w.AddComponentType<InventoryOrganizeMessage>(); 
         w.AddComponentType<Message>(); 
         w.AddComponentType<LinearLayout>(); 
         w.AddComponentType<Lines>(); 
