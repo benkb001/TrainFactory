@@ -23,11 +23,16 @@ public static class InventoryUISystem {
             DrawInventoryMessage dm = w.GetComponent<DrawInventoryMessage>(e); 
             Inventory inv = dm.Inv; 
             int inventoryUI = dm.Entity; 
+
+            w.SetComponent<Inventory>(inventoryUI, inv); 
             LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
             ll.Padding = dm.Padding; 
             w.SetComponent<LinearLayout>(inventoryUI, ll);
-            w.SetComponent<Frame>(inventoryUI, new Frame(dm.Position.X, dm.Position.Y, dm.Width, dm.Height, dm.Padding)); 
-            w.SetComponent<Outline>(inventoryUI, new Outline()); 
+            
+            Vector2 drawPosition = w.WorldVector(dm.Position); 
+            w.SetComponent<Frame>(inventoryUI, new Frame(drawPosition.X, drawPosition.Y, dm.Width, dm.Height, dm.Padding)); 
+            w.SetComponent<Outline>(inventoryUI, new Outline(Depth: Constants.InventoryOutlineDepth)); 
+            w.SetComponent<Background>(inventoryUI, new Background(Color.LightGray, Depth: Constants.InventoryBackgroundDepth)); 
 
             int rows = inv.GetRows(); 
             int cols = inv.GetCols(); 
@@ -41,7 +46,8 @@ public static class InventoryUISystem {
                 int row = w.AddEntity(); 
                 
                 w.SetComponent<Frame>(row, new Frame(0, 0, rowWidth, rowHeight)); 
-                w.SetComponent<Outline>(row, new Outline()); 
+                w.SetComponent<Outline>(row, new Outline(Depth: Constants.InventoryRowOutlineDepth)); 
+                w.SetComponent<Background>(row, new Background(Color.DarkGray, Constants.InventoryRowBackgroundDepth)); 
 
                 LinearLayout rowLL = new LinearLayout("horizontal", "alignLow"); 
                 rowLL.Padding = dm.Padding; 
@@ -51,10 +57,13 @@ public static class InventoryUISystem {
                     int cell = w.AddEntity(); 
 
                     w.SetComponent<Frame>(cell, new Frame(0, 0, cellWidth, cellHeight));
-                    w.SetComponent<Outline>(cell, new Outline()); 
+                    w.SetComponent<Outline>(cell, new Outline(Depth: Constants.InventoryCellOutlineDepth)); 
+                    w.SetComponent<Background>(cell, new Background(Color.LightGray, Constants.InventoryCellBackgroundDepth)); 
                     Inventory.Item item = inv.Get(i, j); 
                     w.SetComponent<Inventory.Item>(cell, item); 
-                    w.SetComponent<TextBox>(cell, new TextBox(item.ToString()));
+                    TextBox tb = new TextBox(item.ToString()); 
+                    tb.Depth = Constants.InventoryCellTextBoxDepth; 
+                    w.SetComponent<TextBox>(cell, tb);
                     w.SetComponent<Draggable>(cell, new Draggable()); 
                     w.SetComponent<Button>(cell, new Button()); 
                     rowLL.AddChild(cell);

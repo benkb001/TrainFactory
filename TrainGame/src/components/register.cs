@@ -14,8 +14,10 @@ using TrainGame.ECS;
 public static class RegisterComponents {
     public static void All(World w) {
         w.AddComponentType<Active>(); 
+        w.AddComponentType<Background>(); 
         w.AddComponentType<Button>(); 
         w.AddComponentType<CardinalMovement>(); 
+        w.AddComponentType<Chest>(); 
         w.AddComponentType<Collidable>(); 
         w.AddComponentType<Draggable>(); 
         w.AddComponentType<DrawInventoryMessage>(); 

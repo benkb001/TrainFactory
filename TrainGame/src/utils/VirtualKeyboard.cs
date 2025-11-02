@@ -6,73 +6,36 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+//TODO: Fill out tests 
 public static class VirtualKeyboard {
     private static bool useVirtualKeyboard = false; 
     private static KeyboardState vks = new KeyboardState([]); 
+    private static KeyboardState ks_prev = new KeyboardState([]); 
     private static List<Keys> keysPressed = new List<Keys>(); 
     
     public static void UseVirtualKeyboard() {
         useVirtualKeyboard = true; 
     }
 
-    public static void PressW() {
+    public static void Press(Keys k) {
         UseVirtualKeyboard(); 
-        keysPressed.Add(Keys.W);
+        keysPressed.Add(k);
         vks = new KeyboardState(keysPressed.ToArray()); 
     }
 
-    public static void PressA() {
+    public static void Release(Keys k) {
         UseVirtualKeyboard(); 
-        keysPressed.Add(Keys.A);
+        keysPressed.Remove(k); 
         vks = new KeyboardState(keysPressed.ToArray()); 
     }
 
-    public static void PressS() {
-        UseVirtualKeyboard(); 
-        keysPressed.Add(Keys.S);
-        vks = new KeyboardState(keysPressed.ToArray()); 
+    public static bool IsClicked(Keys k) {
+        KeyboardState ks = GetState(); 
+        return !ks_prev.IsKeyDown(k) && ks.IsKeyDown(k); 
     }
 
-    public static void PressE() {
-        UseVirtualKeyboard(); 
-        keysPressed.Add(Keys.E);
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void PressD() {
-        UseVirtualKeyboard(); 
-        keysPressed.Add(Keys.D);
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void ReleaseW() {
-        UseVirtualKeyboard(); 
-        keysPressed.Remove(Keys.W); 
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void ReleaseA() {
-        UseVirtualKeyboard(); 
-        keysPressed.Remove(Keys.A); 
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void ReleaseS() {
-        UseVirtualKeyboard(); 
-        keysPressed.Remove(Keys.S); 
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void ReleaseD() {
-        UseVirtualKeyboard(); 
-        keysPressed.Remove(Keys.D); 
-        vks = new KeyboardState(keysPressed.ToArray()); 
-    }
-
-    public static void ReleaseE() {
-        UseVirtualKeyboard(); 
-        keysPressed.Remove(Keys.E); 
-        vks = new KeyboardState(keysPressed.ToArray()); 
+    public static bool IsPressed(Keys k) {
+        return GetState().IsKeyDown(k); 
     }
 
     public static KeyboardState GetState() {
@@ -89,5 +52,15 @@ public static class VirtualKeyboard {
     public static void Reset() {
         useVirtualKeyboard = false; 
         keysPressed = new List<Keys>(); 
+        vks = new KeyboardState([]); 
+        ks_prev = new KeyboardState([]); 
+    }
+
+    public static void UpdatePrevFrame() {
+        if (useVirtualKeyboard) {
+            ks_prev = vks; 
+        } else {
+            ks_prev = Keyboard.GetState(); 
+        }
     }
 }

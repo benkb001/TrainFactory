@@ -1,11 +1,17 @@
 * Make drawing System based
+* Make UI Drawing based on screen coordinates
+* Make inventory draw messages automatically move around or resize other inventories as necessary
 * Implement better click for buttons 
 * Make stepper fast when you hold down
 * Fix LinearLayout stall infinitely if too small bug 
-
+* Consider adding static helpers to reduce need to memorize which components are necessary for various functionalities 
+    * And also not risk forgetting to set components after adding an entity
 * Add optional headers to TextBox
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
+
+* Make it so clicking e when there's inventory views pops the scene, 
+    * Don't forget to make it so inventories don't get deleted on pop
 
 * Build a basic city view
 * Make a city component (name, cargo, connected cities) 
@@ -14,8 +20,6 @@
 * Attach an inventory to each train and city
 * Implement day-cycle
 * Add basic save/load 
-
-* Add player/object interaction in rpg mode
 
 * Add a tile system for rpg mode
 * Make player able to hold a tool 

@@ -4,6 +4,18 @@ namespace TrainGame.Constants
 {
     public static class Constants {
         public static readonly int MaxComponents = 1024; 
+
+        public static readonly float InventoryBackgroundDepth = 0.8f; 
+        public static readonly float InventoryOutlineDepth = 0.75f; 
+        public static readonly float InventoryRowBackgroundDepth = 0.7f; 
+        public static readonly float InventoryRowOutlineDepth = 0.65f; 
+        public static readonly float InventoryCellBackgroundDepth = 0.6f; 
+        public static readonly float InventoryCellOutlineDepth = 0.55f; 
+        public static readonly float InventoryCellTextBoxDepth = 0.55f; 
+        public static readonly float InventoryHeldBackgroundDepth = 0.5f; 
+        public static readonly float InventoryHeldOutlineDepth = 0.45f; 
+        public static readonly float InventoryHeldTextBoxDepth = 0.45f; 
+        
     }
 
     public static class Textures {

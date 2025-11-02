@@ -206,6 +206,7 @@ public partial class World {
             camera.UpdateCamera(graphicsDevice.Viewport); 
         }
         VirtualMouse.UpdatePrevFrame(); 
+        VirtualKeyboard.UpdatePrevFrame(); 
     }
 
     //helpers 

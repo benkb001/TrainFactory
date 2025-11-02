@@ -15,7 +15,7 @@ using TrainGame.Constants;
 public class InteractSystem {
     public static void RegisterInteract(World world) {
         Action<World> update = (w) => {
-            if (!VirtualKeyboard.GetState().IsKeyDown(KeyBinds.Interact)) {
+            if (!VirtualKeyboard.IsClicked(KeyBinds.Interact)) {
                 return; 
             }
             
@@ -35,7 +35,9 @@ public class InteractSystem {
                         w.GetComponent<Interactable>(interactableEntity).Interacted = true; 
                         interacted = true; 
                     }
+                    j++; 
                 }
+                i++; 
             }
         }; 
         world.AddSystem(update); 

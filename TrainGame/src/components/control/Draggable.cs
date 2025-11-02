@@ -15,6 +15,7 @@ public class Draggable {
     public Vector2 SnapPosition; 
     public Vector2 RelativeClickPosition; 
     private int dragState = DragState.Released; 
+    private bool isBeingPickedUp = false; 
 
     public Draggable() {
         SnapPosition = Vector2.Zero; 
@@ -28,6 +29,13 @@ public class Draggable {
 
     public void PickUp() {
         dragState = DragState.Held; 
+        isBeingPickedUp = true; 
+    }
+
+    //TODO: Test
+    public void Hold() {
+        dragState = DragState.Held; 
+        isBeingPickedUp = false; 
     }
 
     public void Drop() {
@@ -50,6 +58,10 @@ public class Draggable {
 
     public bool IsBeingDropped() {
         return dragState == DragState.BeingDropped; 
+    }
+
+    public bool IsBeingPickedUp() {
+        return isBeingPickedUp; 
     }
 }
 

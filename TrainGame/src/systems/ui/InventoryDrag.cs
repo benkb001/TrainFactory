@@ -26,28 +26,30 @@ public class InventoryDragSystem() {
             Inventory.Item targetItem = curItem; 
             Vector2 targetVector = d.SnapPosition; 
 
-            foreach (KeyValuePair<int, Inventory.Item> entry in w.GetComponentArray<Inventory.Item>()) {
-                Inventory.Item potentialTargetItem = entry.Value; 
-                int itemEntity = entry.Key; 
-
-                //if the item we're moving it towards is the same as the item we're holding
+            List<int> itemEntities = w.GetMatchingEntities(types); 
+            foreach (int itemEntity in itemEntities) {
+                //if the item we're potentially moving it towards is the same as the item we're holding
                 if (itemEntity == e) {
                     continue; 
                 }
+
+                Inventory.Item potentialTargetItem = w.GetComponent<Inventory.Item>(itemEntity); 
                 
                 Vector2 potentialTargetVector = w.GetComponent<Frame>(itemEntity).Position;
                 Vector2 dist = potentialTargetVector - heldPosition; 
-
+                
                 if (closest.Length() > dist.Length()) {
                     closest = dist; 
                     targetInv = potentialTargetItem.Inv; 
                     targetItem = potentialTargetItem; 
                     targetVector = potentialTargetVector; 
-                }
+                } 
             }
 
+            
             if (closest.Length() < Threshold) {
                 int invOrganizeMsgEntity = w.AddEntity(); 
+
                 w.SetComponent<InventoryOrganizeMessage>(invOrganizeMsgEntity, new InventoryOrganizeMessage(
                     targetItem.Row, 
                     targetItem.Column, 

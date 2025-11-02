@@ -21,14 +21,17 @@ public static class RegisterSystems {
         
         PauseButtonSystem.Register(w); 
         UnpauseButtonSystem.Register(w); 
-        SceneSystem.RegisterPush(w); 
-        SceneSystem.RegisterPop(w); 
 
         GameClockViewSystem.Register(w); 
 
         NextDrawTestButtonSystem.Register(w);
         NextDrawTestUISystem.Register(w);
 
+        ChestInteractSystem.Register(w); 
+
+        SceneSystem.RegisterPush(w); 
+        SceneSystem.RegisterPop(w); 
+        
         InventoryUISystem.RegisterBuild(w); 
 
         StepperButtonSystem.Register(w); 
@@ -41,6 +44,8 @@ public static class RegisterSystems {
         LinearLayoutSystem.Register(w); 
 
         DragSystem.Register(w); 
+        InventoryPickUpUISystem.Register(w); 
+        InventoryDropUISystem.Register(w); 
         InventoryDragSystem.Register(w); 
         InventoryControlSystem.RegisterOrganize(w); 
         

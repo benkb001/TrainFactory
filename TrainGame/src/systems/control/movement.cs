@@ -28,9 +28,10 @@ public class MovementSystem() {
             float width = f.GetWidth(); 
             float height = f.GetHeight(); 
 
-            List<int> es = w.GetEntities<Collidable>(); 
-            foreach(int i in es) {
-                if (i == e) {
+            List<int> es = w.GetMatchingEntities([typeof(Frame), typeof(Collidable), typeof(Active)]); 
+
+            for (int i = 0; i < es.Count; i++) {
+                if (es[i] == e) {
                     continue; 
                 }
                 

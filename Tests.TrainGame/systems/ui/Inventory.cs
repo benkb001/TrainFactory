@@ -183,8 +183,7 @@ public class InventoryUISystemTest {
         foreach (int c in ll.GetChildren()) {
             Frame rowFrame = w.GetComponent<Frame>(c);
              
-            if (rowFrame.GetHeight() != correctRowHeight) {
-                Console.WriteLine($"Expected: {correctRowHeight}, Actual: {rowFrame.GetHeight()}"); 
+            if (rowFrame.GetHeight() != correctRowHeight) { 
                 allRowsHaveCorrectHeight = false;
             }
         }
@@ -303,7 +302,6 @@ public class InventoryUISystemTest {
 
                 if (cellFrame.GetY() != invY + (inventoryPadding * (i + 2)) + (rowHeight * i)) {
                     float expectedY = invY + (inventoryPadding * (i + 2)) + (rowHeight * i); 
-                    Console.WriteLine($"Expected: {expectedY}, actual: {cellFrame.GetY()}");
                     allCellYCorrect = false; 
                 }
             }

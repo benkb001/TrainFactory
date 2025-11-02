@@ -17,20 +17,19 @@ public class CardinalMovementSystem() {
     private static Action<World, int> transformer = (w, e) => {
         Vector2 v = Vector2.Zero; 
         float speed = w.GetComponent<CardinalMovement>(e).Speed; 
-        KeyboardState kbstate = VirtualKeyboard.GetState(); 
-        if (kbstate.IsKeyDown(KeyBinds.MoveLeft)) {
+        if (VirtualKeyboard.IsPressed(KeyBinds.MoveLeft)) {
             v += new Vector2(-speed, 0);
         }
 
-        if (kbstate.IsKeyDown(KeyBinds.MoveRight)) {
+        if (VirtualKeyboard.IsPressed(KeyBinds.MoveRight)) {
             v += new Vector2(speed, 0); 
         }
 
-        if (kbstate.IsKeyDown(KeyBinds.MoveUp)) {
+        if (VirtualKeyboard.IsPressed(KeyBinds.MoveUp)) {
             v += new Vector2(0, -speed); 
         }
 
-        if (kbstate.IsKeyDown(KeyBinds.MoveDown)) {
+        if (VirtualKeyboard.IsPressed(KeyBinds.MoveDown)) {
             v += new Vector2(0, speed); 
         }
 

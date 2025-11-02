@@ -28,8 +28,8 @@ public class InventoryControlSystem() {
             Draggable d = msg.CurDraggable; 
             Vector2 targetVector = msg.TargetVector; 
 
-            targetInv.Take(targetRow, targetCol); 
-            curInv.Take(curRow, curCol); 
+            targetInv.Take(targetRow, targetCol);
+            curInv.Take(curRow, curCol);
 
             if (targetItem.ItemId == curItem.ItemId) {
                 curItem.Count += targetItem.Count;
@@ -59,7 +59,7 @@ public class InventoryControlSystem() {
 
             string invId = inv.GetId(); 
             List<int> row_entities = ll.GetChildren(); 
-            Random r = new Random(); 
+
             for (int row_index = 0; row_index < row_entities.Count; row_index++) {
                 int row = row_entities[row_index]; 
                 LinearLayout rowLL = w.GetComponent<LinearLayout>(row); 

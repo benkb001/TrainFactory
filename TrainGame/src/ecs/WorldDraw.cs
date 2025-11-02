@@ -82,7 +82,7 @@ public partial class World {
         _spriteBatch.Draw(_pixel, Util.RectangleFromRectangleF(f.GetRectangle()), color);
     }
 
-    private Vector2 WorldVector(Vector2 screenVector) {
+    public Vector2 WorldVector(Vector2 screenVector) {
         if (!(camera is null)) {
             Matrix inverseCamera = Matrix.Invert(camera.Transform); 
             return Vector2.Transform(screenVector, inverseCamera); 
@@ -90,7 +90,7 @@ public partial class World {
         return screenVector; 
     }
 
-    private Vector2 ScreenVector(Vector2 worldVector) {
+    public Vector2 ScreenVector(Vector2 worldVector) {
         return Vector2.Transform(worldVector, camera.Transform); 
     }
 
@@ -114,7 +114,6 @@ public partial class World {
     //that to get called in the regular update step
     //could do a separate system manager for drawing i guesss but for now this is fine
     public void Draw() {
-        //graphicsDevice.SetRenderTarget(renderTarget); 
         graphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, 
             null, null, null, null, camera.Transform );
@@ -124,7 +123,7 @@ public partial class World {
             Sprite s = entry.Value; 
             Frame frame = GetComponent<Frame>(e); 
             Texture2D tx = s.GetTexture(); 
-            //need to update this to account for depth but the overload is so long and annoying lol 
+
             _spriteBatch.Draw(
                 tx, 
                 new Vector2(frame.GetX(), frame.GetY()), 
@@ -146,11 +145,24 @@ public partial class World {
                     points[i], 
                     points[(i + 1) % points.Length], 
                     entry.Value.GetColor(), 
-                    thickness: entry.Value.GetThickness()
+                    thickness: entry.Value.GetThickness(), 
+                    depth: entry.Value.Depth
                 );
             }
-            
-            //DrawOutline(cm.GetComponent<Frame>(entry.Key), entry.Value.GetThickness(), entry.Value.GetColor());
+        }
+
+        foreach (KeyValuePair<int, Background> entry in cm.GetComponentArray<Background>().GetEntities()) {
+            Frame f = cm.GetComponent<Frame>(entry.Key); 
+            _spriteBatch.Draw(
+                _pixel, 
+                Util.RectangleFromRectangleF(f.GetRectangle()),
+                null, 
+                entry.Value.BackgroundColor, 
+                0f, 
+                Vector2.Zero, 
+                SpriteEffects.None, 
+                entry.Value.Depth
+            );
         }
 
         foreach (KeyValuePair<int, Message> entry in cm.GetComponentArray<Message>().GetEntities()) {

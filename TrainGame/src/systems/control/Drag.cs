@@ -17,6 +17,11 @@ public class DragSystem() {
         Button b = w.GetComponent<Button>(e); 
         Draggable draggable = w.GetComponent<Draggable>(e); 
         Frame f = w.GetComponent<Frame>(e); 
+        
+        //TODO: test
+        if (draggable.IsBeingPickedUp()) {
+            draggable.Hold(); 
+        }
 
         if (b.Clicked) {
             draggable.PickUp(); 
