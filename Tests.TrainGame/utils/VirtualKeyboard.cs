@@ -27,17 +27,17 @@ public class VirtualKeyboardTest {
     [Fact]
     public void VirtualKeyboard_ShouldRespondToKeyPresses() {
         VirtualKeyboard.Reset(); 
-        VirtualKeyboard.PressW(); 
-        Assert.True(VirtualKeyboard.GetState().IsKeyDown(Keys.W));
+        VirtualKeyboard.Press(Keys.W);
+        Assert.True(VirtualKeyboard.IsPressed(Keys.W));
         VirtualKeyboard.Reset(); 
     }
     
     [Fact]
     public void VirtualKeyboard_ShouldRespondToKeyReleases() {
         VirtualKeyboard.Reset(); 
-        VirtualKeyboard.PressW(); 
-        VirtualKeyboard.ReleaseW(); 
-        Assert.False(VirtualKeyboard.GetState().IsKeyDown(Keys.W)); 
+        VirtualKeyboard.Press(Keys.W); 
+        VirtualKeyboard.Release(Keys.W); 
+        Assert.False(VirtualKeyboard.IsPressed(Keys.W)); 
         VirtualKeyboard.Reset(); 
     }
 }

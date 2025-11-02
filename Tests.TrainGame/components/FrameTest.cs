@@ -54,4 +54,13 @@ public class FrameTest {
         Assert.Equal(20, s.GetX()); 
         Assert.Equal(20, s.GetY()); 
     }
+
+    [Fact]
+    public void Frame_ShouldCorrectlyReportIfTouching() {
+        Frame f1 = new Frame(0, 0, 10, 10); 
+        Frame f2 = new Frame(10, 0, 10, 10); 
+        Assert.True(f1.IsTouching(f2)); 
+        Frame f3 = new Frame(15, 0, 10, 10); 
+        Assert.False(f1.IsTouching(f3));
+    }
 }
