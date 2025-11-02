@@ -16,8 +16,6 @@ public class LinearLayoutSystemTest {
             World w = new World(); 
             RegisterComponents.All(w); 
 
-            //TODO: Just register the systems this test depends on for decoupling?  
-            //Or is it better to include in case a new added system fucks this up? 
             RegisterSystems.All(w); 
             LinearLayout ll1 = new LinearLayout("horizontal", "alignLow"); 
             ll1.Padding = 5f; 

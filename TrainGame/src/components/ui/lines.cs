@@ -14,7 +14,6 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Constants; 
 
-//TODO: Test
 public class Lines {
     //each vector is a point, each pair of points will be connected
     public List<(Vector2, Vector2, Color)> Ls; 

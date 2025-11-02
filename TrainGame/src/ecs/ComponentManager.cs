@@ -15,7 +15,7 @@ class ComponentManager {
     }
 
     public void Register<T>() {
-        if (nextIndex >= Constants.maxComponents) {
+        if (nextIndex >= Constants.MaxComponents) {
             throw new InvalidOperationException(
                 "ComponentManager has registered max components"); 
         }
@@ -48,7 +48,7 @@ class ComponentManager {
 
     public bool[] GetSignature(Type[] ts) {
         //bool[] default false
-        bool[] sig = new bool[Constants.maxComponents]; 
+        bool[] sig = new bool[Constants.MaxComponents]; 
 
         foreach (Type t in ts) {
             if (!components.ContainsKey(t)) {

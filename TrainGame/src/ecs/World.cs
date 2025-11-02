@@ -83,6 +83,11 @@ public partial class World {
         return sm.Register(signature, update);
     }
 
+    public _System AddSystem(Action<World> update) {
+        bool[] signature = cm.GetSignature([]); 
+        return sm.Register(signature, update);
+    }
+
     public void Clear() {
         foreach (int i in em.GetEntities()) {
             RemoveEntity(i); 
@@ -133,8 +138,17 @@ public partial class World {
         return em.GetEntities(); 
     }
 
+    public List<int> GetMatchingEntities(Type[] ts) {
+        bool[] sig = cm.GetSignature(ts); 
+        return em.GetMatchingEntities(sig); 
+    }
+
     public double GetSecondsPassed() {
         return gameClock.TotalSeconds; 
+    }
+
+    public void PassTime(double seconds = 0, double milliseconds = 0) {
+        gameClock.PassTime(seconds, milliseconds); 
     }
 
     public void RemoveComponent<T>(int e) {

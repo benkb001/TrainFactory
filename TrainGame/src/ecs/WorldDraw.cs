@@ -22,9 +22,6 @@ using TrainGame.Utils;
 //this file is for the visual side of world as opposed to logic
 
 public partial class World {
-    //TODO: Add a function to get all the components of a certain type based on a HashSet<int> entities
-    //ie get that component for all the entities in that hash-set
-
     public Texture2D GetTexture(string name) {
         //Consider throwign error instead
         if (!textures.ContainsKey(name)) {

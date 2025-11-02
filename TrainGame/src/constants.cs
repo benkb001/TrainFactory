@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TrainGame.Constants 
 {
     public static class Constants {
-        public static readonly int maxComponents = 1024; 
+        public static readonly int MaxComponents = 1024; 
     }
 
     public static class Textures {
@@ -28,5 +28,6 @@ namespace TrainGame.Constants
         public static readonly Keys MoveLeft = Keys.A;
         public static readonly Keys MoveDown = Keys.S;
         public static readonly Keys MoveRight = Keys.D;
+        public static readonly Keys Interact = Keys.E; 
     }
 }

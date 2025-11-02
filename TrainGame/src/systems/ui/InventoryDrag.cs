@@ -12,6 +12,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 public class InventoryDragSystem() {
+    public const float Threshold = 30f; 
     private static Type[] types = [typeof(Frame), typeof(Draggable), typeof(Inventory.Item), typeof(Active)]; 
     private static Action<World, int> transformer = (w, e) => {
         Draggable d = w.GetComponent<Draggable>(e); 
@@ -45,7 +46,7 @@ public class InventoryDragSystem() {
                 }
             }
 
-            if (closest.Length() < 30f) {
+            if (closest.Length() < Threshold) {
                 int invOrganizeMsgEntity = w.AddEntity(); 
                 w.SetComponent<InventoryOrganizeMessage>(invOrganizeMsgEntity, new InventoryOrganizeMessage(
                     targetItem.Row, 

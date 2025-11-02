@@ -20,7 +20,9 @@ public static class RegisterComponents {
         w.AddComponentType<Draggable>(); 
         w.AddComponentType<DrawInventoryMessage>(); 
         w.AddComponentType<Frame>(); 
-        w.AddComponentType<GameClockView>(); 
+        w.AddComponentType<GameClockView>();
+        w.AddComponentType<Interactable>(); 
+        w.AddComponentType<Interactor>();  
         w.AddComponentType<Inventory>(); 
         w.AddComponentType<Inventory.Item>(); 
         w.AddComponentType<InventoryOrganizeMessage>(); 

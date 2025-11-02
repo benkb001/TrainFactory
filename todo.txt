@@ -1,7 +1,6 @@
 * Make drawing System based
 * Implement better click for buttons 
 * Make stepper fast when you hold down
-* Add tests for untested files 
 * Fix LinearLayout stall infinitely if too small bug 
 
 * Add optional headers to TextBox
@@ -12,14 +11,15 @@
 * Make a city component (name, cargo, connected cities) 
 * Add a train 
 * Make it so you can move the train by clicking 
-* Add cargo that can be picked up/dropped off 
+* Attach an inventory to each train and city
 * Implement day-cycle
 * Add basic save/load 
 
-Add a tile system for rpg mode
+* Add player/object interaction in rpg mode
+
+* Add a tile system for rpg mode
 * Make player able to hold a tool 
 * Add a scrollable toolbar 
 * Make player able to use a tool 
-
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets

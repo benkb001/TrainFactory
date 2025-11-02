@@ -28,4 +28,8 @@ public static class Util {
     public static bool FloatEqual(float f1, float f2) {
         return Math.Abs(f1 - f2) < 0.001;
     }
+
+    public static bool DoubleEqual(double d1, double d2) {
+        return Math.Abs(d1 - d2) < 0.001;
+    }
 }

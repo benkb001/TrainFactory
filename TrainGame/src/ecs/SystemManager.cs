@@ -33,7 +33,7 @@ class SystemManager {
             bool removed = false; 
             int i = 0; 
 
-            while (!removed && i < Constants.maxComponents) {
+            while (!removed && i < Constants.MaxComponents) {
                 if (s.ActsOnComponentType(i) && !signature[i]) {
                     s.RemoveEntity(entity); 
                     removed = true; 

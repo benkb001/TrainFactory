@@ -13,33 +13,40 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 public class ButtonSystem() {
-    private static Type[] types = [typeof(Button), typeof(Frame), typeof(Active)]; 
 
     //TODO: test bubbling
     public static void RegisterClick(World world) {
         Action<World> update = (w) => {
-            Vector2 mousePoint = world.GetWorldMouseCoordinates(); 
-            MouseState curMouse = VirtualMouse.GetState(); 
-
             if (!VirtualMouse.LeftClicked()) {
                 return; 
             }
 
-            //TODO: Convert to while loop/make more readable
-            foreach (KeyValuePair<int, Button> entry in 
-                w.GetComponentArray<Button>().OrderBy(pair => pair.Value.Depth)) {
-                Frame f = w.GetComponent<Frame>(entry.Key);
-                if (f.Contains(mousePoint)) {
-                    entry.Value.Clicked = true; 
-                    return; 
+            Vector2 mousePoint = world.GetWorldMouseCoordinates(); 
+
+            List<int> buttonEntities = w.GetMatchingEntities([typeof(Button), typeof(Frame), typeof(Active)]);
+            List<(Frame, Button)> frameButtons = buttonEntities.Select(e => {
+                Frame f = w.GetComponent<Frame>(e); 
+                Button b = w.GetComponent<Button>(e); 
+                return (f, b); 
+            }).OrderBy(pair => pair.Item2.Depth).ToList(); 
+
+            int i = 0; 
+            bool clicked = false; 
+
+            while(i < frameButtons.Count && !clicked) {
+                if (frameButtons[i].Item1.Contains(mousePoint)) {
+                    frameButtons[i].Item2.Clicked = true; 
+                    clicked = true; 
                 }
+                i++; 
             }
         }; 
 
-        world.AddSystem(types, update); 
+        world.AddSystem(update); 
     }
 
     public static void RegisterUnclick(World world) {
+        Type[] types = [typeof(Button), typeof(Frame), typeof(Active)]; 
         Action<World, int> transformer = (w, e) => {
             w.GetComponent<Button>(e).Clicked = false; 
         };

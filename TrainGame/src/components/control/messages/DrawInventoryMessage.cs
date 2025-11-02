@@ -16,18 +16,18 @@ public class DrawInventoryMessage {
     public int Entity; 
 
     public DrawInventoryMessage(
-        float w, 
-        float h, 
-        Vector2 pos,
-        Inventory inv,
-        int e,
-        float padding = 0f
+        float Width, 
+        float Height, 
+        Vector2 Position,
+        Inventory Inv,
+        int Entity,
+        float Padding = 0f
     ) {
-        Inv = inv;
-        Position = pos; 
-        Width = w; 
-        Height = h; 
-        Padding = padding; 
-        Entity = e; 
+        this.Inv = Inv;
+        this.Position = Position; 
+        this.Width = Width; 
+        this.Height = Height; 
+        this.Padding = Padding; 
+        this.Entity = Entity; 
     }
 }

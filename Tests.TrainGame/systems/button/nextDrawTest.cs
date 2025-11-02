@@ -1,23 +1,22 @@
-namespace TrainGame.Systems;
 
 using System.Collections.Generic;
-using System.Drawing; 
 using System; 
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
+using TrainGame.Components; 
+using TrainGame.Systems; 
+using TrainGame.Utils; 
 
-public static class RegisterSystems {
-    public static void All(World w) {
+public class NextDrawTestButtonSystemTest {
+
+    private void RegisterDependencies(World w) {
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
 
         ButtonSystem.RegisterClick(w);
-        InteractSystem.RegisterInteract(w); 
         
         PauseButtonSystem.Register(w); 
         UnpauseButtonSystem.Register(w); 
@@ -27,7 +26,7 @@ public static class RegisterSystems {
         GameClockViewSystem.Register(w); 
 
         NextDrawTestButtonSystem.Register(w);
-        NextDrawTestUISystem.Register(w);
+        //NextDrawTestUISystem.Register(w);
 
         InventoryUISystem.RegisterBuild(w); 
 
@@ -45,6 +44,24 @@ public static class RegisterSystems {
         InventoryControlSystem.RegisterOrganize(w); 
         
         ButtonSystem.RegisterUnclick(w);
-        InteractSystem.RegisterUninteract(w); 
+    }
+    
+    [Fact]
+    public void NextDrawTestButtonSystem_ShouldMakeDrawMessageWhenClicked() {
+        World w = new World(); 
+        RegisterComponents.All(w); 
+        RegisterDependencies(w); 
+
+        int nextDrawBtnEntity = w.AddEntity(); 
+        w.SetComponent<Button>(nextDrawBtnEntity, new Button(true)); 
+        w.SetComponent<Frame>(nextDrawBtnEntity, new Frame(0, 0, 10, 10)); 
+        w.SetComponent<NextDrawTestButton>(nextDrawBtnEntity, new NextDrawTestButton(3)); 
+
+        w.Update(); 
+
+        Assert.Single(w.GetComponentArray<NextDrawTestControl>()); 
+        NextDrawTestControl generated = w.GetComponentArray<NextDrawTestControl>().ToList()[0].Value; 
+
+        Assert.Equal(4, generated.GetCurTest());
     }
 }

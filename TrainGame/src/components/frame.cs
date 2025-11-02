@@ -18,6 +18,7 @@ public class Frame {
     private float height;
     private float rotation; 
     private Polygon p; 
+    private static float touchThreshold = 2f; 
 
     public Vector2 Position => new Vector2(x, y); 
 
@@ -92,5 +93,13 @@ public class Frame {
 
     public Vector2[] GetPoints() {
         return p.Vertices; 
+    }
+
+    public bool IsTouching(Frame other) {
+        return 
+           (Math.Abs(p.Left - other.p.Right) < touchThreshold) || 
+           (Math.Abs(p.Top - other.p.Bottom) < touchThreshold) ||
+           (Math.Abs(p.Right - other.p.Left) < touchThreshold) || 
+           (Math.Abs(p.Bottom - other.p.Top) < touchThreshold); 
     }
 }

@@ -10,14 +10,14 @@ using Microsoft.Xna.Framework.Input;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 using TrainGame.Constants; 
+using TrainGame.Utils; 
 
-//TODO: Implement virtual keyboard, then Test
 public class CardinalMovementSystem() {
     private static Type[] types = [typeof(CardinalMovement), typeof(Frame), typeof(Active)]; 
     private static Action<World, int> transformer = (w, e) => {
         Vector2 v = Vector2.Zero; 
         float speed = w.GetComponent<CardinalMovement>(e).Speed; 
-        KeyboardState kbstate = Keyboard.GetState(); 
+        KeyboardState kbstate = VirtualKeyboard.GetState(); 
         if (kbstate.IsKeyDown(KeyBinds.MoveLeft)) {
             v += new Vector2(-speed, 0);
         }

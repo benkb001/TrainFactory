@@ -28,7 +28,7 @@ class EntityManager {
         }
             
         int entity = availableEntities.Dequeue(); 
-        eSignatures[entity] = new bool[Constants.maxComponents]; 
+        eSignatures[entity] = new bool[Constants.MaxComponents]; 
         return entity; 
     }
 
@@ -66,5 +66,24 @@ class EntityManager {
 
     public List<int> GetEntities() {
         return eSignatures.Keys.ToList(); 
+    }
+
+    public List<int> GetMatchingEntities(bool[] signature) {
+        List<int> res = new(); 
+        foreach (KeyValuePair<int, bool[]> eSig in eSignatures) {
+            bool mismatch = false; 
+            int i = 0; 
+            while (i < Constants.MaxComponents && !mismatch) {
+                if (signature[i] && !eSig.Value[i]) {
+                    mismatch = true; 
+                }
+                i++; 
+            }
+            
+            if (!mismatch) {
+                res.Add(eSig.Key); 
+            }
+        }
+        return res; 
     }
 }
