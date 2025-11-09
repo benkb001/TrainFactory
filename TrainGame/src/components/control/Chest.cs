@@ -24,7 +24,7 @@ public class Chest {
     float cellSize = 100f; 
     private Vector2 chestInvDrawPosition; 
 
-    public Chest(Inventory chestInv, int chestInvEntity, Inventory playerInv, int playerInvEntity) {
+    public Chest(Inventory chestInv, Inventory playerInv) {
         chestInvDrawPosition = new Vector2(margin, margin); 
         float chestHeight = chestInv.GetRows() * cellSize; 
         
@@ -32,18 +32,18 @@ public class Chest {
             Width: chestInv.GetCols() * cellSize,
             Height: chestHeight,
             Position: chestInvDrawPosition,
-            Inv: chestInv, 
-            Entity: chestInvEntity, 
-            Padding: padding
+            Inv: chestInv,
+            Padding: padding, 
+            SetMenu: true
         ); 
 
         playerInvMessage = new DrawInventoryMessage(
             Width: playerInv.GetCols() * cellSize, 
             Height: playerInv.GetRows() * cellSize, 
             Position: chestInvDrawPosition + new Vector2(0, chestHeight + margin), 
-            Inv: playerInv, 
-            Entity: playerInvEntity, 
-            Padding: padding
+            Inv: playerInv,
+            Padding: padding, 
+            SetMenu: true
         ); 
     }
 }

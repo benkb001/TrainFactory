@@ -18,13 +18,13 @@ public class InventoryControlSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryWidth = 100f; 
         float inventoryPadding = 5f; 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             inventoryWidth, 
             200f, 
@@ -67,7 +67,7 @@ public class InventoryControlSystemTest {
         Assert.Equal("Apple", inv1.Get(1, 1).ItemId);
         Assert.Equal("Banana", inv2.Get(0, 1).ItemId); 
         
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
             TargetRow: 0, 
             TargetColumn: 1, 
@@ -107,7 +107,7 @@ public class InventoryControlSystemTest {
         Assert.Equal("Apple", inv1.Get(1, 1).ItemId);
         Assert.Equal("Banana", inv2.Get(0, 1).ItemId); 
         
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
             TargetRow: 0, 
             TargetColumn: 1, 
@@ -146,7 +146,7 @@ public class InventoryControlSystemTest {
         Assert.Equal("Apple", inv1.Get(1, 1).ItemId);
         Assert.Equal("Banana", inv2.Get(0, 1).ItemId); 
         
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
             TargetRow: 0, 
             TargetColumn: 1, 

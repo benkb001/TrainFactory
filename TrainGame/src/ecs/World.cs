@@ -36,6 +36,8 @@ public partial class World {
     private int trackedEntity = -1;
     private GameClock gameClock = new GameClock(); 
     private Texture2D _pixel;
+    private WorldTime wt = new WorldTime(); 
+    public WorldTime Time => wt; 
 
     //TODO: consider replacing with checks for specific variables being null
     private bool isTest = false;  
@@ -58,17 +60,11 @@ public partial class World {
         cm.Register<T>(); 
     }
 
-    public int AddEntity(bool setScene = true) {
+    public int AddEntity() {
         if (SystemCount() == 0) {
             throw new InvalidOperationException("Must add systems before entities");
         }
         int e = em.Add(); 
-        
-        //Don't love it but hey
-        if (setScene) {
-            SetComponent<Active>(e, Active.Get()); 
-            SetComponent<Scene>(e, new Scene(0)); 
-        }
             
         return e; 
     }
@@ -151,6 +147,10 @@ public partial class World {
         gameClock.PassTime(seconds, milliseconds); 
     }
 
+    public void PassTime(WorldTime wt) {
+        this.wt += wt; 
+    }
+
     public void RemoveComponent<T>(int e) {
         bool[] signature = em.GetSignature(e); 
         
@@ -207,14 +207,6 @@ public partial class World {
         }
         VirtualMouse.UpdatePrevFrame(); 
         VirtualKeyboard.UpdatePrevFrame(); 
-    }
-
-    //helpers 
-    public int AddButton(float x, float y, float width, float aspectRatio, int depth, Texture2D spr) {
-        int e = AddEntity(); 
-        SetComponent<Frame>(e, new Frame(x, y, width, width * aspectRatio)); 
-        SetComponent<Sprite>(e, new Sprite(spr, depth)); 
-        SetComponent<Button>(e, new Button()); 
-        return e; 
+        wt.Update(); 
     }
 }

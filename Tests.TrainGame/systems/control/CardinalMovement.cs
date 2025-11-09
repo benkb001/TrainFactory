@@ -20,7 +20,7 @@ public class CardinalMovementSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int player = w.AddEntity(); 
+        int player = EntityFactory.Add(w); 
         w.SetComponent<Frame>(player, new Frame(0, 0, 10, 10));
         w.SetComponent<CardinalMovement>(player, new CardinalMovement(5)); 
         

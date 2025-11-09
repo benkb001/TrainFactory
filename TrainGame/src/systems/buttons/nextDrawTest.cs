@@ -18,7 +18,7 @@ public class NextDrawTestButtonSystem() {
         Action<World, int> tf = (w, e) => {
             if (w.GetComponent<Button>(e).Clicked) {
                 int curTest = w.GetComponent<NextDrawTestButton>(e).GetCurTest(); 
-                int entity = w.AddEntity(); 
+                int entity = EntityFactory.Add(w); 
                 w.SetComponent<NextDrawTestControl>(entity, new NextDrawTestControl(++curTest)); 
             }
         };

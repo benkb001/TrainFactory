@@ -51,7 +51,7 @@ public class PauseButtonSystemTest {
         RegisterComponents.All(w); 
         RegisterDependencies(w); 
 
-        int pauseBtnEntity = w.AddEntity(); 
+        int pauseBtnEntity = EntityFactory.Add(w); 
         w.SetComponent<Button>(pauseBtnEntity, new Button(true)); 
         w.SetComponent<PauseButton>(pauseBtnEntity, PauseButton.Get()); 
 
@@ -66,7 +66,7 @@ public class PauseButtonSystemTest {
         RegisterComponents.All(w); 
         RegisterDependencies(w); 
 
-        int unpauseButton = w.AddEntity(); 
+        int unpauseButton = EntityFactory.Add(w);  
         w.SetComponent<Button>(unpauseButton, new Button(true)); 
         w.SetComponent<UnpauseButton>(unpauseButton, UnpauseButton.Get()); 
 

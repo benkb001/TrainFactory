@@ -25,7 +25,7 @@ public class ButtonSystemTest
         //note that we don't registser the unclick part of the button
         ButtonSystem.RegisterClick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);  
         w.SetComponent<Frame>(e, new Frame(10, 10, 10, 10)); 
         w.SetComponent<Button>(e, new Button(false)); 
 
@@ -53,7 +53,7 @@ public class ButtonSystemTest
         ButtonSystem.RegisterClick(w); 
         ButtonSystem.RegisterUnclick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
         w.SetComponent<Frame>(e, new Frame(10, 10, 10, 10)); 
         w.SetComponent<Button>(e, new Button(false)); 
 
@@ -85,7 +85,7 @@ public class ButtonSystemTest
         w.AddSystem(ts, tf); 
         ButtonSystem.RegisterUnclick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
 
         w.SetComponent<Button>(e, new Button(true));
         w.SetComponent<Test>(e, new Test()); 
@@ -103,7 +103,7 @@ public class ButtonSystemTest
         //note that we don't registser the unclick part of the button
         ButtonSystem.RegisterClick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         w.SetComponent<Frame>(e, new Frame(10, 10, 10, 10)); 
         w.SetComponent<Button>(e, new Button(false)); 
 
@@ -122,7 +122,7 @@ public class ButtonSystemTest
         //note that we don't registser the unclick part of the button
         ButtonSystem.RegisterClick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
         w.SetComponent<Frame>(e, new Frame(10, 10, 10, 10)); 
         w.SetComponent<Button>(e, new Button(false)); 
 

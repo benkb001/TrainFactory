@@ -33,8 +33,8 @@ public class ChestInteractSystemTest {
         RegisterComponents.All(w); 
         RegisterDependencies(w); 
 
-        int playerInvEntity = w.AddEntity(); 
-        int chestInvEntity = w.AddEntity();
+        int playerInvEntity = EntityFactory.Add(w);
+        int chestInvEntity = EntityFactory.Add(w);
 
         Inventory chestInv = new Inventory("Chest", 2, 2); 
         Inventory playerInv = new Inventory("Player", 3, 3); 
@@ -42,10 +42,10 @@ public class ChestInteractSystemTest {
         w.SetComponent<Inventory>(playerInvEntity, playerInv); 
         w.SetComponent<Inventory>(chestInvEntity, chestInv); 
 
-        int chestEntity = w.AddEntity(); 
+        int chestEntity = EntityFactory.Add(w);
         w.SetComponent<Interactable>(chestEntity, new Interactable(true)); 
 
-        Chest chest = new Chest(chestInv, chestInvEntity, playerInv, playerInvEntity); 
+        Chest chest = new Chest(chestInv, playerInv); 
         w.SetComponent<Chest>(chestEntity, chest); 
 
         w.Update(); 

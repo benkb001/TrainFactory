@@ -24,7 +24,7 @@ public class NextDrawTestSystemTest {
         NextDrawTestUISystem.Register(w); 
         ButtonSystem.RegisterUnclick(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
 
         w.SetComponent<Button>(e, new Button()); 
         w.SetComponent<Frame>(e, new Frame(0, 0, 100, 100)); 

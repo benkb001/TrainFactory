@@ -91,12 +91,15 @@ public class LinearLayout {
         return children.Remove(e); 
     }
 
-    public bool SwapChild(int prev, int newChild) {
-        int idx = children.IndexOf(prev); 
+    public bool SwapChild(int prev, int newChild)
+    {
+        int idx = children.IndexOf(prev);
         bool exists = (idx != -1);
-        if (exists) {
-            children[idx] = newChild; 
+        if (exists)
+        {
+            children[idx] = newChild;
         }
-        return exists; 
+        return exists;
     }
+    
 }

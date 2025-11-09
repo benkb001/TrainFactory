@@ -18,16 +18,21 @@ public static class RegisterComponents {
         w.AddComponentType<Button>(); 
         w.AddComponentType<CardinalMovement>(); 
         w.AddComponentType<Chest>(); 
+        w.AddComponentType<City>(); 
+        w.AddComponentType<CityUI>(); 
         w.AddComponentType<Collidable>(); 
         w.AddComponentType<Draggable>(); 
+        w.AddComponentType<DrawCityDetailsMessage>(); 
         w.AddComponentType<DrawInventoryMessage>(); 
+        w.AddComponentType<DrawMapMessage>(); 
         w.AddComponentType<Frame>(); 
         w.AddComponentType<GameClockView>();
         w.AddComponentType<Interactable>(); 
         w.AddComponentType<Interactor>();  
         w.AddComponentType<Inventory>(); 
-        w.AddComponentType<Inventory.Item>(); 
-        w.AddComponentType<InventoryOrganizeMessage>(); 
+        w.AddComponentType<Inventory.Item>();
+        w.AddComponentType<InventoryOrganizeMessage>();
+        w.AddComponentType<Menu>(); 
         w.AddComponentType<Message>(); 
         w.AddComponentType<LinearLayout>(); 
         w.AddComponentType<Lines>(); 
@@ -45,6 +50,8 @@ public static class RegisterComponents {
         w.AddComponentType<StepperMessage>(); 
         w.AddComponentType<TextBox>(); 
         w.AddComponentType<Toast>(); 
+        w.AddComponentType<Train>(); 
+        w.AddComponentType<TrainUI>(); 
         w.AddComponentType<Velocity>(); 
     }
 }

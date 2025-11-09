@@ -17,7 +17,7 @@ public class GameClockViewSystemTest {
         World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
-        int gcvEntity = w.AddEntity(); 
+        int gcvEntity = EntityFactory.Add(w);
         w.SetComponent<Frame>(gcvEntity, new Frame(0, 0, 100, 100));
         w.SetComponent<TextBox>(gcvEntity, new TextBox("")); 
         w.SetComponent<GameClockView>(gcvEntity, GameClockView.Get());

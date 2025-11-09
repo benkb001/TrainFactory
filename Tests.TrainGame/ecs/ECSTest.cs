@@ -66,7 +66,7 @@ public class ECSTest
         }; 
 
         _System s = w.AddSystem([typeof(Test)], transform); 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
 
         Assert.Equal(0, e); 
         Assert.Equal(1, w.EntityCount()); 
@@ -136,7 +136,7 @@ public class ECSTest
 
         w.AddSystem(types, transformer);
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
 
         w.SetComponent<Test>(e, new Test()); 
 
@@ -159,7 +159,7 @@ public class ECSTest
         _System s = w.AddSystem(types, transformer); 
 
         for (int i = 0; i < 999; i++) {
-            int e = w.AddEntity();
+            int e = EntityFactory.Add(w);
             w.SetComponent<Test>(e, new Test());
         }
 
@@ -187,7 +187,7 @@ public class ECSTest
         int numEntities = 999;
 
         for (int i = 0; i < numEntities; i++) {
-            int e = w.AddEntity();
+            int e = EntityFactory.Add(w);
             w.SetComponent<Garbage>(e, new Garbage());
         }
 
@@ -212,13 +212,13 @@ public class ECSTest
         Type[] types = [typeof(Test1)]; 
 
         Action<World, int> transformer = (w, e) => {
-            int e_new = w.AddEntity(); 
+            int e_new = EntityFactory.Add(w); 
             w.SetComponent<Test2>(e, new Test2()); 
         };
 
         w.AddSystem(types, transformer); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
         w.SetComponent<Test1>(e, new Test1()); 
 
         Assert.Equal(1, w.EntityCount()); 
@@ -245,7 +245,7 @@ public class ECSTest
         }; 
 
         _System s = w.AddSystem([typeof(Test1)], transform); 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
 
         w.SetComponent<Test1>(e, new Test1()); 
 
@@ -270,11 +270,11 @@ public class ECSTest
 
         _System s = w.AddSystem(types, transformer); 
 
-        int e1 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w); 
 
         w.SetComponent<Test>(e1, new Test()); 
 
-        int e2 = w.AddEntity(); 
+        int e2 = EntityFactory.Add(w); 
         w.SetComponent<Test>(e2, new Test()); 
         w.SetComponent<Garbage>(e2, new Garbage()); 
 
@@ -311,7 +311,7 @@ public class ECSTest
         w.AddSystem(types, tf_check); 
         w.AddSystem(types, tf_inc); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
         w.SetComponent<Test>(e, new Test()); 
 
         w.Update(); 
@@ -330,7 +330,7 @@ public class ECSTest
         };
         w.AddSystem(types, transformer); 
         
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
 
         Assert.Throws<InvalidOperationException>(() => {
             w.SetComponent<Garbage>(e, new Garbage()); 

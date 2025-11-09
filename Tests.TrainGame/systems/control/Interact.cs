@@ -21,11 +21,11 @@ public class InteractSystemTest {
         RegisterComponents.All(w); 
         InteractSystem.RegisterInteract(w); 
 
-        int interactableEntity = w.AddEntity(); 
+        int interactableEntity = EntityFactory.Add(w);
         w.SetComponent<Frame>(interactableEntity, new Frame(0, 0, 10, 10)); 
         w.SetComponent<Interactable>(interactableEntity, new Interactable()); 
 
-        int interactorEntity = w.AddEntity(); 
+        int interactorEntity = EntityFactory.Add(w); 
         w.SetComponent<Frame>(interactorEntity, new Frame(10, 0, 10, 10)); 
         w.SetComponent<Interactor>(interactorEntity, Interactor.Get()); 
 
@@ -46,7 +46,7 @@ public class InteractSystemTest {
         InteractSystem.RegisterInteract(w); 
         InteractSystem.RegisterUninteract(w); 
 
-        int interactableEntity = w.AddEntity(); 
+        int interactableEntity = EntityFactory.Add(w);
         w.SetComponent<Interactable>(interactableEntity, new Interactable(true)); 
 
         Assert.True(w.GetComponent<Interactable>(interactableEntity).Interacted); 

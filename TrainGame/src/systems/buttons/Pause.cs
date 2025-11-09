@@ -14,7 +14,7 @@ public class PauseButtonSystem() {
     private static Type[] ts = [typeof(PauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         if (w.GetComponent<Button>(e).Clicked) {
-            int msg = w.AddEntity(); 
+            int msg = EntityFactory.Add(w); 
             w.SetComponent<PushSceneMessage>(msg, PushSceneMessage.Get()); 
         }
     }; 
@@ -28,7 +28,7 @@ public class UnpauseButtonSystem() {
     private static Type[] ts = [typeof(UnpauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         if (w.GetComponent<Button>(e).Clicked) {
-            int msg = w.AddEntity(); 
+            int msg = EntityFactory.Add(w);  
             w.SetComponent<PopSceneMessage>(msg, PopSceneMessage.Get()); 
         }
     }; 

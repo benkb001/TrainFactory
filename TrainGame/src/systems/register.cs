@@ -15,12 +15,15 @@ public static class RegisterSystems {
     public static void All(World w) {
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
+        TrainTravelSystem.Register(w); 
 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 
         
-        PauseButtonSystem.Register(w); 
+        PauseButtonSystem.Register(w);
         UnpauseButtonSystem.Register(w); 
+        
+        CloseMenuSystem.Register(w); 
 
         GameClockViewSystem.Register(w); 
 
@@ -28,11 +31,16 @@ public static class RegisterSystems {
         NextDrawTestUISystem.Register(w);
 
         ChestInteractSystem.Register(w); 
+        TrainInteractSystem.Register(w); 
+        CityClickSystem.Register(w); 
 
         SceneSystem.RegisterPush(w); 
         SceneSystem.RegisterPop(w); 
-        
+
+        DrawCityDetailsSystem.Register(w); 
         InventoryUISystem.RegisterBuild(w); 
+        DrawMapSystem.Register(w); 
+        TrainMapPositionSystem.Register(w);
 
         StepperButtonSystem.Register(w); 
         StepperUISystem.Register(w); 
@@ -48,6 +56,8 @@ public static class RegisterSystems {
         InventoryDropUISystem.Register(w); 
         InventoryDragSystem.Register(w); 
         InventoryControlSystem.RegisterOrganize(w); 
+
+        
         
         ButtonSystem.RegisterUnclick(w);
         InteractSystem.RegisterUninteract(w); 

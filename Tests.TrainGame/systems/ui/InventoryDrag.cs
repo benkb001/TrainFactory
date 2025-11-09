@@ -44,14 +44,14 @@ public class InventoryDragSystemTest {
 
         inv1.Add(apple, 1, 1); 
 
-        int invEntity1 = w.AddEntity(); 
-        int invEntity2 = w.AddEntity(); 
+        int invEntity1 = EntityFactory.Add(w); 
+        int invEntity2 = EntityFactory.Add(w); 
 
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = w.AddEntity(); 
-        int msg2 = w.AddEntity(); 
+        int msg1 = EntityFactory.Add(w); 
+        int msg2 = EntityFactory.Add(w); 
 
         w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
             Width: 100, 
@@ -107,14 +107,14 @@ public class InventoryDragSystemTest {
         inv1.Add(curItem, curRow, curCol); 
         inv2.Add(targetItem, targetRow, targetCol); 
 
-        int invEntity1 = w.AddEntity(); 
-        int invEntity2 = w.AddEntity(); 
+        int invEntity1 = EntityFactory.Add(w); 
+        int invEntity2 = EntityFactory.Add(w); 
 
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = w.AddEntity(); 
-        int msg2 = w.AddEntity(); 
+        int msg1 = EntityFactory.Add(w); 
+        int msg2 = EntityFactory.Add(w); 
 
         w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
             Width: 100, 
@@ -178,14 +178,14 @@ public class InventoryDragSystemTest {
 
         inv1.Add(apple, 1, 1); 
 
-        int invEntity1 = w.AddEntity(); 
-        int invEntity2 = w.AddEntity(); 
+        int invEntity1 = EntityFactory.Add(w); 
+        int invEntity2 = EntityFactory.Add(w); 
 
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = w.AddEntity(); 
-        int msg2 = w.AddEntity(); 
+        int msg1 = EntityFactory.Add(w); 
+        int msg2 = EntityFactory.Add(w); 
 
         w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
             Width: 100, 
@@ -231,14 +231,14 @@ public class InventoryDragSystemTest {
 
         inv1.Add(apple, 1, 1); 
 
-        int invEntity1 = w.AddEntity(); 
-        int invEntity2 = w.AddEntity(); 
+        int invEntity1 = EntityFactory.Add(w); 
+        int invEntity2 = EntityFactory.Add(w); 
 
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = w.AddEntity(); 
-        int msg2 = w.AddEntity(); 
+        int msg1 = EntityFactory.Add(w); 
+        int msg2 = EntityFactory.Add(w); 
 
         w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
             Width: 100, 

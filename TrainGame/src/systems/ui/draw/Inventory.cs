@@ -24,7 +24,16 @@ public static class InventoryUISystem {
             Inventory inv = dm.Inv; 
             int inventoryUI = dm.Entity; 
 
+            if (!w.EntityExists(inventoryUI)) {
+                inventoryUI = EntityFactory.Add(w); 
+            }
+
             w.SetComponent<Inventory>(inventoryUI, inv); 
+
+            if (dm.SetMenu) {
+                w.SetComponent<Menu>(inventoryUI, Menu.Get()); 
+            }
+            
             LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
             ll.Padding = dm.Padding; 
             w.SetComponent<LinearLayout>(inventoryUI, ll);
@@ -32,7 +41,7 @@ public static class InventoryUISystem {
             Vector2 drawPosition = w.WorldVector(dm.Position); 
             w.SetComponent<Frame>(inventoryUI, new Frame(drawPosition.X, drawPosition.Y, dm.Width, dm.Height, dm.Padding)); 
             w.SetComponent<Outline>(inventoryUI, new Outline(Depth: Constants.InventoryOutlineDepth)); 
-            w.SetComponent<Background>(inventoryUI, new Background(Color.LightGray, Depth: Constants.InventoryBackgroundDepth)); 
+            w.SetComponent<Background>(inventoryUI, new Background(Colors.UIBG, Depth: Constants.InventoryBackgroundDepth)); 
 
             int rows = inv.GetRows(); 
             int cols = inv.GetCols(); 
@@ -43,22 +52,22 @@ public static class InventoryUISystem {
             float cellWidth = (rowWidth  - (dm.Padding * (cols + 1))) / cols; 
 
             for (int i = 0; i < rows; i++) {
-                int row = w.AddEntity(); 
+                int row = EntityFactory.Add(w); 
                 
                 w.SetComponent<Frame>(row, new Frame(0, 0, rowWidth, rowHeight)); 
                 w.SetComponent<Outline>(row, new Outline(Depth: Constants.InventoryRowOutlineDepth)); 
-                w.SetComponent<Background>(row, new Background(Color.DarkGray, Constants.InventoryRowBackgroundDepth)); 
+                w.SetComponent<Background>(row, new Background(Colors.UIAccent, Constants.InventoryRowBackgroundDepth)); 
 
                 LinearLayout rowLL = new LinearLayout("horizontal", "alignLow"); 
                 rowLL.Padding = dm.Padding; 
                 w.SetComponent<LinearLayout>(row, rowLL);
 
                 for (int j = 0; j < cols; j++) {
-                    int cell = w.AddEntity(); 
+                    int cell = EntityFactory.Add(w); 
 
                     w.SetComponent<Frame>(cell, new Frame(0, 0, cellWidth, cellHeight));
                     w.SetComponent<Outline>(cell, new Outline(Depth: Constants.InventoryCellOutlineDepth)); 
-                    w.SetComponent<Background>(cell, new Background(Color.LightGray, Constants.InventoryCellBackgroundDepth)); 
+                    w.SetComponent<Background>(cell, new Background(Colors.UIBG, Constants.InventoryCellBackgroundDepth)); 
                     Inventory.Item item = inv.Get(i, j); 
                     w.SetComponent<Inventory.Item>(cell, item); 
                     TextBox tb = new TextBox(item.ToString()); 

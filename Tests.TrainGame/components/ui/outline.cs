@@ -20,7 +20,7 @@ public class OutlineTest {
     }
 
     public void Outline_ShouldRespectConstructors() {
-        Outline o = new Outline(2, Color.Red); 
+        Outline o = new Outline(Color.Red, 2); 
         Assert.Equal(2, o.GetThickness()); 
         Assert.Equal(Color.Red, o.GetColor()); 
     }

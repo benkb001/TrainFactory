@@ -18,10 +18,10 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w);
         Inventory inv = new Inventory("Test", 5, 5); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w);
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 100f, Vector2.Zero, inv, inventoryEntity)); 
 
         w.Update(); 
@@ -36,10 +36,10 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w);
         Inventory inv = new Inventory("Test", 5, 5); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 100f, Vector2.Zero, inv, inventoryEntity)); 
 
         w.Update(); 
@@ -53,10 +53,10 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 5, 5); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
 
         w.Update(); 
@@ -72,10 +72,10 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
 
         w.Update(); 
@@ -90,10 +90,10 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
 
         w.Update(); 
@@ -118,13 +118,13 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryWidth = 100f; 
         float inventoryPadding = 5f; 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             inventoryWidth, 
             200f, 
@@ -156,7 +156,7 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryHeight = 200f; 
@@ -166,7 +166,7 @@ public class InventoryUISystemTest {
         //so each row should be availableHeight/numRows
         float correctRowHeight = (inventoryHeight - (inventoryPadding * (inv.GetRows() + 1))) / inv.GetRows(); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             100f, 
             inventoryHeight, 
@@ -197,7 +197,7 @@ public class InventoryUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryHeight = 300f; 
@@ -210,7 +210,7 @@ public class InventoryUISystemTest {
         float correctCellWidth = (correctRowWidth - (inventoryPadding * (inv.GetCols() + 1))) / inv.GetCols(); 
         float correctCellHeight = correctRowHeight - (2 * inventoryPadding); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             inventoryWidth, 
             inventoryHeight, 
@@ -241,13 +241,14 @@ public class InventoryUISystemTest {
         Assert.True(allCellWidthCorrect); 
     }
 
+    
     [Fact]
     public void InventoryUISystem_CreatedFramesShouldHaveCorrectCoordinates() {
         World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = w.AddEntity(); 
+        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryHeight = 300f; 
@@ -263,7 +264,7 @@ public class InventoryUISystemTest {
         float invX = 25f; 
         float invY = 55f; 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             inventoryWidth, 
             inventoryHeight, 
@@ -312,5 +313,6 @@ public class InventoryUISystemTest {
         Assert.True(allCellXCorrect); 
         Assert.True(allCellYCorrect); 
     }   
+    
     //TODO: Handle possibility of making it with padding too much to be drawn and it makes row widths negative
 }

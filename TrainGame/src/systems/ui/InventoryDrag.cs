@@ -48,7 +48,7 @@ public class InventoryDragSystem() {
 
             
             if (closest.Length() < Threshold) {
-                int invOrganizeMsgEntity = w.AddEntity(); 
+                int invOrganizeMsgEntity = EntityFactory.Add(w); 
 
                 w.SetComponent<InventoryOrganizeMessage>(invOrganizeMsgEntity, new InventoryOrganizeMessage(
                     targetItem.Row, 

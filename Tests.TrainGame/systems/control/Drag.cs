@@ -22,7 +22,7 @@ public class DragTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int drag = w.AddEntity(); 
+        int drag = EntityFactory.Add(w); 
         w.SetComponent<Frame>(drag, new Frame(0, 0, 10, 10)); 
         w.SetComponent<Button>(drag, new Button()); 
         w.SetComponent<Draggable>(drag, new Draggable()); 
@@ -45,7 +45,7 @@ public class DragTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int drag = w.AddEntity(); 
+        int drag = EntityFactory.Add(w); 
         w.SetComponent<Frame>(drag, new Frame(0, 0, 10, 10)); 
         w.SetComponent<Button>(drag, new Button()); 
         w.SetComponent<Draggable>(drag, new Draggable()); 
@@ -68,7 +68,7 @@ public class DragTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int drag = w.AddEntity(); 
+        int drag = EntityFactory.Add(w);
         w.SetComponent<Frame>(drag, new Frame(0, 0, 10, 10)); 
         w.SetComponent<Button>(drag, new Button()); 
         w.SetComponent<Draggable>(drag, new Draggable()); 

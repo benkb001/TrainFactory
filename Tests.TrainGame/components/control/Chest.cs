@@ -11,9 +11,6 @@ using TrainGame.Components;
 public class ChestTest {
     [Fact]
     public void Chest_ShouldSetCorrectInventoryPositionsAndSizes() {
-        int playerInvEntity = 0; 
-        int chestInvEntity = 1; 
-
         int playerRows = 2; 
         int playerCols = 2; 
         int chestRows = 2; 
@@ -22,7 +19,7 @@ public class ChestTest {
         Inventory playerInv = new Inventory("Player", playerRows, playerCols); 
         Inventory chestInv = new Inventory("Chest", chestRows, chestCols); 
 
-        Chest chest = new Chest(chestInv, chestInvEntity, playerInv, playerInvEntity);
+        Chest chest = new Chest(chestInv, playerInv);
 
         float correctChestWidth = chest.CellSize * chestCols; 
         float correctChestHeight = chest.CellSize * chestRows; 
@@ -44,9 +41,6 @@ public class ChestTest {
 
     [Fact]
     public void Chest_ShouldSetCorrectInventoryAndEntities() {
-        int playerInvEntity = 0; 
-        int chestInvEntity = 1; 
-
         int playerRows = 2; 
         int playerCols = 2; 
         int chestRows = 2; 
@@ -55,11 +49,9 @@ public class ChestTest {
         Inventory playerInv = new Inventory("Player", playerRows, playerCols); 
         Inventory chestInv = new Inventory("Chest", chestRows, chestCols); 
 
-        Chest chest = new Chest(chestInv, chestInvEntity, playerInv, playerInvEntity);
+        Chest chest = new Chest(chestInv, playerInv);
 
         Assert.Equal(playerInv, chest.PlayerInvMessage.Inv);
-        Assert.Equal(playerInvEntity, chest.PlayerInvMessage.Entity); 
         Assert.Equal(chestInv, chest.ChestInvMessage.Inv); 
-        Assert.Equal(chestInvEntity, chest.ChestInvMessage.Entity); 
     }
 }

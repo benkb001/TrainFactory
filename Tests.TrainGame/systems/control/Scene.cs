@@ -22,10 +22,10 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         Assert.Equal(0, w.GetComponent<Scene>(e).Value);
 
-        int push = w.AddEntity(); 
+        int push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
 
         w.Update(); 
@@ -38,10 +38,10 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         w.SetComponent<Scene>(e, new Scene(1)); 
         
-        int pop = w.AddEntity(); 
+        int pop = EntityFactory.Add(w);
         w.SetComponent<PopSceneMessage>(pop, PopSceneMessage.Get()); 
 
         w.Update(); 
@@ -49,19 +49,18 @@ public class SceneSystemTest {
     }
 
     [Fact]
-    public void SceneSystem_ShouldNotSetScenesToNegativeValues() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterSystems.All(w); 
+    public void SceneSytem_ShouldDestroyActiveEntitiesOnPop() {
+        World w = WorldFactory.Build(); 
 
-        int e = w.AddEntity(); 
-        Assert.Equal(0, w.GetComponent<Scene>(e).Value); 
+        int e = EntityFactory.Add(w);
+        Scene s = w.GetComponent<Scene>(e); 
+        Assert.Equal(0, s.Value); 
 
-        int pop = w.AddEntity(); 
+        int pop = EntityFactory.Add(w);
         w.SetComponent<PopSceneMessage>(pop, PopSceneMessage.Get());
 
         w.Update(); 
-        Assert.Equal(0, w.GetComponent<Scene>(e).Value); 
+        Assert.False(w.EntityExists(e)); 
     }
 
     [Fact]
@@ -70,10 +69,10 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         Assert.True(w.ComponentContainsEntity<Active>(e)); 
 
-        int push = w.AddEntity(); 
+        int push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
         w.Update(); 
 
@@ -86,16 +85,16 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         Assert.True(w.ComponentContainsEntity<Active>(e)); 
 
-        int push = w.AddEntity(); 
+        int push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
         w.Update(); 
 
         Assert.False(w.ComponentContainsEntity<Active>(e));
 
-        int pop = w.AddEntity(); 
+        int pop = EntityFactory.Add(w);
         w.SetComponent<PopSceneMessage>(pop, PopSceneMessage.Get()); 
         w.Update(); 
         
@@ -108,22 +107,22 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w);
         Assert.True(w.ComponentContainsEntity<Active>(e)); 
 
-        int push = w.AddEntity(); 
+        int push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
         w.Update(); 
 
         Assert.False(w.ComponentContainsEntity<Active>(e));
 
-        push = w.AddEntity(); 
+        push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
         w.Update(); 
         
         Assert.False(w.ComponentContainsEntity<Active>(e));
 
-        int pop = w.AddEntity(); 
+        int pop = EntityFactory.Add(w);
         w.SetComponent<PopSceneMessage>(pop, PopSceneMessage.Get()); 
         w.Update(); 
 
@@ -136,10 +135,10 @@ public class SceneSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int push = w.AddEntity(); 
+        int push = EntityFactory.Add(w);
         w.SetComponent<PushSceneMessage>(push, PushSceneMessage.Get()); 
 
-        int pop = w.AddEntity(); 
+        int pop = EntityFactory.Add(w);
         w.SetComponent<PopSceneMessage>(pop, PopSceneMessage.Get());
 
         Assert.True(w.EntityExists(push)); 

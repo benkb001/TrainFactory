@@ -21,11 +21,11 @@ public class TextBox {
     public float Padding; 
     public float Scale; 
 
-    public TextBox(string t) {
+    public TextBox(string t, float Depth = 0f, float Padding = 0f, float Scale = 1f) {
         Text = t; 
         TextColor = Color.White; 
-        Depth = 0f; 
-        Padding = 0f; 
-        Scale = 1f; 
+        this.Depth = Depth;
+        this.Padding = Padding; 
+        this.Scale = Scale; 
     }
 }

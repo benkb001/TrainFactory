@@ -18,11 +18,11 @@ public class StepperUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int stepperEntity = w.AddEntity(); 
+        int stepperEntity = EntityFactory.Add(w); 
 
         w.SetComponent<Stepper>(stepperEntity, new Stepper(10)); 
         
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<StepperMessage>(msg, new StepperMessage(stepperEntity, 10));
 
         w.Update(); 
@@ -36,11 +36,11 @@ public class StepperUISystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int stepperEntity = w.AddEntity(); 
+        int stepperEntity = EntityFactory.Add(w); 
 
         w.SetComponent<Stepper>(stepperEntity, new Stepper(10)); 
         
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
         w.SetComponent<StepperMessage>(msg, new StepperMessage(stepperEntity, 10));
 
         w.Update(); 

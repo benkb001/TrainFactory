@@ -27,11 +27,11 @@ public class InvetoryDropUISystemTest {
         Inventory.Item apple = new Inventory.Item(ItemId: "Apple", Count: 2); 
         inv.Add(apple, 1, 1); 
 
-        int invEntity = w.AddEntity(); 
+        int invEntity = EntityFactory.Add(w); 
 
         w.SetComponent<Inventory>(invEntity, inv); 
 
-        int msg = w.AddEntity(); 
+        int msg = EntityFactory.Add(w); 
 
         w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
             Width: 100, 

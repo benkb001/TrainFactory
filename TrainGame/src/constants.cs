@@ -1,4 +1,14 @@
+using System.Collections.Generic;
+using System.Drawing; 
+using System; 
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+
+using Color = Microsoft.Xna.Framework.Color; 
+using _Color = System.Drawing.Color; 
 
 namespace TrainGame.Constants 
 {
@@ -24,7 +34,11 @@ namespace TrainGame.Constants
     }
 
     public static class Depth {
-        public static readonly int NextTestButton = 0; 
+        public static readonly int NextTestButton = 0; //??
+
+        public static readonly float MapCity = 0.9f; 
+        public static readonly float MapTrain = 0.8f; 
+        public static readonly float MapCityDetail = 0.5f; 
     }
 
     public static class AspectRatio {
@@ -41,5 +55,10 @@ namespace TrainGame.Constants
         public static readonly Keys MoveDown = Keys.S;
         public static readonly Keys MoveRight = Keys.D;
         public static readonly Keys Interact = Keys.E; 
+    }
+
+    public static class Colors {
+        public static readonly Color UIBG = Color.LightGray; 
+        public static readonly Color UIAccent = Color.DarkGray; 
     }
 }

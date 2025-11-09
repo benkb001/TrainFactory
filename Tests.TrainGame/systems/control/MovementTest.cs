@@ -29,8 +29,8 @@ public class MovementTest {
 
         Velocity v1 = new Velocity(dx, dy); 
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w); 
+        int e2 = EntityFactory.Add(w);
 
         w.SetComponent<Velocity>(e1, v1); 
 
@@ -68,8 +68,8 @@ public class MovementTest {
 
         Velocity v1 = new Velocity(dx, dy); 
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w); 
+        int e2 = EntityFactory.Add(w); 
 
         w.SetComponent<Velocity>(e1, v1); 
 
@@ -108,8 +108,8 @@ public class MovementTest {
         //the system should push it up against f2 without overlap
         Velocity v1 = new Velocity(dx, dy); 
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w); 
+        int e2 = EntityFactory.Add(w); 
 
         w.SetComponent<Velocity>(e1, v1); 
 
@@ -150,8 +150,8 @@ public class MovementTest {
         //then push it only 5 pixels down
         Velocity v1 = new Velocity(dx, dy); 
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w); 
+        int e2 = EntityFactory.Add(w);
 
         w.SetComponent<Velocity>(e1, v1); 
 
@@ -194,8 +194,8 @@ public class MovementTest {
         Velocity v1 = new Velocity(dx1, dy1); 
         Velocity v2 = new Velocity(dx2, dy2);
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w);
+        int e2 = EntityFactory.Add(w);
 
         w.SetComponent<Velocity>(e1, v1); 
         w.SetComponent<Velocity>(e2, v2); 
@@ -235,11 +235,11 @@ public class MovementTest {
 
         Collidable c = Collidable.Get(); 
 
-        int e1 = w.AddEntity(); 
-        int e_above = w.AddEntity(); 
-        int e_below = w.AddEntity(); 
-        int e_left = w.AddEntity(); 
-        int e_right = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w);
+        int e_above = EntityFactory.Add(w);
+        int e_below = EntityFactory.Add(w);
+        int e_left = EntityFactory.Add(w);
+        int e_right = EntityFactory.Add(w);
 
         w.SetComponent<Collidable>(e1, c);
         w.SetComponent<Collidable>(e_above, c);
@@ -286,8 +286,8 @@ public class MovementTest {
 
         Velocity v1 = new Velocity(dx, dy); 
 
-        int e1 = w.AddEntity(); 
-        int e2 = w.AddEntity(); 
+        int e1 = EntityFactory.Add(w);
+        int e2 = EntityFactory.Add(w);
 
         w.SetComponent<Velocity>(e1, v1); 
 

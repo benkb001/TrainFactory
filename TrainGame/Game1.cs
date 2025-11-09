@@ -50,7 +50,7 @@ public class Game1 : Game {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int nextTestButton = w.AddEntity(); 
+        int nextTestButton = EntityFactory.Add(w); 
 
         w.SetComponent<Frame>(nextTestButton, new Frame(200, 0, 100, 50));
         w.SetComponent<Button>(nextTestButton, new Button());

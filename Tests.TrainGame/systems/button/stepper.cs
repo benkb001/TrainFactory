@@ -17,8 +17,8 @@ public class StepperButtonSystemTest {
         RegisterComponents.All(w); 
         StepperButtonSystem.Register(w); 
 
-        int sb = w.AddEntity(); 
-        int step = w.AddEntity();  
+        int sb = EntityFactory.Add(w); 
+        int step = EntityFactory.Add(w);  
 
         w.SetComponent<Button>(sb, new Button(true)); 
         w.SetComponent<StepperButton>(sb, new StepperButton(step, 10)); 

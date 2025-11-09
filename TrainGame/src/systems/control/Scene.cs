@@ -35,6 +35,7 @@ public static class SceneSystem {
         world.AddSystem(ts, update); 
     }
 
+    //todo: clean
     public static void RegisterPop(World world) {
         Type[] ts = [typeof(PopSceneMessage)]; 
         Action<World> update = (w) => {
@@ -42,9 +43,14 @@ public static class SceneSystem {
                 foreach (KeyValuePair<int, Scene> sceneEntry in w.GetComponentArray<Scene>()) {
                     Scene s = sceneEntry.Value; 
                     int entity = sceneEntry.Key; 
-                    s.Value = MathHelper.Max(0, s.Value - 1); 
                     if (s.Value == 0) {
-                        w.SetComponent<Active>(entity, Active.Get());
+                        w.RemoveEntity(entity); 
+                    } else {
+                        s.Value--; 
+
+                        if (s.Value == 0) {
+                            w.SetComponent<Active>(entity, Active.Get());
+                        }
                     }
                 }
                 w.RemoveEntity(messageEntry.Key); 

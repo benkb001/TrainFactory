@@ -17,7 +17,7 @@ public class StepperButtonSystem() {
         Action<World, int> tf = (w, e) => {
             if (w.GetComponent<Button>(e).Clicked) {
                 StepperButton sb = w.GetComponent<StepperButton>(e); 
-                int message = w.AddEntity(); 
+                int message = EntityFactory.Add(w); 
                 w.SetComponent<StepperMessage>(message, new StepperMessage(sb.Entity, sb.Delta)); 
             }
         };

@@ -18,7 +18,7 @@ public class ToastSystemTest {
         RegisterSystems.All(w); 
 
         Toast t = new Toast(); 
-        int e = w.AddEntity(); 
+        int e = EntityFactory.Add(w); 
         w.SetComponent<Frame>(e, new Frame(0, 0, 10, 10)); 
         w.SetComponent<Outline>(e, new Outline()); 
         w.SetComponent<TextBox>(e, new TextBox("")); 

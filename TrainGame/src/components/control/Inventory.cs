@@ -94,6 +94,14 @@ public class Inventory {
         return rows; 
     }
 
+    public string GetContentsFormatted() {
+        Dictionary<string, int> contents = new(); 
+        foreach (Item i in items) {
+            contents[i.ItemId] = contents.ContainsKey(i.ItemId) ? contents[i.ItemId] + i.Count : i.Count; 
+        }
+        return string.Join(Environment.NewLine, contents.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+    }
+
     private (int, int) GetRowColIndex(int idx) {
         if (idx < 0 || idx >= (rows * cols)) {
             throw new InvalidOperationException($"Index {idx} out of bounds for {rows}x{cols} inventory"); 

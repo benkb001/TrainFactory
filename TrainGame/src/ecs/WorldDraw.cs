@@ -199,9 +199,10 @@ public partial class World {
             float used_height = 0; 
 
             int words_drawn = 0; 
-            List<string> lines = new List<string>(); 
+            List<string> lines = []; 
             string[] words = tb.Text.Split(' ');
 
+            //TODO THERE IS AN INFINITE LOOP BUG IF TEXT IS TOO LONG FOR BOX
             while (words_drawn < words.Length) {
                 string cur = ""; 
                 while (words_drawn < words.Length && 
@@ -214,8 +215,8 @@ public partial class World {
                 used_height += cur_height; 
                 if (used_height > height || cur_height <= 0.01f) {
                     used_height = 0; 
-                    words_drawn = 0; 
-                    lines = new List<string>(); 
+                    words_drawn = 0;
+                    lines = [];
                     tb.Scale -= 0.1f; 
                 } else {
                     lines.Add(cur); 

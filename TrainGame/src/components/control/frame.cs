@@ -37,6 +37,9 @@ public class Frame {
         p = new Polygon(points);
     }
 
+    public Frame(Vector2 pos, float width, float height, float rotation = 0f) : 
+        this(pos.X, pos.Y, width, height, rotation) {}
+
     public Frame(List<Vector2> points) {
         this.x = points[0].X; 
         this.y = points[0].Y; 

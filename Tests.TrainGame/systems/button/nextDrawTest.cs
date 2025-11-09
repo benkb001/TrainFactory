@@ -52,7 +52,7 @@ public class NextDrawTestButtonSystemTest {
         RegisterComponents.All(w); 
         RegisterDependencies(w); 
 
-        int nextDrawBtnEntity = w.AddEntity(); 
+        int nextDrawBtnEntity = EntityFactory.Add(w); 
         w.SetComponent<Button>(nextDrawBtnEntity, new Button(true)); 
         w.SetComponent<Frame>(nextDrawBtnEntity, new Frame(0, 0, 10, 10)); 
         w.SetComponent<NextDrawTestButton>(nextDrawBtnEntity, new NextDrawTestButton(3)); 
