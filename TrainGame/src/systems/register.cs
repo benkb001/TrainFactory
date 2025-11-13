@@ -16,6 +16,7 @@ public static class RegisterSystems {
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
         TrainTravelSystem.Register(w); 
+        MachineUpdateSystem.Register(w); 
 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 
@@ -33,14 +34,18 @@ public static class RegisterSystems {
         ChestInteractSystem.Register(w); 
         TrainInteractSystem.Register(w); 
         CityClickSystem.Register(w); 
+        TrainClickSystem.Register(w); 
+        EmbarkClickSystem.Register(w); 
 
         SceneSystem.RegisterPush(w); 
         SceneSystem.RegisterPop(w); 
 
         DrawCityDetailsSystem.Register(w); 
+        DrawEmbarkSystem.Register(w); 
         InventoryUISystem.RegisterBuild(w); 
         DrawMapSystem.Register(w); 
         TrainMapPositionSystem.Register(w);
+        DrawCitySystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
         StepperUISystem.Register(w); 
@@ -49,7 +54,8 @@ public static class RegisterSystems {
 
         InventoryControlSystem.RegisterUpdate(w); 
         
-        LinearLayoutSystem.Register(w); 
+        LinearLayoutSystem.Register(w);
+        LabelPositionSystem.Register(w); 
 
         DragSystem.Register(w); 
         InventoryPickUpUISystem.Register(w); 
@@ -57,8 +63,6 @@ public static class RegisterSystems {
         InventoryDragSystem.Register(w); 
         InventoryControlSystem.RegisterOrganize(w); 
 
-        
-        
         ButtonSystem.RegisterUnclick(w);
         InteractSystem.RegisterUninteract(w); 
     }

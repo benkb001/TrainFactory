@@ -23,6 +23,7 @@ public class CityClickSystem() {
                 int detailEntity = EntityFactory.Add(w); 
                 Inventory inv = w.GetComponent<CityUI>(e).GetCity().Inv; 
                 Frame f = w.GetComponent<Frame>(e);
+                //TODO: just draw the inventory? 
                 w.SetComponent<DrawCityDetailsMessage>(detailEntity, 
                     new DrawCityDetailsMessage(inv.GetContentsFormatted(), f.Position)); 
             }

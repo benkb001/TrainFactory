@@ -69,6 +69,7 @@ public class Train {
         if (!isTraveling) {
             return false; 
         }
+        
         Vector2 journey = comingFrom.RealPosition - goingTo.RealPosition; 
         float hours = (cur - left).InHours(); 
         float moved = milesPerHour * hours; 

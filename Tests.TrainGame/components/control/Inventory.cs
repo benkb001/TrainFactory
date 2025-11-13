@@ -129,6 +129,13 @@ public class InventoryTest {
     }
 
     [Fact]
+    public void Inventory_TakeShouldReturnAnItemWithAsManyAsCouldBeProvided() {
+        Inventory inv = new Inventory("Test", 2, 2); 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 5)); 
+        Assert.Equal(5, inv.Take("Apple", 6).Count); 
+    }
+
+    [Fact]
     public void Inventory_ShouldThrowErrorWhenAccessingInvalidPositions() {
         Inventory inv = new Inventory("Test", 10, 5); 
 
@@ -147,6 +154,14 @@ public class InventoryTest {
         Assert.Throws<InvalidOperationException>(() => {
             inv.Take(0, 5); 
         }); 
+    }
+
+    [Fact]
+    public void Inventory_ItemCountShouldSayTheNumberOfItemsContained() {
+        Inventory inv = new Inventory("Test", 2, 2); 
+        Assert.Equal(0, inv.ItemCount("Apple")); 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+        Assert.Equal(2, inv.ItemCount("Apple")); 
     }
 
     [Fact]

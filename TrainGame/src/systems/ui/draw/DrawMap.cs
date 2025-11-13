@@ -27,7 +27,7 @@ public class DrawMapSystem() {
                 //todo put in cityUI width/height 
                 w.SetComponent<Outline>(cityDrawnEntity, new Outline(Depth: Depth.MapCity)); 
                 w.SetComponent<TextBox>(cityDrawnEntity, new TextBox(city.CityId, Depth: Depth.MapCity)); 
-                w.SetComponent<Button>(cityDrawnEntity, new Button()); 
+                w.SetComponent<Button>(cityDrawnEntity, new Button(Depth: Depth.MapCity)); 
                 w.SetComponent<Menu>(cityDrawnEntity, Menu.Get()); 
             }
 
@@ -39,7 +39,7 @@ public class DrawMapSystem() {
                 w.SetComponent<Frame>(trainDrawnEntity, new Frame(0, 0, TrainUI.Width, TrainUI.Height)); 
                 w.SetComponent<TextBox>(trainDrawnEntity, new TextBox(train.Id));
                 w.SetComponent<Outline>(trainDrawnEntity, new Outline(Depth: Depth.MapTrain));
-                w.SetComponent<Button>(trainDrawnEntity, new Button()); 
+                w.SetComponent<Button>(trainDrawnEntity, new Button(Depth: Depth.MapTrain)); 
             }
             w.RemoveEntity(e);
         }; 

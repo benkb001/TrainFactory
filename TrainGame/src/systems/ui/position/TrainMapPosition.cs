@@ -13,7 +13,7 @@ using TrainGame.Utils;
 
 public class TrainMapPositionSystem() {
     public static void Register(World world) {
-        Type[] ts = [typeof(TrainUI), typeof(Active)]; 
+        Type[] ts = [typeof(TrainUI), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
             Vector2 pos = t.GetMapPosition(w.Time);

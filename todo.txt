@@ -10,15 +10,15 @@
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
 
-* Make it so clicking e when there's inventory views pops the scene, 
-    * Don't forget to make it so inventories don't get deleted on pop
+* Add machines
 
-* Build a basic city view
-* Make a city component (name, cargo, connected cities) 
-* Add a train 
-* Make it so you can move the train by clicking 
-* Attach an inventory to each train and city
-* Implement day-cycle
+* Add a text input view
+* Combine text input with steppers to say how much of things you want to move 
+    between inventories 
+* Implement adding commands to trains (like once it gets to the next city, do a thing) 
+* Implement adding conditionals and loops to train behavior 
+* Implement player making custom notifications based on train conditions, 
+    like a toast pops up when the train has a certain amount of wood or something 
 * Add basic save/load 
 
 * Add a tile system for rpg mode

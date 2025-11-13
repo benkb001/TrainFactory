@@ -21,10 +21,14 @@ public static class RegisterComponents {
         w.AddComponentType<City>(); 
         w.AddComponentType<CityUI>(); 
         w.AddComponentType<Collidable>(); 
+        w.AddComponentType<Data>(); 
         w.AddComponentType<Draggable>(); 
         w.AddComponentType<DrawCityDetailsMessage>(); 
+        w.AddComponentType<DrawCityMessage>(); 
         w.AddComponentType<DrawInventoryMessage>(); 
         w.AddComponentType<DrawMapMessage>(); 
+        w.AddComponentType<DrawEmbarkMessage>(); 
+        w.AddComponentType<EmbarkButton>(); 
         w.AddComponentType<Frame>(); 
         w.AddComponentType<GameClockView>();
         w.AddComponentType<Interactable>(); 
@@ -32,8 +36,10 @@ public static class RegisterComponents {
         w.AddComponentType<Inventory>(); 
         w.AddComponentType<Inventory.Item>();
         w.AddComponentType<InventoryOrganizeMessage>();
+        w.AddComponentType<Machine>(); 
         w.AddComponentType<Menu>(); 
         w.AddComponentType<Message>(); 
+        w.AddComponentType<Label>(); 
         w.AddComponentType<LinearLayout>(); 
         w.AddComponentType<Lines>(); 
         w.AddComponentType<NextDrawTestButton>();

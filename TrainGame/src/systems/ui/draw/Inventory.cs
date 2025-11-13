@@ -24,6 +24,8 @@ public static class InventoryUISystem {
             Inventory inv = dm.Inv; 
             int inventoryUI = dm.Entity; 
 
+
+
             if (!w.EntityExists(inventoryUI)) {
                 inventoryUI = EntityFactory.Add(w); 
             }
@@ -50,6 +52,12 @@ public static class InventoryUISystem {
 
             float cellHeight = rowHeight - dm.Padding * 2;
             float cellWidth = (rowWidth  - (dm.Padding * (cols + 1))) / cols; 
+            
+            int labelEntity = EntityFactory.Add(w); 
+            w.SetComponent<Label>(labelEntity, new Label(inventoryUI)); 
+            w.SetComponent<Frame>(labelEntity, new Frame(0, 0, cellWidth, Constants.LabelHeight));
+            w.SetComponent<Outline>(labelEntity, new Outline()); 
+            w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
 
             for (int i = 0; i < rows; i++) {
                 int row = EntityFactory.Add(w); 

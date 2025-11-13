@@ -13,7 +13,7 @@ using TrainGame.Constants;
 using TrainGame.Utils; 
 
 public class TrainTravelSystem() {
-    private static Type[] ts = [typeof(Train)]; 
+    private static Type[] ts = [typeof(Train), typeof(Data)]; 
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
         t.Update(w.Time); 

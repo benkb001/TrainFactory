@@ -67,6 +67,34 @@ public class Inventory {
         return false; 
     }
 
+    //TODO: Test
+    public Item Take(string itemId, int count) {
+        int found = 0; 
+
+        for (int i = 0; i < items.Count && found < count; i++) {
+            if (items[i].ItemId == itemId) {
+                int taken = Math.Min(count - found, items[i].Count); 
+                if (taken == items[i].Count) {
+                    items[i].ItemId = "";
+                }
+                found += taken; 
+                items[i].Count -= taken; 
+            }
+        }
+        return new Item(ItemId: itemId, Count: found); 
+    }
+
+    //TODO: Test
+    public int ItemCount(string itemId) {
+        int found = 0; 
+        for (int i = 0; i < items.Count; i++) {
+            if (items[i].ItemId == itemId) {
+                found += items[i].Count; 
+            }
+        }
+        return found; 
+    }
+
     public Item Take(int row, int col) {
         ensureValidInices(row, col); 
         int idx = (row * cols) + col; 

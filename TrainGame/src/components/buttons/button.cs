@@ -2,9 +2,9 @@ namespace TrainGame.Components;
 
 public class Button {
     public bool Clicked = false; 
-    public int Depth = 0; 
+    public float Depth = 0f; 
 
-    public Button(bool Clicked = false, int Depth = 0) {
+    public Button(bool Clicked = false, float Depth = 0f) {
         this.Clicked = Clicked; 
         this.Depth = Depth; 
     }

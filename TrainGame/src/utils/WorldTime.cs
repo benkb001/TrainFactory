@@ -82,6 +82,12 @@ public class WorldTime {
         return new WorldTime(days, hours, minutes, ticks); 
     }
 
+    public static int operator /(WorldTime a, WorldTime b) {
+        int aTicks = a.InTicks(); 
+        int bTicks = b.InTicks(); 
+        return a / b; 
+    }
+
     public WorldTime Clone() {
         return new WorldTime(days, hours, minutes, ticks); 
     }

@@ -25,7 +25,15 @@ namespace TrainGame.Constants
         public static readonly float InventoryHeldBackgroundDepth = 0.5f; 
         public static readonly float InventoryHeldOutlineDepth = 0.45f; 
         public static readonly float InventoryHeldTextBoxDepth = 0.45f; 
-        
+
+        public static readonly float EmbarkLayoutWidth = 200f; 
+        public static readonly float EmbarkLayoutHeight = 500f;
+        public static readonly float EmbarkLayoutPadding = 5f;  
+
+        public static float InventoryCellSize = 50f; 
+        public static float InventoryPadding = 5f;
+
+        public static float LabelHeight = 25f; 
     }
 
     public static class Textures {
@@ -60,5 +68,14 @@ namespace TrainGame.Constants
     public static class Colors {
         public static readonly Color UIBG = Color.LightGray; 
         public static readonly Color UIAccent = Color.DarkGray; 
+    }
+
+    public static class CityID {
+        public static readonly string Coast = "Coast"; 
+        public static readonly string Collisseum = "Collisseum"; 
+        public static readonly string Factory = "Factory"; 
+        public static readonly string Greenhouse = "Greenhouse"; 
+        public static readonly string Mine = "Mine"; 
+        public static readonly string Reservoir = "Reservoir"; 
     }
 }

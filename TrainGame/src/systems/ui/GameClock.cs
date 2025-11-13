@@ -14,8 +14,7 @@ using TrainGame.Utils;
 public class GameClockViewSystem() {
     private static Type[] types = [typeof(TextBox), typeof(Frame), typeof(GameClockView)]; 
     private static Action<World, int> transformer = (w, e) => {
-        double secondsPassed = w.GetSecondsPassed(); 
-        w.GetComponent<TextBox>(e).Text = ((int)(secondsPassed / 10)).ToString(); 
+        w.GetComponent<TextBox>(e).Text = w.Time.ToString(); 
     }; 
 
     public static void Register(World world) {

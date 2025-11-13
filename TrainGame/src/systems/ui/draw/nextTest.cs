@@ -419,16 +419,18 @@ public static class NextDrawTestUISystem {
         }, 
         [19] = (w) => {
         
-            Inventory inv1 = new Inventory("Test1", 1, 1); 
-            Inventory inv2 = new Inventory("Test2", 2, 2); 
+            Inventory inv1 = new Inventory("City Left", 1, 1); 
+            Inventory inv2 = new Inventory("City Right", 2, 2); 
 
             inv1.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
             inv2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
             inv2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
 
-            City c1 = new City("This should be in a box in the top right", inv1, 300f, 20f);
-            City c2 = new City("Click either city to see its details", inv2, 400f, 20f); 
+            City c1 = new City("This should be in a box in the top right", inv1, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
+            City c2 = new City("Click either city to see its details", inv2, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
 
+            c1.AddConnection(c2); 
+            
             int cityEntity1 = EntityFactory.Add(w, setScene: false); 
             int cityEntity2 = EntityFactory.Add(w, setScene: false); 
 
@@ -437,9 +439,17 @@ public static class NextDrawTestUISystem {
 
             int trainEntity = EntityFactory.Add(w); 
             int trainDataEntity = EntityFactory.Add(w, setScene: false); 
-            Train train = new Train(inv1, c1, milesPerHour: 50f); 
+            Train train = new Train(inv1, c1, Id: "This should be moving slowly to the right", milesPerHour: 50f); 
             train.Embark(c2, w.Time); 
             w.SetComponent<Train>(trainDataEntity, train); 
+            w.SetComponent<Data>(trainDataEntity, Data.Get()); 
+
+            Inventory trainInv = new Inventory("Train", 1, 1); 
+            int tEntity2 = EntityFactory.Add(w, setScene: false); 
+            Train train2 = new Train(trainInv, c1, Id: "Click to see embark view", milesPerHour: 50f); 
+            w.SetComponent<Train>(tEntity2, train2); 
+            w.SetComponent<Data>(tEntity2, Data.Get()); 
+
             w.SetComponent<Train>(trainEntity, train); 
             w.SetComponent<Frame>(trainEntity, new Frame(0, 50, 100, 100));
             w.SetComponent<Interactable>(trainEntity, new Interactable()); 

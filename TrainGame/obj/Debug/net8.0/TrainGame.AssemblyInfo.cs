@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrainGame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68ccc56f24735c80cf0ec027b97ed858ca7c9782")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2539ec67a031619e8986c40a94cd8d8e38f1e203")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrainGame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrainGame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

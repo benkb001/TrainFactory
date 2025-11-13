@@ -13,7 +13,7 @@ using TrainGame.Utils;
 
 public class GameClockViewSystemTest {
     [Fact]
-    public void GameClockViewSystem_ShouldSetTimeToSecondsPassedDividedByTen() {
+    public void GameClockViewSystem_ShouldSetTimeToWorldTime() {
         World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
@@ -24,11 +24,10 @@ public class GameClockViewSystemTest {
 
         w.Update(); 
 
-        Assert.Equal("0", w.GetComponent<TextBox>(gcvEntity).Text); 
-
-        w.PassTime(seconds: 10); 
+        Assert.Equal(new WorldTime().ToString(), w.GetComponent<TextBox>(gcvEntity).Text);
+        w.PassTime(new WorldTime(days: 1, hours: 2, minutes: 9, ticks: 59)); 
         w.Update(); 
 
-        Assert.Equal("1", w.GetComponent<TextBox>(gcvEntity).Text); 
+        Assert.Equal(new WorldTime(days: 1, hours: 2, minutes: 10).ToString(), w.GetComponent<TextBox>(gcvEntity).Text);
     }
 }
