@@ -23,16 +23,18 @@ public class DrawEmbarkSystem() {
             City c = msg.GetCity(); 
             Train t = msg.GetTrain(); 
             float width = msg.Width; 
-            float height = msg.Height;
+            float labelHeight = msg.Height * 0.2f; 
+            float height = msg.Height - labelHeight;
             float padding = msg.Padding; 
-
-            Vector2 pos = msg.Position; 
-            List<City> adjacentCities = c.AdjacentCities;
-
-            float buttonWidth = width - padding; 
-            float buttonHeight = (height - (adjacentCities.Count * padding)) / adjacentCities.Count; 
-
+            
+            int labelEntity = EntityFactory.Add(w); 
             int llEntity = EntityFactory.Add(w); 
+            w.SetComponent<Frame>(labelEntity, new Frame(0, 0, msg.Width / 2, labelHeight)); 
+            w.SetComponent<Outline>(labelEntity, new Outline()); 
+            w.SetComponent<TextBox>(labelEntity, new TextBox($"Send {t.Id} to a new city?")); 
+            w.SetComponent<Label>(labelEntity, new Label(llEntity));
+            Vector2 pos = msg.Position + new Vector2(0, labelHeight); 
+            List<City> adjacentCities = c.AdjacentCities;
 
             w.SetComponent<Menu>(llEntity, Menu.Get()); 
 
@@ -48,12 +50,13 @@ public class DrawEmbarkSystem() {
                 int cellEntity = EntityFactory.Add(w); 
                 ll.AddChild(cellEntity); 
                 
-                w.SetComponent<Frame>(cellEntity, new Frame(0, 0, buttonWidth, buttonHeight));
                 w.SetComponent<Outline>(cellEntity, new Outline()); 
                 w.SetComponent<TextBox>(cellEntity, new TextBox(connected.CityId)); 
                 w.SetComponent<Button>(cellEntity, new Button()); 
                 w.SetComponent<EmbarkButton>(cellEntity, new EmbarkButton(connected, t)); 
             }
+
+            LinearLayoutWrap.ResizeChildren(llEntity, w); 
 
             w.RemoveEntity(e); 
         }; 

@@ -17,14 +17,19 @@ public class Machine {
     private int curCraftTicks; 
     private string productItemId;
     private int productCount; 
+    public int ProductCount => productCount; 
     private int requestedAmount;
+    public int RequestedAmount => requestedAmount; 
+    private string id; 
+    public string Id => id; 
     
-    public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int craftTicks) {
+    public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int craftTicks, string id = "") {
         this.Inv = Inv;
         this.recipe = recipe;
         this.craftTicks = craftTicks; 
         this.productItemId = productItemId;
         this.productCount = productCount; 
+        this.id = id; 
         this.requestedAmount = 0; 
         this.curCraftTicks = 0; 
     }
@@ -34,8 +39,8 @@ public class Machine {
     }
 
     public void Update() {
-        if (curCraftTicks >= craftTicks) {
-            if ( requestedAmount >= productCount && invHasRequiredItems()) {
+        if (requestedAmount >= productCount && invHasRequiredItems()) {
+            if (curCraftTicks >= craftTicks) {
                 foreach (KeyValuePair<string, int> kvp in recipe) {
                     Inv.Take(kvp.Key, kvp.Value); 
                 }
@@ -43,9 +48,12 @@ public class Machine {
                 requestedAmount -= productCount; 
                 curCraftTicks = 0; 
             }
-        } else {
             curCraftTicks++; 
         }
+    }
+
+    public string GetId() {
+        return id; 
     }
 
     private bool invHasRequiredItems() {

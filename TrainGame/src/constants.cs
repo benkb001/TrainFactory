@@ -30,7 +30,7 @@ namespace TrainGame.Constants
         public static readonly float EmbarkLayoutHeight = 500f;
         public static readonly float EmbarkLayoutPadding = 5f;  
 
-        public static float InventoryCellSize = 50f; 
+        public static float InventoryCellSize = 60f; 
         public static float InventoryPadding = 5f;
 
         public static float LabelHeight = 25f; 
@@ -68,6 +68,7 @@ namespace TrainGame.Constants
     public static class Colors {
         public static readonly Color UIBG = Color.LightGray; 
         public static readonly Color UIAccent = Color.DarkGray; 
+        public static readonly Color BG = Color.CornflowerBlue;
     }
 
     public static class CityID {

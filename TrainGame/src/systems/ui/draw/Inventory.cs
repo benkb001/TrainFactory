@@ -24,8 +24,6 @@ public static class InventoryUISystem {
             Inventory inv = dm.Inv; 
             int inventoryUI = dm.Entity; 
 
-
-
             if (!w.EntityExists(inventoryUI)) {
                 inventoryUI = EntityFactory.Add(w); 
             }
@@ -40,24 +38,36 @@ public static class InventoryUISystem {
             ll.Padding = dm.Padding; 
             w.SetComponent<LinearLayout>(inventoryUI, ll);
             
-            Vector2 drawPosition = w.WorldVector(dm.Position); 
-            w.SetComponent<Frame>(inventoryUI, new Frame(drawPosition.X, drawPosition.Y, dm.Width, dm.Height, dm.Padding)); 
+            Vector2 drawPosition = dm.Position;
+
+            float invHeight = dm.Height; 
+            float drawY = drawPosition.Y; 
+            if (dm.DrawLabel) {
+                invHeight -= Constants.LabelHeight; 
+                drawY += Constants.LabelHeight; 
+            }
+
+            w.SetComponent<Frame>(inventoryUI, new Frame(drawPosition.X, drawY, 
+                dm.Width, invHeight, dm.Padding)); 
             w.SetComponent<Outline>(inventoryUI, new Outline(Depth: Constants.InventoryOutlineDepth)); 
             w.SetComponent<Background>(inventoryUI, new Background(Colors.UIBG, Depth: Constants.InventoryBackgroundDepth)); 
 
             int rows = inv.GetRows(); 
             int cols = inv.GetCols(); 
             float rowWidth = dm.Width - (dm.Padding * 2); 
-            float rowHeight = (dm.Height - dm.Padding * (rows + 1)) / rows; 
+            float rowHeight = (invHeight - dm.Padding * (rows + 1)) / rows; 
 
             float cellHeight = rowHeight - dm.Padding * 2;
             float cellWidth = (rowWidth  - (dm.Padding * (cols + 1))) / cols; 
             
-            int labelEntity = EntityFactory.Add(w); 
-            w.SetComponent<Label>(labelEntity, new Label(inventoryUI)); 
-            w.SetComponent<Frame>(labelEntity, new Frame(0, 0, cellWidth, Constants.LabelHeight));
-            w.SetComponent<Outline>(labelEntity, new Outline()); 
-            w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
+            if (dm.DrawLabel) {
+                int labelEntity = EntityFactory.Add(w); 
+                w.SetComponent<Label>(labelEntity, new Label(inventoryUI)); 
+                float labelWidth = Math.Min(50f, cellWidth); 
+                w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
+                w.SetComponent<Outline>(labelEntity, new Outline()); 
+                w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
+            }
 
             for (int i = 0; i < rows; i++) {
                 int row = EntityFactory.Add(w); 

@@ -19,6 +19,7 @@ public class LinearLayout {
     private string direction;
     private string spacing; 
     public float Padding; 
+    public int ChildCount => children.Count; 
 
     public LinearLayout(string d, string s) {
         SetDirection(d); 
@@ -91,8 +92,7 @@ public class LinearLayout {
         return children.Remove(e); 
     }
 
-    public bool SwapChild(int prev, int newChild)
-    {
+    public bool SwapChild(int prev, int newChild) {
         int idx = children.IndexOf(prev);
         bool exists = (idx != -1);
         if (exists)

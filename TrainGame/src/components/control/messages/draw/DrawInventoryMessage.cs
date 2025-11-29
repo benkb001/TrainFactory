@@ -15,6 +15,7 @@ public class DrawInventoryMessage {
     public float Padding; 
     public int Entity; 
     public bool SetMenu; 
+    public bool DrawLabel; 
 
     public DrawInventoryMessage(
         float Width, 
@@ -23,7 +24,8 @@ public class DrawInventoryMessage {
         Inventory Inv,
         int Entity = -1,
         float Padding = 0f, 
-        bool SetMenu = true
+        bool SetMenu = true, 
+        bool DrawLabel = false
     ) {
         this.Inv = Inv;
         this.Position = Position; 
@@ -32,5 +34,6 @@ public class DrawInventoryMessage {
         this.Padding = Padding; 
         this.Entity = Entity; 
         this.SetMenu = SetMenu; 
+        this.DrawLabel = DrawLabel; 
     }
 }

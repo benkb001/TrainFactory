@@ -6,7 +6,7 @@ public class Background {
     public Color BackgroundColor; 
     public float Depth = 0f; 
 
-    public Background(Color BackgroundColor, float Depth = 0f) {
+    public Background(Color BackgroundColor, float Depth = 1f) {
         this.BackgroundColor = BackgroundColor; 
         this.Depth = Depth; 
     }

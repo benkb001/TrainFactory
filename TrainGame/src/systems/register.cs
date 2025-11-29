@@ -13,6 +13,8 @@ using TrainGame.ECS;
 
 public static class RegisterSystems {
     public static void All(World w) {
+        //CameraLockSystem.Register(w); 
+
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
         TrainTravelSystem.Register(w); 
@@ -36,16 +38,25 @@ public static class RegisterSystems {
         CityClickSystem.Register(w); 
         TrainClickSystem.Register(w); 
         EmbarkClickSystem.Register(w); 
+        MachineUIClickSystem.Register(w); 
+        MachineRequestClickSystem.Register(w); 
+        OpenMapSystem.Register(w); 
 
         SceneSystem.RegisterPush(w); 
         SceneSystem.RegisterPop(w); 
 
+        DrawBackgroundSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 
         DrawEmbarkSystem.Register(w); 
         InventoryUISystem.RegisterBuild(w); 
         DrawMapSystem.Register(w); 
         TrainMapPositionSystem.Register(w);
         DrawCitySystem.Register(w); 
+        DrawMachineRequestSystem.Register(w);
+        DrawMachinesViewSystem.Register(w); 
+        DrawTrainsViewSystem.Register(w);  
+
+        CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
         StepperUISystem.Register(w); 

@@ -82,16 +82,68 @@ public partial class World {
         _spriteBatch.Draw(_pixel, Util.RectangleFromRectangleF(f.GetRectangle()), color);
     }
 
+    public void LockCamera() {
+        if (!isTest) {
+            camera.Lock();
+        }
+    }
+
+    public void UnlockCamera() {
+        if (!isTest) {
+            camera.Unlock(); 
+        }
+    }
+
+    public Vector2 GetCameraPosition() {
+        if (!isTest) {
+            return camera.Position; 
+        }
+        return Vector2.Zero; 
+    }
+
+    public Vector2 GetCameraTopLeft() {
+        if (!isTest) {
+            return camera.Position - new Vector2(ScreenWidth / 2, ScreenHeight / 2); 
+        }
+        return Vector2.Zero; 
+    }
+
+    public void SetCameraPosition(Vector2 pos) {
+        if (!isTest) {
+            camera.SetPosition(pos);
+            camera.UpdateCamera(graphicsDevice.Viewport, force: true); 
+        }
+    }
+
+    public float GetCameraZoom() {
+        if (!isTest) {
+            return camera.Zoom; 
+        }
+        return 0f; 
+    }
+
+    public void SetCameraZoom(float zoom) {
+        if (!isTest) {
+            camera.SetZoom(zoom);
+            camera.UpdateCamera(graphicsDevice.Viewport, force: true); 
+        }
+    }
+
+    public void ResetCamera() {
+        SetCameraPosition(Vector2.Zero); 
+        SetCameraZoom(1f);
+    }
+
     public Vector2 WorldVector(Vector2 screenVector) {
         if (!(camera is null)) {
-            Matrix inverseCamera = Matrix.Invert(camera.Transform); 
+            Matrix inverseCamera = Matrix.Invert(camera.GetTransform()); 
             return Vector2.Transform(screenVector, inverseCamera); 
         }
         return screenVector; 
     }
 
     public Vector2 ScreenVector(Vector2 worldVector) {
-        return Vector2.Transform(worldVector, camera.Transform); 
+        return Vector2.Transform(worldVector, camera.GetTransform()); 
     }
 
     public Vector2 GetWorldMouseCoordinates() {
@@ -114,9 +166,9 @@ public partial class World {
     //that to get called in the regular update step
     //could do a separate system manager for drawing i guesss but for now this is fine
     public void Draw() {
-        graphicsDevice.Clear(Color.CornflowerBlue);
+        graphicsDevice.Clear(Colors.BG);
         _spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, 
-            null, null, null, null, camera.Transform );
+            null, null, null, null, camera.GetTransform());
 
         foreach (KeyValuePair<int, Sprite> entry in cm.GetComponentArray<Sprite>().GetEntities()) {
             int e = entry.Key; 

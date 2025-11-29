@@ -19,44 +19,48 @@ public class TrainClickSystem() {
         Type[] ts = [typeof(TrainUI), typeof(Button), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             //TODO:
-            //if moving draw a summary of the train inventory (or the inventory itself, still havent decided there)
+            //if moving draw a view detailing the train's inventory, fuel, etc 
             if (w.GetComponent<Button>(e).Clicked) {
                 Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
                 if (!t.IsTraveling()) {
+                    View.EnterMenu(w);
                     int pushEntity = EntityFactory.Add(w); 
                     w.SetComponent(pushEntity, PushSceneMessage.Get()); 
-
-                    Vector2 embark_position = w.GetComponent<Frame>(e).Position; 
+                    
+                    Vector2 embark_position = w.GetCameraTopLeft() + new Vector2(10f, 10f); 
                     
                     int msgEntity = EntityFactory.Add(w); 
+                    float embarkWidth = w.ScreenWidth / 3f;
                     w.SetComponent<DrawEmbarkMessage>(msgEntity, 
                         new DrawEmbarkMessage(
                             t,
                             embark_position, 
-                            Constants.EmbarkLayoutWidth, 
-                            Constants.EmbarkLayoutHeight, 
-                            Constants.EmbarkLayoutPadding
-                        )); 
+                            embarkWidth, 
+                            w.ScreenHeight - 25f, 
+                            w.ScreenHeight / 100f
+                        )
+                    ); 
                     
                     Inventory trainInv = t.Inv; 
                     Inventory cityInv = t.ComingFrom.Inv; 
                     
                     float cellWidth = Constants.InventoryCellSize + Constants.InventoryPadding; 
 
-                    float trainInvWidth = cellWidth * (trainInv.GetCols() + 1);
-                    float trainInvHeight = cellWidth * (trainInv.GetRows() + 1);
-                    float cityInvWidth = cellWidth * (cityInv.GetCols() + 1); 
-                    float cityInvHeight = cellWidth * (cityInv.GetRows() + 1); 
+                    float trainInvWidth = cellWidth * trainInv.GetCols();
+                    float trainInvHeight = cellWidth * trainInv.GetRows();
+                    float cityInvWidth = cellWidth * cityInv.GetCols(); 
+                    float cityInvHeight = cellWidth * cityInv.GetRows(); 
 
-                    Vector2 trainInvPosition = embark_position + new Vector2(Constants.EmbarkLayoutWidth, 0); 
-                    Vector2 cityInvPosition = trainInvPosition + new Vector2(trainInvWidth, 0); 
+                    Vector2 trainInvPosition = embark_position + new Vector2(embarkWidth + 10f, 0); 
+                    Vector2 cityInvPosition = trainInvPosition + new Vector2(0, trainInvHeight + 10f); 
                     DrawInventoryMessage drawTrainInv = new DrawInventoryMessage(
                         Width: trainInvWidth, 
                         Height: trainInvHeight, 
                         Position: trainInvPosition, 
                         Inv: trainInv, 
                         Padding: Constants.InventoryPadding, 
-                        SetMenu: true
+                        SetMenu: true, 
+                        DrawLabel: true
                     ); 
 
                     int drawTrainInvMsgEntity = EntityFactory.Add(w); 
@@ -68,7 +72,8 @@ public class TrainClickSystem() {
                         Position: cityInvPosition, 
                         Inv: cityInv, 
                         Padding: Constants.InventoryPadding, 
-                        SetMenu: true
+                        SetMenu: true, 
+                        DrawLabel: true
                     ); 
 
                     int drawCityInvMsgEntity = EntityFactory.Add(w); 

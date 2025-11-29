@@ -34,6 +34,13 @@ public class City {
     public static float UIWidth = 100f; 
     public static float UIHeight = 100f;
 
+    
+    private Dictionary<string, Train> trains = new();
+    public Dictionary<string, Train> Trains => trains; 
+
+    private Dictionary<string, Machine> machines = new(); 
+    public Dictionary<string, Machine> Machines => machines; 
+
     public City(string cityId, Inventory Inv, float uiX = 0f, float uiY = 0f, float realX = 0f, float realY = 0f) {
         this.cityId = cityId; 
         this.Inv = Inv; 
@@ -46,6 +53,21 @@ public class City {
 
     public void AddConnection(City c) {
         AdjacentCities.Add(c); 
+    }
+
+    //todo: test
+    public void AddMachine(Machine m) {
+        machines[m.Id] = m; 
+    }
+
+    //todo: make it so when trains arrive at a city it adds the train here
+    //todo: test
+    public void AddTrain(Train t) {
+        trains[t.Id] = t; 
+    }
+
+    public void RemoveTrain(Train t) {
+        trains.Remove(t.Id); 
     }
 
     public void AddConnections(List<City> cities) {

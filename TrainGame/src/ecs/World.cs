@@ -28,9 +28,9 @@ public partial class World {
     private GraphicsDevice graphicsDevice; 
     private SpriteBatch _spriteBatch {get;}
     private Dictionary<string, Texture2D> textures = new(); 
+    private Camera camera; 
 
     private SpriteFont font; 
-    private Camera camera; 
     private Vector2 targetCameraPosition; 
     private bool targetCameraPositionIsCurrent; 
     private int trackedEntity = -1;
@@ -38,12 +38,14 @@ public partial class World {
     private Texture2D _pixel;
     private WorldTime wt = new WorldTime(); 
     public WorldTime Time => wt; 
+    public readonly float ScreenHeight = 0f; 
+    public readonly float ScreenWidth = 0f; 
 
     //TODO: consider replacing with checks for specific variables being null
     private bool isTest = false;  
 
     public World() { 
-        isTest = true; 
+        isTest = true;
     }
 
     public World(GraphicsDeviceManager gm, GraphicsDevice gd, SpriteBatch s) {
@@ -52,7 +54,9 @@ public partial class World {
         _spriteBatch = s; 
 
         camera = new Camera(graphicsDevice.Viewport);
-        camera.Position = new Vector2(gd.Viewport.Width / 2, gd.Viewport.Height / 2); 
+        ScreenWidth = gd.Viewport.Width; 
+        ScreenHeight = gd.Viewport.Height; 
+        camera.SetPosition(new Vector2(gd.Viewport.Width / 2, gd.Viewport.Height / 2)); 
         camera.UpdateCamera(graphicsDevice.Viewport); 
     }
 
@@ -198,9 +202,9 @@ public partial class World {
         if (!isTest) {
             if (cm.ComponentContainsEntity<Frame>(trackedEntity)) {
                 Frame f = cm.GetComponent<Frame>(trackedEntity); 
-                camera.Position = new Vector2(f.GetX(), f.GetY()); 
+                camera.SetPosition(new Vector2(f.GetX(), f.GetY())); 
             } else if (targetCameraPositionIsCurrent) {
-                camera.Position = targetCameraPosition; 
+                camera.SetPosition(targetCameraPosition);
                 targetCameraPositionIsCurrent = false; 
             }
             camera.UpdateCamera(graphicsDevice.Viewport); 

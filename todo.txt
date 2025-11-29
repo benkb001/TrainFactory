@@ -4,21 +4,17 @@
 * Implement better click for buttons 
 * Make stepper fast when you hold down
 * Fix LinearLayout stall infinitely if too small bug 
-* Consider adding static helpers to reduce need to memorize which components are necessary for various functionalities 
-    * And also not risk forgetting to set components after adding an entity
-* Add optional headers to TextBox
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
 
-* Add machines
+* Test requesting through map 
+* Fix bug clicking unresponsive 
 
+* Add an option to steppers to make them not negative
 * Add a text input view
 * Combine text input with steppers to say how much of things you want to move 
-    between inventories 
-* Implement adding commands to trains (like once it gets to the next city, do a thing) 
-* Implement adding conditionals and loops to train behavior 
-* Implement player making custom notifications based on train conditions, 
-    like a toast pops up when the train has a certain amount of wood or something 
+    between inventories, and how much you want to request to craft
+
 * Add basic save/load 
 
 * Add a tile system for rpg mode
@@ -27,3 +23,9 @@
 * Make player able to use a tool 
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
+
+* Write a coding language so players can code their trains ^^
+* Implement adding commands to trains (like once it gets to the next city, do a thing) 
+* Implement adding conditionals and loops to train behavior 
+* Implement player making custom notifications based on train conditions, 
+    like a toast pops up when the train has a certain amount of wood or something 

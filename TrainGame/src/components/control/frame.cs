@@ -41,9 +41,9 @@ public class Frame {
         this(pos.X, pos.Y, width, height, rotation) {}
 
     public Frame(List<Vector2> points) {
-        this.x = points[0].X; 
-        this.y = points[0].Y; 
         p = new Polygon(points); 
+        this.x = p.Left; 
+        this.y = p.Top; 
         this.height = p.Bottom - p.Top; 
         this.width = p.Right - p.Left; 
     }

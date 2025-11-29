@@ -42,7 +42,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(16)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(18)); 
 
         }, 
         [2] = (w) => {
@@ -419,17 +419,35 @@ public static class NextDrawTestUISystem {
         }, 
         [19] = (w) => {
         
-            Inventory inv1 = new Inventory("City Left", 1, 1); 
-            Inventory inv2 = new Inventory("City Right", 2, 2); 
+            Inventory invCLeft = new Inventory("CLeft", 3, 6); 
+            Inventory invCRight = new Inventory("CRight", 3, 6); 
+            Inventory invT1 = new Inventory("Train1", 3, 6); 
+            Inventory invT2 = new Inventory("Train2", 3, 6); 
+            Inventory invBlender = new Inventory("Blender", 3, 6); 
 
-            inv1.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
-            inv2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
-            inv2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
+            invCLeft.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+            invCLeft.Add(new Inventory.Item(ItemId: "Banana", Count: 2));
+            invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
+            invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
 
-            City c1 = new City("This should be in a box in the top right", inv1, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
-            City c2 = new City("Click either city to see its details", inv2, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
+            City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
+            City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
+
+            Dictionary<string, int> recipe = new() {
+                ["Apple"] = 1, 
+                ["Banana"] = 1
+            }; 
+
+            Machine blender = new Machine(invCLeft, recipe, "smoothie", 1, 60, "blender");
+
+            int blenderDataEntity = EntityFactory.Add(w); 
+            w.SetComponent<Machine>(blenderDataEntity, blender); 
+            w.SetComponent<Data>(blenderDataEntity, Data.Get()); 
 
             c1.AddConnection(c2); 
+            c2.AddConnection(c1); 
+
+            c1.AddMachine(blender); 
             
             int cityEntity1 = EntityFactory.Add(w, setScene: false); 
             int cityEntity2 = EntityFactory.Add(w, setScene: false); 
@@ -439,14 +457,13 @@ public static class NextDrawTestUISystem {
 
             int trainEntity = EntityFactory.Add(w); 
             int trainDataEntity = EntityFactory.Add(w, setScene: false); 
-            Train train = new Train(inv1, c1, Id: "This should be moving slowly to the right", milesPerHour: 50f); 
+            Train train = new Train(invT1, c1, Id: "Train1", milesPerHour: 50f); 
             train.Embark(c2, w.Time); 
             w.SetComponent<Train>(trainDataEntity, train); 
             w.SetComponent<Data>(trainDataEntity, Data.Get()); 
 
-            Inventory trainInv = new Inventory("Train", 1, 1); 
             int tEntity2 = EntityFactory.Add(w, setScene: false); 
-            Train train2 = new Train(trainInv, c1, Id: "Click to see embark view", milesPerHour: 50f); 
+            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 50f); 
             w.SetComponent<Train>(tEntity2, train2); 
             w.SetComponent<Data>(tEntity2, Data.Get()); 
 
@@ -454,7 +471,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Frame>(trainEntity, new Frame(0, 50, 100, 100));
             w.SetComponent<Interactable>(trainEntity, new Interactable()); 
             w.SetComponent<Outline>(trainEntity, new Outline()); 
-            w.SetComponent<TextBox>(trainEntity, new TextBox("Interact to see the map, and press e again to close")); 
+            w.SetComponent<TextBox>(trainEntity, new TextBox("Map")); 
             w.SetComponent<Collidable>(trainEntity, Collidable.Get()); 
 
             int player = EntityFactory.Add(w);  
@@ -467,6 +484,28 @@ public static class NextDrawTestUISystem {
             w.SetComponent<CardinalMovement>(player, new CardinalMovement(4f)); 
             w.SetComponent<Collidable>(player, Collidable.Get());
             w.SetComponent<Interactor>(player, Interactor.Get()); 
+
+            AddNextTestButton(w, 19); 
+        }, 
+        [20] = (w) => {
+            Inventory inv = new Inventory("Test", 2, 2);
+            inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
+            inv.Add(new Inventory.Item(ItemId: "Orange", Count: 2)); 
+
+            int msg = EntityFactory.Add(w);  
+            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100, 100, new Vector2(300, 0), inv));
+
+            Dictionary<string, int> recipe = new() {
+                ["Apple"] = 1, 
+                ["Orange"] = 1
+            }; 
+
+            Machine m = new Machine(inv, recipe, "Smoothie", 1, 60, "Blender"); 
+            int machineEntity = EntityFactory.Add(w, setData: true); 
+            w.SetComponent<Machine>(machineEntity, m); 
+            
+            int req_msg = EntityFactory.Add(w); 
+            w.SetComponent(req_msg, new DrawMachineRequestMessage(m, 100, 350, Vector2.Zero, 5f)); 
         }
     };
 

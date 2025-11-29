@@ -16,6 +16,7 @@ public static class RegisterComponents {
         w.AddComponentType<Active>(); 
         w.AddComponentType<Background>(); 
         w.AddComponentType<Button>(); 
+        w.AddComponentType<CameraReturn>();
         w.AddComponentType<CardinalMovement>(); 
         w.AddComponentType<Chest>(); 
         w.AddComponentType<City>(); 
@@ -23,11 +24,15 @@ public static class RegisterComponents {
         w.AddComponentType<Collidable>(); 
         w.AddComponentType<Data>(); 
         w.AddComponentType<Draggable>(); 
+        w.AddComponentType<DrawBackgroundMessage>(); 
         w.AddComponentType<DrawCityDetailsMessage>(); 
         w.AddComponentType<DrawCityMessage>(); 
-        w.AddComponentType<DrawInventoryMessage>(); 
-        w.AddComponentType<DrawMapMessage>(); 
         w.AddComponentType<DrawEmbarkMessage>(); 
+        w.AddComponentType<DrawInventoryMessage>(); 
+        w.AddComponentType<DrawMachineRequestMessage>(); 
+        w.AddComponentType<DrawMachinesViewMessage>(); 
+        w.AddComponentType<DrawMapMessage>(); 
+        w.AddComponentType<DrawTrainsViewMessage>();
         w.AddComponentType<EmbarkButton>(); 
         w.AddComponentType<Frame>(); 
         w.AddComponentType<GameClockView>();
@@ -37,6 +42,9 @@ public static class RegisterComponents {
         w.AddComponentType<Inventory.Item>();
         w.AddComponentType<InventoryOrganizeMessage>();
         w.AddComponentType<Machine>(); 
+        w.AddComponentType<MachineRequestButton>(); 
+        w.AddComponentType<MachineUI>(); 
+        w.AddComponentType<MapUIFlag>();
         w.AddComponentType<Menu>(); 
         w.AddComponentType<Message>(); 
         w.AddComponentType<Label>(); 

@@ -28,6 +28,7 @@ public class Train {
         this.comingFrom = origin;
         this.goingTo = origin; 
         this.isTraveling = false; 
+        origin.AddTrain(this);
     }
 
     public void Embark(City destination, WorldTime at) {
@@ -36,7 +37,8 @@ public class Train {
         }
         this.goingTo = destination; 
         this.left = at.Clone(); 
-        this.isTraveling = true; 
+        this.isTraveling = true;
+        this.comingFrom.RemoveTrain(this); 
     }
     
     public Vector2 GetMapPosition(WorldTime cur) {
@@ -63,6 +65,7 @@ public class Train {
         
         this.comingFrom = this.goingTo; 
         this.isTraveling = false; 
+        this.goingTo.AddTrain(this);
     }
 
     public bool IsArriving(WorldTime cur) {

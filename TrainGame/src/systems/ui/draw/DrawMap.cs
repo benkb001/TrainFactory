@@ -34,17 +34,24 @@ public class DrawMapSystem() {
             List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Active)]); 
             foreach (int trainDataEntity in trainDataEntities) {
                 Train train = w.GetComponent<Train>(trainDataEntity); 
-                int trainDrawnEntity = EntityFactory.Add(w); 
-                w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train)); 
-                w.SetComponent<Frame>(trainDrawnEntity, new Frame(0, 0, TrainUI.Width, TrainUI.Height)); 
-                w.SetComponent<TextBox>(trainDrawnEntity, new TextBox(train.Id));
-                w.SetComponent<Outline>(trainDrawnEntity, new Outline(Depth: Depth.MapTrain));
-                w.SetComponent<Button>(trainDrawnEntity, new Button(Depth: Depth.MapTrain)); 
+                Map.DrawTrain(w, train); 
             }
             w.RemoveEntity(e);
         }; 
 
         world.AddSystem(ts, tf); 
     }
+}
 
+public class Map {
+    public static int DrawTrain(World w, Train train) {
+        int trainDrawnEntity = EntityFactory.Add(w); 
+        w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train)); 
+        w.SetComponent<MapUIFlag>(trainDrawnEntity, MapUIFlag.Get()); 
+        w.SetComponent<Frame>(trainDrawnEntity, new Frame(0, 0, TrainUI.Width, TrainUI.Height)); 
+        w.SetComponent<TextBox>(trainDrawnEntity, new TextBox(train.Id));
+        w.SetComponent<Outline>(trainDrawnEntity, new Outline(Depth: Depth.MapTrain));
+        w.SetComponent<Button>(trainDrawnEntity, new Button(Depth: Depth.MapTrain)); 
+        return trainDrawnEntity; 
+    }
 }

@@ -20,23 +20,43 @@ using TrainGame.Constants;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-public class Camera
-{
+public class Camera {
     public float Zoom { get; set; }
     public Vector2 Position { get; set; }
     public Rectangle Bounds { get; protected set; }
     public Rectangle VisibleArea { get; protected set; }
     public Matrix Transform { get; protected set; }
+    private bool locked;
 
     private float currentMouseWheelValue, previousMouseWheelValue, zoom, previousZoom;
+
+    public Vector2 GetPosition() {
+        return Position; 
+    }
+
+    public float GetZoom() {
+        return Zoom; 
+    }
+
+    public void SetPosition(Vector2 Position) {
+        this.Position = Position; 
+    }
+
+    public void SetZoom(float Zoom) {
+        this.Zoom = Zoom; 
+    }
+
+    public Matrix GetTransform() {
+        return Transform; 
+    }
 
     public Camera(Viewport viewport)
     {
         Bounds = viewport.Bounds;
         Zoom = 1f;
         Position = Vector2.Zero;
+        locked = false;
     }
-
 
     private void UpdateVisibleArea()
     {
@@ -83,72 +103,81 @@ public class Camera
         }
     }
 
-    public void UpdateCamera(Viewport bounds)
-    {
-        Bounds = bounds.Bounds;
-        UpdateMatrix();
+    public void Lock() {
+        locked = true;
+    }
 
-        Vector2 cameraMovement = Vector2.Zero;
-        int moveSpeed;
+    public void Unlock() {
+        locked = false; 
+    }
 
-        if (Zoom > .8f)
-        {
-            moveSpeed = 15;
-        }
-        else if (Zoom < .8f && Zoom >= .6f)
-        {
-            moveSpeed = 20;
-        }
-        else if (Zoom < .6f && Zoom > .35f)
-        {
-            moveSpeed = 25;
-        }
-        else if (Zoom <= .35f)
-        {
-            moveSpeed = 30;
-        }
-        else
-        {
-            moveSpeed = 10;
-        }
+    public void UpdateCamera(Viewport bounds, bool force = false) {
+        if (!locked || force) {
+            Bounds = bounds.Bounds;
+            UpdateMatrix();
 
-        
-        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveUp))
-        {
-            cameraMovement.Y = -moveSpeed;
+            Vector2 cameraMovement = Vector2.Zero;
+            int moveSpeed;
+
+            if (Zoom > .8f)
+            {
+                moveSpeed = 15;
+            }
+            else if (Zoom < .8f && Zoom >= .6f)
+            {
+                moveSpeed = 20;
+            }
+            else if (Zoom < .6f && Zoom > .35f)
+            {
+                moveSpeed = 25;
+            }
+            else if (Zoom <= .35f)
+            {
+                moveSpeed = 30;
+            }
+            else
+            {
+                moveSpeed = 10;
+            }
+
+            
+            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveUp))
+            {
+                cameraMovement.Y = -moveSpeed;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveDown))
+            {
+                cameraMovement.Y = moveSpeed;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveLeft))
+            {
+                cameraMovement.X = -moveSpeed;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveRight))
+            {
+                cameraMovement.X = moveSpeed;
+            }
+            
+            previousMouseWheelValue = currentMouseWheelValue;
+            currentMouseWheelValue = Mouse.GetState().ScrollWheelValue;
+
+            if (currentMouseWheelValue > previousMouseWheelValue)
+            {
+                AdjustZoom(.05f);
+            }
+
+            if (currentMouseWheelValue < previousMouseWheelValue)
+            {
+                AdjustZoom(-.05f);
+            }
+
+            previousZoom = zoom;
+            zoom = Zoom;
+
+            MoveCamera(cameraMovement);
         }
-
-        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveDown))
-        {
-            cameraMovement.Y = moveSpeed;
-        }
-
-        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveLeft))
-        {
-            cameraMovement.X = -moveSpeed;
-        }
-
-        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveRight))
-        {
-            cameraMovement.X = moveSpeed;
-        }
-        
-        previousMouseWheelValue = currentMouseWheelValue;
-        currentMouseWheelValue = Mouse.GetState().ScrollWheelValue;
-
-        if (currentMouseWheelValue > previousMouseWheelValue)
-        {
-            AdjustZoom(.05f);
-        }
-
-        if (currentMouseWheelValue < previousMouseWheelValue)
-        {
-            AdjustZoom(-.05f);
-        }
-
-        previousZoom = zoom;
-        zoom = Zoom;
-
-        MoveCamera(cameraMovement);
     }
 }

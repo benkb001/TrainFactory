@@ -11,7 +11,6 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-//required order: 
 public class EmbarkClickSystem() {
     public static void Register(World world) {
         Type[] ts = [typeof(EmbarkButton), typeof(Button), typeof(Frame), typeof(Active)]; 
@@ -19,11 +18,15 @@ public class EmbarkClickSystem() {
             if (w.GetComponent<Button>(e).Clicked) {
                 int popEntity = EntityFactory.Add(w); 
                 w.SetComponent<PopSceneMessage>(popEntity, PopSceneMessage.Get()); 
-                int detailEntity = EntityFactory.Add(w); 
                 EmbarkButton eb = w.GetComponent<EmbarkButton>(e); 
-                Train t = eb.GetTrain(); 
+                Train t = eb.GetTrain();
                 City c = eb.GetDestination(); 
                 t.Embark(c, w.Time); 
+                int tui = Map.DrawTrain(w, t); 
+                //so the entity will survive 2 pops, one to click 
+                //out of the embark view, and one to click out of 
+                //the trains/machines view
+                w.GetComponent<Scene>(tui).Value = 2; 
             }
         }; 
 
