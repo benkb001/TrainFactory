@@ -29,6 +29,7 @@ public class TrainMapPositionSystemTest {
         int trainUIEntity = EntityFactory.Add(w); 
         TrainUI tUI = new TrainUI(train); 
         w.SetComponent<TrainUI>(trainUIEntity, tUI); 
+        w.SetComponent<MapUIFlag>(trainUIEntity, MapUIFlag.Get());
         w.SetComponent<Frame>(trainUIEntity, new Frame(0, 0, 10, 10)); 
         w.PassTime(new WorldTime(hours: 1)); 
         w.Update(); 

@@ -22,6 +22,9 @@ using TrainGame.Utils;
 //this file is for the visual side of world as opposed to logic
 
 public partial class World {
+    private bool cameraLocked = false; 
+    public bool CameraLocked => cameraLocked;
+
     public Texture2D GetTexture(string name) {
         //Consider throwign error instead
         if (!textures.ContainsKey(name)) {
@@ -86,12 +89,14 @@ public partial class World {
         if (!isTest) {
             camera.Lock();
         }
+        cameraLocked = true; 
     }
 
     public void UnlockCamera() {
         if (!isTest) {
             camera.Unlock(); 
         }
+        cameraLocked = false;
     }
 
     public Vector2 GetCameraPosition() {

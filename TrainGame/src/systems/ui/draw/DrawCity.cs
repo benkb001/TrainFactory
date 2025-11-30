@@ -13,7 +13,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class DrawCitySystem() {
+public class DrawCitySystem {
     
     private static void DrawLayout(string cityID, int maxScene, Vector2 topleft, World w) {
         switch (cityID) {
@@ -46,7 +46,7 @@ public class DrawCitySystem() {
             return w.GetComponent<Scene>(kvp.Key).Value == maxScene;
         }, new KeyValuePair<int, CameraReturn>(0, null)); 
         if (cr.Value != null) {
-            topleft = cr.Value.Position; 
+            topleft = cr.Value.Position - new Vector2(w.ScreenWidth / 2, w.ScreenHeight / 2); 
         }
 
         foreach (int cur in w.GetComponentArray<Scene>().Where(kvp => {

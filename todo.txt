@@ -1,34 +1,68 @@
-* Make drawing System based
-* Make UI Drawing based on screen coordinates
-* Make inventory draw messages automatically move around or resize other inventories as necessary
-* Implement better click for buttons 
-* Make stepper fast when you hold down
+
+
+*** BUGS **** 
+
 * Fix LinearLayout stall infinitely if too small bug 
-* Add SpaceEven to LinearLayout
-* Add a way for sprites to be drawn separately from collision box 
-
 * Fix bug clicking unresponsive 
-* make player label change automatically when train arrives 
-* TESTTTT
 
-* Make it so button to enter train doesn't appear if player opened map not at a train station 
-* Add an option to steppers to make them not negative
+**** NEED TO TEST **** 
+
+* test player label change automatically when train arrives 
+
+**** NEXT FEATURES **** 
+
+* Add player inventory/holding items 
+    * For now player inventory can be 1 row 10 columns, 
+      player component can track index of held item, add 
+      a system to increment/decrement when player scrolls, 
+      and there will be a label that changes or is destroyed 
+      based on which item is held. then when player interacts with 
+      things, held item can be derived through the entity associated 
+      with the interactor
+* Add machines for creating new trains, and the other recipes
+* Create basic layouts for the cities
+* Add liquid trains
+    * Will need to add something to inventory to put a limit on 
+      the number of items a cell can hold based on itemid, and 
+      also which item ids an inventory can or cant hold 
+* Create an interface for upgrading machines/viewing machine level 
+* Create an interface for upgrading trains 
+
+**** FUTURE FEATURES **** 
+
+* Make it so LinearLayout is pageable 
+    * This will be important once player gets a high number of trains, 
+      but also if we add a high number of machines to Factory
+* Make it so trains cant run over other trains 
+* Make it so trains need fuel
 * Add a text input view
 * Combine text input with steppers to say how much of things you want to move 
     between inventories, and how much you want to request to craft
-
+* Add an option to steppers to make them not negative
 * Add basic save/load 
 * Add some default toasts
+* Implement better click for buttons 
+* Make stepper fast when you hold down
+* Make it so button to enter train doesn't appear if player opened map not at a train station 
+
+**** FAR FUTURE FEATURES **** 
 
 * Add a tile system for rpg mode
-* Make player able to hold a tool 
-* Add a scrollable toolbar 
-* Make player able to use a tool 
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
-
-* Write a coding language so players can code their trains ^^
+* Write a coding language so players can code their trains 
 * Implement adding commands to trains (like once it gets to the next city, do a thing) 
 * Implement adding conditionals and loops to train behavior 
 * Implement player making custom notifications based on train conditions, 
     like a toast pops up when the train has a certain amount of wood or something 
+
+**** NICE TO HAVE LOW PRIORITY **** 
+
+* Add SpaceEven to LinearLayout
+* Add a way for sprites to be drawn separately from collision box 
+
+**** NOT SURE WE WANT BUT MAYBE **** 
+
+* Make drawing System based
+* Make UI Drawing based on screen coordinates
+* Make inventory draw messages automatically move around or resize other inventories as necessary

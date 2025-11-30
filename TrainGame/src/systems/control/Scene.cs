@@ -40,7 +40,6 @@ public static class SceneSystem {
         Type[] ts = [typeof(PopSceneMessage)]; 
         Action<World> update = (w) => {
             foreach (KeyValuePair<int, PopSceneMessage> messageEntry in w.GetComponentArray<PopSceneMessage>()) {
-                Console.WriteLine("Popped"); 
                 foreach (KeyValuePair<int, Scene> sceneEntry in w.GetComponentArray<Scene>()) {
                     Scene s = sceneEntry.Value; 
                     int entity = sceneEntry.Key; 

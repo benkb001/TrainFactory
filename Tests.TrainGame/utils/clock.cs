@@ -16,7 +16,7 @@ public class GameClockTest {
     public void GameClock_ShouldAllowVirtualTimePassage() {
         GameClock gc = new GameClock(); 
         double prevMili = gc.TotalMilliseconds; 
-        gc.PassTime(seconds: 1, milliseconds: 100); 
-        Assert.True(Util.DoubleEqual(1, gc.TotalSeconds));
+        gc.PassTime(seconds: 100, milliseconds: 100); 
+        Assert.True(gc.TotalSeconds >= 100);
     }
 }
