@@ -455,7 +455,7 @@ public static class NextDrawTestUISystem {
             int cityEntity2 = EntityFactory.Add(w, setScene: false); 
 
             w.SetComponent<City>(cityEntity1, c1);
-            w.SetComponent<City>(cityEntity2, c2); 
+            w.SetComponent<City>(cityEntity2, c2);
 
             int trainEntity = EntityFactory.Add(w); 
             int trainDataEntity = EntityFactory.Add(w, setScene: false); 
@@ -465,7 +465,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Data>(trainDataEntity, Data.Get()); 
 
             int tEntity2 = EntityFactory.Add(w, setScene: false); 
-            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 50f); 
+            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 200f); 
             w.SetComponent<Train>(tEntity2, train2); 
             w.SetComponent<Data>(tEntity2, Data.Get()); 
 

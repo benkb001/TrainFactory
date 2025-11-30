@@ -12,7 +12,7 @@ public class EmbarkButton {
     public Train GetTrain() {
         return train; 
     }
-
+    
     public City GetDestination() {
         return destination; 
     }

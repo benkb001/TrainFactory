@@ -20,7 +20,8 @@ public class OpenMapSystem() {
                 int pm = EntityFactory.Add(w); 
                 w.SetComponent<PushSceneMessage>(pm, PushSceneMessage.Get()); 
                 int dm = EntityFactory.Add(w); 
-                w.SetComponent<DrawMapMessage>(dm, DrawMapMessage.Get()); 
+                w.SetComponent<DrawMapMessage>(dm, DrawMapMessage.Get());
+                View.EnterMenu(w); 
             } 
         }
         

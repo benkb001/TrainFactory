@@ -21,7 +21,7 @@ public class CloseMenuSystem() {
                 List<int> menuEntities = w.GetMatchingEntities([typeof(Menu), typeof(Active)]); 
 
                 if (menuEntities.Count >= 1) {
-                    int popEntity = EntityFactory.Add(w);
+                    int popEntity = EntityFactory.Add(w, setScene: false);
                     w.SetComponent<PopSceneMessage>(popEntity, PopSceneMessage.Get());
                 }
             }

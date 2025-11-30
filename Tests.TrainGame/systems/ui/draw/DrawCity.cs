@@ -12,5 +12,5 @@ using TrainGame.Systems;
 using TrainGame.Utils; 
 
 public class DrawCitySystemTest {
-    //todo: add once i actually make some of the city layouts? 
+    //todo: write
 }

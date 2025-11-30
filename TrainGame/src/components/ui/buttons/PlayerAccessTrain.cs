@@ -11,8 +11,8 @@ public class PlayerAccessTrainButton {
     }
     public string GetMessage() {
         if (train.HasPlayer) {
-            return "Click to enter train"; 
+            return "Click to exit train"; 
         }
-        return "Click to exit train"; 
+        return "Click to enter train"; 
     }
 }

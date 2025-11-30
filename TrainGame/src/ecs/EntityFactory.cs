@@ -20,7 +20,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 public static class EntityFactory {
-    public static int Add(World w, bool setScene = true, bool setActive = true, bool setData = false) {
+    public static int Add(World w, bool setScene = true, bool setActive = true, bool setData = false, int scene = -1) {
         int e = w.AddEntity(); 
 
         //todo: test
@@ -30,10 +30,14 @@ public static class EntityFactory {
         }
 
         if (setScene) {
-            w.SetComponent<Scene>(e, new Scene(0));
+            int s = 0; 
+            if (scene != -1) {
+                s = scene;
+            }
+            w.SetComponent<Scene>(e, new Scene(s));
         } 
         
-        if (setActive) {
+        if (setActive && scene < 1) {
             w.SetComponent<Active>(e, Active.Get()); 
         }
 

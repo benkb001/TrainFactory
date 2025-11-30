@@ -22,6 +22,8 @@ public class LabelPositionSystem {
             Frame bodyFrame = w.GetComponent<Frame>(l.BodyEntity);
             Frame labelFrame = w.GetComponent<Frame>(e); 
             labelFrame.SetCoordinates(bodyFrame.GetX(), bodyFrame.GetY() - labelFrame.GetHeight()); 
+        } else {
+            w.RemoveEntity(e); 
         }
     }; 
 

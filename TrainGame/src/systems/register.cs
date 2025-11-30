@@ -26,8 +26,6 @@ public static class RegisterSystems {
         PauseButtonSystem.Register(w);
         UnpauseButtonSystem.Register(w); 
         
-        CloseMenuSystem.Register(w); 
-
         GameClockViewSystem.Register(w); 
 
         NextDrawTestButtonSystem.Register(w);
@@ -43,8 +41,11 @@ public static class RegisterSystems {
         PlayerAccessTrainClickSystem.Register(w); 
         OpenMapSystem.Register(w); 
 
-        SceneSystem.RegisterPush(w); 
+        CloseMenuSystem.Register(w); 
+        RedrawMapSystem.Register(w); 
+
         SceneSystem.RegisterPop(w); 
+        SceneSystem.RegisterPush(w); 
 
         DrawBackgroundSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 

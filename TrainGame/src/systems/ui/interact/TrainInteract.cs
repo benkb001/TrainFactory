@@ -20,6 +20,7 @@ public class TrainInteractSystem() {
                 w.SetComponent<PushSceneMessage>(pushEntity, PushSceneMessage.Get()); 
                 int drawMapMessage = EntityFactory.Add(w); 
                 w.SetComponent<DrawMapMessage>(drawMapMessage, DrawMapMessage.Get()); 
+                View.EnterMenu(w); 
             }
         }; 
 

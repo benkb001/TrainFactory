@@ -73,11 +73,12 @@ namespace TrainGame.Constants
     }
 
     public static class CityID {
-        public static readonly string Coast = "Coast"; 
-        public static readonly string Collisseum = "Collisseum"; 
-        public static readonly string Factory = "Factory"; 
-        public static readonly string Greenhouse = "Greenhouse"; 
-        public static readonly string Mine = "Mine"; 
-        public static readonly string Reservoir = "Reservoir"; 
+        public const string Coast = "Coast"; 
+        public const string Collisseum = "Collisseum"; 
+        public const string Factory = "Factory"; 
+        public const string Greenhouse = "Greenhouse"; 
+        public const string Mine = "Mine"; 
+        public const string Reservoir = "Reservoir"; 
+        public const string Test = "Test"; 
     }
 }

@@ -36,6 +36,11 @@ public class Train {
         if (this.comingFrom == destination) {
             throw new InvalidOperationException($"Train {Id} attempted to embark to the city it is at: {comingFrom.CityId}"); 
         }
+
+        if (HasPlayer) {
+            this.comingFrom.HasPlayer = false; 
+        }
+        
         this.goingTo = destination; 
         this.left = at.Clone(); 
         this.isTraveling = true;
@@ -67,6 +72,11 @@ public class Train {
         this.comingFrom = this.goingTo; 
         this.isTraveling = false; 
         this.goingTo.AddTrain(this);
+        //TODO: Test
+        if (HasPlayer) {
+            this.goingTo.HasPlayer = true; 
+            HasPlayer = false; 
+        }
     }
 
     public bool IsArriving(WorldTime cur) {
