@@ -40,6 +40,7 @@ public static class RegisterSystems {
         EmbarkClickSystem.Register(w); 
         MachineUIClickSystem.Register(w); 
         MachineRequestClickSystem.Register(w); 
+        PlayerAccessTrainClickSystem.Register(w); 
         OpenMapSystem.Register(w); 
 
         SceneSystem.RegisterPush(w); 

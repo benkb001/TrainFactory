@@ -7,8 +7,29 @@
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
 
-* Test requesting through map 
 * Fix bug clicking unresponsive 
+* Add player entering trains/moving between cities 
+
+    * Firstly, add a button to add/remove player from train, 
+      button will only appear if the train is parked at the city 
+      the player is at 
+    * Secondly, need to deal with the scene the player was previously
+      at when they interacted with the 'train station' 
+        * Possibly can derive which scene it is and make a function to 
+          clear all entities in that scene 
+        * This will need to be done only when the train fully embarks 
+    * Thirdly, need to deal with what happens when player 'closes' map 
+      if they are in a train 
+        * Could add a system before closeMenu that checks if there is a 
+          MapUI element, here we can check the state of the player, if they are 
+          traveling we draw a little message of where they are traveling, 
+          current time, and arrival time
+    * Finally, need to deal with drawing the target city when player 
+      arrives
+        * Can add a system to make a message on train arrival which 
+        checks if the player is in it and either make a toast or just
+        draw the new scene, if toast then in the previous described system 
+        we can draw the city we want 
 
 * Add an option to steppers to make them not negative
 * Add a text input view
@@ -16,6 +37,7 @@
     between inventories, and how much you want to request to craft
 
 * Add basic save/load 
+* Add some default toasts
 
 * Add a tile system for rpg mode
 * Make player able to hold a tool 

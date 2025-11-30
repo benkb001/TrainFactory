@@ -33,7 +33,7 @@ public class City {
 
     public static float UIWidth = 100f; 
     public static float UIHeight = 100f;
-
+    public bool HasPlayer = false; 
     
     private Dictionary<string, Train> trains = new();
     public Dictionary<string, Train> Trains => trains; 

@@ -54,7 +54,7 @@ public static class RegisterComponents {
         w.AddComponentType<NextDrawTestControl>(); 
         w.AddComponentType<Outline>(); 
         w.AddComponentType<PauseButton>(); 
-        w.AddComponentType<UnpauseButton>(); 
+        w.AddComponentType<PlayerAccessTrainButton>(); 
         w.AddComponentType<PushSceneMessage>(); 
         w.AddComponentType<PopSceneMessage>(); 
         w.AddComponentType<Scene>(); 
@@ -66,6 +66,7 @@ public static class RegisterComponents {
         w.AddComponentType<Toast>(); 
         w.AddComponentType<Train>(); 
         w.AddComponentType<TrainUI>(); 
+        w.AddComponentType<UnpauseButton>(); 
         w.AddComponentType<Velocity>(); 
     }
 }

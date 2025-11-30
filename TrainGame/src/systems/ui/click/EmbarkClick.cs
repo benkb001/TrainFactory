@@ -26,11 +26,20 @@ public class EmbarkClickSystem() {
                 //so the entity will survive 2 pops, one to click 
                 //out of the embark view, and one to click out of 
                 //the trains/machines view
+                //TODO: think of a way other than hardcoding scene numbers? 
                 w.GetComponent<Scene>(tui).Value = 2; 
+                //TODO: TEST
+                if (t.HasPlayer) {
+                    List<int> es = w.GetMatchingEntities([typeof(Scene)]); 
+                    foreach (int e in es) {
+                        if (w.GetComponent<Scene>(e).Value == 3) {
+                            w.RemoveEntity(e); 
+                        }
+                    }
+                }
             }
         }; 
 
         world.AddSystem(ts, tf); 
     }
-
 }

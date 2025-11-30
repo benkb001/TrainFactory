@@ -22,9 +22,24 @@ public class DrawEmbarkSystem() {
             DrawEmbarkMessage msg = w.GetComponent<DrawEmbarkMessage>(e); 
             City c = msg.GetCity(); 
             Train t = msg.GetTrain(); 
+
             float width = msg.Width; 
             float labelHeight = msg.Height * 0.2f; 
             float height = msg.Height - labelHeight;
+            float btnHeight = labelHeight; 
+            float btnWidth = width; 
+            Vector2 pos = msg.Position + new Vector2(0, labelHeight); 
+            if (c.HasPlayer) {
+                height -= (btnHeight + 10f);
+                int btnEntity = EntityFactory.Add(w); 
+                w.SetComponent<Frame>(btnEntity, new Frame(pos + new Vector2(0, height + 10f), btnWidth, btnHeight)); 
+                w.SetComponent<Outline>(btnEntity, new Outline()); 
+                PlayerAccessTrainButton acBtn = new PlayerAccessTrainButton(t); 
+                w.SetComponent<TextBox>(btnEntity, new TextBox(acBtn.GetMessage())); 
+                w.SetComponent<Button>(btnEntity, new Button()); 
+                w.SetComponent<PlayerAccessTrainButton>(btnEntity, acBtn); 
+            }
+
             float padding = msg.Padding; 
             
             int labelEntity = EntityFactory.Add(w); 
@@ -33,7 +48,7 @@ public class DrawEmbarkSystem() {
             w.SetComponent<Outline>(labelEntity, new Outline()); 
             w.SetComponent<TextBox>(labelEntity, new TextBox($"Send {t.Id} to a new city?")); 
             w.SetComponent<Label>(labelEntity, new Label(llEntity));
-            Vector2 pos = msg.Position + new Vector2(0, labelHeight); 
+            
             List<City> adjacentCities = c.AdjacentCities;
 
             w.SetComponent<Menu>(llEntity, Menu.Get()); 

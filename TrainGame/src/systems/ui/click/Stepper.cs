@@ -7,23 +7,19 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using Color = Microsoft.Xna.Framework.Color; 
-using _Color = System.Drawing.Color; 
-
 using TrainGame.ECS; 
 using TrainGame.Components; 
-using TrainGame.Constants; 
 
-public static class StepperUISystem {
-    private static Type[] ts = [typeof(StepperMessage)]; 
+public class StepperButtonSystem() {
+    private static Type[] ts = [typeof(StepperButton), typeof(Button), typeof(Active)]; 
 
     public static void Register(World world) {
         Action<World, int> tf = (w, e) => {
-            StepperMessage sm = w.GetComponent<StepperMessage>(e); 
-            Stepper s = w.GetComponent<Stepper>(sm.Entity); 
-            s.Value += sm.Delta; 
-            w.SetComponent<TextBox>(sm.Entity, new TextBox(s.Value.ToString())); 
-            w.RemoveEntity(e); 
+            if (w.GetComponent<Button>(e).Clicked) {
+                StepperButton sb = w.GetComponent<StepperButton>(e); 
+                int message = EntityFactory.Add(w); 
+                w.SetComponent<StepperMessage>(message, new StepperMessage(sb.Entity, sb.Delta)); 
+            }
         };
 
         world.AddSystem(ts, tf); 

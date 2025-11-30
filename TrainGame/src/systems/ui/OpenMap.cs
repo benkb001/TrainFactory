@@ -15,8 +15,17 @@ using TrainGame.Constants;
 //TODO: Test
 public class OpenMapSystem() {
     private static Action<World> update = (w) => {
-
+        if (VirtualKeyboard.IsClicked(KeyBinds.OpenMap)) {
+            if (w.GetMatchingEntities([typeof(Menu), typeof(Active)]).Count == 0) {
+                int pm = EntityFactory.Add(w); 
+                w.SetComponent<PushSceneMessage>(pm, PushSceneMessage.Get()); 
+                int dm = EntityFactory.Add(w); 
+                w.SetComponent<DrawMapMessage>(dm, DrawMapMessage.Get()); 
+            } 
+        }
+        
     }; 
+    
     public static void Register(World w) {
         w.AddSystem(update); 
     }

@@ -63,6 +63,7 @@ namespace TrainGame.Constants
         public static readonly Keys MoveDown = Keys.S;
         public static readonly Keys MoveRight = Keys.D;
         public static readonly Keys Interact = Keys.E; 
+        public static readonly Keys OpenMap = Keys.M; 
     }
 
     public static class Colors {

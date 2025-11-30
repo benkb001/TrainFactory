@@ -20,6 +20,7 @@ public class Train {
     private float milesPerHour; 
     private WorldTime left; 
     private bool isTraveling; 
+    public bool HasPlayer = false; 
 
     public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f) {
         this.Id = Id; 

@@ -433,6 +433,8 @@ public static class NextDrawTestUISystem {
             City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
             City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
 
+            c1.HasPlayer = true; 
+            
             Dictionary<string, int> recipe = new() {
                 ["Apple"] = 1, 
                 ["Banana"] = 1
@@ -440,7 +442,7 @@ public static class NextDrawTestUISystem {
 
             Machine blender = new Machine(invCLeft, recipe, "smoothie", 1, 60, "blender");
 
-            int blenderDataEntity = EntityFactory.Add(w); 
+            int blenderDataEntity = EntityFactory.Add(w, setData: true); 
             w.SetComponent<Machine>(blenderDataEntity, blender); 
             w.SetComponent<Data>(blenderDataEntity, Data.Get()); 
 
