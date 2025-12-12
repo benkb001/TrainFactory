@@ -24,15 +24,31 @@ public class InteractSystem {
             List<int> interactorEntities = w.GetMatchingEntities([typeof(Interactor), typeof(Frame), typeof(Active)]); 
             
             int i = 0; 
+
             while (i < interactableEntities.Count && !interacted) {
                 int j = 0; 
                 int interactableEntity = interactableEntities[i]; 
                 Frame interactableFrame = w.GetComponent<Frame>(interactableEntity);
+                Interactable interactable = w.GetComponent<Interactable>(interactableEntity); 
+
                 while (j < interactorEntities.Count && !interacted) {
                     int interactorEntity = interactorEntities[j]; 
                     Frame interactorFrame = w.GetComponent<Frame>(interactorEntity); 
+                    bool interact = false; 
+
                     if (interactableFrame.IsTouching(interactorFrame)) {
-                        w.GetComponent<Interactable>(interactableEntity).Interacted = true; 
+                        if (interactable.ItemId == "") {
+                            interact = true; 
+                        } else if (w.ComponentContainsEntity<HeldItem>(interactorEntity)) {
+                            HeldItem held = w.GetComponent<HeldItem>(interactorEntity); 
+                            if (held.ItemId == interactable.ItemId && held.ItemCount >= interactable.ItemCount) {
+                                interact = true; 
+                            }
+                        }
+                    }
+
+                    if (interact) {
+                        interactable.Interacted = true; 
                         interacted = true; 
                     }
                     j++; 

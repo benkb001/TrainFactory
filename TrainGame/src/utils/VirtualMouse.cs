@@ -120,11 +120,26 @@ public static class VirtualMouse {
                 GetState().RightButton == ButtonState.Pressed; 
     }
 
+    public static bool IsScrollingUp() {
+        return prev_mouse.ScrollWheelValue < vm.ScrollWheelValue; 
+        
+    }
+
+    public static bool IsScrollingDown() {
+        return prev_mouse.ScrollWheelValue > vm.ScrollWheelValue; 
+    }
+
     public static bool IsVirtual() {
         return useVirtualMouse; 
     }
 
-    public static void UpdatePrevFrame() {
+    public static void UpdateStartFrame() {
+        if (!useVirtualMouse) {
+            vm = Mouse.GetState(); 
+        }
+    }
+
+    public static void UpdateEndFrame() {
         if (useVirtualMouse) {
             prev_mouse = vm; 
         } else {

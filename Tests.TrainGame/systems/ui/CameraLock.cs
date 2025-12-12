@@ -6,7 +6,8 @@ using TrainGame.Systems;
 public class CameraLockSystemTest {
     [Fact]
     public void CameraLockSystem_ShouldLockCameraWhenThereAreActiveMenuElements() {
-        World w = WorldFactory.Build(); 
+        World w = new World(); 
+        RegisterComponents.All(w); 
         CameraLockSystem.Register(w); 
         Assert.False(w.CameraLocked); 
         int e = EntityFactory.Add(w); 

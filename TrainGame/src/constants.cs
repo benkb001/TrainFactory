@@ -70,6 +70,7 @@ namespace TrainGame.Constants
         public static readonly Color UIBG = Color.LightGray; 
         public static readonly Color UIAccent = Color.DarkGray; 
         public static readonly Color BG = Color.CornflowerBlue;
+        public static readonly Color InventoryHeld = Color.Red; 
     }
 
     public static class CityID {

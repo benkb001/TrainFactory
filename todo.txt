@@ -11,14 +11,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add player inventory/holding items 
-    * For now player inventory can be 1 row 10 columns, 
-      player component can track index of held item, add 
-      a system to increment/decrement when player scrolls, 
-      and there will be a label that changes or is destroyed 
-      based on which item is held. then when player interacts with 
-      things, held item can be derived through the entity associated 
-      with the interactor
 * Add machines for creating new trains, and the other recipes
 * Create basic layouts for the cities
 * Add liquid trains

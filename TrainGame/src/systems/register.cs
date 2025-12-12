@@ -57,7 +57,8 @@ public static class RegisterSystems {
         DrawMachineRequestSystem.Register(w);
         DrawMachinesViewSystem.Register(w); 
         DrawTrainsViewSystem.Register(w);  
-
+        HeldItemDrawSystem.Register(w); 
+        
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

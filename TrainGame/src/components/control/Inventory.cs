@@ -54,8 +54,8 @@ public class Inventory {
     }
 
     public bool Add(Item i, int row, int col) {
-        ensureValidInices(row, col); 
-        int idx = (row * cols) + col; 
+        ensureValidIndices(row, col); 
+        int idx = getIndex(row, col); 
         if (items[idx].ItemId == i.ItemId || items[idx].ItemId == "") {
             i.Row = row; 
             i.Column = col; 
@@ -96,8 +96,8 @@ public class Inventory {
     }
 
     public Item Take(int row, int col) {
-        ensureValidInices(row, col); 
-        int idx = (row * cols) + col; 
+        ensureValidIndices(row, col); 
+        int idx = getIndex(row, col);
         Item i = items[idx]; 
         i.Row = -1; 
         i.Column = -1; 
@@ -105,13 +105,26 @@ public class Inventory {
         return i; 
     }
 
+    public Item Get(int index) {
+        (int row, int col) = GetRowColIndex(index); 
+        return Get(row, col); 
+    }
+
     public Item Get(int row, int col) {
-        ensureValidInices(row, col); 
-        return items[(row * cols) + col];
+        ensureValidIndices(row, col); 
+        return items[getIndex(row, col)];
     }
 
     public string GetId() {
         return inventoryId; 
+    }
+
+    public string GetItemId(int index) {
+        return items[index].ItemId; 
+    }
+
+    public string GetItemId(int row, int col) {
+        return GetItemId(getIndex(row, col)); 
     }
 
     public int GetCols() {
@@ -131,16 +144,26 @@ public class Inventory {
     }
 
     private (int, int) GetRowColIndex(int idx) {
-        if (idx < 0 || idx >= (rows * cols)) {
-            throw new InvalidOperationException($"Index {idx} out of bounds for {rows}x{cols} inventory"); 
-        }
+        ensureValidIndices(idx); 
         return (idx / cols, idx % cols); 
     }
 
-    private void ensureValidInices(int row, int col) {
+    private int getIndex(int row, int col) {
+        return (row * cols) + col; 
+    }
+
+    private void ensureValidIndices(int index) {
+        if (index < 0 || index > items.Count) {
+            throw new InvalidOperationException($"Index {index} out of bounds for {rows}x{cols} inventory"); 
+        }
+    }
+
+    private void ensureValidIndices(int row, int col) {
         if (row < 0 || col < 0 || row >= rows || col >= cols) {
             throw new InvalidOperationException($"Inventory position {row}, {col} invalid for a {rows}x{cols} inventory"); 
         }
+
+        ensureValidIndices(getIndex(row, col)); 
     }
 
     public class Item {

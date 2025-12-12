@@ -508,6 +508,23 @@ public static class NextDrawTestUISystem {
             
             int req_msg = EntityFactory.Add(w); 
             w.SetComponent(req_msg, new DrawMachineRequestMessage(m, 100, 350, Vector2.Zero, 5f)); 
+            AddNextTestButton(w, 20);
+        }, 
+        [21] = (w) => {
+            Inventory inv = new Inventory("Player", 1, 10); 
+            inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
+            int invEntity = EntityFactory.Add(w); 
+
+            int msg = EntityFactory.Add(w); 
+            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(800, 80, Vector2.Zero, inv, Entity: invEntity));
+
+            int playerEntity = EntityFactory.Add(w);
+            w.SetComponent<Frame>(playerEntity, new Frame(150, 150, 100, 100)); 
+            w.SetComponent<Outline>(playerEntity, new Outline()); 
+            w.SetComponent<CardinalMovement>(playerEntity, new CardinalMovement(4f)); 
+            w.SetComponent<Collidable>(playerEntity, Collidable.Get());
+            w.SetComponent<HeldItem>(playerEntity, new HeldItem(inv, invEntity)); 
+            w.LockCamera(); 
         }
     };
 

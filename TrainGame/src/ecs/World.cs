@@ -197,6 +197,7 @@ public partial class World {
     }
 
     public void Update() {
+        VirtualMouse.UpdateStartFrame(); 
         sm.Update(this); 
         
         if (!isTest) {
@@ -209,7 +210,7 @@ public partial class World {
             }
             camera.UpdateCamera(graphicsDevice.Viewport); 
         }
-        VirtualMouse.UpdatePrevFrame(); 
+        VirtualMouse.UpdateEndFrame(); 
         VirtualKeyboard.UpdatePrevFrame(); 
         wt.Update(); 
     }
