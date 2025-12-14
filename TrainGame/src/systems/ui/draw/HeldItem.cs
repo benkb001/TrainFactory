@@ -23,7 +23,7 @@ public class HeldItemDrawSystem() {
         int rowEntity = w.GetComponent<LinearLayout>(held.InventoryEntity).GetChildren()[0]; 
         List<int> cells = w.GetComponent<LinearLayout>(rowEntity).GetChildren(); 
 
-        w.GetComponent<Outline>(cells[held.InvIndex]).SetColor(Color.White); 
+        w.GetComponent<Outline>(cells[held.InvIndex]).SetColor(Colors.InventoryNotHeld); 
         if (VirtualMouse.IsScrollingDown()) {
             int index = held.InvIndex - 1; 
             if (index < 0) {
@@ -34,7 +34,6 @@ public class HeldItemDrawSystem() {
 
         if (VirtualMouse.IsScrollingUp()) {
             int index = (held.InvIndex + 1) % held.InvSize; 
-            Console.WriteLine($"Set to {index}");
             held.SetItem(index);
         }
 

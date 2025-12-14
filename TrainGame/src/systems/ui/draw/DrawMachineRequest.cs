@@ -20,25 +20,16 @@ public class DrawMachineRequestSystem() {
         Machine m = dm.GetMachine(); 
         float width = dm.Width; 
         float height = dm.Height; 
-        int labelEntity = EntityFactory.Add(w); 
         int viewEntity = EntityFactory.Add(w); 
 
         if (dm.SetMenu) {
             w.SetComponent<Menu>(viewEntity, Menu.Get()); 
         }
         
-        float labelWidth = width * 0.4f; 
-        float labelHeight = labelWidth * 0.5f; 
-        float viewHeight = height - labelHeight; 
-        Vector2 labelPosition = dm.Position; 
-        Vector2 viewPosition = dm.Position + new Vector2(0, labelHeight); 
+        float viewHeight = height;
+        Vector2 viewPosition = dm.Position;
 
         LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
-
-        w.SetComponent<Frame>(labelEntity, new Frame(labelPosition, labelWidth, labelHeight));
-        w.SetComponent<Label>(labelEntity, new Label(viewEntity)); 
-        w.SetComponent<TextBox>(labelEntity, new TextBox(m.GetId())); 
-        w.SetComponent<Outline>(labelEntity, new Outline()); 
 
         w.SetComponent<Frame>(viewEntity, new Frame(viewPosition, width, viewHeight)); 
         w.SetComponent<Outline>(viewEntity, new Outline()); 

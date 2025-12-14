@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Content;
 using Color = Microsoft.Xna.Framework.Color; 
 using _Color = System.Drawing.Color; 
 
+using TrainGame.Components; 
+
 namespace TrainGame.Constants 
 {
     public static class Constants {
@@ -67,10 +69,12 @@ namespace TrainGame.Constants
     }
 
     public static class Colors {
+        public static readonly Color Placebo = Color.DarkGray; 
         public static readonly Color UIBG = Color.LightGray; 
         public static readonly Color UIAccent = Color.DarkGray; 
         public static readonly Color BG = Color.CornflowerBlue;
         public static readonly Color InventoryHeld = Color.Red; 
+        public static readonly Color InventoryNotHeld = Color.White; 
     }
 
     public static class CityID {
@@ -81,5 +85,116 @@ namespace TrainGame.Constants
         public const string Mine = "Mine"; 
         public const string Reservoir = "Reservoir"; 
         public const string Test = "Test"; 
+    }
+
+    public static class ItemID {
+        public const string UpgradeMachine = "Upgrade Machine"; 
+    }
+
+    public static class Machines {
+
+        public static Machine Gasifier(Inventory inv) {
+
+            Dictionary<string, int> recipe = new() {
+                ["Wood"] = 1
+            }; 
+            string productItemId = "Fuel"; 
+            string machineId = "Gasifier"; 
+            int productCount = 1; 
+            int ticks = 60; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId); 
+        }
+
+        public static Machine Kiln(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Sand"] = 1, 
+                ["Fuel"] = 1
+            }; 
+            string productItemId = "Glass"; 
+            string machineId = "Kiln"; 
+            int productCount = 1; 
+            int ticks = 60; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId); 
+        }
+
+        public static Machine LocomotiveAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Iron"] = 10
+            }; 
+            string productItemId = "Locomotive"; 
+            string machineId = "Locomitive Assembler"; 
+            int productCount = 1; 
+            int ticks = 600; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        } 
+
+        public static Machine CargoWagonAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Wood"] = 10
+            }; 
+            string productItemId = "Cargo Wagon"; 
+            string machineId = "Cargo Wagon Assembler"; 
+            int productCount = 1; 
+            int ticks = 600; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        } 
+
+        public static Machine LiquidWagonAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Iron"] = 10, 
+                ["Glass"] = 5
+            }; 
+            string productItemId = "Liquid Wagon"; 
+            string machineId = "Liquid Wagon Assembler"; 
+            int productCount = 1; 
+            int ticks = 900; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        }
+
+        public static Machine MachineUpgradeAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Iron"] = 10, 
+                ["Glass"] = 10
+            }; 
+            string productItemId = "Machine Upgrade"; 
+            string machineId = "Machine Upgrade Assembler"; 
+            int productCount = 1; 
+            int ticks = 1200; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        }
+
+        public static Machine GunUpgradeAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Iron"] = 100, 
+                ["Glass"] = 50, 
+                ["Fuel"] = 200
+            };
+
+            string productItemId = "Gun Upgrade"; 
+            string machineId = "Gun Upgrade Assembler"; 
+            int productCount = 1; 
+            int ticks = 2400; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        }
+
+        public static Machine ArmorUpgradeAssembler(Inventory inv) {
+            Dictionary<string, int> recipe = new() {
+                ["Iron"] = 400
+            };
+
+            string productItemId = "Armor Upgrade"; 
+            string machineId = "Armor Upgrade Assembler"; 
+            int productCount = 1; 
+            int ticks = 2000; 
+
+            return new Machine(inv, recipe, productItemId, productCount, ticks, machineId);
+        }
     }
 }

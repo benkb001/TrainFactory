@@ -418,7 +418,7 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 18); 
         }, 
         [19] = (w) => {
-        
+            Inventory playerInv = new Inventory("Player", 3, 6); 
             Inventory invCLeft = new Inventory("CLeft", 3, 6); 
             Inventory invCRight = new Inventory("CRight", 3, 6); 
             Inventory invT1 = new Inventory("Train1", 3, 6); 
@@ -429,6 +429,7 @@ public static class NextDrawTestUISystem {
             invCLeft.Add(new Inventory.Item(ItemId: "Banana", Count: 2));
             invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
             invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
+            playerInv.Add(new Inventory.Item(ItemId: ItemID.UpgradeMachine, Count: 100)); 
 
             City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
             City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
@@ -440,7 +441,7 @@ public static class NextDrawTestUISystem {
                 ["Banana"] = 1
             }; 
 
-            Machine blender = new Machine(invCLeft, recipe, "smoothie", 1, 60, "blender");
+            Machine blender = new Machine(invCLeft, recipe, "smoothie", 1, 60, "blender", PlayerInv: playerInv);
 
             int blenderDataEntity = EntityFactory.Add(w, setData: true); 
             w.SetComponent<Machine>(blenderDataEntity, blender); 
@@ -486,6 +487,16 @@ public static class NextDrawTestUISystem {
             w.SetComponent<CardinalMovement>(player, new CardinalMovement(4f)); 
             w.SetComponent<Collidable>(player, Collidable.Get());
             w.SetComponent<Interactor>(player, Interactor.Get()); 
+
+            //draw blender to test upgrading machine 
+
+            int bEntity = EntityFactory.Add(w); 
+            w.SetComponent<MachineUI>(bEntity, new MachineUI(blender)); 
+            w.SetComponent<Frame>(bEntity, new Frame(300, 300, 100, 100));
+            w.SetComponent<Outline>(bEntity, new Outline()); 
+            w.SetComponent<TextBox>(bEntity, new TextBox("Blender")); 
+            w.SetComponent<Interactable>(bEntity, new Interactable()); 
+            w.SetComponent<Collidable>(bEntity, Collidable.Get()); 
 
             AddNextTestButton(w, 19); 
         }, 

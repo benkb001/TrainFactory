@@ -19,3 +19,13 @@ public class PopSceneMessage {
         return inst; 
     }
 }
+
+public class PopLateMessage {
+    public int Scene; 
+    public int FrameDelay; 
+
+    public PopLateMessage(int Scene = 0, int FrameDelay = 0) {
+        this.Scene = Scene; 
+        this.FrameDelay = FrameDelay; 
+    }
+}

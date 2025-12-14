@@ -12,7 +12,15 @@ public class MachineUIClickSystemTest {
         int e = EntityFactory.Add(w); 
         w.SetComponent<Frame>(e, new Frame(0, 0, 100, 100));
         w.SetComponent<Button>(e, new Button(true)); 
-        w.SetComponent<MachineUI>(e, new MachineUI(null)); 
+
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0);
+        w.SetComponent<MachineUI>(e, new MachineUI(m));
         
         w.Update(); 
 

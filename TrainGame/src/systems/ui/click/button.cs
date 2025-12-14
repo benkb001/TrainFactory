@@ -36,6 +36,7 @@ public class ButtonSystem() {
             while(i < frameButtons.Count && !clicked) {
                 if (frameButtons[i].Item1.Contains(mousePoint)) {
                     frameButtons[i].Item2.Clicked = true; 
+                    frameButtons[i].Item2.OnClick(); 
                     clicked = true; 
                 }
                 i++; 

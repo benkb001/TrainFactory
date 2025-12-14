@@ -24,7 +24,7 @@ public class MachineUpdateSystemTest {
         inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
         inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
 
-        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, craftTicks: 0);
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0);
         m.Request(1); 
         
         int mEntity = EntityFactory.Add(w, setData: true);

@@ -11,7 +11,7 @@ using TrainGame.Utils;
 
 //sequential because global state (mouse)
 [Collection("Sequential")]
-public class MachineRequestClickSystem {
+public class MachineRequestClickSystemTest {
     [Fact]
     public void MachineRequestClickSystem_ShouldRequestNumberPlayerInput() {
         VirtualMouse.Reset(); 

@@ -100,6 +100,22 @@ public static class VirtualMouse {
             ButtonState.Released, vm.XButton1, 
             vm.XButton2, vm.HorizontalScrollWheelValue); 
     }
+
+    public static void ScrollUp() {
+        UseVirtualMouse(); 
+        vm = new MouseState(vm.X, vm.Y, vm.ScrollWheelValue + 1,
+            ButtonState.Released, vm.MiddleButton, 
+            vm.RightButton, vm.XButton1, 
+            vm.XButton2, vm.HorizontalScrollWheelValue); 
+    }
+
+    public static void ScrollDown() {
+        UseVirtualMouse(); 
+        vm = new MouseState(vm.X, vm.Y, vm.ScrollWheelValue - 1,
+            ButtonState.Released, vm.MiddleButton, 
+            vm.RightButton, vm.XButton1, 
+            vm.XButton2, vm.HorizontalScrollWheelValue); 
+    }
     
     //update tests 
     public static bool LeftPressed() {

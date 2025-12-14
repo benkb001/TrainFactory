@@ -207,19 +207,29 @@ public partial class World {
                 );
             }
         }
-
-        foreach (KeyValuePair<int, Background> entry in cm.GetComponentArray<Background>().GetEntities()) {
-            Frame f = cm.GetComponent<Frame>(entry.Key); 
+        
+        void DrawBackground(Background b, Frame f) {
             _spriteBatch.Draw(
                 _pixel, 
                 Util.RectangleFromRectangleF(f.GetRectangle()),
                 null, 
-                entry.Value.BackgroundColor, 
+                b.BackgroundColor, 
                 0f, 
                 Vector2.Zero, 
                 SpriteEffects.None, 
-                entry.Value.Depth
+                b.Depth
             );
+        }
+
+        foreach (KeyValuePair<int, Background> entry in cm.GetComponentArray<Background>().GetEntities()) {
+            Frame f = cm.GetComponent<Frame>(entry.Key); 
+            DrawBackground(entry.Value, f);
+        }
+
+        foreach(KeyValuePair<int, Backgrounds> entry in cm.GetComponentArray<Backgrounds>().GetEntities()) {
+            foreach((Background b, Frame f) in entry.Value.Ls) {
+                DrawBackground(b, f); 
+            }
         }
 
         foreach (KeyValuePair<int, Message> entry in cm.GetComponentArray<Message>().GetEntities()) {

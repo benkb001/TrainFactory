@@ -49,6 +49,7 @@ public class InteractSystem {
 
                     if (interact) {
                         interactable.Interacted = true; 
+                        interactable.InteractorEntity = interactorEntity; 
                         interacted = true; 
                     }
                     j++; 
@@ -62,7 +63,9 @@ public class InteractSystem {
     public static void RegisterUninteract(World world) {
         Type[] ts = [typeof(Interactable), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
-            w.GetComponent<Interactable>(e).Interacted = false;
+            Interactable i = w.GetComponent<Interactable>(e); 
+            i.Interacted = false;
+            i.InteractorEntity = -1; 
         }; 
         world.AddSystem(ts, tf); 
     }

@@ -60,7 +60,6 @@ public class City {
         machines[m.Id] = m; 
     }
 
-    //todo: make it so when trains arrive at a city it adds the train here
     //todo: test
     public void AddTrain(Train t) {
         trains[t.Id] = t; 

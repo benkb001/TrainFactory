@@ -1,24 +1,33 @@
-
+**** URGENT **** 
 
 *** BUGS **** 
 
 * Fix LinearLayout stall infinitely if too small bug 
-* Fix bug clicking unresponsive 
+* Fix bug clicking unresponsive ? 
+* progress bar like 1% when it stops crafting
 
 **** NEED TO TEST **** 
 
 * test player label change automatically when train arrives 
+* test machine upgrade craft time logic 
+* draw machine interface (in utils/MakeMessage) 
+
+**** CLEAN UP **** 
+
+* convert drawMessages to drawCallbacks 
+* convert click systems to onClick callbacks
 
 **** NEXT FEATURES **** 
 
-* Add machines for creating new trains, and the other recipes
-* Create basic layouts for the cities
-* Add liquid trains
-    * Will need to add something to inventory to put a limit on 
-      the number of items a cell can hold based on itemid, and 
-      also which item ids an inventory can or cant hold 
-* Create an interface for upgrading machines/viewing machine level 
-* Create an interface for upgrading trains 
+*   Add something to inventory to put a limit on 
+    the number of items a cell can hold based on itemid, and 
+    also which item ids an inventory can or cant hold 
+
+* Add progress bar to overworld machines
+* Add logic to upgrade train (speed, capacity)
+* Add UI to upgrade train 
+* Make city layouts
+* Add a way to print the world state for debugging
 
 **** FUTURE FEATURES **** 
 
@@ -52,6 +61,7 @@
 
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
+* Add a label to progress bar in machine interface to make it clear what it is when not moving
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 

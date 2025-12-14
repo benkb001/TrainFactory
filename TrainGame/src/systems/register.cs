@@ -14,6 +14,7 @@ using TrainGame.ECS;
 public static class RegisterSystems {
     public static void All(World w) {
         //CameraLockSystem.Register(w); 
+        SceneSystem.RegisterPopLate(w); 
 
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
@@ -33,6 +34,7 @@ public static class RegisterSystems {
 
         ChestInteractSystem.Register(w); 
         TrainInteractSystem.Register(w); 
+        MachineInteractSystem.Register(w); 
         CityClickSystem.Register(w); 
         TrainClickSystem.Register(w); 
         EmbarkClickSystem.Register(w); 
@@ -45,7 +47,7 @@ public static class RegisterSystems {
         RedrawMapSystem.Register(w); 
 
         SceneSystem.RegisterPop(w); 
-        SceneSystem.RegisterPush(w); 
+        SceneSystem.RegisterPush(w);
 
         DrawBackgroundSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 
@@ -58,6 +60,7 @@ public static class RegisterSystems {
         DrawMachinesViewSystem.Register(w); 
         DrawTrainsViewSystem.Register(w);  
         HeldItemDrawSystem.Register(w); 
+        DrawCallbackSystem.Register(w); 
         
         CameraReturnSystem.Register(w); 
 
@@ -77,6 +80,9 @@ public static class RegisterSystems {
         InventoryDragSystem.Register(w); 
         InventoryControlSystem.RegisterOrganize(w); 
 
+        CraftProgressBarUpdateSystem.Register(w); 
+        ProgressBarUpdateSystem.Register(w); 
+        
         ButtonSystem.RegisterUnclick(w);
         InteractSystem.RegisterUninteract(w); 
     }

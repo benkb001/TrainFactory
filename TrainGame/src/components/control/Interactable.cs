@@ -4,6 +4,7 @@ public class Interactable {
     public bool Interacted;
     public string ItemId;
     public int ItemCount;
+    public int InteractorEntity = -1;
 
     public Interactable(bool Interacted = false, string ItemId = "", int ItemCount = 0) {
         this.Interacted = Interacted;

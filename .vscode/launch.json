@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug TrainGame",
+      "type": "coreclr",
+      "request": "launch",
+
+      "preLaunchTask": "build-train-game",
+
+      "program": "${workspaceFolder}/TrainGame/bin/Debug/net8.0/TrainGame.dll",
+      "cwd": "${workspaceFolder}/TrainGame",
+
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}

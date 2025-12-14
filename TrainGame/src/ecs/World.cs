@@ -43,6 +43,7 @@ public partial class World {
 
     //TODO: consider replacing with checks for specific variables being null
     private bool isTest = false;  
+    public int Frame = 0; 
 
     public World() { 
         isTest = true;
@@ -212,6 +213,21 @@ public partial class World {
         }
         VirtualMouse.UpdateEndFrame(); 
         VirtualKeyboard.UpdatePrevFrame(); 
-        wt.Update(); 
+        wt.Update();
+        Frame++;  
     }
+
+    /*
+    TODO: low-prio Write
+    public string ToString() {
+        string res = ""; 
+        foreach (int e in em.GetEntities()) {
+            res = $"{res}Entity {e}: "; 
+            bool[] signature = em.GetSignature(e); 
+            foreach (bool b in signature) {
+
+            }
+        }
+    }
+    */
 }

@@ -32,7 +32,9 @@ public class CityClickSystemTest {
         
         w.Update(); 
         
-        List<int> invEs = w.GetMatchingEntities([typeof(DrawInventoryMessage)]); 
+        //TODO: a way to specify between drawcallback types, 
+        //or pick a different way to test
+        List<int> invEs = w.GetMatchingEntities([typeof(DrawCallback)]); 
         Assert.Single(invEs);
         int invE = invEs[0]; 
 

@@ -20,6 +20,7 @@ public static class RegisterComponents {
 
         r<Active>(); 
         r<Background>(); 
+        r<Backgrounds>(); 
         r<Button>(); 
         r<CameraReturn>();
         r<CardinalMovement>(); 
@@ -30,6 +31,7 @@ public static class RegisterComponents {
         r<Data>(); 
         r<Draggable>(); 
         r<DrawBackgroundMessage>(); 
+        r<DrawCallback>(); 
         r<DrawCityDetailsMessage>(); 
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>(); 
@@ -61,8 +63,10 @@ public static class RegisterComponents {
         r<Outline>(); 
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
+        r<PopLateMessage>(); 
         r<PushSceneMessage>(); 
         r<PopSceneMessage>(); 
+        r<ProgressBar>(); 
         r<Scene>(); 
         r<Sprite>(); 
         r<Stepper>(); 

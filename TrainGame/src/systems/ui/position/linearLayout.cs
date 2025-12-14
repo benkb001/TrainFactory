@@ -78,7 +78,7 @@ public static class LinearLayoutSystem {
         }
     }; 
 
-    private static Type[] ts = [typeof(LinearLayout), typeof(Frame)]; 
+    private static Type[] ts = [typeof(LinearLayout), typeof(Active), typeof(Frame)]; 
 
     public static void Register(World world) {
         world.AddSystem(ts, tf); 

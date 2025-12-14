@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-train-game",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/TrainGame/TrainGame.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

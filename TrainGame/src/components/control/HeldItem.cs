@@ -43,4 +43,8 @@ public class HeldItem {
             this.item = inv.Get(invIndex); 
         }
     }
+
+    public Inventory GetInventory() {
+        return inv; 
+    }
 }

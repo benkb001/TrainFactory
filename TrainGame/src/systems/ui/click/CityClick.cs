@@ -13,6 +13,8 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+
+
 //required order: 
 // cityClick -> push -> drawCityDetail 
 public class CityClickSystem() {
@@ -33,21 +35,9 @@ public class CityClickSystem() {
                 float invHeight = w.ScreenHeight / 4f; 
                 float invY = w.ScreenHeight - invHeight - 10f; 
                 float invX = 25f; 
-                Vector2 invPosition = topleft + new Vector2(invX, invY); 
 
-                DrawInventoryMessage dm = new DrawInventoryMessage(
-                    Width: invWidth, 
-                    Height: invHeight, 
-                    Position: invPosition, 
-                    Inv: inv, 
-                    Padding: 5f, 
-                    SetMenu: true, 
-                    DrawLabel: true
-                );
+                MakeMessage.DrawInventory(inv, w, topleft + new Vector2(invX, invY), invWidth, invHeight); 
 
-                int dmEntity = EntityFactory.Add(w); 
-                w.SetComponent<DrawInventoryMessage>(dmEntity, dm); 
-                
                 float viewWidth = w.ScreenWidth / 5; 
                 float viewHeight = w.ScreenHeight - invHeight - 50f; 
                 float trainsViewX = viewWidth; 

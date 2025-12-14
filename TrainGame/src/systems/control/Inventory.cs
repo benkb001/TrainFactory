@@ -67,8 +67,9 @@ public class InventoryControlSystem() {
                 for (int j = 0; j < children.Count; j++) {
                     int c = children[j]; 
                     Inventory.Item i = inv.Get(row_index, j); 
-
-                    w.GetComponent<TextBox>(c).Text = i.ToString(); 
+                    TextBox tb = w.GetComponent<TextBox>(c); 
+                    
+                    tb.Text = i.ToString(); 
                     w.SetComponent<Inventory.Item>(c, i);
                 }
             }

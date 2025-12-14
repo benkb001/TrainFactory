@@ -17,21 +17,7 @@ public class MachineUIClickSystem() {
         Type[] ts = [typeof(MachineUI), typeof(Button), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             if (w.GetComponent<Button>(e).Clicked) {
-                View.EnterMenu(w); 
-                Machine m = w.GetComponent<MachineUI>(e).GetMachine(); 
-                DrawMachineRequestMessage dm = new DrawMachineRequestMessage(
-                    machine: m, 
-                    Width: w.ScreenWidth / 5f, 
-                    Height: w.ScreenWidth / 2f, 
-                    Position: w.GetCameraTopLeft() + new Vector2(w.ScreenWidth / 5f, 10f),
-                    Margin: 5f, 
-                    SetMenu: true
-                ); 
-                int dmEntity = EntityFactory.Add(w); 
-                w.SetComponent<DrawMachineRequestMessage>(dmEntity, dm); 
-
-                int pushEntity = EntityFactory.Add(w);
-                w.SetComponent<PushSceneMessage>(pushEntity, PushSceneMessage.Get()); 
+                MakeMessage.DrawMachineInterface(w, w.GetComponent<MachineUI>(e).GetMachine()); 
             }
         }; 
         world.AddSystem(ts, tf); 
