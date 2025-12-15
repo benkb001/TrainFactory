@@ -12,38 +12,28 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 public class Chest {
-    private DrawInventoryMessage chestInvMessage; 
-    private DrawInventoryMessage playerInvMessage; 
-    public DrawInventoryMessage ChestInvMessage => chestInvMessage; 
-    public DrawInventoryMessage PlayerInvMessage => playerInvMessage; 
+
     public float Margin => margin; 
-    public float Padding => padding; 
     public float CellSize => cellSize; 
     float margin = 10f; 
-    float padding = 2f;
     float cellSize = 100f; 
-    private Vector2 chestInvDrawPosition; 
+    public Vector2 ChestInvDrawPosition; 
+    public Vector2 PlayerInvDrawPosition; 
+    public Inventory ChestInv; 
+    public Inventory PlayerInv; 
+    public float ChestInvWidth; 
+    public float ChestInvHeight; 
+    public float PlayerInvWidth; 
+    public float PlayerInvHeight; 
 
     public Chest(Inventory chestInv, Inventory playerInv) {
-        chestInvDrawPosition = new Vector2(margin, margin); 
-        float chestHeight = chestInv.GetRows() * cellSize; 
-        
-        chestInvMessage = new DrawInventoryMessage(
-            Width: chestInv.GetCols() * cellSize,
-            Height: chestHeight,
-            Position: chestInvDrawPosition,
-            Inv: chestInv,
-            Padding: padding, 
-            SetMenu: true
-        ); 
-
-        playerInvMessage = new DrawInventoryMessage(
-            Width: playerInv.GetCols() * cellSize, 
-            Height: playerInv.GetRows() * cellSize, 
-            Position: chestInvDrawPosition + new Vector2(0, chestHeight + margin), 
-            Inv: playerInv,
-            Padding: padding, 
-            SetMenu: true
-        ); 
+        ChestInv = chestInv; 
+        PlayerInv = playerInv; 
+        ChestInvDrawPosition = new Vector2(margin, margin); 
+        ChestInvHeight = chestInv.GetRows() * cellSize; 
+        ChestInvWidth = chestInv.GetCols() * cellSize; 
+        PlayerInvHeight = playerInv.GetRows() * cellSize;
+        PlayerInvWidth = playerInv.GetCols() * cellSize; 
+        PlayerInvDrawPosition = new Vector2(margin, margin * 2 + ChestInvHeight); 
     }
 }

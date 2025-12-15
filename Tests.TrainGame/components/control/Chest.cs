@@ -29,14 +29,11 @@ public class ChestTest {
         float correctPlayerX = chest.Margin;
         float correctPlayerY = (chest.Margin * 2) + correctChestHeight;
 
-        Assert.Equal(chest.Margin, chest.ChestInvMessage.Position.X); 
-        Assert.Equal(chest.Margin, chest.ChestInvMessage.Position.Y); 
-        Assert.Equal(correctChestWidth, chest.ChestInvMessage.Width);
-        Assert.Equal(correctChestHeight, chest.ChestInvMessage.Height); 
-        Assert.Equal(correctPlayerWidth, chest.PlayerInvMessage.Width); 
-        Assert.Equal(correctPlayerHeight, chest.PlayerInvMessage.Height); 
-        Assert.Equal(correctPlayerX, chest.PlayerInvMessage.Position.X); 
-        Assert.Equal(correctPlayerY, chest.PlayerInvMessage.Position.Y); 
+        Assert.Equal(correctPlayerWidth, chest.PlayerInvWidth); 
+        Assert.Equal(correctPlayerHeight, chest.PlayerInvHeight); 
+        Assert.Equal(correctChestWidth, chest.ChestInvWidth); 
+        Assert.Equal(correctChestHeight, chest.ChestInvHeight);
+        Assert.Equal(new Vector2(correctPlayerX, correctPlayerY), chest.PlayerInvDrawPosition);
     }
 
     [Fact]
@@ -51,7 +48,7 @@ public class ChestTest {
 
         Chest chest = new Chest(chestInv, playerInv);
 
-        Assert.Equal(playerInv, chest.PlayerInvMessage.Inv);
-        Assert.Equal(chestInv, chest.ChestInvMessage.Inv); 
+        Assert.Equal(playerInv, chest.PlayerInv);
+        Assert.Equal(chestInv, chest.ChestInv); 
     }
 }

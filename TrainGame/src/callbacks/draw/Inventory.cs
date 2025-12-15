@@ -16,17 +16,14 @@ using TrainGame.Constants;
 using TrainGame.Utils; 
 
 public static class DrawInventoryCallback {
-    public static void Create(World w, Inventory Inv, Vector2 Position, float Width, float Height, 
-        int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
-        
-        if (!w.EntityExists(Entity)) {
-            Entity = EntityFactory.Add(w); 
-        }
+    public static DrawCallback Instantiate(World w, Inventory inv, Vector2 Position, float Width, 
+        float Height, int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+            return new DrawCallback(() => {
+            
+            if (!w.EntityExists(Entity)) {
+                Entity = EntityFactory.Add(w); 
+            }
 
-        int e = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawCallback>(e, new DrawCallback(() => {
-            Inventory inv = Inv; 
             int inventoryUI = Entity; 
 
             w.SetComponent<Inventory>(inventoryUI, inv); 
@@ -98,6 +95,14 @@ public static class DrawInventoryCallback {
                 }
                 ll.AddChild(row); 
             }
-        })); 
+        }); 
+    }
+
+    public static void Create(World w, Inventory Inv, Vector2 Position, float Width, float Height, 
+        int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+        
+        int e = EntityFactory.Add(w); 
+        w.SetComponent<DrawCallback>(e, Instantiate(w, Inv, Position, Width, Height, 
+            Entity: Entity, Padding, SetMenu, DrawLabel)); 
     }
 }

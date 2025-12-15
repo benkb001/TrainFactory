@@ -1,20 +1,25 @@
 **** URGENT **** 
 
+* crashing after closing machine interface, started 
+  after replacing drawInventorymessage with calback 
+
 *** BUGS **** 
 
 * Fix LinearLayout stall infinitely if too small bug 
 * Fix bug clicking unresponsive ? 
 * progress bar like 1% when it stops crafting
+* I think there is a bug with position on chest being relative to (0, 0)
+
 
 **** NEED TO TEST **** 
 
 * test player label change automatically when train arrives 
-* test machine upgrade craft time logic 
-* draw machine interface (in utils/MakeMessage) 
 
 **** CLEAN UP **** 
 
 * convert drawMessages to drawCallbacks 
+    * inventory and machineReqeust already done but need to switch out 
+    * in systems and tests 
 * convert click systems to onClick callbacks
 
 **** NEXT FEATURES **** 

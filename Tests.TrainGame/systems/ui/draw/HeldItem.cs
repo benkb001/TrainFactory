@@ -12,6 +12,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Callbacks; 
 
 [Collection("Sequential")]
 public class HeldItemDrawSystemTest() {
@@ -21,8 +22,7 @@ public class HeldItemDrawSystemTest() {
         inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2), 0, 1);
         int invEntity = EntityFactory.Add(w); 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(800, 80, Vector2.Zero, inv, Entity: invEntity));
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 800, 80, Entity: invEntity);
 
         int playerEntity = EntityFactory.Add(w);
         w.SetComponent<Frame>(playerEntity, new Frame(150, 150, 100, 100)); 

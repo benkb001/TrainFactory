@@ -26,6 +26,7 @@ public class Machine {
     private float startFactor; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
+    public int CraftTicks => craftTicks; 
     public string Id => id; 
     public readonly Inventory Inv;
     public readonly Inventory PlayerInv; 
@@ -75,8 +76,7 @@ public class Machine {
     public string GetId() {
         return id; 
     }
-
-    //TODO: Test
+    
     public void SetCraftTicks() {
         craftTicks = (int)(minTicks + (slowFactor / (level + startFactor)));
     }

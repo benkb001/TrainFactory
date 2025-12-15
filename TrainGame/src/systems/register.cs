@@ -31,6 +31,7 @@ public static class RegisterSystems {
 
         NextDrawTestButtonSystem.Register(w);
         NextDrawTestUISystem.Register(w);
+        CloseMenuSystem.Register(w); 
 
         ChestInteractSystem.Register(w); 
         TrainInteractSystem.Register(w); 
@@ -43,7 +44,7 @@ public static class RegisterSystems {
         PlayerAccessTrainClickSystem.Register(w); 
         OpenMapSystem.Register(w); 
 
-        CloseMenuSystem.Register(w); 
+        
         RedrawMapSystem.Register(w); 
 
         SceneSystem.RegisterPop(w); 
@@ -52,15 +53,15 @@ public static class RegisterSystems {
         DrawBackgroundSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 
         DrawEmbarkSystem.Register(w); 
-        InventoryUISystem.RegisterBuild(w); 
         DrawMapSystem.Register(w); 
         TrainMapPositionSystem.Register(w);
         DrawCitySystem.Register(w); 
         DrawMachineRequestSystem.Register(w);
         DrawMachinesViewSystem.Register(w); 
         DrawTrainsViewSystem.Register(w);  
-        HeldItemDrawSystem.Register(w); 
         DrawCallbackSystem.Register(w); 
+        HeldItemDrawSystem.Register(w); 
+        
         
         CameraReturnSystem.Register(w); 
 

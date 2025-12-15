@@ -10,10 +10,12 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Systems; 
 using TrainGame.Utils; 
+using TrainGame.Callbacks; 
 
+//TODO: rename this cuz its actually testing DrawInventoryCallback
 public class InventoryUISystemTest {
     [Fact]
-    public void InventoryUISystem_ShouldAddLinearLayoutAndFrameToEntityInDrawInventoryMessage() {
+    public void InventoryUISystem_ShouldAddLinearLayoutAndFrameToEntity() {
         World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
@@ -21,30 +23,12 @@ public class InventoryUISystemTest {
         int inventoryEntity = EntityFactory.Add(w);
         Inventory inv = new Inventory("Test", 5, 5); 
 
-        int msg = EntityFactory.Add(w);
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 100f, Vector2.Zero, inv, inventoryEntity)); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 100, Entity: inventoryEntity);
 
         w.Update(); 
 
         Assert.True(w.ComponentContainsEntity<LinearLayout>(inventoryEntity)); 
         Assert.True(w.ComponentContainsEntity<Frame>(inventoryEntity)); 
-    }
-
-    [Fact]
-    public void InventoryUISystem_ShouldRemoveAllDrawInventoryMessageEntities() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterSystems.All(w); 
-
-        int inventoryEntity = EntityFactory.Add(w);
-        Inventory inv = new Inventory("Test", 5, 5); 
-
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 100f, Vector2.Zero, inv, inventoryEntity)); 
-
-        w.Update(); 
-
-        Assert.False(w.EntityExists(msg)); 
     }
 
     [Fact]
@@ -55,10 +39,8 @@ public class InventoryUISystemTest {
 
         int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 5, 5); 
-
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
-
+        
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 200f, Entity: inventoryEntity);
         w.Update(); 
 
         Frame f = w.GetComponent<Frame>(inventoryEntity); 
@@ -74,9 +56,8 @@ public class InventoryUISystemTest {
 
         int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
-
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
+        
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 200, Entity: inventoryEntity);
 
         w.Update(); 
 
@@ -93,8 +74,7 @@ public class InventoryUISystemTest {
         int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100f, 200f, Vector2.Zero, inv, inventoryEntity)); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 200, Entity: inventoryEntity);
 
         w.Update(); 
 
@@ -124,15 +104,8 @@ public class InventoryUISystemTest {
         float inventoryWidth = 100f; 
         float inventoryPadding = 5f; 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            inventoryWidth, 
-            200f, 
-            Vector2.Zero, 
-            inv,     
-            inventoryEntity, 
-            inventoryPadding
-        )); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, inventoryWidth, 200, Entity: inventoryEntity, Padding: inventoryPadding);
+
         w.Update(); 
 
         LinearLayout ll = w.GetComponent<LinearLayout>(inventoryEntity); 
@@ -165,16 +138,10 @@ public class InventoryUISystemTest {
         //the total available height is height - (padding * (numRows + 1))
         //so each row should be availableHeight/numRows
         float correctRowHeight = (inventoryHeight - (inventoryPadding * (inv.GetRows() + 1))) / inv.GetRows(); 
+        float inventoryWidth = 100f; 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            100f, 
-            inventoryHeight, 
-            Vector2.Zero, 
-            inv,     
-            inventoryEntity, 
-            inventoryPadding
-        )); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, inventoryWidth, 
+            inventoryHeight, Entity: inventoryEntity, Padding: inventoryPadding);
         w.Update(); 
 
         LinearLayout ll = w.GetComponent<LinearLayout>(inventoryEntity); 
@@ -210,15 +177,9 @@ public class InventoryUISystemTest {
         float correctCellWidth = (correctRowWidth - (inventoryPadding * (inv.GetCols() + 1))) / inv.GetCols(); 
         float correctCellHeight = correctRowHeight - (2 * inventoryPadding); 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            inventoryWidth, 
-            inventoryHeight, 
-            Vector2.Zero, 
-            inv,     
-            inventoryEntity, 
-            inventoryPadding
-        )); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, inventoryWidth, inventoryHeight, 
+            Entity: inventoryEntity, Padding: inventoryPadding);
+        
         w.Update(); 
 
         bool allCellWidthCorrect = true; 
@@ -264,15 +225,8 @@ public class InventoryUISystemTest {
         float invX = 25f; 
         float invY = 55f; 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            inventoryWidth, 
-            inventoryHeight, 
-            new Vector2(invX, invY), 
-            inv,     
-            inventoryEntity, 
-            inventoryPadding
-        )); 
+        DrawInventoryCallback.Create(w, inv, new Vector2(invX, invY), inventoryWidth, 
+            inventoryHeight, Entity: inventoryEntity, Padding: inventoryPadding);
         w.Update(); 
 
         LinearLayout ll = w.GetComponent<LinearLayout>(inventoryEntity); 

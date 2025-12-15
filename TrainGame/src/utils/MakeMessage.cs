@@ -61,17 +61,7 @@ public class MakeMessage {
         Vector2 requestPosition = headerPosition + new Vector2(headerWidth + 10f, 0f); 
 
         if (!m.ProduceInfinite) {
-            DrawMachineRequestMessage dm = new DrawMachineRequestMessage(
-                machine: m, 
-                Width: requestWidth,
-                Height: requestHeight,
-                Position: requestPosition,
-                Margin: 5f, 
-                SetMenu: true
-            ); 
-
-            int dmEntity = EntityFactory.Add(w, setScene: false); 
-            w.SetComponent<DrawMachineRequestMessage>(dmEntity, dm); 
+            DrawMachineRequestCallback.Create(w, m, requestPosition, requestWidth, requestHeight); 
         }
 
         //Draw progress bar

@@ -11,6 +11,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Callbacks; 
 
 //required order: 
 // trainClick -> push -> drawTrainDetail 
@@ -53,31 +54,12 @@ public class TrainClickSystem() {
 
                     Vector2 trainInvPosition = embark_position + new Vector2(embarkWidth + 10f, 0); 
                     Vector2 cityInvPosition = trainInvPosition + new Vector2(0, trainInvHeight + 10f); 
-                    DrawInventoryMessage drawTrainInv = new DrawInventoryMessage(
-                        Width: trainInvWidth, 
-                        Height: trainInvHeight, 
-                        Position: trainInvPosition, 
-                        Inv: trainInv, 
-                        Padding: Constants.InventoryPadding, 
-                        SetMenu: true, 
-                        DrawLabel: true
-                    ); 
 
-                    int drawTrainInvMsgEntity = EntityFactory.Add(w); 
-                    w.SetComponent<DrawInventoryMessage>(drawTrainInvMsgEntity, drawTrainInv); 
+                    DrawInventoryCallback.Create(w, trainInv, trainInvPosition, trainInvWidth, trainInvHeight, 
+                        SetMenu: true, DrawLabel: true);
 
-                    DrawInventoryMessage drawCityInv = new DrawInventoryMessage(
-                        Width: cityInvWidth, 
-                        Height: cityInvHeight, 
-                        Position: cityInvPosition, 
-                        Inv: cityInv, 
-                        Padding: Constants.InventoryPadding, 
-                        SetMenu: true, 
-                        DrawLabel: true
-                    ); 
-
-                    int drawCityInvMsgEntity = EntityFactory.Add(w); 
-                    w.SetComponent<DrawInventoryMessage>(drawCityInvMsgEntity, drawCityInv); 
+                    DrawInventoryCallback.Create(w, cityInv, cityInvPosition, cityInvWidth, cityInvHeight, 
+                        SetMenu: true, DrawLabel: true);
                 }
                 
             }

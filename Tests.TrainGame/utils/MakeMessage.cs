@@ -22,4 +22,22 @@ public class MakeMessageTest {
 
         Assert.Single(w.GetMatchingEntities([typeof(Inventory), typeof(LinearLayout), typeof(Frame), typeof(Active)])); 
     }
+
+    [Fact]
+    public void MakeMessage_DrawMachineInterface_ShouldMakeProgressBarAndInventoryAndRequestStepper() {
+        World w = WorldFactory.Build(); 
+        Inventory inv = new Inventory("Test", 2, 2); 
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2
+        }; 
+
+        Machine m = new Machine(inv, recipe, "Smoothie", 2, 10); 
+        MakeMessage.DrawMachineInterface(w, m); 
+
+        w.Update(); 
+        
+        Assert.Single(w.GetMatchingEntities([typeof(Stepper)])); 
+        Assert.Single(w.GetMatchingEntities([typeof(Inventory)])); 
+        Assert.Single(w.GetMatchingEntities([typeof(ProgressBar)])); 
+    }
 }

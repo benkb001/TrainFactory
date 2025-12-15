@@ -10,6 +10,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Systems; 
 using TrainGame.Utils; 
+using TrainGame.Callbacks; 
 
 //sequential because global state (mouse)
 [Collection("Sequential")]
@@ -17,8 +18,8 @@ public class InventoryDragSystemTest {
 
     private void RegisterDependencies(World w) {
         ButtonSystem.RegisterClick(w);
-    
-        InventoryUISystem.RegisterBuild(w); 
+
+        DrawCallbackSystem.Register(w); 
         InventoryControlSystem.RegisterUpdate(w); 
         
         LinearLayoutSystem.Register(w); 
@@ -50,24 +51,8 @@ public class InventoryDragSystemTest {
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = EntityFactory.Add(w); 
-        int msg2 = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: Vector2.Zero, 
-            Inv: inv1, 
-            Entity: invEntity1
-        )); 
-
-        w.SetComponent<DrawInventoryMessage>(msg2, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: new Vector2(100, 0), 
-            Inv: inv2, 
-            Entity: invEntity2
-        )); 
+        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
+        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
 
         w.Update(); 
 
@@ -113,24 +98,8 @@ public class InventoryDragSystemTest {
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = EntityFactory.Add(w); 
-        int msg2 = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: Vector2.Zero, 
-            Inv: inv1, 
-            Entity: invEntity1
-        )); 
-
-        w.SetComponent<DrawInventoryMessage>(msg2, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: new Vector2(100, 0), 
-            Inv: inv2, 
-            Entity: invEntity2
-        )); 
+        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
+        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
 
         w.Update(); 
 
@@ -184,24 +153,8 @@ public class InventoryDragSystemTest {
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = EntityFactory.Add(w); 
-        int msg2 = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: Vector2.Zero, 
-            Inv: inv1, 
-            Entity: invEntity1
-        )); 
-
-        w.SetComponent<DrawInventoryMessage>(msg2, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: new Vector2(100, 0), 
-            Inv: inv2, 
-            Entity: invEntity2
-        )); 
+        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
+        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
 
         w.Update(); 
 
@@ -237,24 +190,8 @@ public class InventoryDragSystemTest {
         w.SetComponent<Inventory>(invEntity1, inv1); 
         w.SetComponent<Inventory>(invEntity2, inv2); 
 
-        int msg1 = EntityFactory.Add(w); 
-        int msg2 = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawInventoryMessage>(msg1, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: Vector2.Zero, 
-            Inv: inv1, 
-            Entity: invEntity1
-        )); 
-
-        w.SetComponent<DrawInventoryMessage>(msg2, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: new Vector2(100, 0), 
-            Inv: inv2, 
-            Entity: invEntity2
-        )); 
+        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
+        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
 
         w.Update(); 
 

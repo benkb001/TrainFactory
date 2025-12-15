@@ -4,10 +4,8 @@ using TrainGame.ECS;
 
 public class MachineUIClickSystemTest {
     [Fact]
-    public void MachineUIClickSystem_ShouldPushSceneAndMakeADrawMachineRequestMessageWhenClicked() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MachineUIClickSystem.Register(w); 
+    public void MachineUIClickSystem_ShouldPushSceneAndMakeAnInventory() {
+        World w = WorldFactory.Build(); 
 
         int e = EntityFactory.Add(w); 
         w.SetComponent<Frame>(e, new Frame(0, 0, 100, 100));
@@ -23,8 +21,8 @@ public class MachineUIClickSystemTest {
         w.SetComponent<MachineUI>(e, new MachineUI(m));
         
         w.Update(); 
-
-        Assert.Single(w.GetComponentArray<PushSceneMessage>());
-        Assert.Single(w.GetComponentArray<DrawMachineRequestMessage>());
+        
+        Assert.Equal(1, w.GetComponent<Scene>(e).Value); 
+        Assert.Single(w.GetMatchingEntities([typeof(Inventory)])); 
     }
 }

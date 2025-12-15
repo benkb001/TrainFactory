@@ -9,6 +9,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Systems; 
 using TrainGame.Utils;
+using TrainGame.Callbacks; 
 
 public class InventoryControlSystemTest {
 
@@ -24,15 +25,9 @@ public class InventoryControlSystemTest {
         float inventoryWidth = 100f; 
         float inventoryPadding = 5f; 
 
-        int msg = EntityFactory.Add(w); 
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            inventoryWidth, 
-            200f, 
-            Vector2.Zero, 
-            inv,     
-            inventoryEntity, 
-            inventoryPadding
-        )); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, inventoryWidth, 
+            Height: 200f, Entity: inventoryEntity, Padding: inventoryPadding);
+
         w.Update(); 
 
         Inventory.Item apple = new Inventory.Item(ItemId: "Apple", Count: 10); 

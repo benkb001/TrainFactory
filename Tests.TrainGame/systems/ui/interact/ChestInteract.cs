@@ -12,26 +12,9 @@ using TrainGame.Constants;
 
 public class ChestInteractSystemTest {
     
-    private void RegisterDependencies(World w) {
-
-        InteractSystem.RegisterInteract(w); 
-
-        ChestInteractSystem.Register(w); 
-        //removed so that it does not consume generated drawInventoryMessages 
-        //InventoryUISystem.RegisterBuild(w); 
-        
-        InventoryControlSystem.RegisterUpdate(w); 
-        LinearLayoutSystem.Register(w); 
-
-        InventoryControlSystem.RegisterOrganize(w); 
-
-        InteractSystem.RegisterUninteract(w); 
-    }
     [Fact]
-    public void ChestInteractSystem_ShouldGenerateTwoDrawInventoryMessagesWithCorrespondingInventories() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterDependencies(w); 
+    public void ChestInteractSystem_ShouldDrawAChestInventoryAndAPlayerInventory() {
+        World w = WorldFactory.Build(); 
 
         int playerInvEntity = EntityFactory.Add(w);
         int chestInvEntity = EntityFactory.Add(w);
@@ -50,13 +33,9 @@ public class ChestInteractSystemTest {
 
         w.Update(); 
         
-        List<KeyValuePair<int, DrawInventoryMessage>> msg_ls = w.GetComponentArray<DrawInventoryMessage>().ToList(); 
-        Assert.Equal(2, msg_ls.Count);
-
-        DrawInventoryMessage msg1 = msg_ls[0].Value; 
-        DrawInventoryMessage msg2 = msg_ls[1].Value; 
-        
-        Assert.True(msg1.Inv == chestInv || msg2.Inv == chestInv); 
-        Assert.True(msg1.Inv == playerInv || msg2.Inv == playerInv); 
+        List<int> es = w.GetMatchingEntities([typeof(Inventory), typeof(LinearLayout)]); 
+        Assert.Equal(2, es.Count);
+        Assert.Single(es, e => w.GetComponent<Inventory>(e) == chestInv); 
+        Assert.Single(es, e => w.GetComponent<Inventory>(e) == playerInv); 
     }
 }

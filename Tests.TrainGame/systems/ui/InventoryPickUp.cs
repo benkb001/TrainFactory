@@ -11,6 +11,7 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Callbacks; 
 
 //sequential because global state (mouse)
 [Collection("Sequential")]
@@ -31,15 +32,7 @@ public class InvetoryPickUpUISystemTest {
 
         w.SetComponent<Inventory>(invEntity, inv); 
 
-        int msg = EntityFactory.Add(w); 
-
-        w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(
-            Width: 100, 
-            Height: 100, 
-            Position: Vector2.Zero, 
-            Inv: inv, 
-            Entity: invEntity
-        )); 
+        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 100, Entity: invEntity);
 
         w.Update(); 
 

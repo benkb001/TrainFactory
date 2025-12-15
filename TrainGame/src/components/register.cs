@@ -34,8 +34,7 @@ public static class RegisterComponents {
         r<DrawCallback>(); 
         r<DrawCityDetailsMessage>(); 
         r<DrawCityMessage>(); 
-        r<DrawEmbarkMessage>(); 
-        r<DrawInventoryMessage>(); 
+        r<DrawEmbarkMessage>();  
         r<DrawMachineRequestMessage>(); 
         r<DrawMachinesViewMessage>(); 
         r<DrawMapMessage>(); 

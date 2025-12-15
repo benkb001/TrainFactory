@@ -27,8 +27,6 @@ public class PauseButtonSystemTest {
         NextDrawTestButtonSystem.Register(w);
         NextDrawTestUISystem.Register(w);
 
-        InventoryUISystem.RegisterBuild(w); 
-
         StepperButtonSystem.Register(w); 
         StepperUISystem.Register(w); 
         

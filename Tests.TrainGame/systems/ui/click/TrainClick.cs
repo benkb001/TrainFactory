@@ -19,10 +19,7 @@ public class TrainClickSystemTest {
     public void TrainClickSystem_ShouldDrawCityAndTrainInventoriesAndEmbarkView() {
         VirtualMouse.Reset(); 
 
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        ButtonSystem.RegisterClick(w); 
-        TrainClickSystem.Register(w); 
+        World w = WorldFactory.Build(); 
         
         Inventory trainInv = new Inventory("TrainInv", 1, 1); 
         Inventory cityInv = new Inventory("CityInv", 1, 1); 
@@ -37,16 +34,11 @@ public class TrainClickSystemTest {
         VirtualMouse.LeftClick(new Vector2(1, 1)); 
         w.Update(); 
 
-        DrawEmbarkMessage embarkMsg = w.GetComponent<DrawEmbarkMessage>(
-            w.GetMatchingEntities([typeof(DrawEmbarkMessage)])[0]
-        );
-
-        List<DrawInventoryMessage> invMsgs = w.GetMatchingEntities([typeof(DrawInventoryMessage)]).Select(
-            e => w.GetComponent<DrawInventoryMessage>(e)).ToList(); 
+        List<int> es = w.GetMatchingEntities([typeof(Inventory), typeof(LinearLayout)]); 
         
-        Assert.Equal(t, embarkMsg.GetTrain());
-        Assert.Single(invMsgs, msg => trainInv == msg.Inv);
-        Assert.Single(invMsgs, msg => cityInv == msg.Inv); 
+        Assert.Equal(2, es.Count);
+        Assert.Single(es, e => w.GetComponent<Inventory>(e) == trainInv);
+        Assert.Single(es, e => w.GetComponent<Inventory>(e)  == cityInv); 
 
         VirtualMouse.Reset(); 
     }

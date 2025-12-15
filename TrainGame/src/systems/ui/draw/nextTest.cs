@@ -13,6 +13,7 @@ using _Color = System.Drawing.Color;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 using TrainGame.Constants; 
+using TrainGame.Callbacks; 
 
 public static class NextDrawTestUISystem {
     private static Type[] ts = [typeof(NextDrawTestControl)]; 
@@ -42,7 +43,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(18)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(15)); 
 
         }, 
         [2] = (w) => {
@@ -348,14 +349,15 @@ public static class NextDrawTestUISystem {
             i.Add(new Inventory.Item(ItemId: "Apple", Count: 1), 1, 0); 
             w.SetComponent<Inventory>(inv, i); 
 
-            int msg = EntityFactory.Add(w);  
-            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100, 100, Vector2.Zero, i, inv, 5f));
+            DrawInventoryCallback.Create(w, i, Vector2.Zero, 100, 100, Entity: inv, Padding: 5f); 
 
             int other_inv_entity = EntityFactory.Add(w);  
             Inventory inv_other = new Inventory("Other", 2, 2); 
-            int other_msg = EntityFactory.Add(w);  
             w.SetComponent<Inventory>(other_inv_entity, inv_other); 
-            w.SetComponent<DrawInventoryMessage>(other_msg, new DrawInventoryMessage(100, 100, new Vector2(0, 100), inv_other, other_inv_entity, 5f)); 
+
+            DrawInventoryCallback.Create(w, inv_other, new Vector2(0, 100), 100, 100, 
+                Entity: other_inv_entity, Padding: 5f); 
+ 
             AddNextTestButton(w, 16); 
         }, 
         [17] = (w) => {
@@ -505,8 +507,7 @@ public static class NextDrawTestUISystem {
             inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
             inv.Add(new Inventory.Item(ItemId: "Orange", Count: 2)); 
 
-            int msg = EntityFactory.Add(w);  
-            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(100, 100, new Vector2(300, 0), inv));
+            DrawInventoryCallback.Create(w, inv, new Vector2(300, 0), 100, 100); 
 
             Dictionary<string, int> recipe = new() {
                 ["Apple"] = 1, 
@@ -526,8 +527,7 @@ public static class NextDrawTestUISystem {
             inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
             int invEntity = EntityFactory.Add(w); 
 
-            int msg = EntityFactory.Add(w); 
-            w.SetComponent<DrawInventoryMessage>(msg, new DrawInventoryMessage(800, 80, Vector2.Zero, inv, Entity: invEntity));
+            DrawInventoryCallback.Create(w, inv, Vector2.Zero, 800, 80, Entity: invEntity); 
 
             int playerEntity = EntityFactory.Add(w);
             w.SetComponent<Frame>(playerEntity, new Frame(150, 150, 100, 100)); 

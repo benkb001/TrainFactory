@@ -116,6 +116,9 @@ public partial class World {
     }
 
     public T GetComponent<T>(int entity) {
+        if (!EntityExists(entity)) {
+            throw new InvalidOperationException($"{entity} does not exist"); 
+        }
         return cm.GetComponent<T>(entity); 
     }
 
