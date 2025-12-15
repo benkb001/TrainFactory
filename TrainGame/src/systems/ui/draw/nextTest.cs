@@ -431,7 +431,7 @@ public static class NextDrawTestUISystem {
             invCLeft.Add(new Inventory.Item(ItemId: "Banana", Count: 2));
             invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
             invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
-            playerInv.Add(new Inventory.Item(ItemId: ItemID.UpgradeMachine, Count: 100)); 
+            playerInv.Add(new Inventory.Item(ItemId: ItemID.MachineUpgrade, Count: 100)); 
 
             City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
             City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 

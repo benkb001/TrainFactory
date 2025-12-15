@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
+using TrainGame.Constants; 
 
 public class Inventory {
     private string inventoryId; 
@@ -18,6 +19,7 @@ public class Inventory {
     private List<Item> items; 
     private int rows; 
     private int cols; 
+    private int level = 1; 
 
     public Inventory(string id, int r, int c) {
         inventoryId = id;
@@ -31,16 +33,38 @@ public class Inventory {
         }
     }
 
-    public bool Add(Item i) {
-        int index = items.FindIndex(item => item.ItemId == i.ItemId);
+    private int stackSize(string itemId) {
+        return Constants.ItemStackSize(itemId) * level; 
+    }
+
+    private (int, int) getNumToAdd(Item i, int index) {
+        Item cur = Get(index); 
+        if (cur.ItemId == "") {
+            cur.Count = 0; 
+        }
+
+        int stack_size = stackSize(i.ItemId); 
+        int num_adding = Math.Min(stack_size - cur.Count, i.Count);
+        int num_remaining = i.Count - num_adding; 
+        return (num_adding, num_remaining); 
+    }
+
+    //todo: need to re-factor in other places because it might add a portion of the items but not all
+    //returns the number of items it added to the inventory
+    public int Add(Item i) {
+
+        int index = items.FindIndex(item => item.ItemId == i.ItemId && item.Count < stackSize(i.ItemId));
 
         if (index == -1) {
             index = items.FindIndex(item => item.ItemId == "");
         }
         
         if (index == -1) {
-            return false; 
+            return 0; 
         }
+
+        (int num_adding, int num_remaining) = getNumToAdd(i, index); 
+        i.Count = num_adding; 
 
         (int row, int col) = GetRowColIndex(index); 
         i.Row = row; 
@@ -50,21 +74,26 @@ public class Inventory {
         items[index].Count += i.Count; 
         i.Inv = this;
         
-        return true; 
+        if (num_remaining > 0) {
+            return num_adding + Add(new Item(ItemId: i.ItemId, Count: num_remaining)); 
+        }
+
+        return num_adding; 
     }
 
-    public bool Add(Item i, int row, int col) {
+    public int Add(Item i, int row, int col) {
         ensureValidIndices(row, col); 
         int idx = getIndex(row, col); 
         if (items[idx].ItemId == i.ItemId || items[idx].ItemId == "") {
+            (int num_adding, int _) = getNumToAdd(i, idx); 
             i.Row = row; 
             i.Column = col; 
             i.Inv = this; 
             items[idx].ItemId = i.ItemId; 
-            items[idx].Count += i.Count; 
-            return true; 
+            items[idx].Count += num_adding; 
+            return num_adding; 
         }
-        return false; 
+        return 0; 
     }
 
     //TODO: Test
@@ -93,6 +122,10 @@ public class Inventory {
             }
         }
         return found; 
+    }
+
+    public void Upgrade() {
+        level++; 
     }
 
     public Item Take(int row, int col) {

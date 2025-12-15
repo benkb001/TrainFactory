@@ -16,8 +16,8 @@ using System.Reflection;
 public class UpgradeMachineOnClick {
     public static Action Create(World w, Machine m) {
         return () => {
-            if (m.PlayerInv.ItemCount(ItemID.UpgradeMachine) >= 1) {
-                m.PlayerInv.Take(ItemID.UpgradeMachine, 1); 
+            if (m.PlayerInv.ItemCount(ItemID.MachineUpgrade) >= 1) {
+                m.PlayerInv.Take(ItemID.MachineUpgrade, 1); 
                 m.Upgrade(1); 
 
                 PopFactory.Build(w, scene: 1, late: true, delay: 1); 

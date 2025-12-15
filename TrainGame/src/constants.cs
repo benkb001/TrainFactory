@@ -36,6 +36,23 @@ namespace TrainGame.Constants
         public static float InventoryPadding = 5f;
 
         public static float LabelHeight = 25f; 
+
+        public static int ItemStackSize(string itemId) {
+            return itemId switch {
+                ItemID.ArmorUpgrade => 100,
+                ItemID.Fuel => 100,
+                ItemID.Glass => 50, 
+                ItemID.GunUpgrade => 100,
+                ItemID.Iron => 100, 
+                ItemID.MachineUpgrade => 100, 
+                ItemID.Oil => 1000, 
+                ItemID.Rail => 100, 
+                ItemID.Sand => 1000,
+                ItemID.Water => 1000, 
+                ItemID.Wood => 100,
+                _ => 100
+            }; 
+        }
     }
 
     public static class Textures {
@@ -88,7 +105,17 @@ namespace TrainGame.Constants
     }
 
     public static class ItemID {
-        public const string UpgradeMachine = "Upgrade Machine"; 
+        public const string ArmorUpgrade = "ArmorUpgrade"; 
+        public const string Fuel = "Fuel"; 
+        public const string Glass = "Glass"; 
+        public const string GunUpgrade = "Gun Upgrade"; 
+        public const string Iron = "Iron"; 
+        public const string MachineUpgrade = "Machine Upgrade"; 
+        public const string Oil = "Oil"; 
+        public const string Rail = "Rail"; 
+        public const string Sand = "Sand"; 
+        public const string Water = "Water"; 
+        public const string Wood = "Wood"; 
     }
 
     public static class Machines {
@@ -96,9 +123,9 @@ namespace TrainGame.Constants
         public static Machine Gasifier(Inventory inv) {
 
             Dictionary<string, int> recipe = new() {
-                ["Wood"] = 1
+                [ItemID.Wood] = 1
             }; 
-            string productItemId = "Fuel"; 
+            string productItemId = ItemID.Fuel; 
             string machineId = "Gasifier"; 
             int productCount = 1; 
             int ticks = 60; 
@@ -108,10 +135,10 @@ namespace TrainGame.Constants
 
         public static Machine Kiln(Inventory inv) {
             Dictionary<string, int> recipe = new() {
-                ["Sand"] = 1, 
-                ["Fuel"] = 1
+                [ItemID.Sand] = 1, 
+                [ItemID.Fuel] = 1
             }; 
-            string productItemId = "Glass"; 
+            string productItemId = ItemID.Glass; 
             string machineId = "Kiln"; 
             int productCount = 1; 
             int ticks = 60; 
