@@ -34,6 +34,7 @@ public class Machine {
     public bool ProduceInfinite => produceInfinite; 
     public int ProductCount => productCount; 
     public int RequestedAmount => requestedAmount; 
+    public bool CraftComplete => curCraftTicks == craftTicks; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", bool produceInfinite = false, float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null) {

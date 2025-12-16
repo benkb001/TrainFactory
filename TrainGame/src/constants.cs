@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing; 
 using System; 
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,8 @@ namespace TrainGame.Constants
         public static float InventoryPadding = 5f;
 
         public static float LabelHeight = 25f; 
+
+        public static float InvUpgradeMass = 1000f; 
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {
@@ -116,6 +119,17 @@ namespace TrainGame.Constants
         public const string Sand = "Sand"; 
         public const string Water = "Water"; 
         public const string Wood = "Wood"; 
+
+        public static readonly List<string> All = [
+            ArmorUpgrade, Fuel, Glass, GunUpgrade, Iron, 
+            MachineUpgrade, Oil, Rail, Sand, Water, Wood
+        ]; 
+
+        public static readonly List<string> Liquids = [
+            Oil, Water
+        ]; 
+
+        public static readonly List<string> Solids = All.Where(s => !Liquids.Contains(s)).ToList(); 
     }
 
     public static class Machines {

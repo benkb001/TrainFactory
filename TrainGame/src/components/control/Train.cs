@@ -3,6 +3,7 @@ namespace TrainGame.Components;
 using System.Collections.Generic;
 using System.Drawing; 
 using System; 
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,25 +11,48 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Utils; 
+using TrainGame.Constants; 
+
 public class Train {
+
     private City comingFrom; 
     private City goingTo; 
+    private float milesPerHour; 
+    private float power; 
+    private float mass; 
+    private WorldTime left; 
+    private bool isTraveling; 
+
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
     public readonly Inventory Inv; 
+    public readonly List<Cart> Carts; 
     public readonly string Id; 
-    private float milesPerHour; 
-    private WorldTime left; 
-    private bool isTraveling; 
     public bool HasPlayer = false; 
+    public float MilesPerHour => milesPerHour; 
+    public float Mass => mass; 
 
-    public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f) {
+    public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f, float power = 0f, float mass = 1f) {
         this.Id = Id; 
-        this.milesPerHour = milesPerHour; 
         this.Inv = Inv; 
         this.comingFrom = origin;
         this.goingTo = origin; 
         this.isTraveling = false; 
+
+        if (mass <= 0f) {
+            throw new InvalidOperationException($"Mass {mass} invalid, must be > 0"); 
+        }
+
+        if (power == 0f && mass == 1f) {
+            power = milesPerHour; 
+        }
+
+        this.power = power; 
+        this.mass = mass;
+        setMPH(); 
+
+        Carts = new(); 
+
         origin.AddTrain(this);
     }
 
@@ -92,5 +116,28 @@ public class Train {
 
     public bool IsTraveling() {
         return isTraveling; 
+    }
+
+    //TODO: TEST 
+    public void AddCart(Cart cart) {
+        Carts.Add(cart); 
+        mass += cart.Mass; 
+        setMPH(); 
+    }
+    
+    //TODO; TEST
+    public void UpgradeInventory() {
+        Inv.Upgrade(); 
+        mass += Constants.InvUpgradeMass; 
+        setMPH(); 
+    }
+
+    public void UpgradePower(float p = 0f) {
+        power += p; 
+        setMPH(); 
+    }
+
+    private void setMPH() {
+        milesPerHour = power / mass; 
     }
 }

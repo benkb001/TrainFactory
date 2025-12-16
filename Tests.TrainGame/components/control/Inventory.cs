@@ -182,6 +182,23 @@ public class InventoryTest {
     }
 
     [Fact]
+    public void Inventory_ShouldNotAddItemsNotInWhitelistIfItHasAWhitelist() {
+        Inventory inv = new Inventory("Test", 10, 10); 
+        inv.Whitelist("Good"); 
+        Inventory.Item bad = new Inventory.Item(ItemId: "Bad", Count: 1); 
+        Assert.Equal(0, inv.Add(bad));
+        Assert.Equal(0, inv.Add(bad, 0, 0));
+    }
+
+    [Fact]
+    public void Inventory_SolidInvShouldNotAddLiquids() {
+        Inventory inv = new Inventory("Test", 10, 10); 
+        inv.SetSolid(); 
+        Inventory.Item liquid = new Inventory.Item(ItemId: ItemID.Liquids[0], Count: 10); 
+        Assert.Equal(0, inv.Add(liquid)); 
+    }
+
+    [Fact]
     public void Inventory_ShouldThrowErrorWhenAccessingInvalidPositions() {
         Inventory inv = new Inventory("Test", 10, 5); 
 

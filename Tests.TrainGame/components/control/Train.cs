@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Components; 
 using TrainGame.Utils; 
+using TrainGame.Constants; 
 
 public class TrainTest {
     private static Inventory inv = new Inventory("Test", 1, 1); 
@@ -82,6 +83,37 @@ public class TrainTest {
         Train t = new Train(inv, c_start, milesPerHour: 10f); 
         t.Embark(c_end, new WorldTime()); 
         Assert.Equal(new Vector2(500f, 0f), t.GetMapPosition(new WorldTime(hours: 5))); 
+    }
+
+    [Fact]
+    public void Train_ShouldSetMPHBasedOnPowerAndMass() {
+        Train t = new Train(inv, c1, power: 100f, mass: 10f); 
+        Assert.Equal(10f, t.MilesPerHour);
+        t.UpgradePower(900f); 
+        Assert.Equal(100f, t.MilesPerHour); 
+        t.UpgradeInventory(); 
+        Assert.Equal(1000f / (10f + Constants.InvUpgradeMass), t.MilesPerHour);
+        Cart c = new Cart("test", 1, 1, mass: 1000f); 
+        t.AddCart(c); 
+
+        Assert.Equal(1000f / (1010f + Constants.InvUpgradeMass), t.MilesPerHour); 
+    }
+
+    [Fact]
+    public void Train_AddCartShouldAddCart() {
+        Train t = new Train(inv, c1, power: 100f, mass: 10f); 
+        Cart c = new Cart("test", 1, 1, mass: 1000f); 
+        t.AddCart(c); 
+        Assert.Equal(c, t.Carts[0]); 
+    }
+
+    [Fact]
+    public void Train_UpgradeInventoryShouldIncrementInvLevelAndMass() {
+        Train t = new Train(inv, c1, power: 100f, mass: 10f); 
+        int defaultInvLevel = t.Inv.Level; 
+        t.UpgradeInventory(); 
+        Assert.Equal(10f + Constants.InvUpgradeMass, t.Mass); 
+        Assert.Equal(defaultInvLevel + 1, t.Inv.Level); 
     }
 
 }

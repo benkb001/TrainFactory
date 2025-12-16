@@ -20,12 +20,17 @@ public class Inventory {
     private int rows; 
     private int cols; 
     private int level = 1; 
+    private HashSet<string> whitelist;
+    private bool filtered = false; 
+
+    public int Level => level; 
 
     public Inventory(string id, int r, int c) {
         inventoryId = id;
         rows = r; 
         cols = c; 
         items = new(); 
+        whitelist = new(); 
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 items.Add(new Item(Row: i, Column: j, Inv: this)); 
@@ -33,25 +38,13 @@ public class Inventory {
         }
     }
 
-    private int stackSize(string itemId) {
-        return Constants.ItemStackSize(itemId) * level; 
-    }
-
-    private (int, int) getNumToAdd(Item i, int index) {
-        Item cur = Get(index); 
-        if (cur.ItemId == "") {
-            cur.Count = 0; 
-        }
-
-        int stack_size = stackSize(i.ItemId); 
-        int num_adding = Math.Min(stack_size - cur.Count, i.Count);
-        int num_remaining = i.Count - num_adding; 
-        return (num_adding, num_remaining); 
-    }
-
     //todo: need to re-factor in other places because it might add a portion of the items but not all
     //returns the number of items it added to the inventory
     public int Add(Item i) {
+
+        if (filtered && !whitelist.Contains(i.ItemId)) {
+            return 0; 
+        }
 
         int index = items.FindIndex(item => item.ItemId == i.ItemId && item.Count < stackSize(i.ItemId));
 
@@ -82,6 +75,10 @@ public class Inventory {
     }
 
     public int Add(Item i, int row, int col) {
+        if (filtered && !whitelist.Contains(i.ItemId)) {
+            return 0; 
+        }
+
         ensureValidIndices(row, col); 
         int idx = getIndex(row, col); 
         if (items[idx].ItemId == i.ItemId || items[idx].ItemId == "") {
@@ -176,6 +173,35 @@ public class Inventory {
         return string.Join(Environment.NewLine, contents.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
     }
 
+    public void Whitelist(string itemId) {
+        filtered = true; 
+        whitelist.Add(itemId); 
+    }
+
+    public void SetSolid() {
+        foreach (string s in ItemID.Solids) {
+            Whitelist(s); 
+        }
+    }
+
+    public void SetLiquid() {
+        foreach (string s in ItemID.Liquids) {
+            Whitelist(s); 
+        }
+    }
+
+    private (int, int) getNumToAdd(Item i, int index) {
+        Item cur = Get(index); 
+        if (cur.ItemId == "") {
+            cur.Count = 0; 
+        }
+
+        int stack_size = stackSize(i.ItemId); 
+        int num_adding = Math.Min(stack_size - cur.Count, i.Count);
+        int num_remaining = i.Count - num_adding; 
+        return (num_adding, num_remaining); 
+    }
+
     private (int, int) GetRowColIndex(int idx) {
         ensureValidIndices(idx); 
         return (idx / cols, idx % cols); 
@@ -197,6 +223,10 @@ public class Inventory {
         }
 
         ensureValidIndices(getIndex(row, col)); 
+    }
+
+    private int stackSize(string itemId) {
+        return Constants.ItemStackSize(itemId) * level; 
     }
 
     public class Item {
