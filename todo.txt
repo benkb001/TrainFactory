@@ -11,7 +11,6 @@
 **** NEED TO TEST **** 
 
 * test player label change automatically when train arrives 
-* test carts 
 
 **** CLEAN UP **** 
 
@@ -27,6 +26,9 @@
 * Add a way to print the world state for debugging
 * Figure out what to do when machines try to add to full inventories
 * Figure out what to do when player adds to an inventory and it overflows the cell 
+* Add a way to ensure that invs, cities, machines, carts, etc, never have the same ID 
+    * made a thing for this in train, can probably convert to interface and have a static
+    function that does it? 
 
 **** FUTURE FEATURES **** 
 

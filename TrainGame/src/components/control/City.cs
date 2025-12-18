@@ -41,6 +41,9 @@ public class City {
     private Dictionary<string, Machine> machines = new(); 
     public Dictionary<string, Machine> Machines => machines; 
 
+    private Dictionary<string, Cart> carts = new(); 
+    public Dictionary<string, Cart> Carts => carts; 
+
     public City(string cityId, Inventory Inv, float uiX = 0f, float uiY = 0f, float realX = 0f, float realY = 0f) {
         this.cityId = cityId; 
         this.Inv = Inv; 
@@ -65,6 +68,17 @@ public class City {
         trains[t.Id] = t; 
     }
 
+    //todo: test
+    public void AddCart(Cart c) {
+        carts[c.Id] = c; 
+    }
+
+    //todo: test
+    public void RemoveCart(Cart c) {
+        carts.Remove(c.Id); 
+    }
+
+    //todo: test
     public void RemoveTrain(Train t) {
         trains.Remove(t.Id); 
     }

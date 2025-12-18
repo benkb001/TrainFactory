@@ -18,7 +18,8 @@ public class Cart {
     public float Mass => mass; 
     
     public Cart(string Id, int rows, int cols, float mass = 1f, bool solid = true) {
-        Inv = new Inventory(Id, rows, cols); 
+        Inv = new Inventory($"{Id}_inv", rows, cols); 
+        this.Id = Id; 
         this.mass = mass; 
         if (solid) {
             Inv.SetSolid(); 

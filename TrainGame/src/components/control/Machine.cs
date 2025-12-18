@@ -33,8 +33,10 @@ public class Machine {
     public int Level => level;
     public bool ProduceInfinite => produceInfinite; 
     public int ProductCount => productCount; 
+    public string ProductItemId => productItemId; 
     public int RequestedAmount => requestedAmount; 
-    public bool CraftComplete => curCraftTicks == craftTicks; 
+    public bool CraftComplete => curCraftTicks >= craftTicks; 
+    public Dictionary<string, int> Recipe => recipe; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", bool produceInfinite = false, float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null) {
@@ -58,20 +60,6 @@ public class Machine {
 
     public void Request(int amount) {
         requestedAmount += amount; 
-    }
-
-    public void Update() {
-        if ((requestedAmount >= productCount || produceInfinite) && invHasRequiredItems()) {
-            if (curCraftTicks >= craftTicks) {
-                foreach (KeyValuePair<string, int> kvp in recipe) {
-                    Inv.Take(kvp.Key, kvp.Value); 
-                }
-                Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productCount));
-                requestedAmount -= productCount; 
-                curCraftTicks = 0; 
-            }
-            curCraftTicks++; 
-        }
     }
 
     public string GetId() {
@@ -100,7 +88,20 @@ public class Machine {
         return r; 
     }
 
-    private bool invHasRequiredItems() {
+    public void FinishRecipe() {
+        foreach (KeyValuePair<string, int> kvp in recipe) {
+            Inv.Take(kvp.Key, kvp.Value); 
+        }
+        Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productCount));
+        requestedAmount -= productCount; 
+        curCraftTicks = 0; 
+    }
+
+    public void UpdateCrafting() {
+        curCraftTicks++; 
+    }
+
+    public bool InvHasRequiredItems() {
         foreach (KeyValuePair<string, int> kvp in recipe) {
             string itemId = kvp.Key; 
             int cost = kvp.Value;

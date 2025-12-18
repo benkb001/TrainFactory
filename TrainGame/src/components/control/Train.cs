@@ -22,6 +22,7 @@ public class Train {
     private float mass; 
     private WorldTime left; 
     private bool isTraveling; 
+    private static HashSet<string> usedIDs = new(); 
 
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
@@ -33,7 +34,13 @@ public class Train {
     public float Mass => mass; 
 
     public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f, float power = 0f, float mass = 1f) {
+        if (usedIDs.Contains(Id)) {
+            Id = GetNextID(); 
+        }
+        
         this.Id = Id; 
+        usedIDs.Add(Id); 
+
         this.Inv = Inv; 
         this.comingFrom = origin;
         this.goingTo = origin; 
@@ -86,6 +93,18 @@ public class Train {
 
         float map_moved = map_journey.Length() * proportion_moved; 
         return (Vector2.Normalize(map_journey) * map_moved) + comingFrom.MapPosition; 
+    }
+
+    //TODO: Test
+    public static string GetNextID() {
+        int i = usedIDs.Count; 
+        string s; 
+        do {
+            s = $"Train{i}";
+            i++; 
+        } while(usedIDs.Contains(s)); 
+
+        return s; 
     }
     
     public void Update(WorldTime cur) {

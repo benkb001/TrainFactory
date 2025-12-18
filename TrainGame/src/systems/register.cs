@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
+using TrainGame.Components; 
 
 public static class RegisterSystems {
     public static void All(World w) {
@@ -19,7 +20,8 @@ public static class RegisterSystems {
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
         TrainTravelSystem.Register(w); 
-        MachineUpdateSystem.Register(w); 
+        w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
+        AssemblerSystem.Register<TrainAssembler>(); 
 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 

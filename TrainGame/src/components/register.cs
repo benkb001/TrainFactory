@@ -74,6 +74,7 @@ public static class RegisterComponents {
         r<TextBox>(); 
         r<Toast>(); 
         r<Train>(); 
+        r<TrainAssembler>(); 
         r<TrainUI>(); 
         r<UnpauseButton>(); 
         r<Velocity>(); 

@@ -12,6 +12,14 @@ using TrainGame.Systems;
 using TrainGame.Utils;
 
 public class MachineUpdateSystemTest {
+
+    private void update(Machine m) {
+        World w = WorldFactory.Build(); 
+        int e = EntityFactory.Add(w, setData: true); 
+        w.SetComponent<Machine>(e, m); 
+        w.Update(); 
+    }
+
     [Fact]
     public void MachineUpdateSystem_ShouldLetMachinesCraft() {
         World w = WorldFactory.Build(); 
@@ -33,6 +41,103 @@ public class MachineUpdateSystemTest {
 
         Assert.Equal(1, inv.ItemCount("Smoothie")); 
         Assert.Equal(0, inv.ItemCount("Apple")); 
+        Assert.Equal(0, inv.ItemCount("Banana")); 
+    }
+
+    [Fact]
+    public void MachineUpdateSystem_ShouldNotCraftIfNoItemsAreRequested() {
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
+        update(m); 
+        Assert.Equal(0, inv.ItemCount("Smoothie")); 
+        Assert.Equal(2, inv.ItemCount("Apple")); 
+        Assert.Equal(1, inv.ItemCount("Banana")); 
+    }
+
+    [Fact]
+    public void MachineUpdateSystem_ShouldNotCraftIfNotEnoughTicksHavePassed() {
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 2); 
+        update(m); 
+        Assert.Equal(0, inv.ItemCount("Smoothie")); 
+        Assert.Equal(2, inv.ItemCount("Apple")); 
+        Assert.Equal(1, inv.ItemCount("Banana")); 
+    }
+
+    [Fact]
+    public void MachineUpdateSystem_ShouldNotCraftIfInsufficientItemsArePresent() {
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 0)); 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
+        update(m); 
+        Assert.Equal(0, inv.ItemCount("Smoothie")); 
+        Assert.Equal(2, inv.ItemCount("Apple")); 
+        Assert.Equal(0, inv.ItemCount("Banana")); 
+    }
+
+    [Fact]
+    public void MachineUpdateSystem_CraftingShouldConsumeItemsInRecipe() {
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
+        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
+        m.Request(1); 
+        update(m); 
+        Assert.Equal(1, inv.ItemCount("Smoothie")); 
+        Assert.Equal(0, inv.ItemCount("Apple")); 
+        Assert.Equal(0, inv.ItemCount("Banana")); 
+    }
+
+    [Fact]
+    public void MachineUpdateSystem_CraftingShouldOnlyProduceAsManyAsRecipeAllows() {
+        Inventory inv = new Inventory("Test", 2, 2);
+        Dictionary<string, int> recipe = new() {
+            ["Apple"] = 2, 
+            ["Banana"] = 1
+        }; 
+        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 20)); 
+        //should only craft 5 max because we have 5 bananas and it costs 1 banana
+        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 5)); 
+
+        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
+        int requestNum = 20; 
+        m.Request(requestNum); 
+        
+        World w = WorldFactory.Build(); 
+        int e = EntityFactory.Add(w, setData: true); 
+        w.SetComponent<Machine>(e, m); 
+
+        for (int i = 0; i < requestNum; i++) {
+            w.Update(); 
+        }
+
+        Assert.Equal(5, inv.ItemCount("Smoothie")); 
+        Assert.Equal(10, inv.ItemCount("Apple")); 
         Assert.Equal(0, inv.ItemCount("Banana")); 
     }
 }

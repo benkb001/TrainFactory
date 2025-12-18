@@ -40,6 +40,11 @@ namespace TrainGame.Constants
 
         public static float InvUpgradeMass = 1000f; 
 
+        public const float TrainDefaultPower = 25000f; 
+        public const float TrainDefaultMass = 1000f; 
+        public const int TrainRows = 3; 
+        public const int TrainCols = 5; 
+
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.ArmorUpgrade => 100,
