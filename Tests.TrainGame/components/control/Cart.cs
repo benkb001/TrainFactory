@@ -1,11 +1,13 @@
 
 using TrainGame.Components; 
 
+using TrainGame.Constants; 
+
 public class CartTest {
     [Fact]
     public void Cart_ShouldRespectConstructors() {
-        Cart c = new Cart("C1", 2, 3, mass: 10f);
+        Cart c = new Cart("C1", CartType.Freight);
         Assert.Equal("C1", c.Id); 
-        Assert.Equal(10f, c.Mass); 
+        Assert.Equal(Constants.FreightCartBaseMass, c.Mass); 
     }
 }

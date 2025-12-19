@@ -42,8 +42,15 @@ namespace TrainGame.Constants
 
         public const float TrainDefaultPower = 25000f; 
         public const float TrainDefaultMass = 1000f; 
-        public const int TrainRows = 3; 
+        public const float FreightCartBaseMass = 1250f; 
+        public const float LiquidCartBaseMass = 750f; 
+
+        public const int CartRows = 3; 
+        public const int CartCols = 5; 
+        public const int TrainRows = 1; 
         public const int TrainCols = 5; 
+
+        public const string TrainStr = "Train"; 
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {

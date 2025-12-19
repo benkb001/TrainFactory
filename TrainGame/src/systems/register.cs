@@ -21,7 +21,8 @@ public static class RegisterSystems {
         MovementSystem.Register(w); 
         TrainTravelSystem.Register(w); 
         w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
-        AssemblerSystem.Register<TrainAssembler>(); 
+        AssemblerSystem.Register<TrainAssembler>(w); 
+        AssemblerSystem.Register<CartAssembler>(w); 
 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 

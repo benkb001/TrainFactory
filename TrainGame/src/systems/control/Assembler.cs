@@ -14,13 +14,13 @@ using TrainGame.Components;
 using TrainGame.ECS; 
 
 public class AssemblerSystem {
-    public static void Register<T>() where T : IAssembler {
-        Type[] ts = [typeof(T), typeof(Data)]; 
-        Action<World, int> tf = (w, e) => {
+    public static void Register<T>(World world) where T : IAssembler {
+        world.AddSystem([typeof(T), typeof(Data)], (w, e) => {
             T asm = w.GetComponent<T>(e); 
+
             if (asm.GetMachine().CraftComplete) {
                 asm.Assemble(); 
             }
-        }; 
+        }); 
     }
 }

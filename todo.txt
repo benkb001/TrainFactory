@@ -17,18 +17,14 @@
 
 **** NEXT FEATURES **** 
 
-* Make a logical flow for machines that create trains and 
-  carts (non-items)
 * Add progress bar to overworld machines
-* Add UI to upgrade train
-* Add UI to attach carts to trains 
+* Expand Train UI Interface
+    * Add UI to upgrade train
+    * Add UI to attach carts to trains 
 * Make city layouts
 * Add a way to print the world state for debugging
 * Figure out what to do when machines try to add to full inventories
 * Figure out what to do when player adds to an inventory and it overflows the cell 
-* Add a way to ensure that invs, cities, machines, carts, etc, never have the same ID 
-    * made a thing for this in train, can probably convert to interface and have a static
-    function that does it? 
 
 **** FUTURE FEATURES **** 
 
@@ -46,6 +42,7 @@
 * Implement better click for buttons 
 * Make stepper fast when you hold down
 * Make it so button to enter train doesn't appear if player opened map not at a train station 
+* Make scrollable windows 
 
 **** FAR FUTURE FEATURES **** 
 

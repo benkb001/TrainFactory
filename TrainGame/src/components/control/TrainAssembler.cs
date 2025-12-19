@@ -2,6 +2,7 @@
 namespace TrainGame.Components; 
 
 using TrainGame.Constants; 
+using TrainGame.Utils; 
 
 public class TrainAssembler : IAssembler {
     private City c; 
@@ -21,7 +22,7 @@ public class TrainAssembler : IAssembler {
     }
 
     public void Assemble() {
-        string id = Train.GetNextID(); 
+        string id = ID.GetNext(Constants.TrainStr); 
         Inventory inv = new Inventory($"{id}_inv", Constants.TrainRows, Constants.TrainCols); 
         new Train(inv, c, Id: id, 
             power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);

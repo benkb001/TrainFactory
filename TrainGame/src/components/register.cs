@@ -24,6 +24,8 @@ public static class RegisterComponents {
         r<Button>(); 
         r<CameraReturn>();
         r<CardinalMovement>(); 
+        r<Cart>(); 
+        r<CartAssembler>();
         r<Chest>(); 
         r<City>(); 
         r<CityUI>(); 
