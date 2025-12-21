@@ -27,7 +27,7 @@ public class Train {
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
     public readonly Inventory Inv; 
-    public readonly List<Cart> Carts; 
+    public readonly Dictionary<string, Cart> Carts; 
     public readonly string Id; 
     public bool HasPlayer = false; 
     public float MilesPerHour => milesPerHour; 
@@ -127,7 +127,7 @@ public class Train {
 
     //TODO: TEST 
     public void AddCart(Cart cart) {
-        Carts.Add(cart); 
+        Carts[cart.Id] = cart; 
         mass += cart.Mass; 
         setMPH(); 
     }

@@ -21,12 +21,13 @@ public class TrainClickSystem() {
         Action<World, int> tf = (w, e) => {
             //TODO:
             //if moving draw a view detailing the train's inventory, fuel, etc 
+            //actually should probably make a different component for that
+
             if (w.GetComponent<Button>(e).Clicked) {
                 Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
                 if (!t.IsTraveling()) {
                     View.EnterMenu(w);
-                    int pushEntity = EntityFactory.Add(w); 
-                    w.SetComponent(pushEntity, PushSceneMessage.Get()); 
+                    PushFactory.Build(w); 
                     
                     Vector2 embark_position = w.GetCameraTopLeft() + new Vector2(10f, 10f); 
                     
@@ -60,6 +61,43 @@ public class TrainClickSystem() {
 
                     DrawInventoryCallback.Create(w, cityInv, cityInvPosition, cityInvWidth, cityInvHeight, 
                         SetMenu: true, DrawLabel: true);
+
+                    //add upgrade button 
+                    //TODO: This should only be clickable if the player is at the city
+                    int upgradeBtnEntity = EntityFactory.Add(w, setScene: false); 
+                    Vector2 upgradePosition = trainInvPosition + new Vector2(trainInvWidth + 10f, 0); 
+                    float toprightX = w.GetCameraTopLeft().X + w.ScreenWidth; 
+                    float upgradeWidth = toprightX - (upgradePosition.X + 10f); 
+                    float upgradeHeight = upgradeWidth * 0.5f;
+                    UpgradeTrainButton upgradeTrainBtn = new UpgradeTrainButton(t); 
+
+                    DrawButtonMessage<UpgradeTrainButton> upgradeMsg = new DrawButtonMessage<UpgradeTrainButton>(
+                        Position: upgradePosition, 
+                        Width: upgradeWidth, 
+                        Height: upgradeHeight, 
+                        Button: upgradeTrainBtn
+                    );
+
+                    w.SetComponent<DrawButtonMessage<UpgradeTrainButton>>(upgradeBtnEntity, upgradeMsg); 
+
+                    //draw Add Cart button 
+                    //TODO: this should only be clickable if there is a cart to add at the city
+                    int addCartEntity = EntityFactory.Add(w, setScene: false); 
+                    Vector2 addCartPosition = upgradePosition + new Vector2(0f, upgradeHeight + 10f); 
+                    float addCartWidth = upgradeWidth; 
+                    float addCartHeight = upgradeHeight; 
+                    AddCartInterfaceButton cartBtn = new AddCartInterfaceButton(CartDest: t, CartSource: t.ComingFrom); 
+
+                    DrawButtonMessage<AddCartInterfaceButton> addCartMsg = new DrawButtonMessage<AddCartInterfaceButton>(
+                        Button: cartBtn,
+                        Position: addCartPosition, 
+                        Width: addCartWidth, 
+                        Height: addCartHeight
+                    ); 
+
+                    w.SetComponent<DrawButtonMessage<AddCartInterfaceButton>>(addCartEntity, addCartMsg); 
+
+                    //TODO: add a way to remove carts here
                 }
                 
             }

@@ -194,16 +194,17 @@ public partial class World {
             ); 
         }
 
-        foreach (KeyValuePair<int, Outline> entry in cm.GetComponentArray<Outline>().GetEntities()) {
-            Frame f = cm.GetComponent<Frame>(entry.Key); 
+        foreach (int e in GetMatchingEntities([typeof(Frame), typeof(Outline)])) {
+            Frame f = cm.GetComponent<Frame>(e); 
+            Outline o = cm.GetComponent<Outline>(e); 
             Vector2[] points = f.GetPoints(); 
             for(int i = 0; i < points.Length; i++) {
                 DrawLine(
                     points[i], 
                     points[(i + 1) % points.Length], 
-                    entry.Value.GetColor(), 
-                    thickness: entry.Value.GetThickness(), 
-                    depth: entry.Value.Depth
+                    o.GetColor(), 
+                    thickness: o.GetThickness(), 
+                    depth: o.Depth
                 );
             }
         }
@@ -270,7 +271,7 @@ public partial class World {
             string[] words = tb.Text.Split(' ');
 
             //TODO THERE IS AN INFINITE LOOP BUG IF TEXT IS TOO LONG FOR BOX
-            while (words_drawn < words.Length) {
+            while (words_drawn < words.Length && tb.Scale > 0f) {
                 string cur = ""; 
                 while (words_drawn < words.Length && 
                         (font.MeasureString((cur + words[words_drawn]).Replace(" ", "  ")).X * tb.Scale) < width) {

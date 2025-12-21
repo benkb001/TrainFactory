@@ -104,7 +104,7 @@ public class TrainTest {
         Train t = new Train(inv, c1, power: 100f, mass: 10f); 
         Cart c = new Cart("test", CartType.Freight); 
         t.AddCart(c); 
-        Assert.Equal(c, t.Carts[0]); 
+        Assert.Equal(c, t.Carts["test"]); 
     }
 
     [Fact]

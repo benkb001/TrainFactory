@@ -19,6 +19,8 @@ public static class RegisterComponents {
         }
 
         r<Active>(); 
+        r<AddCartButton>(); 
+        r<AddCartInterfaceButton>(); 
         r<Background>(); 
         r<Backgrounds>(); 
         r<Button>(); 
@@ -32,6 +34,8 @@ public static class RegisterComponents {
         r<Collidable>(); 
         r<Data>(); 
         r<Draggable>(); 
+        r<DrawAddCartInterfaceMessage>(); 
+        r<DrawButtonMessage<AddCartInterfaceButton>>(); 
         r<DrawBackgroundMessage>(); 
         r<DrawCallback>(); 
         r<DrawCityDetailsMessage>(); 
@@ -41,6 +45,7 @@ public static class RegisterComponents {
         r<DrawMachinesViewMessage>(); 
         r<DrawMapMessage>(); 
         r<DrawTrainsViewMessage>();
+        r<DrawButtonMessage<UpgradeTrainButton>>(); 
         r<EmbarkButton>(); 
         r<Frame>(); 
         r<GameClockView>();
@@ -79,6 +84,7 @@ public static class RegisterComponents {
         r<TrainAssembler>(); 
         r<TrainUI>(); 
         r<UnpauseButton>(); 
+        r<UpgradeTrainButton>(); 
         r<Velocity>(); 
     }
 }

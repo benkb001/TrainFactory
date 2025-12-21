@@ -1,0 +1,62 @@
+namespace TrainGame.Systems; 
+
+
+using System; 
+using System.Drawing; 
+using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
+using TrainGame.ECS;  
+using TrainGame.Components; 
+using TrainGame.Utils; 
+using TrainGame.Constants; 
+
+public static class DrawAddCartInterfaceSystem {
+    public static Type[] Ts = [typeof(DrawAddCartInterfaceMessage)]; 
+    public static Action<World, int> Tf = (w, e) => {
+        DrawAddCartInterfaceMessage dm = w.GetComponent<DrawAddCartInterfaceMessage>(e); 
+        Train CartDest = dm.CartDest; 
+        City CartSource = dm.CartSource; 
+
+        LinearLayout ll = new LinearLayout("horizontal", "alignLow"); 
+
+        int llEntity = EntityFactory.Add(w); 
+        w.SetComponent<LinearLayout>(llEntity, ll); 
+
+        Vector2 topleft = w.GetCameraTopLeft(); 
+
+        float containerWidth = w.ScreenWidth - 20f; 
+        float containerHeight = containerWidth / 4f; 
+        float labelHeight = containerHeight / 4f; 
+        float labelWidth = labelHeight * 4f; 
+
+        Vector2 labelPosition = topleft + new Vector2(10f, 10f); 
+
+        Vector2 containerPosition = labelPosition + new Vector2(0f, labelHeight); 
+
+        int labelEntity = EntityFactory.Add(w); 
+        w.SetComponent<Frame>(labelEntity, new Frame(labelPosition, labelWidth, labelHeight)); 
+        w.SetComponent<TextBox>(labelEntity, new TextBox($"Click a cart to add it to {CartDest.Id}!"));
+        w.SetComponent<Outline>(labelEntity, new Outline()); 
+        w.SetComponent<Menu>(labelEntity, Menu.Get()); 
+        
+        w.SetComponent<Frame>(llEntity, new Frame(containerPosition, containerWidth, containerHeight)); 
+
+        foreach (KeyValuePair<string, Cart> kvp in CartSource.Carts) {
+            string id = kvp.Key; 
+            Cart cart = kvp.Value; 
+
+            int cEntity = EntityFactory.Add(w); 
+            w.SetComponent<Outline>(cEntity, new Outline()); 
+            w.SetComponent<TextBox>(cEntity, new TextBox(id)); 
+            w.SetComponent<Button>(cEntity, new Button()); 
+            w.SetComponent<AddCartButton>(cEntity, new AddCartButton(CartDest, CartSource, cart)); 
+            ll.AddChild(cEntity); 
+        }
+
+        LinearLayoutWrap.ResizeChildren(llEntity, w); 
+        w.RemoveEntity(e); 
+    }; 
+}

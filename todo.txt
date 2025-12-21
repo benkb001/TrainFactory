@@ -14,13 +14,15 @@
 
 **** CLEAN UP **** 
 
+* Move draw button logic into generic 
+* Move click system logic into generic 
 
 **** NEXT FEATURES **** 
 
 * Add progress bar to overworld machines
 * Expand Train UI Interface
-    * Add UI to upgrade train
-    * Add UI to attach carts to trains 
+    * Add callback to upgrade train button 
+* Add a way to switch between a trains inventories
 * Make city layouts
 * Add a way to print the world state for debugging
 * Figure out what to do when machines try to add to full inventories
@@ -28,6 +30,7 @@
 
 **** FUTURE FEATURES **** 
 
+* Source generator for draw boilerplate
 * Make it so LinearLayout is pageable 
     * This will be important once player gets a high number of trains, 
       but also if we add a high number of machines to Factory

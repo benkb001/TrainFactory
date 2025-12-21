@@ -453,6 +453,9 @@ public static class NextDrawTestUISystem {
             c2.AddConnection(c1); 
 
             c1.AddMachine(blender); 
+
+            c1.AddCart(new Cart("Solid", CartType.Freight)); 
+            c1.AddCart(new Cart("Liquid", CartType.Liquid)); 
             
             int cityEntity1 = EntityFactory.Add(w, setScene: false); 
             int cityEntity2 = EntityFactory.Add(w, setScene: false); 

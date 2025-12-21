@@ -45,9 +45,11 @@ public static class RegisterSystems {
         MachineUIClickSystem.Register(w); 
         MachineRequestClickSystem.Register(w); 
         PlayerAccessTrainClickSystem.Register(w); 
+        AddCartClickSystem.Register(w); 
+        AddCartInterfaceClickSystem.Register(w); 
+
         OpenMapSystem.Register(w); 
 
-        
         RedrawMapSystem.Register(w); 
 
         SceneSystem.RegisterPop(w); 
@@ -64,8 +66,9 @@ public static class RegisterSystems {
         DrawTrainsViewSystem.Register(w);  
         DrawCallbackSystem.Register(w); 
         HeldItemDrawSystem.Register(w); 
-        
-        
+        DrawButtonSystem.Register<AddCartInterfaceButton>(w); 
+        DrawButtonSystem.Register<UpgradeTrainButton>(w); 
+        w.AddSystem(DrawAddCartInterfaceSystem.Ts, DrawAddCartInterfaceSystem.Tf); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
