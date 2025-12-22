@@ -12,7 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//TODO: test
 public class InventoryDropUISystem() {
     public const float Threshold = 30f; 
     private static Type[] types = [

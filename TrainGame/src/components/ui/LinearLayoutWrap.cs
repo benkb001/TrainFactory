@@ -15,16 +15,23 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 
 public class LinearLayoutWrap {
-    public static void Clear(LinearLayout ll, int e, World w) {
+    public static void Clear(int e, World w, LinearLayout ll = null) {
+        if (ll == null) {
+            if (w.ComponentContainsEntity<LinearLayout>(e)) {
+                ll = w.GetComponent<LinearLayout>(e); 
+            } else {
+                return; 
+            }
+        }
+
         List<int> children = ll.GetChildren(); 
         for (int i = children.Count - 1; i >= 0; i--) {
-            int c = children[i]; 
-            if (w.ComponentContainsEntity<LinearLayout>(c)) {
-                LinearLayout child_ll = w.GetComponent<LinearLayout>(c);
-                Clear(child_ll, c, w);
+            int cEntity = children[i]; 
+            if (w.ComponentContainsEntity<LinearLayout>(cEntity)) {
+                Clear(cEntity, w);
             }
-            w.RemoveEntity(c);
-            ll.RemoveChild(c);
+            w.RemoveEntity(cEntity);
+            ll.RemoveChild(cEntity);
         }
         w.RemoveComponent<LinearLayout>(e); 
     }

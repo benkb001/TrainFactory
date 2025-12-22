@@ -24,6 +24,7 @@ public class Inventory {
     private bool filtered = false; 
 
     public int Level => level; 
+    public string Id => inventoryId; 
 
     public Inventory(string id, int r, int c) {
         inventoryId = id;
@@ -256,11 +257,18 @@ public class Inventory {
             return ItemId == "" && Count == 0; 
         }
     }
+}
 
+public static class InventoryWrap {
     public static Inventory GetyByEntityOrId(World w, int entity = -1, string inventoryId = "") {
         if (w.ComponentContainsEntity<Inventory>(entity)) {
             return w.GetComponent<Inventory>(entity); 
         }
         return w.GetComponentArray<Inventory>().Where(pair => pair.Value.GetId() == inventoryId).FirstOrDefault().Value; 
+    }
+
+    public static int GetEntity(string inventoryId, World w) {
+        return w.GetMatchingEntities([typeof(Data), typeof(Inventory)]).Where(
+            e => w.GetComponent<Inventory>(e).Id == inventoryId).FirstOrDefault(); 
     }
 }

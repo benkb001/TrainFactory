@@ -16,7 +16,9 @@ using TrainGame.Utils;
 public class ClickSystemTest {
     [Fact]
     public void ClickSystem_ShouldRunOnClick() {
-        World w = WorldFactory.Build(); 
+        World w = new World(); 
+        RegisterComponents.All(w); 
+        
         w.AddComponentType<TestButton>(); 
         ClickSystem.Register<TestButton>(w, (w, e) => {
             w.GetComponent<TestButton>(e).Clicked = true; 

@@ -4,7 +4,7 @@ namespace TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Utils; 
 
-public class CartAssembler : IAssembler {
+public class CartAssembler : IAssembler<Cart> {
     private City city; 
     private Machine m; 
     private CartType type; 
@@ -15,10 +15,11 @@ public class CartAssembler : IAssembler {
         this.type = type; 
     }
 
-    public void Assemble() {
+    public Cart Assemble() {
         string id = ID.GetNext($"{type}Cart");
         Cart cart = new Cart(id, type);
         city.AddCart(cart); 
+        return cart; 
     }       
 
     public Machine GetMachine() {

@@ -7,10 +7,13 @@
 * progress bar like 1% when it stops crafting
 * I think there is a bug with position on chest being relative to (0, 0)
 * Machine should remove required items immediately when beginning crafting 
+* weird camera flash happening when clicking through inventory
+    * probably need to delayed pop
 
 **** NEED TO TEST **** 
 
 * test player label change automatically when train arrives 
+* inventory container stuff
 
 **** CLEAN UP **** 
 
@@ -19,18 +22,21 @@
 
 **** NEXT FEATURES **** 
 
-* Add progress bar to overworld machines
-* Expand Train UI Interface
-    * Add callback to upgrade train button 
-* Add a way to switch between a trains inventories
-* Make city layouts
-* Add a way to print the world state for debugging
 * Figure out what to do when machines try to add to full inventories
 * Figure out what to do when player adds to an inventory and it overflows the cell 
+* Add progress bar to overworld machines
+* Expand Train UI Interface
+    * Add callback to upgrade train button (for now it just upgrades speed)
+* Make city layouts
+* Add a way to speed up traveling between cities, pause
+* Add a way to quickly move items between inventories (shift+click)
+* Add combat and reward system
+    * Rogue-like/perma-progression mix, time-limited events
+      for special rewards at outside cities, permanently available 
+      one at the factory. 
 
 **** FUTURE FEATURES **** 
 
-* Source generator for draw boilerplate
 * Make it so LinearLayout is pageable 
     * This will be important once player gets a high number of trains, 
       but also if we add a high number of machines to Factory
@@ -46,6 +52,7 @@
 * Make stepper fast when you hold down
 * Make it so button to enter train doesn't appear if player opened map not at a train station 
 * Make scrollable windows 
+* Add some tutorial toasts 
 
 **** FAR FUTURE FEATURES **** 
 
@@ -57,9 +64,11 @@
 * Implement adding conditionals and loops to train behavior 
 * Implement player making custom notifications based on train conditions, 
     like a toast pops up when the train has a certain amount of wood or something 
+* Consider making a train interior so player can do certain things while waiting inside a train? 
 
 **** NICE TO HAVE LOW PRIORITY **** 
 
+* Add a way to print the world state for debugging
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
 * Add a label to progress bar in machine interface to make it clear what it is when not moving

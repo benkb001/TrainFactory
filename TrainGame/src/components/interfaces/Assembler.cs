@@ -1,6 +1,6 @@
 namespace TrainGame.Components; 
 
-public interface IAssembler {
+public interface IAssembler<T> {
     Machine GetMachine(); 
-    void Assemble(); 
+    T Assemble(); 
 }

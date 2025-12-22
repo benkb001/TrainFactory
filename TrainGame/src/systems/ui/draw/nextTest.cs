@@ -427,8 +427,8 @@ public static class NextDrawTestUISystem {
             Inventory invT2 = new Inventory("Train2", 3, 6); 
             Inventory invBlender = new Inventory("Blender", 3, 6); 
 
-            invCLeft.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
-            invCLeft.Add(new Inventory.Item(ItemId: "Banana", Count: 2));
+            invCLeft.Add(new Inventory.Item(ItemId: ItemID.Wood, Count: 2)); 
+            invCLeft.Add(new Inventory.Item(ItemId: ItemID.Iron, Count: 2));
             invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
             invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
             playerInv.Add(new Inventory.Item(ItemId: ItemID.MachineUpgrade, Count: 100)); 

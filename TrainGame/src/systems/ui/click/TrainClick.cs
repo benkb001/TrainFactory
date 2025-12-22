@@ -56,8 +56,10 @@ public class TrainClickSystem() {
                     Vector2 trainInvPosition = embark_position + new Vector2(embarkWidth + 10f, 0); 
                     Vector2 cityInvPosition = trainInvPosition + new Vector2(0, trainInvHeight + 10f); 
 
-                    DrawInventoryCallback.Create(w, trainInv, trainInvPosition, trainInvWidth, trainInvHeight, 
-                        SetMenu: true, DrawLabel: true);
+                    int containerDmEnt = EntityFactory.Add(w, setScene: false); 
+                    DrawInventoryContainerMessage<Train> containerDm = new DrawInventoryContainerMessage<Train>(
+                        t, trainInvPosition, trainInvWidth, trainInvHeight, SetMenu: true, DrawLabel: true);
+                    w.SetComponent<DrawInventoryContainerMessage<Train>>(containerDmEnt, containerDm); 
 
                     DrawInventoryCallback.Create(w, cityInv, cityInvPosition, cityInvWidth, cityInvHeight, 
                         SetMenu: true, DrawLabel: true);

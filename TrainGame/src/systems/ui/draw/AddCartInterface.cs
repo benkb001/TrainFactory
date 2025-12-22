@@ -32,6 +32,8 @@ public static class DrawAddCartInterfaceSystem {
         float labelHeight = containerHeight / 4f; 
         float labelWidth = labelHeight * 4f; 
 
+        ll.Padding = containerWidth / 10f; 
+
         Vector2 labelPosition = topleft + new Vector2(10f, 10f); 
 
         Vector2 containerPosition = labelPosition + new Vector2(0f, labelHeight); 

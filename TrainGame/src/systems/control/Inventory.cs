@@ -37,7 +37,8 @@ public class InventoryControlSystem() {
                 targetItem.ItemId = ""; 
             }
             
-            targetInv.Add(curItem, targetRow, targetCol); 
+            int addedToTarget = targetInv.Add(curItem, targetRow, targetCol); 
+            Console.WriteLine($"Num added: {addedToTarget}");
             curInv.Add(targetItem, curRow, curCol);
             d.SnapPosition = targetVector; 
             w.RemoveEntity(e); 

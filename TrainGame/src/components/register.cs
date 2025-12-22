@@ -23,6 +23,7 @@ public static class RegisterComponents {
         r<AddCartInterfaceButton>(); 
         r<Background>(); 
         r<Backgrounds>(); 
+        r<Body>();
         r<Button>(); 
         r<CameraReturn>();
         r<CardinalMovement>(); 
@@ -36,16 +37,17 @@ public static class RegisterComponents {
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
         r<DrawButtonMessage<AddCartInterfaceButton>>(); 
+        r<DrawButtonMessage<UpgradeTrainButton>>(); 
         r<DrawBackgroundMessage>(); 
         r<DrawCallback>(); 
         r<DrawCityDetailsMessage>(); 
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
+        r<DrawInventoryContainerMessage<Train>>(); 
         r<DrawMachineRequestMessage>(); 
         r<DrawMachinesViewMessage>(); 
         r<DrawMapMessage>(); 
         r<DrawTrainsViewMessage>();
-        r<DrawButtonMessage<UpgradeTrainButton>>(); 
         r<EmbarkButton>(); 
         r<Frame>(); 
         r<GameClockView>();
@@ -53,6 +55,8 @@ public static class RegisterComponents {
         r<Interactable>(); 
         r<Interactor>();  
         r<Inventory>(); 
+        r<InventoryContainer<Train>>(); 
+        r<InventoryIndexer<Train>>(); 
         r<Inventory.Item>();
         r<InventoryOrganizeMessage>();
         r<Machine>(); 

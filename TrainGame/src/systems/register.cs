@@ -21,8 +21,8 @@ public static class RegisterSystems {
         MovementSystem.Register(w); 
         TrainTravelSystem.Register(w); 
         w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
-        AssemblerSystem.Register<TrainAssembler>(w); 
-        AssemblerSystem.Register<CartAssembler>(w); 
+        AssemblerSystem.Register<TrainAssembler, Train>(w); 
+        AssemblerSystem.Register<CartAssembler, Cart>(w); 
 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 
@@ -47,6 +47,7 @@ public static class RegisterSystems {
         PlayerAccessTrainClickSystem.Register(w); 
         AddCartClickSystem.Register(w); 
         AddCartInterfaceClickSystem.Register(w); 
+        InventoryIndexSystem.Register<Train>(w); 
 
         OpenMapSystem.Register(w); 
 
@@ -69,6 +70,7 @@ public static class RegisterSystems {
         DrawButtonSystem.Register<AddCartInterfaceButton>(w); 
         DrawButtonSystem.Register<UpgradeTrainButton>(w); 
         w.AddSystem(DrawAddCartInterfaceSystem.Ts, DrawAddCartInterfaceSystem.Tf); 
+        DrawInventoryContainerSystem.Register<Train>(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

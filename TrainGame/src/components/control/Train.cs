@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class Train {
+public class Train : IInventorySource {
 
     private City comingFrom; 
     private City goingTo; 
@@ -142,6 +142,15 @@ public class Train {
     public void UpgradePower(float p = 0f) {
         power += p; 
         setMPH(); 
+    }
+
+    public List<Inventory> GetInventories() {
+        List<Inventory> invs = new(); 
+        invs.Add(Inv); 
+        foreach (KeyValuePair<string, Cart> kvp in Carts) {
+            invs.Add(kvp.Value.Inv); 
+        }
+        return invs; 
     }
 
     private void setMPH() {

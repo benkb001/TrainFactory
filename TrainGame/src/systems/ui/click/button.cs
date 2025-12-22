@@ -47,7 +47,7 @@ public class ButtonSystem() {
     }
 
     public static void RegisterUnclick(World world) {
-        Type[] types = [typeof(Button), typeof(Frame), typeof(Active)]; 
+        Type[] types = [typeof(Button), typeof(Active)]; 
         Action<World, int> transformer = (w, e) => {
             w.GetComponent<Button>(e).Clicked = false; 
         };

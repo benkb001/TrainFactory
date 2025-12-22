@@ -2,7 +2,7 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.ECS; 
 
-public class TestAssembler : IAssembler {
+public class TestAssembler : IAssembler<Test> {
     private Machine m; 
     public bool Assembled = false; 
 
@@ -10,9 +10,10 @@ public class TestAssembler : IAssembler {
         this.m = m; 
     }
 
-    public void Assemble() {
+    public Test Assemble() {
         Assembled = true; 
         Console.WriteLine($"Assemble ran"); 
+        return new Test(); 
     }
 
     public Machine GetMachine() {
@@ -27,8 +28,9 @@ public class AssemblerTest {
         w.AddComponentType<Machine>(); 
         w.AddComponentType<Data>(); 
         w.AddComponentType<TestAssembler>(); 
+        w.AddComponentType<Test>(); 
         w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
-        AssemblerSystem.Register<TestAssembler>(w); 
+        AssemblerSystem.Register<TestAssembler, Test>(w); 
 
         Inventory inv = new Inventory("Test", 2, 2); 
         Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1, produceInfinite: true); 

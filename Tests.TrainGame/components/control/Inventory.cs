@@ -199,6 +199,14 @@ public class InventoryTest {
     }
 
     [Fact]
+    public void Inventory_LiquidInvShouldAddLiquids() {
+        Inventory inv = new Inventory("Test", 10, 10); 
+        inv.SetLiquid(); 
+        Inventory.Item liquid = new Inventory.Item(ItemId: ItemID.Liquids[0], Count: 1);
+        Assert.Equal(1, inv.Add(liquid)); 
+    }
+
+    [Fact]
     public void Inventory_ShouldThrowErrorWhenAccessingInvalidPositions() {
         Inventory inv = new Inventory("Test", 10, 5); 
 
