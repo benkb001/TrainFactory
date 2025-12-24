@@ -43,7 +43,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(15)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(18)); 
 
         }, 
         [2] = (w) => {
@@ -420,7 +420,11 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 18); 
         }, 
         [19] = (w) => {
-            Inventory playerInv = new Inventory("Player", 3, 6); 
+            Inventory playerInv = new Inventory(Constants.PlayerInvID, 3, 6); 
+
+            int pInvEnt = EntityFactory.Add(w, setData: true); 
+            w.SetComponent<Inventory>(pInvEnt, playerInv); 
+            
             Inventory invCLeft = new Inventory("CLeft", 3, 6); 
             Inventory invCRight = new Inventory("CRight", 3, 6); 
             Inventory invT1 = new Inventory("Train1", 3, 6); 
@@ -431,7 +435,7 @@ public static class NextDrawTestUISystem {
             invCLeft.Add(new Inventory.Item(ItemId: ItemID.Iron, Count: 2));
             invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
             invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
-            playerInv.Add(new Inventory.Item(ItemId: ItemID.MachineUpgrade, Count: 100)); 
+            playerInv.Add(new Inventory.Item(ItemId: ItemID.TrainUpgrade, Count: 100)); 
 
             City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
             City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 

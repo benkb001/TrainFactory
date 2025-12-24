@@ -16,7 +16,7 @@ using TrainGame.Systems;
 [Collection("Sequential")]
 public class TrainClickSystemTest {
     [Fact]
-    public void TrainClickSystem_ShouldDrawCityAndTrainInventoriesAndEmbarkView() {
+    public void TrainClickSystem_ShouldDrawCityAndTrainInventories() {
         VirtualMouse.Reset(); 
 
         World w = WorldFactory.Build(); 
@@ -38,7 +38,7 @@ public class TrainClickSystemTest {
         
         Assert.Equal(2, es.Count);
         Assert.Single(es, e => w.GetComponent<Inventory>(e) == trainInv);
-        Assert.Single(es, e => w.GetComponent<Inventory>(e)  == cityInv); 
+        Assert.Single(es, e => w.GetComponent<Inventory>(e) == cityInv); 
 
         VirtualMouse.Reset(); 
     }

@@ -13,17 +13,23 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 
 public static class DrawButtonSystem {
+    
+    public static int Draw<T>(DrawButtonMessage<T> dm, World w) where T : IClickable {
+        int btnEntity = EntityFactory.Add(w); 
+        w.SetComponent<T>(btnEntity, dm.Button); 
+        w.SetComponent<Button>(btnEntity, new Button()); 
+        w.SetComponent<Frame>(btnEntity, new Frame(dm.Position, dm.Width, dm.Height)); 
+        w.SetComponent<Outline>(btnEntity, new Outline()); 
+        w.SetComponent<TextBox>(btnEntity, new TextBox(dm.Button.GetText())); 
+        return btnEntity; 
+    }
+
     public static void Register<T>(World w) where T : IClickable {
         w.AddSystem(
             [typeof(DrawButtonMessage<T>)], 
             (w, e) => {
-                int btnEntity = EntityFactory.Add(w); 
                 DrawButtonMessage<T> dm = w.GetComponent<DrawButtonMessage<T>>(e);
-                w.SetComponent<T>(btnEntity, dm.Button); 
-                w.SetComponent<Button>(btnEntity, new Button()); 
-                w.SetComponent<Frame>(btnEntity, new Frame(dm.Position, dm.Width, dm.Height)); 
-                w.SetComponent<Outline>(btnEntity, new Outline()); 
-                w.SetComponent<TextBox>(btnEntity, new TextBox(dm.Button.GetText())); 
+                Draw<T>(dm, w); 
                 w.RemoveEntity(e); 
             }
         );

@@ -257,9 +257,10 @@ public partial class World {
 
         }
 
-        foreach (KeyValuePair<int, TextBox> entry in cm.GetComponentArray<TextBox>().GetEntities()) {
-            TextBox tb = entry.Value; 
-            Frame f = cm.GetComponent<Frame>(entry.Key); 
+        foreach (int ent in GetMatchingEntities([typeof(TextBox), typeof(Frame)])) {
+            
+            TextBox tb = cm.GetComponent<TextBox>(ent); 
+            Frame f = cm.GetComponent<Frame>(ent); 
             int x = (int)f.GetX(); 
             int y = (int)f.GetY(); 
             float width = f.GetWidth() - (tb.Padding * 2); 

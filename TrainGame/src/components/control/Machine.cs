@@ -10,6 +10,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+public enum CraftState {
+    Idle, 
+    Crafting, 
+    Delivering
+}
+
 public class Machine {
     
     private Dictionary<string, int> recipe;
@@ -24,6 +30,8 @@ public class Machine {
     private int requestedAmount;
     private float slowFactor; 
     private float startFactor; 
+    private int productDelivered; 
+    private CraftState state = CraftState.Idle; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
     public int CraftTicks => craftTicks; 
@@ -36,6 +44,7 @@ public class Machine {
     public string ProductItemId => productItemId; 
     public int RequestedAmount => requestedAmount; 
     public bool CraftComplete => curCraftTicks >= craftTicks; 
+    public CraftState State => state; 
     public Dictionary<string, int> Recipe => recipe; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
@@ -88,13 +97,27 @@ public class Machine {
         return r; 
     }
 
-    public void FinishRecipe() {
+    public void StartRecipe() {
         foreach (KeyValuePair<string, int> kvp in recipe) {
             Inv.Take(kvp.Key, kvp.Value); 
         }
-        Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productCount));
-        requestedAmount -= productCount; 
-        curCraftTicks = 0; 
+        state = CraftState.Crafting; 
+    }
+
+    public void FinishRecipe() {
+        productDelivered = 0; 
+        state = CraftState.Delivering; 
+    }
+
+    public void DeliverRecipe() {
+        int productLeft = productCount - productDelivered; 
+        int curDelivered = Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productLeft));
+        requestedAmount -= curDelivered; 
+        productDelivered += curDelivered; 
+        if (productDelivered >= productCount) {
+            curCraftTicks = 0; 
+            state = CraftState.Idle; 
+        }
     }
 
     public void UpdateCrafting() {

@@ -12,7 +12,6 @@ public class TestAssembler : IAssembler<Test> {
 
     public Test Assemble() {
         Assembled = true; 
-        Console.WriteLine($"Assemble ran"); 
         return new Test(); 
     }
 

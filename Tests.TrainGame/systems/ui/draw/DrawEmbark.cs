@@ -36,11 +36,20 @@ public class DrawEmbarkSystemTest {
         )); 
         w.Update(); 
         LinearLayout ll = w.GetComponent<LinearLayout>(w.GetMatchingEntities([typeof(LinearLayout)])[0]); 
-        List<EmbarkButton> btnList = ll.GetChildren().Select(
-            e => w.GetComponent<EmbarkButton>(e)).ToList(); 
+        List<int> es = ll.GetChildren(); 
         
-        Assert.Single(btnList, btn => c1 == btn.GetDestination());
-        Assert.Single(btnList, btn => c2 == btn.GetDestination()); 
-        Assert.Equal(2, btnList.Count); 
+        Assert.Single(es, e => {
+            if (w.ComponentContainsEntity<EmbarkButton>(e)) {
+                return (w.GetComponent<EmbarkButton>(e).GetDestination() == c1);
+            }
+            return false; 
+        });
+
+        Assert.Single(es, e => {
+            if (w.ComponentContainsEntity<EmbarkButton>(e)) {
+                return (w.GetComponent<EmbarkButton>(e).GetDestination() == c2);
+            }
+            return false; 
+        }); 
     }
 }

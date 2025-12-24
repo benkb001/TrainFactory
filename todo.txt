@@ -9,11 +9,11 @@
 * Machine should remove required items immediately when beginning crafting 
 * weird camera flash happening when clicking through inventory
     * probably need to delayed pop
+* need to redraw ui when returning to train interface after adding a cart
 
 **** NEED TO TEST **** 
 
 * test player label change automatically when train arrives 
-* inventory container stuff
 
 **** CLEAN UP **** 
 
@@ -22,11 +22,7 @@
 
 **** NEXT FEATURES **** 
 
-* Figure out what to do when machines try to add to full inventories
-* Figure out what to do when player adds to an inventory and it overflows the cell 
 * Add progress bar to overworld machines
-* Expand Train UI Interface
-    * Add callback to upgrade train button (for now it just upgrades speed)
 * Make city layouts
 * Add a way to speed up traveling between cities, pause
 * Add a way to quickly move items between inventories (shift+click)
@@ -78,3 +74,22 @@
 * Make drawing System based
 * Make UI Drawing based on screen coordinates
 * Make inventory draw messages automatically move around or resize other inventories as necessary
+
+*** RANDOM **** 
+
+what if there was a computer language that could derive compile-time guarantees
+from the language? 
+
+like 
+
+function foo() {
+    return 0
+}
+
+if (foo() > 0) {
+    ...
+}
+
+could throw a compile-time error for a branch that'll never occur. like i guess it could 
+infer bounds about the possible values of a variable and at compile-time could do checks on 
+possible things? IDK 

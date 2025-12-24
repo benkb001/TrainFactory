@@ -33,11 +33,14 @@ public class LinearLayoutWrap {
             w.RemoveEntity(cEntity);
             ll.RemoveChild(cEntity);
         }
-        w.RemoveComponent<LinearLayout>(e); 
+
+        if (w.ComponentContainsEntity<LinearLayout>(e)) {
+            w.RemoveComponent<LinearLayout>(e); 
+        }
     }
 
     //TODO: Test
-    public static void ResizeChildren(int llEntity, World w) {
+    public static void ResizeChildren(int llEntity, World w, bool recurse = false) {
         LinearLayout ll = w.GetComponent<LinearLayout>(llEntity); 
         List<int> cs = ll.GetChildren(); 
         int numChildren = cs.Count; 
@@ -56,6 +59,23 @@ public class LinearLayoutWrap {
 
         foreach (int c in ll.GetChildren()) {
             w.SetComponent<Frame>(c, new Frame(0, 0, width, height));
+            if (recurse && w.ComponentContainsEntity<LinearLayout>(c)) {
+                ResizeChildren(c, w); 
+            }
         }
+    }
+
+    public static void AddChild(int childEntity, int linearLayoutEntity, LinearLayout ll, World w) {
+        ll.AddChild(childEntity); 
+        LLChild c = new LLChild(linearLayoutEntity);
+        w.SetComponent<LLChild>(childEntity, c);
+        c.Depth = GetDepth(childEntity, w);  
+    }
+
+    public static int GetDepth(int childEntity, World w) {
+        if (w.ComponentContainsEntity<LLChild>(childEntity)) {
+            return 1 + GetDepth(w.GetComponent<LLChild>(childEntity).ParentEntity, w);
+        }
+        return 0; 
     }
 }

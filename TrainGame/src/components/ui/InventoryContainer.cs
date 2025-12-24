@@ -24,4 +24,8 @@ public class InventoryContainer<T> where T : IInventorySource {
     public List<Inventory> GetInventories() {
         return src.GetInventories();
     }
+
+    public T GetSource() {
+        return src; 
+    }
 }

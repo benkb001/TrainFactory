@@ -35,6 +35,7 @@ public static class RegisterSystems {
         NextDrawTestButtonSystem.Register(w);
         NextDrawTestUISystem.Register(w);
         CloseMenuSystem.Register(w); 
+        ClearLLSystem.Register(w); 
 
         ChestInteractSystem.Register(w); 
         TrainInteractSystem.Register(w); 
@@ -47,13 +48,15 @@ public static class RegisterSystems {
         PlayerAccessTrainClickSystem.Register(w); 
         AddCartClickSystem.Register(w); 
         AddCartInterfaceClickSystem.Register(w); 
+        UpgradeTrainClickSystem.Register(w); 
         InventoryIndexSystem.Register<Train>(w); 
 
         OpenMapSystem.Register(w); 
 
+        SceneSystem.RegisterPop(w); 
+
         RedrawMapSystem.Register(w); 
 
-        SceneSystem.RegisterPop(w); 
         SceneSystem.RegisterPush(w);
 
         DrawBackgroundSystem.Register(w); 
@@ -71,6 +74,7 @@ public static class RegisterSystems {
         DrawButtonSystem.Register<UpgradeTrainButton>(w); 
         w.AddSystem(DrawAddCartInterfaceSystem.Ts, DrawAddCartInterfaceSystem.Tf); 
         DrawInventoryContainerSystem.Register<Train>(w); 
+        DrawTrainInterfaceSystem.Register(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

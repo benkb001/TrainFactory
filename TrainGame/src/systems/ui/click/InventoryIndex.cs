@@ -32,25 +32,25 @@ public class InventoryIndexSystem {
 
             container.Index = index; 
             
-            LinearLayoutWrap.Clear(containerEntity, w);
-            w.RemoveComponent<Label>(e); 
-            w.RemoveComponent<Inventory>(e); 
-
-            Inventory inv = Inventories[index]; 
             Frame f = w.GetComponent<Frame>(containerEntity); 
 
-            Frame labelFrame = new Frame(f.Position, 0, 0); 
-            int labelEntity = -1; 
+            if (w.ComponentContainsEntity<LLChild>(containerEntity)) {
+                int outerEnt = w.GetComponent<LLChild>(containerEntity).ParentEntity; 
+                f = w.GetComponent<Frame>(outerEnt); 
 
-            if (w.ComponentContainsEntity<Body>(containerEntity)) {
-                labelEntity = w.GetComponent<Body>(containerEntity).LabelEntity; 
-                labelFrame = w.GetComponent<Frame>(labelEntity); 
+                int clearEnt = EntityFactory.Add(w); 
+                w.SetComponent<ClearLLMessage>(clearEnt, new ClearLLMessage(outerEnt)); 
             }
 
-            DrawInventoryCallback.Draw(w, inv, labelFrame.Position, f.GetWidth(), f.GetHeight() + labelFrame.GetHeight(), 
-                Entity: containerEntity, Padding: Constants.InventoryPadding, DrawLabel: true);
+            DrawInventoryContainerMessage<T> dm = new DrawInventoryContainerMessage<T>(
+                container,
+                f.Position,
+                f.GetWidth(), 
+                f.GetHeight()
+            ); 
+            int dmEnt = EntityFactory.Add(w); 
+            w.SetComponent<DrawInventoryContainerMessage<T>>(dmEnt, dm); 
             
-            w.RemoveEntity(labelEntity);
         }); 
     }
 }

@@ -10,20 +10,20 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 public class DrawInventoryContainerMessage<T> where T : IInventorySource {
-    public T InvSource; 
+    public InventoryContainer<T> InvContainer; 
     public Vector2 Position; 
     public float Width;  
     public float Height; 
     public bool SetMenu; 
-    public bool DrawLabel; 
+    public int Entity; 
 
-    public DrawInventoryContainerMessage(T InvSource, Vector2 Position, float Width, float Height, 
-        bool SetMenu = true, bool DrawLabel = false) {
-        this.InvSource = InvSource; 
+    public DrawInventoryContainerMessage(InventoryContainer<T> InvContainer, Vector2 Position, float Width, float Height, 
+        bool SetMenu = true, int Entity = -1) {
+        this.InvContainer = InvContainer; 
         this.Position = Position; 
         this.Width = Width; 
         this.Height = Height; 
         this.SetMenu = SetMenu; 
-        this.DrawLabel = DrawLabel; 
+        this.Entity = Entity; 
     }
 }

@@ -14,8 +14,8 @@ class SystemManager {
         systems = new(); 
     }
 
-    public _System Register(bool[] signature, Action<World, int> transformer) {
-        _System s = new _System(signature, transformer); 
+    public _System Register(bool[] signature, Action<World, int> transformer, Func<int, int> orderer = null) {
+        _System s = new _System(signature, transformer, orderer); 
         systems.Add(s); 
         return s; 
     }

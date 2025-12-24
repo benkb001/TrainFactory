@@ -14,12 +14,16 @@ using TrainGame.Callbacks;
 
 public class MakeMessage {
 
+    public static void Add<T>(World w, T msg) {
+        int e = EntityFactory.Add(w, setScene: false); 
+        w.SetComponent<T>(e, msg); 
+    }
+
     public static void DrawInventory(Inventory inv, World w, Vector2 Position, float Width, float Height) {
         DrawInventoryCallback.Create(w, inv, Position, Width, Height, Padding: 5f, SetMenu: true, DrawLabel: true); 
     }
 
     public static void DrawMachineInterface(World w, Machine m, bool playerAtMachine = false) {
-        View.num_menus = 1; 
         View.EnterMenu(w); 
         //draw machine inventory
         Inventory inv = m.Inv; 

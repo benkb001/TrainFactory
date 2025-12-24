@@ -74,9 +74,9 @@ public partial class World {
         return e; 
     }
 
-    public _System AddSystem(Type[] ts, Action<World, int> transformer) {
+    public _System AddSystem(Type[] ts, Action<World, int> transformer, Func<int, int> orderer = null) {
         bool[] signature = cm.GetSignature(ts); 
-        return sm.Register(signature, transformer);
+        return sm.Register(signature, transformer, orderer);
     }
 
     public _System AddSystem(Type[] ts, Action<World> update) {

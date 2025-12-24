@@ -41,6 +41,7 @@ namespace TrainGame.Constants
         public static float InvUpgradeMass = 1000f; 
 
         public const float TrainDefaultPower = 25000f; 
+        public const float UpgradePowerStep = 1000f; 
         public const float TrainDefaultMass = 1000f; 
         public const float FreightCartBaseMass = 1250f; 
         public const float LiquidCartBaseMass = 750f; 
@@ -51,6 +52,7 @@ namespace TrainGame.Constants
         public const int TrainCols = 5; 
 
         public const string TrainStr = "Train"; 
+        public const string PlayerInvID = "PlayerInv"; 
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {
@@ -120,7 +122,7 @@ namespace TrainGame.Constants
     }
 
     public static class ItemID {
-        public const string ArmorUpgrade = "ArmorUpgrade"; 
+        public const string ArmorUpgrade = "Armor Upgrade"; 
         public const string Fuel = "Fuel"; 
         public const string Glass = "Glass"; 
         public const string GunUpgrade = "Gun Upgrade"; 
@@ -131,6 +133,7 @@ namespace TrainGame.Constants
         public const string Sand = "Sand"; 
         public const string Water = "Water"; 
         public const string Wood = "Wood"; 
+        public const string TrainUpgrade = "Train Upgrade"; 
 
         public static readonly List<string> All = [
             ArmorUpgrade, Fuel, Glass, GunUpgrade, Iron, 

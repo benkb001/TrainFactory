@@ -15,7 +15,8 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 
 public static class LinearLayoutSystem {
-    private static Action<World, int> tf = (w, e) => {
+
+    public static void Position(World w, int e) {
         LinearLayout layout = w.GetComponent<LinearLayout>(e); 
         Frame layout_frame = w.GetComponent<Frame>(e); 
         List<int> children = layout.GetChildren();
@@ -76,11 +77,21 @@ public static class LinearLayoutSystem {
                 }
             }
         }
+    }
+
+    private static Action<World, int> tf = (w, e) => {
+        Position(w, e); 
     }; 
 
-    private static Type[] ts = [typeof(LinearLayout), typeof(Active), typeof(Frame)]; 
+    private static Type[] ts = [typeof(LinearLayout), typeof(Active), typeof(Frame)];
 
     public static void Register(World world) {
-        world.AddSystem(ts, tf); 
+        Func<int, int> orderer = (e) => {
+            if (world.ComponentContainsEntity<LLChild>(e)) {
+                return world.GetComponent<LLChild>(e).Depth; 
+            }
+            return 0; 
+        }; 
+        world.AddSystem(ts, tf, orderer); 
     }
 }

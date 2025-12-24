@@ -31,38 +31,61 @@ public static class DrawInventoryCallback {
             Entity: Entity, Padding, SetMenu, DrawLabel)); 
     }
 
+    // returns inventoryEntity, can get the container from LLChild component
     public static int Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
         int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
         
+        int containerEntity = EntityFactory.Add(w); 
+        LinearLayout container = new LinearLayout("vertical", "alignlow"); 
+        Frame f = new Frame(Position, Width, Height); 
+        w.SetComponent<LinearLayout>(containerEntity, container); 
+        w.SetComponent<Frame>(containerEntity, f); 
+
+        float invHeight = Height; 
+        float drawY = Position.Y; 
+
+        if (DrawLabel) {
+            float labelWidth = Constants.LabelHeight * 2; 
+            invHeight -= Constants.LabelHeight; 
+
+            int rowLLEntity = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(rowLLEntity, containerEntity, container, w); 
+
+            LinearLayout rowLL = new LinearLayout("horizontal", "alignlow"); 
+            rowLL.Padding = Constants.InventoryPadding; 
+            w.SetComponent<LinearLayout>(rowLLEntity, rowLL); 
+            w.SetComponent<Frame>(rowLLEntity, new Frame(0, 0, Width, Constants.LabelHeight)); 
+
+            int labelEntity = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(labelEntity, rowLLEntity, rowLL, w);
+            
+            w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
+            w.SetComponent<Outline>(labelEntity, new Outline()); 
+            w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
+        }
+
         if (!w.EntityExists(Entity)) {
             Entity = EntityFactory.Add(w); 
         }
 
-        int inventoryUI = Entity; 
+        int inventoryEntity = Entity; 
 
-        w.SetComponent<Inventory>(inventoryUI, inv); 
+        LinearLayoutWrap.AddChild(inventoryEntity, containerEntity, container, w); 
+
+        w.SetComponent<Inventory>(inventoryEntity, inv); 
 
         if (SetMenu) {
-            w.SetComponent<Menu>(inventoryUI, Menu.Get()); 
+            w.SetComponent<Menu>(inventoryEntity, Menu.Get()); 
         }
         
         LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
         ll.Padding = Padding; 
-        w.SetComponent<LinearLayout>(inventoryUI, ll);
-        
-        Vector2 drawPosition = Position;
+        w.SetComponent<LinearLayout>(inventoryEntity, ll);
 
-        float invHeight = Height; 
-        float drawY = drawPosition.Y; 
-        if (DrawLabel) {
-            invHeight -= Constants.LabelHeight; 
-            drawY += Constants.LabelHeight; 
-        }
-
-        w.SetComponent<Frame>(inventoryUI, new Frame(drawPosition.X, drawY, 
+        w.SetComponent<Frame>(inventoryEntity, new Frame(Position.X, drawY, 
             Width, invHeight, Padding)); 
-        w.SetComponent<Outline>(inventoryUI, new Outline(Depth: Constants.InventoryOutlineDepth)); 
-        w.SetComponent<Background>(inventoryUI, new Background(Colors.UIBG, Depth: Constants.InventoryBackgroundDepth)); 
+        w.SetComponent<Outline>(inventoryEntity, new Outline(Depth: Constants.InventoryOutlineDepth)); 
+        w.SetComponent<Background>(inventoryEntity, new Background(Colors.UIBG, Depth: Constants.InventoryBackgroundDepth)); 
 
         int rows = inv.GetRows(); 
         int cols = inv.GetCols(); 
@@ -71,16 +94,6 @@ public static class DrawInventoryCallback {
 
         float cellHeight = rowHeight - Padding * 2;
         float cellWidth = (rowWidth  - (Padding * (cols + 1))) / cols; 
-        
-        if (DrawLabel) {
-            int labelEntity = EntityFactory.Add(w); 
-            w.SetComponent<Label>(labelEntity, new Label(inventoryUI)); 
-            float labelWidth = Math.Min(50f, cellWidth); 
-            w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
-            w.SetComponent<Outline>(labelEntity, new Outline()); 
-            w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
-            w.SetComponent<Body>(Entity, new Body(labelEntity)); 
-        }
 
         for (int i = 0; i < rows; i++) {
             int row = EntityFactory.Add(w); 
@@ -106,10 +119,10 @@ public static class DrawInventoryCallback {
                 w.SetComponent<TextBox>(cell, tb);
                 w.SetComponent<Draggable>(cell, new Draggable()); 
                 w.SetComponent<Button>(cell, new Button()); 
-                rowLL.AddChild(cell);
+                LinearLayoutWrap.AddChild(cell, row, rowLL, w);
             }
-            ll.AddChild(row); 
+            LinearLayoutWrap.AddChild(row, inventoryEntity, ll, w); 
         }
-        return Entity; 
+        return inventoryEntity; 
     }
 }

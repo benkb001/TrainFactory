@@ -32,6 +32,7 @@ public static class RegisterComponents {
         r<Chest>(); 
         r<City>(); 
         r<CityUI>(); 
+        r<ClearLLMessage>(); 
         r<Collidable>(); 
         r<Data>(); 
         r<Draggable>(); 
@@ -47,6 +48,7 @@ public static class RegisterComponents {
         r<DrawMachineRequestMessage>(); 
         r<DrawMachinesViewMessage>(); 
         r<DrawMapMessage>(); 
+        r<DrawTrainInterfaceMessage>(); 
         r<DrawTrainsViewMessage>();
         r<EmbarkButton>(); 
         r<Frame>(); 
@@ -68,6 +70,7 @@ public static class RegisterComponents {
         r<Label>(); 
         r<LinearLayout>(); 
         r<Lines>(); 
+        r<LLChild>(); 
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 

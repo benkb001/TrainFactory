@@ -18,11 +18,20 @@ public class MachineUpdateSystem {
     public static readonly Action<World, int> Tf = (w, e) => {
         Machine m = w.GetComponent<Machine>(e); 
         
-        if ((m.RequestedAmount >= m.ProductCount || m.ProduceInfinite) && m.InvHasRequiredItems()) {
-            if (m.CraftComplete) {
-                m.FinishRecipe(); 
-            }
-            m.UpdateCrafting();  
+        if (m.State == CraftState.Idle && (m.RequestedAmount >= m.ProductCount || m.ProduceInfinite)
+            && m.InvHasRequiredItems()) {
+                
+            m.StartRecipe(); 
         }
+
+        if (m.CraftComplete && m.State == CraftState.Crafting) {
+            m.FinishRecipe(); 
+        }
+
+        if (m.State == CraftState.Delivering) {
+            m.DeliverRecipe(); 
+        }
+
+        m.UpdateCrafting();  
     }; 
 }

@@ -2,6 +2,7 @@ namespace TrainGame.ECS;
 
 using System.Collections.Generic;
 using System; 
+using System.Linq; 
 
 public class _System {
     private HashSet<int> es {get;}
@@ -10,11 +11,13 @@ public class _System {
 
     private Action<World, int> transformer;
     private Action<World> update; 
+    private Func<int, int> orderer; 
 
-    public _System(bool[] s, Action<World, int> t) {
+    public _System(bool[] s, Action<World, int> t, Func<int, int> orderer = null) {
         es = new HashSet<int>(); 
         transformer = t; 
         signature = s; 
+        this.orderer = orderer; 
     }
 
     public _System(bool[] s, Action<World> u) {
@@ -43,7 +46,13 @@ public class _System {
         if (update != null) {
             update(w); 
         } else {
-            foreach (int e in es) {
+
+            IEnumerable<int> entsEnum = es; 
+            if (orderer != null) {
+                entsEnum = es.OrderBy(orderer); 
+            }
+
+            foreach (int e in entsEnum) {
                 transformer(w, e); 
             }
         }

@@ -3,9 +3,11 @@ namespace TrainGame.Components;
 
 public class UpgradeTrainButton : IClickable {
     public readonly Train UpgradingTrain; 
+    public readonly Inventory PlayerInv; 
 
-    public UpgradeTrainButton(Train t) {
+    public UpgradeTrainButton(Train t, Inventory inv) {
         UpgradingTrain = t; 
+        PlayerInv = inv; 
     }
 
     public string GetText() {

@@ -34,12 +34,15 @@ public class InventoryControlSystem() {
             if (targetItem.ItemId == curItem.ItemId) {
                 curItem.Count += targetItem.Count;
                 targetItem.Count = 0; 
-                targetItem.ItemId = ""; 
+                targetItem.ItemId = "";
             }
             
             int addedToTarget = targetInv.Add(curItem, targetRow, targetCol); 
-            Console.WriteLine($"Num added: {addedToTarget}");
-            curInv.Add(targetItem, curRow, curCol);
+            int addedToCur = curInv.Add(targetItem, curRow, curCol);
+
+            curInv.Add(new Inventory.Item(ItemId: curItem.ItemId, Count: curItem.Count - addedToTarget)); 
+            targetInv.Add(new Inventory.Item(ItemId: targetItem.ItemId, Count: targetItem.Count - addedToCur));
+            
             d.SnapPosition = targetVector; 
             w.RemoveEntity(e); 
         }; 

@@ -14,7 +14,7 @@ using TrainGame.Constants;
 
 public class InventoryIndexer<T> where T : IInventorySource {
     public readonly int Delta; 
-    public readonly int ContainerEntity; 
+    public int ContainerEntity; 
     public readonly InventoryContainer<T> Container; 
 
     public InventoryIndexer(InventoryContainer<T> Container, int ContainerEntity, int Delta = 1) {

@@ -18,7 +18,6 @@ public class MachineInteractSystem() {
         Interactable mInteractable = w.GetComponent<Interactable>(e); 
         if (mInteractable.Interacted) {
             Machine m = w.GetComponent<MachineUI>(e).GetMachine(); 
-            View.num_menus = 1; 
             MakeMessage.DrawMachineInterface(w, m, playerAtMachine: true); 
         }
     }; 

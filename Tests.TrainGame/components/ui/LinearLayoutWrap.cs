@@ -13,8 +13,73 @@ using TrainGame.Utils;
 public class LinearLayoutWrapTest {
     [Fact]
     public void LinearLayoutWrap_ClearShouldRemoveAllNestedEntitiesFromWorld() {
+        World w = WorldFactory.Build(); 
+
+        LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
+        LinearLayout llChild = new LinearLayout("Horizontal", "alignlow"); 
         
-        //too lazy to write because i am not using this method at all right now. 
+        int parentEnt = EntityFactory.Add(w); 
+        int childEnt = EntityFactory.Add(w); 
+
+        w.SetComponent<LinearLayout>(parentEnt, llParent); 
+        w.SetComponent<LinearLayout>(childEnt, llChild); 
+
+        w.SetComponent<Frame>(parentEnt, new Frame(0, 0, 100, 100)); 
+        w.SetComponent<Frame>(childEnt, new Frame(0, 0, 50, 50)); 
+
+        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+
+        int grandChildEnt = EntityFactory.Add(w); 
+        w.SetComponent<Frame>(grandChildEnt, new Frame(0, 0, 25, 25)); 
+        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+
+        Assert.True(w.EntityExists(parentEnt)); 
+        Assert.True(w.EntityExists(childEnt)); 
+        Assert.True(w.EntityExists(grandChildEnt)); 
+
+        LinearLayoutWrap.Clear(parentEnt, w); 
+
+        Assert.False(w.EntityExists(childEnt)); 
+        Assert.False(w.EntityExists(grandChildEnt)); 
+    }
+
+    [Fact]
+    public void LinearLayoutWrap_AddChildShouldAddAnLLChlidToChildEntityWithCorrectParentEntity() {
+        World w = WorldFactory.Build(); 
+
+        LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
+        
+        int parentEnt = EntityFactory.Add(w); 
+        int childEnt = EntityFactory.Add(w); 
+
+        w.SetComponent<LinearLayout>(parentEnt, llParent); 
+
+        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+        Assert.Equal(parentEnt, w.GetComponent<LLChild>(childEnt).ParentEntity);
+    }
+
+    [Fact]
+    public void LinearLayoutWrap_GetDepthShouldReturnNumberOfParentLLsAnEntityHas() {
+        World w = WorldFactory.Build(); 
+
+        LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
+        LinearLayout llChild = new LinearLayout("Horizontal", "alignlow"); 
+        
+        int parentEnt = EntityFactory.Add(w); 
+        int childEnt = EntityFactory.Add(w); 
+
+        w.SetComponent<LinearLayout>(parentEnt, llParent); 
+        w.SetComponent<LinearLayout>(childEnt, llChild); 
+
+        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+
+        int grandChildEnt = EntityFactory.Add(w); 
+
+        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+
+        Assert.Equal(2, w.GetComponent<LLChild>(grandChildEnt).Depth); 
+        Assert.Equal(1, w.GetComponent<LLChild>(childEnt).Depth); 
+        Assert.False(w.ComponentContainsEntity<LLChild>(parentEnt)); 
     }
 
     [Fact]

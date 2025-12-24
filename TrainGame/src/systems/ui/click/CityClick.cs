@@ -26,8 +26,7 @@ public class CityClickSystem() {
                 Vector2 topleft = w.GetCameraTopLeft(); 
                 
                 City city = w.GetComponent<CityUI>(e).GetCity(); 
-                int pushEntity = EntityFactory.Add(w); 
-                w.SetComponent<PushSceneMessage>(pushEntity, PushSceneMessage.Get()); 
+                PushFactory.Build(w); 
                 
                 Inventory inv = w.GetComponent<CityUI>(e).GetCity().Inv; 
 
