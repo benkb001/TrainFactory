@@ -23,16 +23,11 @@ public class DrawUpgradeMachineButtonCallback {
 
             int upgradeEntity = EntityFactory.Add(w); 
 
-            if (!playerAtMachine) {
-                c = Colors.Placebo; 
-                msg = "Must be at the machine to upgrade it"; 
-            } else {
-                c = Colors.UIAccent; 
-                msg = "Upgrade machine?"; 
-                w.SetComponent<Button>(upgradeEntity, new Button(
-                    onClick: UpgradeMachineOnClick.Create(w, m)
-                ));
-            }
+            c = Colors.UIAccent; 
+            msg = "Upgrade machine?"; 
+            w.SetComponent<Button>(upgradeEntity, new Button(
+                onClick: UpgradeMachineOnClick.Create(w, m)
+            ));
 
             Background bg = new Background(c); 
             TextBox tb = new TextBox(msg); 

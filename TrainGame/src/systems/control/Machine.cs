@@ -18,10 +18,11 @@ public class MachineUpdateSystem {
     public static readonly Action<World, int> Tf = (w, e) => {
         Machine m = w.GetComponent<Machine>(e); 
         
-        if (m.State == CraftState.Idle && (m.RequestedAmount >= m.ProductCount || m.ProduceInfinite)
-            && m.InvHasRequiredItems()) {
-                
-            m.StartRecipe(); 
+        if (m.State == CraftState.Idle && (m.RequestedAmount >= m.ProductCount || m.ProduceInfinite)) {
+            int numCraftable = m.GetNumCraftable();
+            if (numCraftable > 0) {
+                m.StartRecipe(numCraftable); 
+            }
         }
 
         if (m.CraftComplete && m.State == CraftState.Crafting) {
@@ -32,6 +33,8 @@ public class MachineUpdateSystem {
             m.DeliverRecipe(); 
         }
 
-        m.UpdateCrafting();  
+        if (m.State == CraftState.Crafting) {
+            m.UpdateCrafting(); 
+        }
     }; 
 }

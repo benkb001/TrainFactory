@@ -101,5 +101,13 @@ public class LinearLayout {
         }
         return exists;
     }
+
+    public bool InsertChild(int index, int e) {
+        bool duplicateChild = children.Contains(e);
+        if (!duplicateChild) {
+            children.Insert(index, e); 
+        }
+        return !duplicateChild; 
+    }
     
 }

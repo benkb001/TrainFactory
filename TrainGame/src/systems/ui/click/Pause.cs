@@ -14,8 +14,7 @@ public class PauseButtonSystem() {
     private static Type[] ts = [typeof(PauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         if (w.GetComponent<Button>(e).Clicked) {
-            int msg = EntityFactory.Add(w); 
-            w.SetComponent<PushSceneMessage>(msg, PushSceneMessage.Get()); 
+            w.SetMiliticksPerUpdate(0); 
         }
     }; 
 
@@ -27,13 +26,26 @@ public class PauseButtonSystem() {
 public class UnpauseButtonSystem() {
     private static Type[] ts = [typeof(UnpauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
-        if (w.GetComponent<Button>(e).Clicked) {
-            int msg = EntityFactory.Add(w);  
-            w.SetComponent<PopSceneMessage>(msg, PopSceneMessage.Get()); 
-        }
+        w.SetMiliticksPerUpdate(1000); 
     }; 
 
     public static void Register(World w) {
         w.AddSystem(ts, tf); 
+    }
+}
+
+public class SpeedTimeClickSystem() {
+    public static void Register(World w) {
+        ClickSystem.Register<SpeedTimeButton>(w, (w, e) => {
+            w.SetMiliticksPerUpdate(3000); 
+        }); 
+    }
+}
+
+public class SlowTimeClickSystem() {
+    public static void Register(World w) {
+        ClickSystem.Register<SlowTimeButton>(w, (w, e) => {
+            w.SetMiliticksPerUpdate(1000); 
+        }); 
     }
 }

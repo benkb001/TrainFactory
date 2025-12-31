@@ -18,8 +18,8 @@ public class TrainInteractSystemTest {
         TrainInteractSystem.Register(w); 
 
         int tEntity = EntityFactory.Add(w);
-        Inventory inv = new Inventory("Test", 1, 1); 
-        w.SetComponent<Train>(tEntity, new Train(inv, new City("start", inv, 100f, 100f))); 
+
+        w.SetComponent<TrainYard>(tEntity, TrainYard.Get()); 
         w.SetComponent<Interactable>(tEntity, new Interactable(true)); //notice interacted is set to true
         
         w.Update(); 

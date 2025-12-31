@@ -20,15 +20,24 @@ public class EmbarkClickSystem() {
                 EmbarkButton eb = w.GetComponent<EmbarkButton>(e); 
                 Train t = eb.GetTrain();
                 City c = eb.GetDestination(); 
-                t.Embark(c, w.Time); 
+                TrainWrap.Embark(t, c, w); 
                 
-                for (int i = 0; i < 2; i++) {
-                    int popEntity = w.AddEntity(); 
-                    w.SetComponent<PopSceneMessage>(popEntity, PopSceneMessage.Get()); 
+                int maxScene = SceneSystem.GetMaxScene(w); 
+
+                for (int i = 0; i < maxScene - 1; i++) {
+                    PopFactory.Build(w);
                 }
+
+                MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
             }
         }; 
 
         world.AddSystem(ts, tf); 
+    }
+}
+
+public class TrainWrap {
+    public static void Embark(Train t, City dest, World w) {
+        t.Embark(dest, w.Time); 
     }
 }

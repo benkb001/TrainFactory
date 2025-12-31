@@ -62,5 +62,8 @@ public class FrameTest {
         Assert.True(f1.IsTouching(f2)); 
         Frame f3 = new Frame(15, 0, 10, 10); 
         Assert.False(f1.IsTouching(f3));
+
+        Frame f4 = new Frame(0, 20, 10, 10); 
+        Assert.False(f1.IsTouching(f4)); 
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
+using TrainGame.Systems;
 
 public static class RegisterComponents {
     public static void All(World w) {
@@ -50,6 +51,7 @@ public static class RegisterComponents {
         r<DrawMapMessage>(); 
         r<DrawTrainInterfaceMessage>(); 
         r<DrawTrainsViewMessage>();
+        r<DrawTravelingInterfaceMessage>();
         r<EmbarkButton>(); 
         r<Frame>(); 
         r<GameClockView>();
@@ -81,15 +83,19 @@ public static class RegisterComponents {
         r<PopSceneMessage>(); 
         r<ProgressBar>(); 
         r<Scene>(); 
+        r<SlowTimeButton>();
+        r<SpeedTimeButton>(); 
         r<Sprite>(); 
         r<Stepper>(); 
         r<StepperButton>(); 
         r<StepperMessage>(); 
+        r<TALBody>();
         r<TextBox>(); 
         r<Toast>(); 
         r<Train>(); 
         r<TrainAssembler>(); 
         r<TrainUI>(); 
+        r<TrainYard>(); 
         r<UnpauseButton>(); 
         r<UpgradeTrainButton>(); 
         r<Velocity>(); 

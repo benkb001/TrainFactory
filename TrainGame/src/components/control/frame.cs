@@ -99,10 +99,18 @@ public class Frame {
     }
 
     public bool IsTouching(Frame other) {
-        return 
-           (Math.Abs(p.Left - other.p.Right) < touchThreshold) || 
-           (Math.Abs(p.Top - other.p.Bottom) < touchThreshold) ||
-           (Math.Abs(p.Right - other.p.Left) < touchThreshold) || 
-           (Math.Abs(p.Bottom - other.p.Top) < touchThreshold); 
+        bool touchingRight = (Math.Abs(p.Left - other.p.Right) < touchThreshold); 
+        bool touchingLeft = (Math.Abs(p.Right - other.p.Left) < touchThreshold); 
+        bool touchingBot = (Math.Abs(p.Top - other.p.Bottom) < touchThreshold);
+        bool touchingTop = (Math.Abs(p.Bottom - other.p.Top) < touchThreshold); 
+
+        bool touchingY = (touchingBot || touchingTop) && overlapping(p.Left, p.Right, other.p.Left, other.p.Right); 
+        bool touchingX = touchingLeft || touchingRight && overlapping(p.Top, p.Bottom, other.p.Top, other.p.Bottom); 
+
+        return touchingX || touchingY; 
+    }
+
+    private bool overlapping(float x1, float x2, float y1, float y2) {
+        return x1 <= y2 && y1 <= x2;
     }
 }

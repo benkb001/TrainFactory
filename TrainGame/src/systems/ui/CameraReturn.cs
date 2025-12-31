@@ -14,7 +14,7 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 
 //todo: test
-public class CameraReturnSystem() {
+public static class CameraReturnSystem {
     private static Type[] ts = [typeof(CameraReturn), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         CameraReturn cr = w.GetComponent<CameraReturn>(e);

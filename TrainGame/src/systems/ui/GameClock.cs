@@ -12,7 +12,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 public class GameClockViewSystem() {
-    private static Type[] types = [typeof(TextBox), typeof(Frame), typeof(GameClockView)]; 
+    private static Type[] types = [typeof(TextBox), typeof(GameClockView), typeof(Active)]; 
     private static Action<World, int> transformer = (w, e) => {
         w.GetComponent<TextBox>(e).Text = w.Time.ToString(); 
     }; 

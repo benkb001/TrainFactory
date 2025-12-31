@@ -43,33 +43,5 @@ public class PauseButtonSystemTest {
         ButtonSystem.RegisterUnclick(w);
     }
 
-    [Fact]
-    public void PauseButtonSystem_ShouldGenerateMessageWhenClicked() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterDependencies(w); 
-
-        int pauseBtnEntity = EntityFactory.Add(w); 
-        w.SetComponent<Button>(pauseBtnEntity, new Button(true)); 
-        w.SetComponent<PauseButton>(pauseBtnEntity, PauseButton.Get()); 
-
-        w.Update(); 
-
-        Assert.Single(w.GetComponentArray<PushSceneMessage>()); 
-    }
-
-    [Fact]
-    public void UnpauseButtonSystem_ShouldGenerateMessageWhenClicked() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterDependencies(w); 
-
-        int unpauseButton = EntityFactory.Add(w);  
-        w.SetComponent<Button>(unpauseButton, new Button(true)); 
-        w.SetComponent<UnpauseButton>(unpauseButton, UnpauseButton.Get()); 
-
-        w.Update(); 
-
-        Assert.Single(w.GetComponentArray<PopSceneMessage>()); 
-    }
+    //todo: write
 }

@@ -32,4 +32,8 @@ public static class Util {
     public static bool DoubleEqual(double d1, double d2) {
         return Math.Abs(d1 - d2) < 0.001;
     }
+
+    private static T[] GetEnumList<T>() {
+        return (T[])Enum.GetValues(typeof(T));
+    }
 }

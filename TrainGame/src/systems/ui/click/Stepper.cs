@@ -15,7 +15,8 @@ public class StepperButtonSystem() {
 
     public static void Register(World world) {
         Action<World, int> tf = (w, e) => {
-            if (w.GetComponent<Button>(e).Clicked) {
+            Button b = w.GetComponent<Button>(e); 
+            if (b.Clicked || (b.TicksHeld >= 30 && b.TicksHeld % 2 == 0)) {
                 StepperButton sb = w.GetComponent<StepperButton>(e); 
                 int message = EntityFactory.Add(w); 
                 w.SetComponent<StepperMessage>(message, new StepperMessage(sb.Entity, sb.Delta)); 

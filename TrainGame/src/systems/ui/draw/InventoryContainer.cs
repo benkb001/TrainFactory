@@ -21,9 +21,17 @@ public class DrawInventoryContainerSystem {
     public static int Draw<T>(DrawInventoryContainerMessage<T> dm, World w) where T : IInventorySource {
         InventoryContainer<T> invContainer = dm.InvContainer;
 
-        int containerEntity = DrawInventoryCallback.Draw(w, invContainer.GetInventories()[invContainer.Index], 
+        int scene = 0; 
+
+        if (w.EntityExists(dm.Entity) && w.ComponentContainsEntity<Scene>(dm.Entity)) {
+            scene = w.GetComponent<Scene>(dm.Entity).Value; 
+        }
+
+        Inventory inv = invContainer.GetCur(); 
+
+        int containerEntity = DrawInventoryCallback.Draw(w, inv,
             dm.Position, dm.Width, dm.Height, Padding: Constants.InventoryPadding, SetMenu: dm.SetMenu, 
-            DrawLabel: true, Entity: dm.Entity);
+            DrawLabel: true, Entity: dm.Entity, ParentEntity: dm.ParentEntity);
         
         w.SetComponent<InventoryContainer<T>>(containerEntity, invContainer); 
         
@@ -31,7 +39,7 @@ public class DrawInventoryContainerSystem {
         int headerRowLLEntity = w.GetComponent<LinearLayout>(outerContainerEntity).GetChildren()[0]; 
         LinearLayout headerRowLL = w.GetComponent<LinearLayout>(headerRowLLEntity); 
 
-        int indexerEntity = EntityFactory.Add(w); 
+        int indexerEntity = EntityFactory.Add(w, scene: scene); 
         LinearLayoutWrap.AddChild(indexerEntity, headerRowLLEntity, headerRowLL, w);
 
         float indexContainerWidth = dm.Width / 8f; 
@@ -49,7 +57,7 @@ public class DrawInventoryContainerSystem {
 
         int[] directions = [-1, 1]; 
         foreach (int d in directions) {
-            int indexEntity = EntityFactory.Add(w); 
+            int indexEntity = EntityFactory.Add(w, scene: scene); 
             w.SetComponent<InventoryIndexer<T>>(indexEntity, new InventoryIndexer<T>(invContainer, containerEntity, 1)); 
             w.SetComponent<Button>(indexEntity, new Button()); 
             w.SetComponent<Outline>(indexEntity, new Outline()); 
@@ -65,6 +73,7 @@ public class DrawInventoryContainerSystem {
 
             ll.AddChild(indexEntity); 
         }
+
         return containerEntity; 
     }
 

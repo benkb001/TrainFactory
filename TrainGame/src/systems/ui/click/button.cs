@@ -17,7 +17,21 @@ public class ButtonSystem() {
     //TODO: test bubbling
     public static void RegisterClick(World world) {
         Action<World> update = (w) => {
-            if (!VirtualMouse.LeftClicked()) {
+            Click type = Click.None; 
+
+            if (VirtualMouse.RightClicked()) {
+                type = Click.Right; 
+            }
+
+            if (VirtualMouse.LeftClicked()) {
+                if (VirtualKeyboard.IsPressed(Keys.LeftShift)) {
+                    type = Click.Shift; 
+                } else {
+                    type = Click.Left; 
+                }
+            }
+
+            if (type == Click.None) {
                 return; 
             }
 
@@ -34,9 +48,12 @@ public class ButtonSystem() {
             bool clicked = false; 
 
             while(i < frameButtons.Count && !clicked) {
-                if (frameButtons[i].Item1.Contains(mousePoint)) {
-                    frameButtons[i].Item2.Clicked = true; 
-                    frameButtons[i].Item2.OnClick(); 
+                (Frame f, Button b) = frameButtons[i]; 
+
+                if (f.Contains(mousePoint)) {
+                    b.ClickType = type; 
+                    b.TicksHeld++;
+                    b.OnClick(); 
                     clicked = true; 
                 }
                 i++; 
@@ -49,9 +66,29 @@ public class ButtonSystem() {
     public static void RegisterUnclick(World world) {
         Type[] types = [typeof(Button), typeof(Active)]; 
         Action<World, int> transformer = (w, e) => {
-            w.GetComponent<Button>(e).Clicked = false; 
+            Button b = w.GetComponent<Button>(e);
+            b.ClickType = Click.None; 
         };
 
         world.AddSystem(types, transformer);
+    }
+
+    public static void RegisterHold(World world) {
+        world.AddSystem((w) => {
+            Vector2 mousePoint = w.GetWorldMouseCoordinates(); 
+            KeyValuePair<int, Button> held = w.GetComponentArray<Button>().Where(
+                kvp => kvp.Value.TicksHeld > 0).FirstOrDefault(); 
+            if (!held.Equals(default(KeyValuePair<int, Button>))) {
+                int heldEnt = held.Key; 
+                Button heldBtn = held.Value; 
+
+                (Frame f, bool success) = w.GetComponentSafe<Frame>(heldEnt);
+                if (success && f.Contains(mousePoint) && VirtualMouse.LeftPressed()) {
+                    heldBtn.TicksHeld++; 
+                } else {
+                    heldBtn.TicksHeld = 0;
+                }
+            }
+        }); 
     }
 }

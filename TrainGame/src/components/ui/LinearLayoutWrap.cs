@@ -78,4 +78,23 @@ public class LinearLayoutWrap {
         }
         return 0; 
     }
+
+    public static int GetParent(int childEntity, World w) {
+        if (w.ComponentContainsEntity<LLChild>(childEntity)) {
+            return w.GetComponent<LLChild>(childEntity).ParentEntity; 
+        }
+        return -1;
+    }
+
+    public static int ClearParent(int childEntity, World w) {
+        (LLChild llChild, bool success) = w.GetComponentSafe<LLChild>(childEntity); 
+        
+        if (success) {
+            int parentEnt = llChild.ParentEntity;
+            LinearLayoutWrap.Clear(parentEnt, w); 
+            return parentEnt; 
+        }
+
+        return -1; 
+    }
 }

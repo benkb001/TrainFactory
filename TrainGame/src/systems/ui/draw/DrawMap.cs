@@ -21,7 +21,7 @@ public class DrawMapSystem() {
             Vector2 topleft = w.GetCameraTopLeft(); 
             int flagEnt = EntityFactory.Add(w); 
             w.SetComponent<MapUIFlag>(flagEnt, MapUIFlag.Get()); 
-            List<int> cityDataEntities = w.GetMatchingEntities([typeof(City), typeof(Active)]); 
+            List<int> cityDataEntities = w.GetMatchingEntities([typeof(City), typeof(Data)]); 
             int playerLocationEntity = -1; 
             foreach (int cityDataEntity in cityDataEntities) {
                 City city = w.GetComponent<City>(cityDataEntity); 
@@ -48,7 +48,7 @@ public class DrawMapSystem() {
                 w.SetComponent<Label>(labelEntity, new Label(playerLocationEntity)); 
             }
 
-            List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Active)]); 
+            List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Data)]); 
             foreach (int trainDataEntity in trainDataEntities) {
                 Train train = w.GetComponent<Train>(trainDataEntity); 
                 int trainDrawnEntity = EntityFactory.Add(w); 
@@ -69,7 +69,36 @@ public class DrawMapSystem() {
                     w.SetComponent<Label>(labelEntity, new Label(trainDrawnEntity)); 
                 }
             }
+
+            //add clock in top-right corner
+
+            float clockWidth = w.ScreenWidth / 4f; 
+            float clockHeight = clockWidth / 2f; 
+            Vector2 clockPosition = topleft + new Vector2(w.ScreenWidth - clockWidth - 10f, 10f); 
+            int clockEnt = EntityFactory.Add(w); 
+            w.SetComponent<GameClockView>(clockEnt, GameClockView.Get()); 
+            w.SetComponent<Frame>(clockEnt, new Frame(clockPosition, clockWidth, clockHeight)); 
+            w.SetComponent<TextBox>(clockEnt, new TextBox("")); 
+            w.SetComponent<Outline>(clockEnt, new Outline()); 
+
             w.RemoveEntity(e);
+
+            //add speed buttons in top-left corner 
+            float buttonWidth = clockWidth / 2f; 
+            float buttonHeight = clockHeight / 2f; 
+            int[] es = new int[3]; 
+            for (int i = 0; i < 3; i++) {
+                int buttonEnt = EntityFactory.Add(w); 
+                es[i] = buttonEnt; 
+                w.SetComponent<Frame>(buttonEnt, new Frame(topleft + new Vector2((10 + ((buttonWidth + 10) * i)), 10), 
+                    buttonWidth, buttonHeight)); 
+                w.SetComponent<Outline>(buttonEnt, new Outline()); 
+                w.SetComponent<Button>(buttonEnt, new Button()); 
+            }
+
+            w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
+            w.SetComponent<PauseButton>(es[1], PauseButton.Get()); 
+            w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
         }; 
 
         world.AddSystem(ts, tf); 

@@ -21,9 +21,11 @@ public class Train : IInventorySource {
     private float power; 
     private float mass; 
     private WorldTime left; 
+    private WorldTime arrivalTime; 
     private bool isTraveling; 
     private static HashSet<string> usedIDs = new(); 
 
+    public WorldTime ArrivalTime => arrivalTime; 
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
     public readonly Inventory Inv; 
@@ -63,7 +65,7 @@ public class Train : IInventorySource {
         origin.AddTrain(this);
     }
 
-    public void Embark(City destination, WorldTime at) {
+    public void Embark(City destination, WorldTime now) {
         if (this.comingFrom == destination) {
             throw new InvalidOperationException($"Train {Id} attempted to embark to the city it is at: {comingFrom.CityId}"); 
         }
@@ -73,9 +75,13 @@ public class Train : IInventorySource {
         }
         
         this.goingTo = destination; 
-        this.left = at.Clone(); 
+        this.left = now.Clone(); 
         this.isTraveling = true;
         this.comingFrom.RemoveTrain(this); 
+
+        Vector2 journey = comingFrom.RealPosition - goingTo.RealPosition; 
+        float hours = journey.Length() / milesPerHour; 
+        this.arrivalTime = now + new WorldTime(hours: hours); 
     }
     
     public Vector2 GetMapPosition(WorldTime cur) {
@@ -110,15 +116,9 @@ public class Train : IInventorySource {
         }
     }
 
+    //IsArriving MUST be called before Update or it will never be true
     public bool IsArriving(WorldTime cur) {
-        if (!isTraveling) {
-            return false; 
-        }
-        
-        Vector2 journey = comingFrom.RealPosition - goingTo.RealPosition; 
-        float hours = (cur - left).InHours(); 
-        float moved = milesPerHour * hours; 
-        return moved >= journey.Length(); 
+        return isTraveling && cur.IsAfterOrAt(arrivalTime); 
     }
 
     public bool IsTraveling() {

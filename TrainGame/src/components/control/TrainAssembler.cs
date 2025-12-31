@@ -24,6 +24,7 @@ public class TrainAssembler : IAssembler<Train> {
     public Train Assemble() {
         string id = ID.GetNext(Constants.TrainStr); 
         Inventory inv = new Inventory($"{id}_inv", Constants.TrainRows, Constants.TrainCols); 
+        inv.SetSolid(); 
         return new Train(inv, c, Id: id, 
             power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
     }       

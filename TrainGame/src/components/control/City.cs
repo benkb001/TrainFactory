@@ -27,12 +27,13 @@ public class City {
     public float UiY => uiY;
 
     public string CityId => cityId; 
+    public string Id => cityId; 
 
     public readonly Inventory Inv;
     public readonly List<City> AdjacentCities = []; 
 
-    public static float UIWidth = 100f; 
-    public static float UIHeight = 100f;
+    public static float UIWidth = 50f; 
+    public static float UIHeight = 50f;
     public bool HasPlayer = false; 
     
     private Dictionary<string, Train> trains = new();
@@ -55,7 +56,9 @@ public class City {
     }
 
     public void AddConnection(City c) {
-        AdjacentCities.Add(c); 
+        if (!AdjacentCities.Contains(c)) {
+            AdjacentCities.Add(c); 
+        }
     }
 
     //todo: test

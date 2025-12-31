@@ -17,8 +17,7 @@ public class TrainTravelSystem() {
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
         if (t.IsArriving(w.Time) && t.HasPlayer) {
-            int msg = EntityFactory.Add(w); 
-            w.SetComponent<DrawCityMessage>(msg, new DrawCityMessage(t.GoingTo)); 
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(t.GoingTo)); 
         }
         t.Update(w.Time); 
     }; 

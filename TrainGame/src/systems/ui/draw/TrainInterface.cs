@@ -15,13 +15,13 @@ using TrainGame.Callbacks;
 
 public class DrawTrainInterfaceSystem {
 
-    private static void addButtons(LinearLayout container, Train t, World w, float height) {
+    private static void addButtons(LinearLayout container, int containerEnt, Train t, World w, float height) {
         //add column for buttons 
 
         LinearLayout buttonsContainer = new LinearLayout("Vertical", "alignlow"); 
         buttonsContainer.Padding = Constants.InventoryPadding; 
         int buttonsContainerEnt = EntityFactory.Add(w); 
-        container.AddChild(buttonsContainerEnt); 
+        LinearLayoutWrap.AddChild(buttonsContainerEnt, containerEnt, container, w);
 
         float buttonsContainerWidth = w.ScreenWidth / 5f; 
         float buttonsContainerHeight = height; 
@@ -45,7 +45,7 @@ public class DrawTrainInterfaceSystem {
         );
 
         int upgradeBtnEnt = DrawButtonSystem.Draw<UpgradeTrainButton>(upgradeMsg, w); 
-        buttonsContainer.AddChild(upgradeBtnEnt); 
+        LinearLayoutWrap.AddChild(upgradeBtnEnt, buttonsContainerEnt, buttonsContainer, w);
 
         //draw Add Cart button 
         //TODO: this should only be clickable if there is a cart to add at the city
@@ -61,10 +61,10 @@ public class DrawTrainInterfaceSystem {
         ); 
 
         int addCartInterfaceEnt = DrawButtonSystem.Draw<AddCartInterfaceButton>(addCartMsg, w); 
-        buttonsContainer.AddChild(addCartInterfaceEnt); 
+        LinearLayoutWrap.AddChild(addCartInterfaceEnt, buttonsContainerEnt, buttonsContainer, w);
     }
 
-    private static void addEmbark(LinearLayout container, Train t, World w, float height) {
+    private static void addEmbark(LinearLayout container, int containerEnt, Train t, World w, float height) {
         float embarkWidth = w.ScreenWidth / 5f;
         int embarkEnt = DrawEmbarkSystem.Draw(
             new DrawEmbarkMessage(
@@ -77,19 +77,17 @@ public class DrawTrainInterfaceSystem {
             w
         ); 
 
-        container.AddChild(embarkEnt);
+        LinearLayoutWrap.AddChild(embarkEnt, containerEnt, container, w);
     }
 
-    private static void addInvs(LinearLayout container, Train t, World w, float height) {
+    private static void addInvs(LinearLayout container, int containerEnt, Train t, World w, float height) {
         Inventory trainInv = t.Inv; 
         Inventory cityInv = t.ComingFrom.Inv; 
         
         float cellWidth = Constants.InventoryCellSize + Constants.InventoryPadding; 
 
-        float trainInvWidth = cellWidth * trainInv.GetCols();
-        float trainInvHeight = cellWidth * trainInv.GetRows();
-        float cityInvWidth = cellWidth * cityInv.GetCols(); 
-        float cityInvHeight = cellWidth * cityInv.GetRows(); 
+        (float trainInvWidth, float trainInvHeight) = InventoryWrap.GetUI(trainInv); 
+        (float cityInvWidth, float cityInvHeight) = InventoryWrap.GetUI(cityInv); 
         float invsContainerWidth = Math.Max(trainInvWidth, cityInvWidth) + 2 * Constants.InventoryPadding; 
         float invsContainerHeight = height; 
 
@@ -100,18 +98,19 @@ public class DrawTrainInterfaceSystem {
         int trainOuterEnt = w.GetComponent<LLChild>(trainInvEnt).ParentEntity; 
 
         int cityInvEnt = DrawInventoryCallback.Draw(w, cityInv, Vector2.Zero, cityInvWidth, cityInvHeight, 
-            SetMenu: true, DrawLabel: true);
+            Padding: Constants.InventoryPadding, SetMenu: true, DrawLabel: true);
         int cityOuterEnt = w.GetComponent<LLChild>(cityInvEnt).ParentEntity; 
 
         LinearLayout invsContainer = new LinearLayout("vertical", "alignlow"); 
         invsContainer.Padding = Constants.InventoryPadding;
         int invsContainerEnt = EntityFactory.Add(w); 
-        container.AddChild(invsContainerEnt); 
+        
+        LinearLayoutWrap.AddChild(invsContainerEnt, containerEnt, container, w);
 
         w.SetComponent<LinearLayout>(invsContainerEnt, invsContainer); 
         w.SetComponent<Frame>(invsContainerEnt, new Frame(0, 0, invsContainerWidth, invsContainerHeight));
-        invsContainer.AddChild(trainOuterEnt); 
-        invsContainer.AddChild(cityOuterEnt);
+        LinearLayoutWrap.AddChild(trainOuterEnt, invsContainerEnt, invsContainer, w); 
+        LinearLayoutWrap.AddChild(cityOuterEnt, invsContainerEnt, invsContainer, w); 
     }
 
     public static void Register(World w) {
@@ -131,9 +130,9 @@ public class DrawTrainInterfaceSystem {
             w.SetComponent<LinearLayout>(containerEnt, container); 
             w.SetComponent<Frame>(containerEnt, new Frame(containerPos, containerWidth, containerHeight)); 
 
-            addEmbark(container, t, w, columnHeight); 
-            addInvs(container, t, w, columnHeight); 
-            addButtons(container, t, w, columnHeight); 
+            addEmbark(container, containerEnt, t, w, columnHeight); 
+            addInvs(container, containerEnt, t, w, columnHeight); 
+            addButtons(container, containerEnt, t, w, columnHeight); 
              
             //TODO: add a way to remove carts here
             w.RemoveEntity(e); 

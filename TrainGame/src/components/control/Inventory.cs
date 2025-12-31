@@ -41,15 +41,19 @@ public class Inventory {
 
     //todo: need to re-factor in other places because it might add a portion of the items but not all
     //returns the number of items it added to the inventory
-    public int Add(Item i) {
+    public int Add(Item i, bool newCell = false) {
 
         if (filtered && !whitelist.Contains(i.ItemId)) {
             return 0; 
         }
 
-        int index = items.FindIndex(item => item.ItemId == i.ItemId && item.Count < stackSize(i.ItemId));
+        int index = -1; 
 
-        if (index == -1) {
+        if (!newCell) {
+            index = items.FindIndex(item => item.ItemId == i.ItemId && item.Count < stackSize(i.ItemId));
+        }
+
+        if (index == -1 ) {
             index = items.FindIndex(item => item.ItemId == "");
         }
         
@@ -73,6 +77,10 @@ public class Inventory {
         }
 
         return num_adding; 
+    }
+
+    public int Add(string itemID, int count) {
+        return Add(new Inventory.Item(ItemId: itemID, Count: count)); 
     }
 
     public int Add(Item i, int row, int col) {
@@ -134,6 +142,31 @@ public class Inventory {
         i.Column = -1; 
         items[idx] = new Item(Row: row, Column: col, Inv: this); 
         return i; 
+    }
+
+    public Item Take(int row, int col, int Count) {
+        ensureValidIndices(row, col); 
+        int idx = getIndex(row, col);
+        Item i = items[idx]; 
+
+        int taken = Math.Min(i.Count, Count); 
+        string id = i.ItemId; 
+
+        i.Count -= taken; 
+
+        if (i.Count == 0) {
+            i.ItemId = ""; 
+        }
+
+        return new Item(Row: -1, Column: -1, Inv: this, ItemId: id, Count: taken);
+    }
+
+    //todo: test
+    public void TransferTo(Inventory otherInv, string itemID, int count) {
+        Inventory.Item taken = Take(itemID, count); 
+        int takenCount = taken.Count; 
+        int added = otherInv.Add(taken); 
+        Add(itemID, takenCount - added);
     }
 
     public Item Get(int index) {
@@ -232,6 +265,7 @@ public class Inventory {
 
     public class Item {
         //TODO: Make private idk 
+        public string Id => ItemId; 
         public string ItemId; 
         public int Count; 
         public int Row; 
@@ -270,5 +304,13 @@ public static class InventoryWrap {
     public static int GetEntity(string inventoryId, World w) {
         return w.GetMatchingEntities([typeof(Data), typeof(Inventory)]).Where(
             e => w.GetComponent<Inventory>(e).Id == inventoryId).FirstOrDefault(); 
+    }
+
+    public static (float, float) GetUI(Inventory inv) {
+        float width = inv.GetCols() * (Constants.InventoryCellSize + Constants.InventoryPadding) + 
+            Constants.InventoryPadding; 
+        float height = inv.GetRows() * (Constants.InventoryCellSize + Constants.InventoryPadding) +
+            Constants.InventoryPadding + Constants.LabelHeight;
+        return (width, height);
     }
 }

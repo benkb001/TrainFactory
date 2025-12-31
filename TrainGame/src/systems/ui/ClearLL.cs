@@ -23,7 +23,10 @@ public class ClearLLSystem {
         w.AddSystem(
             [typeof(ClearLLMessage)], 
             (w, e) => {
-                LinearLayoutWrap.Clear(w.GetComponent<ClearLLMessage>(e).Entity, w); 
+                int llEntity = w.GetComponent<ClearLLMessage>(e).Entity; 
+                LinearLayoutWrap.Clear(llEntity, w);
+
+                w.RemoveEntity(e); 
             }
         );
     }

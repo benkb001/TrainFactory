@@ -32,22 +32,21 @@ public class InventoryIndexSystem {
 
             container.Index = index; 
             
-            Frame f = w.GetComponent<Frame>(containerEntity); 
+            int parentEnt = LinearLayoutWrap.ClearParent(containerEntity, w);
+            (Frame f, bool success) = w.GetComponentSafe<Frame>(parentEnt); 
+            Vector2 position = success ? f.Position : w.GetComponent<Frame>(containerEntity).Position; 
 
-            if (w.ComponentContainsEntity<LLChild>(containerEntity)) {
-                int outerEnt = w.GetComponent<LLChild>(containerEntity).ParentEntity; 
-                f = w.GetComponent<Frame>(outerEnt); 
-
-                int clearEnt = EntityFactory.Add(w); 
-                w.SetComponent<ClearLLMessage>(clearEnt, new ClearLLMessage(outerEnt)); 
-            }
+            Inventory inv = container.GetCur(); 
+            (float width, float height) = InventoryWrap.GetUI(inv); 
 
             DrawInventoryContainerMessage<T> dm = new DrawInventoryContainerMessage<T>(
                 container,
-                f.Position,
-                f.GetWidth(), 
-                f.GetHeight()
+                position,
+                Width: width, 
+                Height: height, 
+                ParentEntity: parentEnt
             ); 
+
             int dmEnt = EntityFactory.Add(w); 
             w.SetComponent<DrawInventoryContainerMessage<T>>(dmEnt, dm); 
             

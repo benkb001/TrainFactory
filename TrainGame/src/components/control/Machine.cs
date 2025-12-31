@@ -31,6 +31,7 @@ public class Machine {
     private float slowFactor; 
     private float startFactor; 
     private int productDelivered; 
+    private int numCrafting; 
     private CraftState state = CraftState.Idle; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
@@ -86,7 +87,7 @@ public class Machine {
 
     public string GetCraftSpeedFormatted() {
         float seconds = (float)(craftTicks / 60f); 
-        return $"{productCount} {productItemId}/{seconds.ToString("F2")} seconds\n";
+        return $"{productCount * (1 + level)} {productItemId}/{seconds.ToString("F2")} seconds\n";
     }
 
     public string GetRecipeFormatted() {
@@ -97,26 +98,52 @@ public class Machine {
         return r; 
     }
 
-    public void StartRecipe() {
+    public int GetNumCraftable() {
+        int max = requestedAmount; 
+
+        if (produceInfinite) {
+            max = Int32.MaxValue; 
+        }
+
+        max = Math.Min(max, level + 1); 
+
         foreach (KeyValuePair<string, int> kvp in recipe) {
-            Inv.Take(kvp.Key, kvp.Value); 
+            string itemID = kvp.Key; 
+            int baseCost = kvp.Value; 
+            int materialCount = Inv.ItemCount(itemID); 
+            int numCraftable = materialCount / baseCost; 
+            max = Math.Min(max, numCraftable); 
+            if (max == 0) {
+                return 0; 
+            }
+        }
+
+        return max; 
+    }
+
+    public void StartRecipe(int numToCraft = 1) {
+        foreach (KeyValuePair<string, int> kvp in recipe) {
+            Inv.Take(kvp.Key, kvp.Value * numToCraft); 
         }
         state = CraftState.Crafting; 
+        this.numCrafting = numToCraft; 
     }
 
     public void FinishRecipe() {
         productDelivered = 0; 
+        curCraftTicks = 0; 
         state = CraftState.Delivering; 
     }
 
     public void DeliverRecipe() {
-        int productLeft = productCount - productDelivered; 
+        int productToDeliver = productCount * numCrafting; 
+        int productLeft = productToDeliver - productDelivered; 
         int curDelivered = Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productLeft));
         requestedAmount -= curDelivered; 
         productDelivered += curDelivered; 
-        if (productDelivered >= productCount) {
-            curCraftTicks = 0; 
+        if (productDelivered >= productToDeliver) {
             state = CraftState.Idle; 
+            numCrafting = 0; 
         }
     }
 

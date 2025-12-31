@@ -58,6 +58,7 @@ public class DrawEmbarkSystem {
 
         if (c.HasPlayer) {
             int btnEntity = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(btnEntity, llEntity, ll, w); 
             PlayerAccessTrainButton acBtn = new PlayerAccessTrainButton(t); 
 
             w.SetComponent<Outline>(btnEntity, new Outline()); 
@@ -65,6 +66,7 @@ public class DrawEmbarkSystem {
             w.SetComponent<Button>(btnEntity, new Button()); 
             w.SetComponent<PlayerAccessTrainButton>(btnEntity, acBtn); 
             w.SetComponent<Frame>(btnEntity, new Frame(0, 0, buttonWidth, buttonHeight)); 
+
         }
 
         return llEntity; 

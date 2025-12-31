@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -91,5 +92,34 @@ public static class SceneSystem {
             }
         }; 
         world.AddSystem(update); 
+    }
+
+    public static int GetMaxScene(World w) {
+        return w.GetComponentArray<Scene>().Max(kvp => kvp.Value.Value); 
+    }
+
+    public static (int, Vector2) RemoveMaxScene(World w) {
+        Dictionary<int, Scene> scenes = w.GetComponentArray<Scene>(); 
+        int maxScene = 0; 
+        if (scenes.Count > 0) {
+            maxScene = w.GetComponentArray<Scene>().Max(kvp => kvp.Value.Value); 
+        }
+        
+        Vector2 topleft = Vector2.Zero; 
+        KeyValuePair<int, CameraReturn> cr = w.GetComponentArray<CameraReturn>().FirstOrDefault(kvp => {
+            return w.GetComponent<Scene>(kvp.Key).Value == maxScene;
+        }, new KeyValuePair<int, CameraReturn>(0, null)); 
+        if (cr.Value != null) {
+            topleft = cr.Value.Position - new Vector2(w.ScreenWidth / 2, w.ScreenHeight / 2); 
+        }
+
+        //remove all entities on the max scene except the camera return position
+        foreach (int cur in w.GetComponentArray<Scene>().Where(kvp => {
+            return kvp.Value.Value == maxScene && !w.ComponentContainsEntity<CameraReturn>(kvp.Key);
+        }).Select(kvp => kvp.Key)) {
+            w.RemoveEntity(cur); 
+        }
+
+        return (maxScene, topleft); 
     }
 }

@@ -19,3 +19,22 @@ public class UnpauseButton {
         return inst; 
     }
 }
+
+public class SpeedTimeButton {
+    private static SpeedTimeButton inst; 
+    public static SpeedTimeButton Get() {
+        if (inst is null) {
+            inst = new SpeedTimeButton(); 
+        }
+        return inst; 
+    }
+}
+public class SlowTimeButton {
+    private static SlowTimeButton inst; 
+    public static SlowTimeButton Get() {
+        if (inst is null) {
+            inst = new SlowTimeButton(); 
+        }
+        return inst; 
+    }
+}

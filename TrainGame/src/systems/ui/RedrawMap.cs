@@ -25,7 +25,9 @@ public class RedrawMapSystem() {
             return scene == num_pop_msgs; 
         })) {
             should_redraw = true; 
-        } else {
+        }
+
+        if (!should_redraw) {
             List<int> tuiEnts = w.GetMatchingEntities([typeof(TrainUI), typeof(MapUIFlag), typeof(Active)]);
             if (tuiEnts.Any(e => {
                 Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
@@ -35,10 +37,22 @@ public class RedrawMapSystem() {
             }
         }
 
+        if (!should_redraw) {
+            List<int> trainDataEnts = w.GetMatchingEntities([typeof(Train), typeof(Data)]); 
+            if (trainDataEnts.Any(e => {
+                Train t = w.GetComponent<Train>(e); 
+            })) {
+                should_redraw = true; 
+            }
+        }
+
         if (should_redraw) {
+            View.EnterMenu(w); 
+            
             int dm = EntityFactory.Add(w, setScene: false); 
             int pushEnt = EntityFactory.Add(w, setScene: false); 
             int popEnt = EntityFactory.Add(w, setScene: false); 
+            
             w.SetComponent<DrawMapMessage>(dm, DrawMapMessage.Get());
             w.SetComponent<PushSceneMessage>(pushEnt, PushSceneMessage.Get()); 
             w.SetComponent<PopSceneMessage>(popEnt, PopSceneMessage.Get()); 

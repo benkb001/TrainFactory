@@ -28,4 +28,8 @@ public class InventoryContainer<T> where T : IInventorySource {
     public T GetSource() {
         return src; 
     }
+
+    public Inventory GetCur() {
+        return src.GetInventories()[Index];
+    }
 }

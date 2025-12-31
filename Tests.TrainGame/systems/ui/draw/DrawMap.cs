@@ -16,7 +16,7 @@ public class DrawMapSystemTest {
         World w = WorldFactory.Build(); 
 
         for (int i = 0; i < 3; i++) {
-            int cEntity = EntityFactory.Add(w);
+            int cEntity = EntityFactory.Add(w, setData: true);
             City c = new City($"C{i}", new Inventory($"C{i}", 1, 1)); 
             w.SetComponent<City>(cEntity, c); 
         }

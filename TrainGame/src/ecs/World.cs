@@ -122,6 +122,13 @@ public partial class World {
         return cm.GetComponent<T>(entity); 
     }
 
+    public (T, bool) GetComponentSafe<T>(int entity) {
+        if (!EntityExists(entity) || !cm.ComponentContainsEntity<T>(entity)) {
+            return (default(T), false); 
+        }
+        return (cm.GetComponent<T>(entity), true); 
+    }
+
     public Dictionary<int, T> GetComponentArray<T>() {
         return cm.GetComponentArray<T>().GetEntities(); 
     }
@@ -218,6 +225,10 @@ public partial class World {
         VirtualKeyboard.UpdatePrevFrame(); 
         wt.Update();
         Frame++;  
+    }
+
+    public void SetMiliticksPerUpdate(int t) {
+        wt.SetMiliticksPerUpdate(t);
     }
 
     /*

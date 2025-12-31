@@ -10,16 +10,51 @@ public class WorldTime {
     private int hours = 0; 
     private int minutes = 0; 
     private int ticks = 0; 
+    private int militicks = 0;
+    private int militicksPerUpdate = 1000; 
 
-    public WorldTime(int days = 0, int hours = 0, int minutes = 0, int ticks = 0) {
-        this.days = days; 
-        this.hours = hours; 
-        this.minutes = minutes; 
-        this.ticks = ticks; 
+    private WorldTime(int days = 0, int hours = 0, int minutes = 0, int ticks = 0) {
+        this.days = days + (hours / 24);
+        this.hours = (hours % 24) + (minutes / 60); 
+        this.minutes = (minutes % 60) + (ticks / 60); 
+        this.ticks = ticks % 60; 
+    }
+
+    public WorldTime((int days, int hours, int minutes, int ticks) t) : 
+        this(t.days, t.hours, t.minutes, t.ticks) {}
+
+    private static (int, int, int, int) toInt(float days, float hours, float minutes, float ticks) {
+        (int, float) separate(float time) {
+            int whole = (int)time; 
+            float part = time - whole; 
+            return (whole, part); 
+        }
+
+        (int daysWhole, float daysPart) = separate(days); 
+        hours += daysPart * 24f; 
+        (int hoursWhole, float hoursPart) = separate(hours); 
+        minutes += hoursPart * 60f; 
+        (int minutesWhole, float minutesPart) = separate(minutes); 
+        ticks += minutesPart * 60f; 
+        (int ticksWhole, float ticksPart) = separate(ticks); 
+        
+        return (daysWhole, hoursWhole, minutesWhole, ticksWhole); 
+    }
+
+    public WorldTime(float days = 0f, float hours = 0f, float minutes = 0f, 
+        float ticks = 0f) : this(toInt(days, hours, minutes, ticks)) {}
+
+    public void SetMiliticksPerUpdate(int mt) {
+        this.militicksPerUpdate = mt; 
     }
 
     public void Update() {
-        ticks++; 
+        militicks += militicksPerUpdate; 
+
+        int dTicks = militicks / 1000; 
+        militicks = militicks % 1000; 
+        ticks += dTicks; 
+
         if (ticks >= 60) {
             ticks = 0; 
             minutes++; 
@@ -32,6 +67,13 @@ public class WorldTime {
             hours = 0; 
             days++; 
         }
+    }
+
+    public bool IsAfterOrAt(WorldTime other) {
+        return (days > other.days) || 
+        (days >= other.days && hours > other.hours) || 
+        (days >= other.days && hours >= other.hours && minutes > other.minutes ) || 
+        (days >= other.days && hours >= other.hours && minutes >= other.minutes && ticks >= other.ticks); 
     }
 
     public static WorldTime operator -(WorldTime a, WorldTime b) {

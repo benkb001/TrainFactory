@@ -50,9 +50,9 @@ public class MovementSystem() {
                 RectangleF expectedVertical = new RectangleF(x + dx, y + dy, width, height);
                 if (expectedVertical.IntersectsWith(oRect)) {
                     if (dy > 0) {
-                        dy = (other.GetY() - other.GetHeight()) - y; 
+                        dy = (other.GetY() - height) - y; 
                     } else {
-                        dy = (other.GetY() + height) - y; 
+                        dy = (other.GetY() + other.GetHeight()) - y; 
                     }
                 }
                 

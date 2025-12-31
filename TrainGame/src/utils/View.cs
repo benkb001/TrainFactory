@@ -26,7 +26,7 @@ public class View {
             new CameraReturn(w.GetCameraPosition(), w.GetCameraZoom())); 
         w.SetCameraZoom(1f); 
 
-        Vector2 cameraPosition = new Vector2(w.ScreenWidth * num_menus, w.ScreenHeight * num_menus); 
+        Vector2 cameraPosition = new Vector2(w.ScreenWidth * num_menus * 2, w.ScreenHeight * num_menus * 2); 
         w.SetCameraPosition(cameraPosition); 
         num_menus++; 
     }

@@ -11,7 +11,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-public class DragSystem() {
+public class DragSystem {
     private static Type[] types = [typeof(Draggable), typeof(Frame), typeof(Button), typeof(Active)]; 
     private static Action<World, int> transformer = (w, e) => {
         Button b = w.GetComponent<Button>(e); 

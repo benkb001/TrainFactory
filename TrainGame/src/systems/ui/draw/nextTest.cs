@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -14,8 +15,12 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Constants; 
 using TrainGame.Callbacks; 
+using TrainGame.Utils; 
+
+
 
 public static class NextDrawTestUISystem {
+
     private static Type[] ts = [typeof(NextDrawTestControl)]; 
     private static int nextTestButtonX = 50; 
     private static int nextTestButtonY = 400; 
@@ -37,14 +42,13 @@ public static class NextDrawTestUISystem {
     private static Dictionary<int, Action<World>> actions = new() {
         [1] = (w) => { 
             AddNextTestButton(w, 1);
-
+            
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(18)); 
-
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(21)); 
         }, 
         [2] = (w) => {
             AddNextTestButton(w, 2); 
@@ -438,7 +442,14 @@ public static class NextDrawTestUISystem {
             playerInv.Add(new Inventory.Item(ItemId: ItemID.TrainUpgrade, Count: 100)); 
 
             City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
-            City c2 = new City("CRight", invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
+            City c2 = new City(CityID.Factory, invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
+
+            foreach (string s in CityID.CityMap[CityID.Factory].Machines) {
+                int mEnt = EntityFactory.Add(w, setData: true); 
+                Machine m = Machines.Get(invCRight, s); 
+                w.SetComponent<Machine>(mEnt, m);  
+                c2.AddMachine(m); 
+            }
 
             c1.HasPlayer = true; 
             
@@ -475,15 +486,15 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Data>(trainDataEntity, Data.Get()); 
 
             int tEntity2 = EntityFactory.Add(w, setScene: false); 
-            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 200f); 
+            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 1000f); 
             w.SetComponent<Train>(tEntity2, train2); 
             w.SetComponent<Data>(tEntity2, Data.Get()); 
 
-            w.SetComponent<Train>(trainEntity, train); 
+            w.SetComponent<TrainYard>(trainEntity, TrainYard.Get()); 
             w.SetComponent<Frame>(trainEntity, new Frame(0, 50, 100, 100));
             w.SetComponent<Interactable>(trainEntity, new Interactable()); 
             w.SetComponent<Outline>(trainEntity, new Outline()); 
-            w.SetComponent<TextBox>(trainEntity, new TextBox("Map")); 
+            w.SetComponent<TextBox>(trainEntity, new TextBox("Train Yard")); 
             w.SetComponent<Collidable>(trainEntity, Collidable.Get()); 
 
             int player = EntityFactory.Add(w);  
@@ -543,6 +554,13 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Collidable>(playerEntity, Collidable.Get());
             w.SetComponent<HeldItem>(playerEntity, new HeldItem(inv, invEntity)); 
             w.LockCamera(); 
+            AddNextTestButton(w, 21);
+        }, 
+        [22] = (w) => {
+            Bootstrap.InitWorld(w); 
+            City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
+            factory.AddCart((new Cart("TestCart", CartType.Freight)));
         }
     };
 

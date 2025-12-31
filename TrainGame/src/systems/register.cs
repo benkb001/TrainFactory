@@ -14,7 +14,7 @@ using TrainGame.Components;
 
 public static class RegisterSystems {
     public static void All(World w) {
-        //CameraLockSystem.Register(w); 
+        CameraLockSystem.Register(w); 
         SceneSystem.RegisterPopLate(w); 
 
         CardinalMovementSystem.Register(w); 
@@ -24,11 +24,14 @@ public static class RegisterSystems {
         AssemblerSystem.Register<TrainAssembler, Train>(w); 
         AssemblerSystem.Register<CartAssembler, Cart>(w); 
 
+        ButtonSystem.RegisterHold(w); 
         ButtonSystem.RegisterClick(w);
         InteractSystem.RegisterInteract(w); 
         
         PauseButtonSystem.Register(w);
         UnpauseButtonSystem.Register(w); 
+        SpeedTimeClickSystem.Register(w); 
+        SlowTimeClickSystem.Register(w); 
         
         GameClockViewSystem.Register(w); 
 
@@ -53,10 +56,9 @@ public static class RegisterSystems {
 
         OpenMapSystem.Register(w); 
 
-        SceneSystem.RegisterPop(w); 
-
         RedrawMapSystem.Register(w); 
 
+        SceneSystem.RegisterPop(w); 
         SceneSystem.RegisterPush(w);
 
         DrawBackgroundSystem.Register(w); 
@@ -75,6 +77,7 @@ public static class RegisterSystems {
         w.AddSystem(DrawAddCartInterfaceSystem.Ts, DrawAddCartInterfaceSystem.Tf); 
         DrawInventoryContainerSystem.Register<Train>(w); 
         DrawTrainInterfaceSystem.Register(w); 
+        DrawTravelingInterfaceSystem.Register(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
@@ -92,11 +95,15 @@ public static class RegisterSystems {
         InventoryDropUISystem.Register(w); 
         InventoryDragSystem.Register(w); 
         InventoryControlSystem.RegisterOrganize(w); 
+        InventorySplitSystem.Register(w); 
+        InventoryFastTransferSystem.Register(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
         ProgressBarUpdateSystem.Register(w); 
         
         ButtonSystem.RegisterUnclick(w);
         InteractSystem.RegisterUninteract(w); 
+
+        TALExecutionSystem.Register(w); 
     }
 }
