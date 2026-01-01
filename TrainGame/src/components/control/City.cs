@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
 
-public class City {
+public class City : IID {
     private string cityId; 
     private float uiX; 
     private float uiY;
@@ -84,6 +84,10 @@ public class City {
     //todo: test
     public void RemoveTrain(Train t) {
         trains.Remove(t.Id); 
+    }
+
+    public string GetID() {
+        return cityId; 
     }
 
     public void AddConnections(List<City> cities) {

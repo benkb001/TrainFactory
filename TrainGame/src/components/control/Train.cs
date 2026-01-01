@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class Train : IInventorySource {
+public class Train : IInventorySource, IID {
 
     private City comingFrom; 
     private City goingTo; 
@@ -23,6 +23,7 @@ public class Train : IInventorySource {
     private WorldTime left; 
     private WorldTime arrivalTime; 
     private bool isTraveling; 
+    private bool isEmbarking; 
     private static HashSet<string> usedIDs = new(); 
 
     public WorldTime ArrivalTime => arrivalTime; 
@@ -34,9 +35,10 @@ public class Train : IInventorySource {
     public bool HasPlayer = false; 
     public float MilesPerHour => milesPerHour; 
     public float Mass => mass; 
+    public bool IsEmbarking => isEmbarking; 
 
     public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f, float power = 0f, float mass = 1f) {
-        if (ID.Used(Id)) {
+        if (ID.Used(Id) || Id.Equals("")) {
             Id = ID.GetNext(Constants.TrainStr); 
         }
         
@@ -66,6 +68,8 @@ public class Train : IInventorySource {
     }
 
     public void Embark(City destination, WorldTime now) {
+        this.isEmbarking = true; 
+
         if (this.comingFrom == destination) {
             throw new InvalidOperationException($"Train {Id} attempted to embark to the city it is at: {comingFrom.CityId}"); 
         }
@@ -151,6 +155,14 @@ public class Train : IInventorySource {
             invs.Add(kvp.Value.Inv); 
         }
         return invs; 
+    }
+
+    public void EndEmbarking() {
+        isEmbarking = false; 
+    }
+
+    public string GetID() {
+        return Id; 
     }
 
     private void setMPH() {

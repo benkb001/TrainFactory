@@ -19,6 +19,7 @@ public static class RegisterSystems {
 
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
+        TALExecutionSystem.Register(w); //***** 
         TrainTravelSystem.Register(w); 
         w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
         AssemblerSystem.Register<TrainAssembler, Train>(w); 
@@ -56,7 +57,7 @@ public static class RegisterSystems {
 
         OpenMapSystem.Register(w); 
 
-        RedrawMapSystem.Register(w); 
+        RedrawMapSystem.Register(w); //**** 
 
         SceneSystem.RegisterPop(w); 
         SceneSystem.RegisterPush(w);
@@ -103,7 +104,6 @@ public static class RegisterSystems {
         
         ButtonSystem.RegisterUnclick(w);
         InteractSystem.RegisterUninteract(w); 
-
-        TALExecutionSystem.Register(w); 
+        TrainFlagUpdateSystem.Register(w); 
     }
 }

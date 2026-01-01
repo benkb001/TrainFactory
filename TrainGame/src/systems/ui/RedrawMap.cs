@@ -39,8 +39,10 @@ public class RedrawMapSystem() {
 
         if (!should_redraw) {
             List<int> trainDataEnts = w.GetMatchingEntities([typeof(Train), typeof(Data)]); 
-            if (trainDataEnts.Any(e => {
+            bool sceneIsMap = w.GetMatchingEntities([typeof(MapUIFlag), typeof(Active)]).Count > 0; 
+            if (sceneIsMap && trainDataEnts.Any(e => {
                 Train t = w.GetComponent<Train>(e); 
+                return t.IsEmbarking; 
             })) {
                 should_redraw = true; 
             }

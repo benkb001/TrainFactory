@@ -35,6 +35,14 @@ public class TALExpression {
     private float f; 
     private TALExpression e1; 
     private TALExpression e2; 
+
+    public ExpressionType Type => type; 
+    public AccessType AcType => accessType; 
+    public TALConditional Condition => condition; 
+    public int IntVal => i; 
+    public bool BoolVal => b; 
+    public TALExpression E1 => e1; 
+    public TALExpression E2 => e2; 
     
     public TALExpression(ExpressionType type) {
         this.type = type; 
@@ -128,6 +136,62 @@ public class TALExpression {
         return e; 
     }
 
+    public static TALExpression Greater(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.Greater, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression GreaterEqual(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.GreaterEqual, e1, e2); 
+        return e; 
+    }
+
+
+    public static TALExpression Less(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.Less, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression LessEqual(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.LessEqual, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression Equal(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.Equal, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression Not(TALExpression e1) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.Not, e1); 
+        return e; 
+    }
+
+    public static TALExpression NotEqual(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.NotEqual, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression And(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.And, e1, e2); 
+        return e; 
+    }
+
+    public static TALExpression Or(TALExpression e1, TALExpression e2) {
+        TALExpression e = new TALExpression(ExpressionType.Conditional); 
+        e.condition = new TALConditional(ConditionType.Or, e1, e2); 
+        return e; 
+    }
+
+
     public object Evaluate() {
         return type switch {
             ExpressionType.Bool => b, 
@@ -148,5 +212,17 @@ public class TALExpression {
             ExpressionType.ItemID => itemID,
             _ => 0
         };
+    }
+
+    public Train GetTrain() {
+        return train; 
+    }
+
+    public City GetCity() {
+        return city; 
+    }
+
+    public string GetItemID() {
+        return itemID; 
     }
 }

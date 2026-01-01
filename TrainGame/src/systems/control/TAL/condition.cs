@@ -22,6 +22,10 @@ public class TALConditional {
     private TALExpression e1; 
     private TALExpression e2; 
 
+    public ConditionType Type => type; 
+    public TALExpression E1 => e1; 
+    public TALExpression E2 => e2; 
+
     public TALConditional(ConditionType type, TALExpression e1 = null, TALExpression e2 = null) {
         this.type = type; 
         this.e1 = e1; 

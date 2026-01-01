@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Drawing; 
 using System; 
 using System.Linq; 
+using System.Text.RegularExpressions; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -158,14 +159,10 @@ namespace TrainGame.Constants
         public const string Reservoir = "Reservoir"; 
         public const string Test = "Test"; 
 
-        /*
-
-                    Greenhouse
-
-        Coast       factory 
-
-                    Mine
-        */
+        public static readonly List<string> All = [
+            Coast, Collisseum, Factory, Greenhouse, 
+            Mine, Reservoir
+        ];
 
         public static readonly Dictionary<string, CityArg> CityMap = new() {
             [CityID.Factory] = new CityArg(
@@ -435,13 +432,13 @@ namespace TrainGame.Constants
             //add one train to factory
 
             int trainInvDataEnt = EntityFactory.Add(w, setData: true); 
-            Inventory trainInv = new Inventory("Train 1", Constants.TrainRows, Constants.TrainCols); 
+            Inventory trainInv = new Inventory("T0", Constants.TrainRows, Constants.TrainCols); 
             trainInv.SetSolid(); 
             w.SetComponent<Inventory>(trainInvDataEnt, trainInv); 
 
             int trainDataEnt = EntityFactory.Add(w, setData: true); 
             (int _, City factory) = cities[CityID.Factory];
-            Train t = new Train(trainInv, factory, "Train 1", 
+            Train t = new Train(trainInv, factory, "T0", 
                 power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
             w.SetComponent<Train>(trainDataEnt, t); 
 
@@ -465,12 +462,18 @@ namespace TrainGame.Constants
 
             //automate train to go back and forth between mine and factory
 
-            List<TALInstruction> instructions = new();
-
-            (int _, City mine) = cities[CityID.Mine];
-            instructions.Add(TALInstruction.Go(mine)); 
-            instructions.Add(TALInstruction.Go(factory)); 
-            TALBody body = new TALBody(instructions, t);
+            string program = @"
+                LOAD Factory.Fuel / 2 Fuel; 
+                GO TO Mine; 
+                UNLOAD T0.Fuel Fuel; 
+                WHILE Mine.Fuel > 0 {
+                    WAIT;
+                }
+                LOAD Mine.Iron Iron; 
+                GO TO Factory; 
+                UNLOAD T0.Iron Iron; 
+            ";
+            TALBody body = TALParser.ParseProgram(program, w, t); 
             int bodyEntity = EntityFactory.Add(w, setData: true); 
             w.SetComponent<TALBody>(bodyEntity, body); 
         }

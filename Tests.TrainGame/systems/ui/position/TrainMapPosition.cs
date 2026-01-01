@@ -34,6 +34,7 @@ public class TrainMapPositionSystemTest {
         w.PassTime(new WorldTime(hours: 1)); 
         w.Update(); 
 
-        Assert.Equal(w.GetComponent<Frame>(trainUIEntity).Position, train.GetMapPosition(new WorldTime(hours: 1))); 
+        Assert.Single(w.GetMatchingEntities([typeof(TrainUI), typeof(Frame)]), 
+            e => w.GetComponent<Frame>(e).Position == train.GetMapPosition(new WorldTime(hours: 1))); 
     }
 }

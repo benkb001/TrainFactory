@@ -58,7 +58,7 @@ public class TALInstruction {
     }
 
     public static TALInstruction While(TALConditional Condition, TALBody Body) {
-        TALInstruction i = new TALInstruction(InstructionType.Load);
+        TALInstruction i = new TALInstruction(InstructionType.While);
         i.Condition = Condition; 
         i.Body = Body; 
         return i; 
@@ -108,7 +108,7 @@ public class TALBody {
                     amount = (int)i.E1.Evaluate(); 
                     itemID = (string)i.E2.Evaluate(); 
                     city = train.ComingFrom; 
-                    city.Inv.TransferTo(train.Inv, itemID, amount);
+                    train.Inv.TransferTo(city.Inv, itemID, amount);
                     nextInstruction++; 
                     break; 
 

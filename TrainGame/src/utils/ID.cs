@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using TrainGame.ECS; 
+using TrainGame.Components;
+
 public static class ID {
     private static HashSet<string> usedIDs = new(); 
 
@@ -28,5 +31,15 @@ public static class ID {
 
     public static bool Used(string s) {
         return usedIDs.Contains(s); 
+    }
+
+    public static T GetComponent<T>(string id, World w) where T : IID {
+        T component = w.GetMatchingEntities([typeof(T), typeof(Data)]).Select(e => w.GetComponent<T>(e)).Where(
+            c => c.GetID() == id).FirstOrDefault(); 
+        
+        if (component is null || component.Equals(default(T))) {
+            throw new InvalidOperationException($"{id} does not match an existing {typeof(T)}"); 
+        }
+        return component; 
     }
 }

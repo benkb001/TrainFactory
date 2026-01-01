@@ -35,6 +35,8 @@
 * Machine crafting multiple at once logic
 * new inventory transfer functions 
 * TAL
+* Train flag update, isEmbarking
+* ID.GetComponent
 
 **** CLEAN UP **** 
 
@@ -63,10 +65,10 @@
     * Example: 
 
       WHILE true {
-        GO TO FACTORY 
+        GO TO FACTORY;
         WHILE Train0.IRON > 0 {
-          UNLOAD IRON
-          LOAD FUEL 
+          UNLOAD IRON;
+          LOAD FUEL;
         }
         GO TO MINE 
         UNLOAD FUEL 
