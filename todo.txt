@@ -45,53 +45,39 @@
 
 **** NEXT FEATURES **** 
 
-* Train automation 
-  * Allow player to define a loop the train will take 
-  * Allow player to say which items it will take/give at each stop
-    * I think we will have a list of commands, roughly of the form 
-      GO, LOAD, UNLOAD, WHILE, and WAIT. These commands will be executed in a 
-      loop. GO says which city to go to next. Load is to take resources
-      from the city. unload is to drop resources off at the city. 
-      WHILE is a description of conditions and a list of commands to execute 
-      until the conditions are satisfied. WAIT is to do nothing. WHILE conditions
-      may describe the amount of items in a train or city inventory, or time passed 
-      since arrival. 
-    * Each train will store a list of commands, they will effectively be inside a WHILE true loop. 
-      We will have a system that goes through [Train, Data] entities 
-      and checks if they are stationary and have an event to execute, if so they will do it. 
-      If they are in the body of a WHILE loop, it will have to check that condition every frame. 
-      It will execute events until it reaches a GO or WAIT statement, or if it must check a 
-      condition again to continue (IE each while condition is only checked once per frame). 
-    * Example: 
+* Add a way to automate requesting items and managing competition over 
+  resources from two machines at the same city. 
+  * Let machines take resources faster than 
+    they might consume them, essentially they could have their own inventories. Then, machines 
+    will take from city inventories in a certain order based on priority, which the player can 
+    specify. They can also specify the max number of each resource a machine should try to take 
+    before lower priority machines can take it. 
+      * Add a stepper to set priority in machine interface 
+      * Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
+      * Add logic for machines taking sooner than needed 
 
-      WHILE true {
-        GO TO FACTORY;
-        WHILE Train0.IRON > 0 {
-          UNLOAD IRON;
-          LOAD FUEL;
-        }
-        GO TO MINE 
-        UNLOAD FUEL 
-        WHILE Train0.IRON < 100 AND Train0.TIME_SINCE_ARRIVAL < 1M {
-          LOAD IRON 
-        }
-      }
+* Make UI for player automating trains 
+  * First, write some basic programs player can pick from 
+  * Make a machine to build a Motherboard
+  * Player can only set the program when using a Motherboard 
+  * Add a button in train interface to go to Train automation interface 
+  * Make train automation interface 
+    * There will be one button for each possible program 
+    * Will need data entities that have functions that accept a train 
+      and make a TALBody based on it and its id 
 
-    * We will have to track which instruction is next to execute. This means we will 
-      probably just set the next instruction to the WHILE if its condition is true, we dont 
-      want to check it twice just to see if we should keep executing events. 
-    * We will make it so if a train is at a city where it cant do the next GO event, it will 
-      effectively stop being automatically directed, player will have to send it to a city where it can.
-    * Players can also specify how much to load/unload at each step, LOAD Factory.IRON / 2, for example. 
-    * We will also want some way to automate requesting items and managing competition over 
-      resources from two machines at the same city. We could let machines take resources faster than 
-      they might consume them, essentially they could have their own inventories. Then, machines 
-      will take from city inventories in a certain order based on priority, which the player can 
-      specify. They can also specify the max number of each resource a machine should try to take 
-      before lower priority machines can take it. 
-  
-* Tighten growth flow  
-  * 
+* Make a way to slowly get resources manually, but all machines have to be built. Instead of machine 
+  upgrade as a universal recipe, also use the recipe to build a machine as its upgrade method. 
+  * Make it so player can manually get Iron, Sand, and Wood at no cost.
+    * Add an option to machine constructor for manual production, if set there will be a button
+      in the machine interface that, when clicked and held for long enough, will craft. It'll have 
+      its own separate progress bar as well
+  * Add machines to craft drills, pumps, excavators, greenhouses, gasifiers, kilns, and assemblers.
+    * Each assembler can be upgraded with the same recipe 
+    * The kiln recipe can't take glass, greenhouses will take a lot of it
+  * Change machine upgrade button to check for a specific item, not just machine upgrade ID 
+
+* Add an abstraction to add/take from trains that have multiple inventories, use this in TAL
 
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
 
@@ -144,9 +130,6 @@
 * Add a tile system for rpg mode
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
-* Write a coding language so players can code their trains 
-* Implement adding commands to trains (like once it gets to the next city, do a thing) 
-* Implement adding conditionals and loops to train behavior 
 * Implement player making custom notifications based on train conditions, 
     like a toast pops up when the train has a certain amount of wood or something 
 * Consider making a train interior so player can do certain things while waiting inside a train? 
@@ -163,22 +146,3 @@
 * Make drawing System based
 * Make UI Drawing based on screen coordinates
 * Make inventory draw messages automatically move around or resize other inventories as necessary
-
-*** RANDOM **** 
-
-what if there was a computer language that could derive compile-time guarantees
-from the language? 
-
-like 
-
-function foo() {
-    return 0
-}
-
-if (foo() > 0) {
-    ...
-}
-
-could throw a compile-time error for a branch that'll never occur. like i guess it could 
-infer bounds about the possible values of a variable and at compile-time could do checks on 
-possible things? IDK 
