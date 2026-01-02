@@ -80,6 +80,7 @@ namespace TrainGame.Constants
                 ItemID.Sand => 1000,
                 ItemID.Water => 1000, 
                 ItemID.Wood => 100,
+                "StackSize1" => 1,
                 _ => 100
             }; 
         }

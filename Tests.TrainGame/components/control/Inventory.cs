@@ -207,6 +207,39 @@ public class InventoryTest {
     }
 
     [Fact]
+    public void Inventory_TransferFromListShouldTakeItemCountItems() {
+        List<Inventory> invs = new(); 
+        for (int i = 0; i < 4; i++) {
+            Inventory inv = new Inventory($"T{i}", 1, 1); 
+            inv.Add("Test", 1); 
+            invs.Add(inv); 
+        }
+        Inventory invOther = new Inventory($"Other", 1, 1); 
+        int taken = invOther.TransferFrom(invs, "Test", 3); 
+        Assert.Equal(3, taken); 
+        Assert.Equal(0, invs[0].ItemCount("Test")); 
+        Assert.Equal(0, invs[2].ItemCount("Test")); 
+        Assert.Equal(1, invs[3].ItemCount("Test")); 
+    }
+
+    [Fact]
+    public void Inventory_TransferToListShouldSpreadItemsBetweenInventories() {
+        List<Inventory> invs = new(); 
+        for (int i = 0; i < 4; i++) {
+            Inventory inv = new Inventory($"T{i}", 1, 1); 
+            invs.Add(inv); 
+        }
+        Inventory invOther = new Inventory($"Other", 1, 4); 
+        for (int i = 0; i < 4; i++) {
+            invOther.Add("StackSize1", 1); 
+        }
+        int given = invOther.TransferTo(invs, "StackSize1", 4); 
+        Assert.Equal(4, given); 
+        Assert.Equal(1, invs[0].ItemCount("StackSize1")); 
+        Assert.Equal(1, invs[3].ItemCount("StackSize1")); 
+    }
+
+    [Fact]
     public void Inventory_ShouldThrowErrorWhenAccessingInvalidPositions() {
         Inventory inv = new Inventory("Test", 10, 5); 
 

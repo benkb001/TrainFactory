@@ -169,6 +169,46 @@ public class Inventory {
         Add(itemID, takenCount - added);
     }
 
+    public int TransferFrom(List<Inventory> invs, string itemID, int itemCount) { 
+        int taken = 0; 
+        int i = 0; 
+
+        while (taken < itemCount && i < invs.Count) {
+            taken += invs[i].Take(itemID, itemCount - taken).Count; 
+            i++;
+        }
+
+        int added = Add(itemID, taken); 
+        i = 0; 
+        int addedBack = 0; 
+        int numToAddBack = taken - added;
+
+        while (addedBack < numToAddBack && i < invs.Count) {
+            addedBack += invs[i].Add(itemID, added - numToAddBack);
+            i++; 
+        }
+
+        return added; 
+    }
+
+    public int TransferTo(List<Inventory> invs, string itemID, int itemCount) {
+        int added = 0; 
+        int i = 0; 
+
+        int taken = Take(itemID, itemCount).Count; 
+
+        while (added < taken && i < invs.Count) {
+            added += invs[i].Add(itemID, taken - added);
+            i++;
+        }
+
+        i = 0; 
+        int numToAddBack = taken - added; 
+        Add(itemID, numToAddBack); 
+
+        return added; 
+    }
+
     public Item Get(int index) {
         (int row, int col) = GetRowColIndex(index); 
         return Get(row, col); 

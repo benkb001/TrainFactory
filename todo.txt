@@ -58,22 +58,19 @@
       * Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
       * Add logic for machines taking sooner than needed 
 
-* Add an abstraction to add/take from something that implements IInventorySource, use this in TAL
-
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
 
-* Catch up on tests, except ignore things that are going to be changed as described below
 * Change how scene works
   * I am thinking each potential UI screen or level, etc, has a hardcoded scene value and 
     camera position, then we just need to keep track of which scene to go to. This will 
     decouple how a player got to a scene and how many times we should pop. 
+* Catch up on tests
 * Use a UI library, Gum looks pretty good. Whatever i pick will need scrolling, paging, 
   rows/columns, steppers, text input, grayboxing, and a way to easily integrate with the code i have. 
   Ideally it will be organized into classes or i can easily make a wrapper to have components. 
   Once I've experimented with the new library and figured out how to fit it in, 
   i need to refactor LinearLayout and Button with new UI components and integrate them. 
 * Go through all files and try to decouple, find a guide online to support this 
-
 
 **** FUTURE FEATURES **** 
 

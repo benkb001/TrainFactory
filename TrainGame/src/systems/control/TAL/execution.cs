@@ -100,7 +100,7 @@ public class TALBody {
                     amount = (int)i.E1.Evaluate(); 
                     itemID = (string)i.E2.Evaluate(); 
                     city = train.ComingFrom; 
-                    city.Inv.TransferTo(train.Inv, itemID, amount);
+                    city.Inv.TransferTo(train.GetInventories(), itemID, amount);
                     nextInstruction++; 
                     break; 
 
@@ -108,7 +108,7 @@ public class TALBody {
                     amount = (int)i.E1.Evaluate(); 
                     itemID = (string)i.E2.Evaluate(); 
                     city = train.ComingFrom; 
-                    train.Inv.TransferTo(city.Inv, itemID, amount);
+                    city.Inv.TransferFrom(train.GetInventories(), itemID, amount); 
                     nextInstruction++; 
                     break; 
 
