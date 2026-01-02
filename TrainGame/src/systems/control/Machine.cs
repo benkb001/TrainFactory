@@ -14,27 +14,39 @@ using TrainGame.Components;
 using TrainGame.ECS; 
 
 public class MachineUpdateSystem {
-    public static readonly Type[] Ts = [typeof(Machine), typeof(Data)]; 
-    public static readonly Action<World, int> Tf = (w, e) => {
-        Machine m = w.GetComponent<Machine>(e); 
+    public static void Register(World w) {
+        Func<int, int> orderer = (e) => w.GetComponent<Machine>(e).Priority;
+        Type[] ts = [typeof(Machine), typeof(Data)]; 
+        Action<World, int> tf = (w, e) => {
+            Machine m = w.GetComponent<Machine>(e); 
         
-        if (m.State == CraftState.Idle && (m.RequestedAmount >= m.ProductCount || m.ProduceInfinite)) {
-            int numCraftable = m.GetNumCraftable();
-            if (numCraftable > 0) {
-                m.StartRecipe(numCraftable); 
+            if (m.State == CraftState.Idle) {
+                m.StoreRecipe();
+                int numCraftable = m.GetNumCraftable();
+                if (numCraftable > 0) {
+                    m.StartRecipe(numCraftable); 
+                }
             }
-        }
 
-        if (m.CraftComplete && m.State == CraftState.Crafting) {
-            m.FinishRecipe(); 
-        }
+            if (m.State == CraftState.Crafting) {
+                m.UpdateCrafting(); 
+            }
 
-        if (m.State == CraftState.Delivering) {
-            m.DeliverRecipe(); 
-        }
+            if (m.CraftComplete && m.State == CraftState.Crafting) {
+                m.FinishRecipe(); 
+            }
 
-        if (m.State == CraftState.Crafting) {
-            m.UpdateCrafting(); 
-        }
-    }; 
+            if (m.State == CraftState.Delivering) {
+                m.DeliverRecipe(); 
+            }
+
+        };
+        w.AddSystem(ts, tf, orderer);
+    }
+
+    public static void RegisterEndFrame(World w) {
+        w.AddSystem([typeof(Machine), typeof(Data)], (w, e) => {
+            w.GetComponent<Machine>(e).EndFrame(); 
+        });
+    }
 }

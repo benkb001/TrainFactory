@@ -24,14 +24,12 @@ public class MachineUpdateSystemTest {
         inv.Add(new Inventory.Item(ItemId: "Banana", Count: 5)); 
 
         Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 1); 
-        int requestNum = 20; 
-        m.Request(requestNum); 
         
         World w = WorldFactory.Build(); 
         int e = EntityFactory.Add(w, setData: true); 
         w.SetComponent<Machine>(e, m); 
 
-        return (w, inv, m, requestNum); 
+        return (w, inv, m, 5); 
     }
 
     private void update(Machine m) {
@@ -54,7 +52,6 @@ public class MachineUpdateSystemTest {
         inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
 
         Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0);
-        m.Request(1); 
         
         int mEntity = EntityFactory.Add(w, setData: true);
         w.SetComponent<Machine>(mEntity, m); 
@@ -63,23 +60,6 @@ public class MachineUpdateSystemTest {
         Assert.Equal(1, inv.ItemCount("Smoothie")); 
         Assert.Equal(0, inv.ItemCount("Apple")); 
         Assert.Equal(0, inv.ItemCount("Banana")); 
-    }
-
-    [Fact]
-    public void MachineUpdateSystem_ShouldNotCraftIfNoItemsAreRequested() {
-        Inventory inv = new Inventory("Test", 2, 2);
-        Dictionary<string, int> recipe = new() {
-            ["Apple"] = 2, 
-            ["Banana"] = 1
-        }; 
-        inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2)); 
-        inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
-
-        Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
-        update(m); 
-        Assert.Equal(0, inv.ItemCount("Smoothie")); 
-        Assert.Equal(2, inv.ItemCount("Apple")); 
-        Assert.Equal(1, inv.ItemCount("Banana")); 
     }
 
     [Fact]
@@ -95,8 +75,6 @@ public class MachineUpdateSystemTest {
         Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 2); 
         update(m); 
         Assert.Equal(0, inv.ItemCount("Smoothie")); 
-        Assert.Equal(2, inv.ItemCount("Apple")); 
-        Assert.Equal(1, inv.ItemCount("Banana")); 
     }
 
     [Fact]
@@ -112,8 +90,6 @@ public class MachineUpdateSystemTest {
         Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
         update(m); 
         Assert.Equal(0, inv.ItemCount("Smoothie")); 
-        Assert.Equal(2, inv.ItemCount("Apple")); 
-        Assert.Equal(0, inv.ItemCount("Banana")); 
     }
 
     [Fact]
@@ -127,7 +103,7 @@ public class MachineUpdateSystemTest {
         inv.Add(new Inventory.Item(ItemId: "Banana", Count: 1)); 
 
         Machine m = new Machine(Inv: inv, recipe: recipe, productItemId: "Smoothie", productCount: 1, minTicks: 0); 
-        m.Request(1); 
+
         update(m); 
         Assert.Equal(1, inv.ItemCount("Smoothie")); 
         Assert.Equal(0, inv.ItemCount("Apple")); 
@@ -136,15 +112,13 @@ public class MachineUpdateSystemTest {
 
     [Fact]
     public void MachineUpdateSystem_CraftingShouldOnlyProduceAsManyAsRecipeAllows() {
-        (World w, Inventory inv, Machine m, int requestNum) = init(); 
+        (World w, Inventory inv, Machine m, int numCraftable) = init(); 
 
-        for (int i = 0; i < requestNum; i++) {
+        for (int i = 0; i < numCraftable + 1; i++) {
             w.Update(); 
         }
 
         Assert.Equal(5, inv.ItemCount("Smoothie")); 
-        Assert.Equal(10, inv.ItemCount("Apple")); 
-        Assert.Equal(0, inv.ItemCount("Banana")); 
     }
 
     [Fact]

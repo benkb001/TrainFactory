@@ -39,24 +39,20 @@
 * Train flag update, isEmbarking
 * ID.GetComponent
 * Set Train Program Button/System
+* New machine flow
 
 **** CLEAN UP **** 
 
 * Move draw button logic into generic 
 * Move click system logic into generic 
+* Move stuff in drawMachineRequest to appropriate new files 
 
 **** NEXT FEATURES **** 
 
-* Add a way to automate requesting items and managing competition over 
-  resources from two machines at the same city. 
-  * Let machines take resources faster than 
-    they might consume them, essentially they could have their own inventories. Then, machines 
-    will take from city inventories in a certain order based on priority, which the player can 
-    specify. They can also specify the max number of each resource a machine should try to take 
-    before lower priority machines can take it. 
-      * Add a stepper to set priority in machine interface 
-      * Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
-      * Add logic for machines taking sooner than needed 
+* Add a stepper to set priority in machine interface 
+* Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
+
+* Fix TAL to not let trains go places if there is not a connection at the city they are currently at
 
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
 

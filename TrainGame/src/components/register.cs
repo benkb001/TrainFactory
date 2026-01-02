@@ -66,6 +66,7 @@ public static class RegisterComponents {
         r<Inventory.Item>();
         r<InventoryOrganizeMessage>();
         r<Machine>(); 
+        r<MachinePriorityStepper>();
         r<MachineRequestButton>(); 
         r<MachineUI>(); 
         r<ManualCraftButton>(); 

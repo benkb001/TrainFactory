@@ -20,7 +20,7 @@ public class MachineTest {
     }
 
     [Fact]
-    public void Machine_StartRecipeShouldConsumeResourcesAndSetStateToCrafting() {
+    public void Machine_StartRecipeShouldSetStateToCrafting() {
         Inventory inv = new Inventory("Test", 2, 2); 
         inv.Add(new Inventory.Item(ItemId: "Apple", Count: 1)); 
         inv.Add(new Inventory.Item(ItemId: "Banana", Count: 2)); 
@@ -37,8 +37,6 @@ public class MachineTest {
         
         m.StartRecipe(); 
         Assert.Equal(CraftState.Crafting, m.State); 
-        Assert.Equal(0, inv.ItemCount("Apple")); 
-        Assert.Equal(0, inv.ItemCount("Banana")); 
     }
 
     [Fact]

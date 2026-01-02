@@ -19,22 +19,42 @@ public static class DrawMachineInterfaceSystem {
             Machine m = dm.GetMachine(); 
             bool playerAtMachine = dm.PlayerAtMachine;
 
+            //Make container 
+            int containerEnt = EntityFactory.Add(w); 
+            LinearLayout ll = new LinearLayout("horizontal", "alignlow"); 
+            ll.Padding = 5f;
+            w.SetComponent<LinearLayout>(containerEnt, ll); 
+            Vector2 llPos = w.GetCameraTopLeft() + new Vector2(10, 10); 
+            float llWidth = w.ScreenWidth - 20f; 
+            float llHeight = w.ScreenHeight - 20f; 
+            w.SetComponent<Frame>(containerEnt, new Frame(llPos, llWidth, llHeight)); 
+            w.SetComponent<Outline>(containerEnt, new Outline()); 
+
             //draw machine inventory
             Inventory inv = m.Inv; 
 
             (float invWidth, float invHeight) = InventoryWrap.GetUI(inv); 
-            float invY = w.ScreenHeight - invHeight - 10f; 
-            float invX = 25f; 
+            float leftColWidth = invWidth + 10f; 
 
-            DrawInventoryCallback.Draw(w, inv, w.GetCameraTopLeft() + new Vector2(invX, invY), invWidth, invHeight, 
+            int invEnt = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
                 Padding: Constants.InventoryPadding, DrawLabel: true); 
+            int invContainerEnt = LinearLayoutWrap.GetParent(invEnt, w); 
+
+            //draw left column and add machine inv to it
+            int leftColEnt = EntityFactory.Add(w); 
+            LinearLayout leftCol = new LinearLayout("vertical", "alignlow"); 
+            leftCol.Padding = 5f;
+            w.SetComponent<LinearLayout>(leftColEnt, leftCol); 
+            w.SetComponent<Frame>(leftColEnt, new Frame(Vector2.Zero, leftColWidth, llHeight - 10f)); 
+            w.SetComponent<Outline>(leftColEnt, new Outline()); 
+            LinearLayoutWrap.AddChild(leftColEnt, containerEnt, ll, w); 
 
             //draw header
             
-            Vector2 topLeft = w.GetCameraTopLeft(); 
-            float headerWidth = w.ScreenWidth / 2.5f; 
-            float headerHeight = w.ScreenHeight - invHeight - 20f; 
-            Vector2 headerPosition = topLeft + new Vector2(10, 10); 
+            int headerEntity = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(headerEntity, leftColEnt, leftCol, w);
+            float headerWidth = invWidth;
+            float headerHeight = w.ScreenHeight - invHeight - Constants.LabelHeight - 20f; 
             
             string hStr = $"{m.Id}\n"; 
             hStr += $"Level: {m.Level}\n"; 
@@ -42,23 +62,33 @@ public static class DrawMachineInterfaceSystem {
             hStr += $"Recipe: \n{m.GetRecipeFormatted()}"; 
             TextBox headerTextBox = new TextBox(hStr); 
 
-            int headerEntity = EntityFactory.Add(w); 
             w.SetComponent<TextBox>(headerEntity, new TextBox(hStr)); 
-            w.SetComponent<Frame>(headerEntity, new Frame(headerPosition, headerWidth, headerHeight)); 
-            w.SetComponent<Outline>(headerEntity, new Outline()); 
+            w.SetComponent<Frame>(headerEntity, new Frame(Vector2.Zero, headerWidth, headerHeight)); 
+            w.SetComponent<Outline>(headerEntity, new Outline());
 
-            //draw request stepper if not produce infinite (which means it produces as much as it can all the time)
-            float requestWidth = w.ScreenWidth / 8f; 
-            float requestHeight = headerHeight;
-            Vector2 requestPosition = headerPosition + new Vector2(headerWidth + 10f, 0f); 
+            //add inv to left col under header 
+            LinearLayoutWrap.AddChild(invContainerEnt, leftColEnt, leftCol, w); 
 
-            if (!m.ProduceInfinite) {
-                DrawMachineRequestCallback.Draw(w, m, requestPosition, requestWidth, requestHeight); 
-            }
+            //TODO: draw steppers for priority and storage
+            int midColEnt = EntityFactory.Add(w); 
+            LinearLayout midCol = new LinearLayout("vertical", "alignlow"); 
+            midCol.Padding = 5f; 
+            float midColWidth = w.ScreenWidth / 8f; 
+            float midColHeight = llHeight - 10f; 
+            w.SetComponent<LinearLayout>(midColEnt, midCol); 
+            w.SetComponent<Frame>(midColEnt, new Frame(Vector2.Zero, midColWidth, midColHeight)); 
+            w.SetComponent<Outline>(midColEnt, new Outline()); 
+            LinearLayoutWrap.AddChild(midColEnt, containerEnt, ll, w); 
+
+            StepperContainer setPrioStepper = StepperWrap.Draw(midColWidth - 10f, 
+                (midColHeight / 2f) - 20f, $"Set {m.Id} priority?", w, defaultVal: m.Priority);
+            w.SetComponent<MachinePriorityStepper>(setPrioStepper.SubmitEnt, 
+                new MachinePriorityStepper(m, setPrioStepper.Step));
+            LinearLayoutWrap.AddChild(setPrioStepper.ContainerEnt, midColEnt, midCol, w); 
 
             //Draw progress bar
 
-            float pbWidth = w.ScreenWidth - requestWidth - headerWidth - 45f; 
+            float pbWidth = w.ScreenWidth - midColWidth - leftColWidth - 55f; 
             float pbHeight = pbWidth / 10f; 
 
             int pbEntity = DrawProgressBarCallback.Draw(w, Vector2.Zero, pbWidth, pbHeight); 
@@ -92,19 +122,19 @@ public static class DrawMachineInterfaceSystem {
             }
 
             //add to linear layout
-            Vector2 llPos = requestPosition + new Vector2(requestWidth + 10, 0); 
-            LinearLayout ll = new LinearLayout("vertical", "alignlow"); 
-            ll.Padding = 5f; 
-            int llEnt = EntityFactory.Add(w); 
-            w.SetComponent<LinearLayout>(llEnt, ll); 
-            w.SetComponent<Frame>(llEnt, new Frame(llPos, pbWidth + 10f, w.ScreenHeight - 20f));
-            w.SetComponent<Outline>(llEnt, new Outline()); 
+            LinearLayout col = new LinearLayout("vertical", "alignlow"); 
+            col.Padding = 5f; 
+            int colEnt = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(colEnt, containerEnt, ll, w); 
+            w.SetComponent<LinearLayout>(colEnt, col); 
+            w.SetComponent<Frame>(colEnt, new Frame(Vector2.Zero, pbWidth + 10f, w.ScreenHeight - 20f));
+            w.SetComponent<Outline>(colEnt, new Outline()); 
 
-            LinearLayoutWrap.AddChild(pbEntity, llEnt, ll, w);
-            LinearLayoutWrap.AddChild(upgradeEntity, llEnt, ll, w); 
+            LinearLayoutWrap.AddChild(pbEntity, colEnt, col, w);
+            LinearLayoutWrap.AddChild(upgradeEntity, colEnt, col, w); 
             if (drawManualCraft) {
-                LinearLayoutWrap.AddChild(manualPbEnt, llEnt, ll, w);
-                LinearLayoutWrap.AddChild(manualCraftButtonEnt, llEnt, ll, w); 
+                LinearLayoutWrap.AddChild(manualPbEnt, colEnt, col, w);
+                LinearLayoutWrap.AddChild(manualCraftButtonEnt, colEnt, col, w); 
             }
 
             w.RemoveEntity(e); 

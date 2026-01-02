@@ -28,11 +28,11 @@ public class AssemblerTest {
         w.AddComponentType<Data>(); 
         w.AddComponentType<TestAssembler>(); 
         w.AddComponentType<Test>(); 
-        w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
+        MachineUpdateSystem.Register(w); 
         AssemblerSystem.Register<TestAssembler, Test>(w); 
 
         Inventory inv = new Inventory("Test", 2, 2); 
-        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1, produceInfinite: true); 
+        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
         TestAssembler asm = new TestAssembler(m);
         int e = EntityFactory.Add(w, setData: true); 
         w.SetComponent<TestAssembler>(e, asm);

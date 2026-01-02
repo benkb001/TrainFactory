@@ -24,7 +24,7 @@ public class MakeMessageTest {
     }
 
     [Fact]
-    public void MakeMessage_DrawMachineInterface_ShouldMakeProgressBarAndInventoryAndRequestStepper() {
+    public void MakeMessage_DrawMachineInterface_ShouldMakeProgressBarAndInventory() {
         World w = WorldFactory.Build(); 
         Inventory inv = new Inventory("Test", 2, 2); 
         Dictionary<string, int> recipe = new() {
@@ -36,7 +36,6 @@ public class MakeMessageTest {
 
         w.Update(); 
         
-        Assert.Single(w.GetMatchingEntities([typeof(Stepper)])); 
         Assert.Single(w.GetMatchingEntities([typeof(Inventory)])); 
         Assert.Single(w.GetMatchingEntities([typeof(ProgressBar)])); 
     }

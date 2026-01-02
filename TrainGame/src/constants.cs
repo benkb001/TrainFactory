@@ -266,11 +266,10 @@ namespace TrainGame.Constants
         public readonly int MinTicks; 
         public readonly int SlowFactor; 
         public readonly int StartFactor; 
-        public readonly bool ProduceInfinite; 
         public readonly string UpgradeItemID; 
 
         public MachineArg(string ProductItemId, int ProductCount, Dictionary<string, int> Recipe, int MinTicks, 
-            int SlowFactor = 0, int StartFactor = 1, bool ProduceInfinite = false, string UpgradeItemID = ItemID.MachineUpgrade,
+            int SlowFactor = 0, int StartFactor = 1, string UpgradeItemID = ItemID.MachineUpgrade,
             bool AllowManual = false) {
             
             this.ProductItemId = ProductItemId; 
@@ -279,7 +278,6 @@ namespace TrainGame.Constants
             this.MinTicks = MinTicks; 
             this.SlowFactor = SlowFactor; 
             this.StartFactor = StartFactor; 
-            this.ProduceInfinite = ProduceInfinite; 
             this.UpgradeItemID = UpgradeItemID; 
             this.AllowManual = AllowManual; 
         }
@@ -481,7 +479,7 @@ namespace TrainGame.Constants
         public static Machine Get(Inventory inv, string id) {
             MachineArg arg = args[id]; 
             return new Machine(inv, arg.Recipe, arg.ProductItemId, arg.ProductCount, arg.MinTicks, 
-                id, arg.ProduceInfinite, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
+                id, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
                 allowManual: arg.AllowManual);
         }
 
