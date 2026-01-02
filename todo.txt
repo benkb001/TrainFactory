@@ -21,6 +21,7 @@
 * intermittent bug with split item removing half the items
 * probably related, sometimes fast transfer doesn't work even if there are empty slots 
   * probably a slot is being thought of as having an item due to itemID != "" 
+* World time passage should resume automatically when exiting map view 
 
 **** NEED TO TEST **** 
 
@@ -37,6 +38,7 @@
 * TAL
 * Train flag update, isEmbarking
 * ID.GetComponent
+* Set Train Program Button/System
 
 **** CLEAN UP **** 
 
@@ -56,28 +58,7 @@
       * Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
       * Add logic for machines taking sooner than needed 
 
-* Make UI for player automating trains 
-  * First, write some basic programs player can pick from 
-  * Make a machine to build a Motherboard
-  * Player can only set the program when using a Motherboard 
-  * Add a button in train interface to go to Train automation interface 
-  * Make train automation interface 
-    * There will be one button for each possible program 
-    * Will need data entities that have functions that accept a train 
-      and make a TALBody based on it and its id 
-
-* Make a way to slowly get resources manually, but all machines have to be built. Instead of machine 
-  upgrade as a universal recipe, also use the recipe to build a machine as its upgrade method. 
-  * Make it so player can manually get Iron, Sand, and Wood at no cost.
-    * Add an option to machine constructor for manual production, if set there will be a button
-      in the machine interface that, when clicked and held for long enough, will craft. It'll have 
-      its own separate progress bar as well
-  * Add machines to craft drills, pumps, excavators, greenhouses, gasifiers, kilns, and assemblers.
-    * Each assembler can be upgraded with the same recipe 
-    * The kiln recipe can't take glass, greenhouses will take a lot of it
-  * Change machine upgrade button to check for a specific item, not just machine upgrade ID 
-
-* Add an abstraction to add/take from trains that have multiple inventories, use this in TAL
+* Add an abstraction to add/take from something that implements IInventorySource, use this in TAL
 
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
 

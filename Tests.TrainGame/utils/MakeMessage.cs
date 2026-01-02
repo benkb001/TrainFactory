@@ -32,7 +32,7 @@ public class MakeMessageTest {
         }; 
 
         Machine m = new Machine(inv, recipe, "Smoothie", 2, 10); 
-        MakeMessage.DrawMachineInterface(w, m); 
+        MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m)); 
 
         w.Update(); 
         
