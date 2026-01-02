@@ -193,4 +193,8 @@ public class Machine {
         }
         return true; 
     }
+
+    public void SetStorageSize(int size) {
+        this.numRecipeToStore = size; 
+    }
 }

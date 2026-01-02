@@ -86,6 +86,7 @@ public static class RegisterSystems {
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 
+        SetMachineStorageSystem.Register(w); 
         StepperUISystem.Register(w); 
         
         ToastSystem.Register(w); 

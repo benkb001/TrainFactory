@@ -69,7 +69,7 @@ public static class DrawMachineInterfaceSystem {
             //add inv to left col under header 
             LinearLayoutWrap.AddChild(invContainerEnt, leftColEnt, leftCol, w); 
 
-            //TODO: draw steppers for priority and storage
+            //draw steppers for priority and storage
             int midColEnt = EntityFactory.Add(w); 
             LinearLayout midCol = new LinearLayout("vertical", "alignlow"); 
             midCol.Padding = 5f; 
@@ -80,11 +80,19 @@ public static class DrawMachineInterfaceSystem {
             w.SetComponent<Outline>(midColEnt, new Outline()); 
             LinearLayoutWrap.AddChild(midColEnt, containerEnt, ll, w); 
 
-            StepperContainer setPrioStepper = StepperWrap.Draw(midColWidth - 10f, 
-                (midColHeight / 2f) - 20f, $"Set {m.Id} priority?", w, defaultVal: m.Priority);
+            float stepperWidth = midColWidth - 10f;
+            float stepperHeight = (midColHeight / 2f) - 20f;
+            StepperContainer setPrioStepper = StepperWrap.Draw(stepperWidth, 
+                stepperHeight, $"Set {m.Id} priority?", w, defaultVal: m.Priority);
             w.SetComponent<MachinePriorityStepper>(setPrioStepper.SubmitEnt, 
                 new MachinePriorityStepper(m, setPrioStepper.Step));
             LinearLayoutWrap.AddChild(setPrioStepper.ContainerEnt, midColEnt, midCol, w); 
+
+            StepperContainer setSizeStepper = StepperWrap.Draw(stepperWidth, stepperHeight, 
+                $"Set {m.Id} storage size?", w, defaultVal: m.NumRecipeToStore);
+            w.SetComponent<MachineStorageStepper>(setSizeStepper.SubmitEnt, 
+                new MachineStorageStepper(m, setSizeStepper.Step));
+            LinearLayoutWrap.AddChild(setSizeStepper.ContainerEnt, midColEnt, midCol, w); 
 
             //Draw progress bar
 

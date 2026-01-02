@@ -68,6 +68,7 @@ public static class RegisterComponents {
         r<Machine>(); 
         r<MachinePriorityStepper>();
         r<MachineRequestButton>(); 
+        r<MachineStorageStepper>();
         r<MachineUI>(); 
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
