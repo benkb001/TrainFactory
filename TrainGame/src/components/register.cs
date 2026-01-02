@@ -46,9 +46,11 @@ public static class RegisterComponents {
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
         r<DrawInventoryContainerMessage<Train>>(); 
+        r<DrawMachineInterfaceMessage>(); 
         r<DrawMachineRequestMessage>(); 
         r<DrawMachinesViewMessage>(); 
         r<DrawMapMessage>(); 
+        r<DrawSetTrainProgramInterfaceMessage>();
         r<DrawTrainInterfaceMessage>(); 
         r<DrawTrainsViewMessage>();
         r<DrawTravelingInterfaceMessage>();
@@ -66,6 +68,7 @@ public static class RegisterComponents {
         r<Machine>(); 
         r<MachineRequestButton>(); 
         r<MachineUI>(); 
+        r<ManualCraftButton>(); 
         r<MapUIFlag>();
         r<Menu>(); 
         r<Message>(); 
@@ -83,6 +86,8 @@ public static class RegisterComponents {
         r<PopSceneMessage>(); 
         r<ProgressBar>(); 
         r<Scene>(); 
+        r<SetTrainProgramButton>(); 
+        r<SetTrainProgramInterfaceButton>(); 
         r<SlowTimeButton>();
         r<SpeedTimeButton>(); 
         r<Sprite>(); 

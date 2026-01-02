@@ -16,28 +16,33 @@ using TrainGame.Constants;
 using TrainGame.Utils; 
 
 public class DrawUpgradeMachineButtonCallback {
+    public static int Draw(World w, Machine m, bool playerAtMachine, Vector2 position, float width, float height) {
+        Color c; 
+        string msg; 
+
+        int upgradeEntity = EntityFactory.Add(w); 
+
+        c = Colors.UIAccent; 
+        msg = $"Place one {m.UpgradeItemID} to increase throughput?"; 
+        w.SetComponent<Button>(upgradeEntity, new Button(
+            onClick: UpgradeMachineOnClick.Create(w, m)
+        ));
+
+        Background bg = new Background(c); 
+        TextBox tb = new TextBox(msg); 
+        Outline o = new Outline(); 
+        Frame f = new Frame(position, width, height); 
+
+        w.SetComponent<Background>(upgradeEntity, bg); 
+        w.SetComponent<TextBox>(upgradeEntity, tb); 
+        w.SetComponent<Outline>(upgradeEntity, o); 
+        w.SetComponent<Frame>(upgradeEntity, f); 
+        return upgradeEntity; 
+    }
+
     public static Action Create(World w, Machine m, bool playerAtMachine, Vector2 position, float width, float height) {
         return () => {
-            Color c; 
-            string msg; 
-
-            int upgradeEntity = EntityFactory.Add(w); 
-
-            c = Colors.UIAccent; 
-            msg = "Upgrade machine?"; 
-            w.SetComponent<Button>(upgradeEntity, new Button(
-                onClick: UpgradeMachineOnClick.Create(w, m)
-            ));
-
-            Background bg = new Background(c); 
-            TextBox tb = new TextBox(msg); 
-            Outline o = new Outline(); 
-            Frame f = new Frame(position, width, height); 
-
-            w.SetComponent<Background>(upgradeEntity, bg); 
-            w.SetComponent<TextBox>(upgradeEntity, tb); 
-            w.SetComponent<Outline>(upgradeEntity, o); 
-            w.SetComponent<Frame>(upgradeEntity, f); 
+            Draw(w, m, playerAtMachine, position, width, height); 
         }; 
     }
 }

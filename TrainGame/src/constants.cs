@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using Color = Microsoft.Xna.Framework.Color; 
 using _Color = System.Drawing.Color; 
 
-using TrainGame.Components; 
+using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.ECS; 
 
@@ -167,15 +167,20 @@ namespace TrainGame.Constants
         public static readonly Dictionary<string, CityArg> CityMap = new() {
             [CityID.Factory] = new CityArg(
                 [
-                    MachineID.Gasifier, 
-                    MachineID.Kiln, 
-                    MachineID.LocomotiveAssembler, 
+                    MachineID.AssemblerFactory,
                     MachineID.CargoWagonAssembler, 
+                    MachineID.DrillAssembler,
+                    MachineID.ExcavatorAssembler,
+                    MachineID.Gasifier, 
+                    MachineID.GasifierAssembler,
+                    MachineID.GreenhouseAssembler,
+                    MachineID.Kiln, 
+                    MachineID.KilnAssembler,
+                    MachineID.LocomotiveAssembler, 
                     MachineID.LiquidWagonAssembler, 
-                    MachineID.MachineUpgradeAssembler, 
-                    MachineID.GunUpgradeAssembler, 
-                    MachineID.ArmorUpgradeAssembler,
-                    MachineID.TrainUpgradeAssembler 
+                    MachineID.MotherboardAssembler,
+                    MachineID.PumpAssembler,
+                    MachineID.TrainUpgradeAssembler
                 ], 
                 350f, 210f, 0f, 0f, 
                 [CityID.Greenhouse, CityID.Coast, CityID.Mine]
@@ -196,22 +201,30 @@ namespace TrainGame.Constants
     }
 
     public static class ItemID {
-        public const string ArmorUpgrade = "Armor Upgrade"; 
+        public const string ArmorUpgrade = "ArmorUpgrade"; 
+        public const string Assembler = "Assembler"; 
+        public const string Drill = "Drill"; 
+        public const string Excavator = "Excavator"; 
         public const string Fuel = "Fuel"; 
+        public const string Gasifier = "Gasifier";
+        public const string Greenhouse = "Greenhouse"; 
         public const string Glass = "Glass"; 
-        public const string GunUpgrade = "Gun Upgrade"; 
+        public const string GunUpgrade = "GunUpgrade"; 
         public const string Iron = "Iron"; 
-        public const string MachineUpgrade = "Machine Upgrade"; 
+        public const string Kiln = "Kiln"; 
+        public const string MachineUpgrade = "MachineUpgrade"; 
+        public const string Motherboard = "Motherboard"; 
         public const string Oil = "Oil"; 
+        public const string Pump = "Pump"; 
         public const string Rail = "Rail"; 
         public const string Sand = "Sand"; 
         public const string Water = "Water"; 
         public const string Wood = "Wood"; 
-        public const string TrainUpgrade = "Train Upgrade"; 
+        public const string TrainUpgrade = "TrainUpgrade"; 
 
         public static readonly List<string> All = [
-            ArmorUpgrade, Fuel, Glass, GunUpgrade, Iron, 
-            MachineUpgrade, Oil, Rail, Sand, Water, Wood
+            ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
+            Glass, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Rail, Sand, Water, Wood
         ]; 
 
         public static readonly List<string> Liquids = [
@@ -222,22 +235,30 @@ namespace TrainGame.Constants
     }
 
     public static class MachineID {
+        public const string AssemblerFactory = "Assembler Factory"; 
         public const string ArmorUpgradeAssembler = "Armor Upgrade Assembler"; 
         public const string CargoWagonAssembler = "Cargo Wagon Assembler"; 
         public const string Drill = "Drill"; 
+        public const string DrillAssembler = "Drill Assembler"; 
         public const string Excavator = "Excavator"; 
+        public const string ExcavatorAssembler = "Excavator Assembler"; 
         public const string Gasifier = "Gasifier"; 
+        public const string GasifierAssembler = "GasifierAssembler"; 
         public const string Greenhouse = "Greenhouse"; 
+        public const string GreenhouseAssembler = "Greenhouse Assembler";
         public const string GunUpgradeAssembler = "Gun Upgrade Assembler"; 
         public const string Kiln = "Kiln"; 
+        public const string KilnAssembler = "KilnAssembler"; 
         public const string LiquidWagonAssembler = "Liquid Wagon Assembler"; 
         public const string LocomotiveAssembler = "Locomotive Assembler"; 
-        public const string MachineUpgradeAssembler = "Machine Upgrade Assembler"; 
+        public const string MotherboardAssembler = "Motherboard Assembler"; 
         public const string Pump = "Pump"; 
+        public const string PumpAssembler = "Pump Assembler"; 
         public const string TrainUpgradeAssembler = "Train Upgrade Assembler"; 
     }
 
     public class MachineArg {
+        public readonly bool AllowManual; 
         public readonly string ProductItemId; 
         public readonly int ProductCount; 
         public readonly Dictionary<string, int> Recipe; 
@@ -245,9 +266,11 @@ namespace TrainGame.Constants
         public readonly int SlowFactor; 
         public readonly int StartFactor; 
         public readonly bool ProduceInfinite; 
+        public readonly string UpgradeItemID; 
 
         public MachineArg(string ProductItemId, int ProductCount, Dictionary<string, int> Recipe, int MinTicks, 
-            int SlowFactor = 0, int StartFactor = 1, bool ProduceInfinite = false) {
+            int SlowFactor = 0, int StartFactor = 1, bool ProduceInfinite = false, string UpgradeItemID = ItemID.MachineUpgrade,
+            bool AllowManual = false) {
             
             this.ProductItemId = ProductItemId; 
             this.ProductCount = ProductCount; 
@@ -256,20 +279,44 @@ namespace TrainGame.Constants
             this.SlowFactor = SlowFactor; 
             this.StartFactor = StartFactor; 
             this.ProduceInfinite = ProduceInfinite; 
+            this.UpgradeItemID = UpgradeItemID; 
+            this.AllowManual = AllowManual; 
         }
     }
 
     public static class Machines {
 
         private static Dictionary<string, MachineArg> args = new() {
+            [MachineID.AssemblerFactory] = new MachineArg(
+                ProductItemId: ItemID.Assembler, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Iron] = 15, 
+                    [ItemID.Glass] = 10
+                },
+                MinTicks: 600,
+                UpgradeItemID: ItemID.Assembler
+            ),
             [MachineID.Gasifier] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Wood] = 1
                 },
-                MinTicks: 60
+                MinTicks: 60, 
+                UpgradeItemID: ItemID.Gasifier
             ), 
+            [MachineID.GasifierAssembler] = new MachineArg(
+                ProductItemId: ItemID.Gasifier, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Fuel] = 10, 
+                    [ItemID.Iron] = 15, 
+                    [ItemID.Glass] = 5
+                },
+                MinTicks: 480, 
+                UpgradeItemID: ItemID.Assembler
+            ),
             [MachineID.Kiln] = new MachineArg(
                 ProductItemId: ItemID.Glass, 
                 ProductCount: 1, 
@@ -277,15 +324,27 @@ namespace TrainGame.Constants
                     [ItemID.Fuel] = 1, 
                     [ItemID.Sand] = 1
                 },
-                MinTicks: 60
+                MinTicks: 60,
+                UpgradeItemID: ItemID.Kiln
             ), 
+            [MachineID.KilnAssembler] = new MachineArg(
+                ProductItemId: ItemID.Kiln, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Iron] = 10, 
+                    [ItemID.Fuel] = 10
+                },
+                MinTicks: 540,
+                UpgradeItemID: ItemID.Assembler
+            ),
             [MachineID.LocomotiveAssembler] = new MachineArg(
                 ProductItemId: "", 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Iron] = 10
                 },
-                MinTicks: 600
+                MinTicks: 600,
+                UpgradeItemID: ItemID.Assembler
             ), 
             [MachineID.CargoWagonAssembler] = new MachineArg(
                 ProductItemId: "", 
@@ -293,25 +352,68 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Wood] = 10
                 },
-                MinTicks: 600
+                MinTicks: 600,
+                UpgradeItemID: ItemID.Assembler
             ),
-            [MachineID.LiquidWagonAssembler] = new MachineArg(
-                ProductItemId: "", 
+            [MachineID.Drill] = new MachineArg(
+                ProductItemId: ItemID.Iron, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 10, 
+                    [ItemID.Fuel] = 1
+                }, 
+                MinTicks: 30,
+                UpgradeItemID: ItemID.Drill,
+                AllowManual: true
+            ), 
+            [MachineID.DrillAssembler] = new MachineArg(
+                ProductItemId: ItemID.Drill,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Iron] = 20, 
+                    [ItemID.Fuel] = 5
+                },
+                MinTicks: 600, 
+                UpgradeItemID: ItemID.Assembler
+            ),
+            [MachineID.Excavator] = new MachineArg(
+                ProductItemId: ItemID.Sand, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Fuel] = 2
+                },
+                MinTicks: 60,
+                UpgradeItemID: ItemID.Excavator,
+                AllowManual: true
+            ), 
+            [MachineID.ExcavatorAssembler] = new MachineArg(
+                ProductItemId: ItemID.Excavator, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Iron] = 20, 
                     [ItemID.Glass] = 5
                 },
-                MinTicks: 900
-            ), 
-            [MachineID.MachineUpgradeAssembler] = new MachineArg(
-                ProductItemId: ItemID.MachineUpgrade, 
+                MinTicks: 480,
+                UpgradeItemID: ItemID.Assembler
+            ),
+            [MachineID.Greenhouse] = new MachineArg(
+                ProductItemId: ItemID.Wood, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 10, 
-                    [ItemID.Glass] = 10
+                    [ItemID.Water] = 10
                 },
-                MinTicks: 1200
+                MinTicks: 30,
+                UpgradeItemID: ItemID.Greenhouse,
+                AllowManual: true
+            ),
+            [MachineID.GreenhouseAssembler] = new MachineArg(
+                ProductItemId: ItemID.Greenhouse,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Glass] = 20, 
+                    [ItemID.Iron] = 10
+                },
+                MinTicks: 600,
+                UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.GunUpgradeAssembler] = new MachineArg(
                 ProductItemId: ItemID.GunUpgrade, 
@@ -321,16 +423,29 @@ namespace TrainGame.Constants
                     [ItemID.Glass] = 50, 
                     [ItemID.Fuel] = 200
                 },
-                MinTicks: 2400
+                MinTicks: 2400,
+                UpgradeItemID: ItemID.Assembler
             ),
-            [MachineID.ArmorUpgradeAssembler] = new MachineArg(
-                ProductItemId: ItemID.ArmorUpgrade, 
+            [MachineID.LiquidWagonAssembler] = new MachineArg(
+                ProductItemId: "", 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 400
+                    [ItemID.Iron] = 10, 
+                    [ItemID.Glass] = 5
                 },
-                MinTicks: 2000
+                MinTicks: 900,
+                UpgradeItemID: ItemID.Assembler
             ), 
+            [MachineID.MotherboardAssembler] = new MachineArg(
+                ProductItemId: ItemID.Motherboard,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Glass] = 50,
+                    [ItemID.Iron] = 20
+                },
+                MinTicks: 1200,
+                UpgradeItemID: ItemID.Assembler
+            ),
             [MachineID.TrainUpgradeAssembler] = new MachineArg(
                 ProductItemId: ItemID.TrainUpgrade, 
                 ProductCount: 1, 
@@ -338,49 +453,37 @@ namespace TrainGame.Constants
                     [ItemID.Glass] = 10, 
                     [ItemID.Iron] = 20
                 },
-                MinTicks: 90
+                MinTicks: 90,
+                UpgradeItemID: ItemID.Assembler
             ),
-            [MachineID.Greenhouse] = new MachineArg(
-                ProductItemId: ItemID.Wood, 
-                ProductCount: 1, 
-                Recipe: new Dictionary<string, int>() {
-                    [ItemID.Water] = 10
-                },
-                MinTicks: 30
-            ),
-            [MachineID.Drill] = new MachineArg(
-                ProductItemId: ItemID.Iron, 
-                ProductCount: 1, 
-                Recipe: new Dictionary<string, int>() {
-                    [ItemID.Fuel] = 1
-                }, 
-                MinTicks: 30
-            ), 
-            [MachineID.Excavator] = new MachineArg(
-                ProductItemId: ItemID.Sand, 
-                ProductCount: 1, 
-                Recipe: new Dictionary<string, int>() {
-                    [ItemID.Fuel] = 2
-                },
-                MinTicks: 60
-            ), 
             [MachineID.Pump] = new MachineArg(
                 ProductItemId: ItemID.Water, 
                 ProductCount: 20, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 }, 
-                MinTicks: 10
+                MinTicks: 10,
+                UpgradeItemID: ItemID.Pump
+            ),
+            [MachineID.PumpAssembler] = new MachineArg(
+                ProductItemId: ItemID.Pump, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Iron] = 15, 
+                    [ItemID.Glass] = 10
+                },
+                MinTicks: 600,
+                UpgradeItemID: ItemID.Assembler
             )
         }; 
 
         public static Machine Get(Inventory inv, string id) {
             MachineArg arg = args[id]; 
             return new Machine(inv, arg.Recipe, arg.ProductItemId, arg.ProductCount, arg.MinTicks, 
-                id, arg.ProduceInfinite, arg.SlowFactor, arg.StartFactor);
+                id, arg.ProduceInfinite, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
+                allowManual: arg.AllowManual);
         }
 
-        
     }
 
     public static class Bootstrap {
@@ -459,20 +562,64 @@ namespace TrainGame.Constants
 
             //add player to factory 
             factory.HasPlayer = true; 
+        }
+    }
 
-            //automate train to go back and forth between mine and factory
+    public class TAL {
 
-            string program = @"
+        public const string IronFactoryLoop = "MineFactoryLoop";
+        public const string SandFactoryLoop = "SandFactoryLoop"; 
+        public const string WoodFactoryLoop = "WoodFactoryLoop"; 
+        public const string WaterFactoryLoop = "WaterFactoryLoop"; 
+
+        public static Dictionary<string, Func<Train, string>> Scripts = new() {
+            [IronFactoryLoop] = (t) => @"
                 LOAD Factory.Fuel / 2 Fuel; 
                 GO TO Mine; 
-                UNLOAD T0.Fuel Fuel; 
+                UNLOAD " + t.Id + @".Fuel Fuel; 
                 WHILE Mine.Fuel > 0 {
                     WAIT;
                 }
                 LOAD Mine.Iron Iron; 
                 GO TO Factory; 
-                UNLOAD T0.Iron Iron; 
-            ";
+                UNLOAD " + t.Id + @".Iron Iron; 
+            ",
+            [WaterFactoryLoop] = (t) => @"
+                LOAD Factory.Fuel / 2 Fuel; 
+                GO TO Coast;
+                UNLOAD " + t.Id + @".Fuel Fuel;
+                WHILE Coast.Fuel > 0 {
+                    WAIT;
+                }
+                LOAD Coast.Water Water; 
+                GO TO Factory; 
+                UNLOAD " + t.Id + @".Water Water;
+            ",
+            [SandFactoryLoop] = (t) => @"
+                LOAD Factory.Fuel / 2 Fuel; 
+                GO TO Coast;
+                UNLOAD " + t.Id + @".Fuel Fuel;
+                WHILE Coast.Fuel > 0 {
+                    WAIT;
+                }
+                LOAD Coast.Sand Sand; 
+                GO TO Factory; 
+                UNLOAD " + t.Id + @".Sand Sand;
+            ",
+            [WoodFactoryLoop] = (t) => @"
+                LOAD Factory.Water Water; 
+                GO TO Greenhouse;
+                UNLOAD " + t.Id + @".Water Water;
+                WHILE Greenhouse.Water > 0 {
+                    WAIT;
+                }
+                LOAD Greenhouse.Wood Wood; 
+                GO TO Factory; 
+                UNLOAD " + t.Id + @".Wood Wood;
+            ",
+        };
+
+        public static void SetTrainProgram(string program, Train t, World w) {
             TALBody body = TALParser.ParseProgram(program, w, t); 
             int bodyEntity = EntityFactory.Add(w, setData: true); 
             w.SetComponent<TALBody>(bodyEntity, body); 

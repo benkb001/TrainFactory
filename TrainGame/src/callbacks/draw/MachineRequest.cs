@@ -16,12 +16,9 @@ using TrainGame.Constants;
 using TrainGame.Utils; 
 
 public class DrawMachineRequestCallback {
-    public static void Create(World w, Machine m, Vector2 Position, float width, float height, 
+    public static void Draw(World w, Machine m, Vector2 Position, float width, float height,
         float margin = 5f, bool SetMenu = true) {
-        int e = EntityFactory.Add(w); 
-        w.SetComponent<DrawCallback>(e, new DrawCallback(() => {
-
-            int viewEntity = EntityFactory.Add(w); 
+        int viewEntity = EntityFactory.Add(w); 
 
             if (SetMenu) {
                 w.SetComponent<Menu>(viewEntity, Menu.Get()); 
@@ -75,6 +72,13 @@ public class DrawMachineRequestCallback {
             ll.AddChild(stepperEntity); 
             ll.AddChild(stepDownEntity); 
             ll.AddChild(submitEntity); 
+    }
+
+    public static void Create(World w, Machine m, Vector2 Position, float width, float height, 
+        float margin = 5f, bool SetMenu = true) {
+        int e = EntityFactory.Add(w); 
+        w.SetComponent<DrawCallback>(e, new DrawCallback(() => {
+            Draw(w, m, Position, width, height, margin, SetMenu); 
         })); 
     }
 }

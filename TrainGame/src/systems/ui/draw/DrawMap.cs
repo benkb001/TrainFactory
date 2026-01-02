@@ -97,8 +97,11 @@ public class DrawMapSystem() {
             }
 
             w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
+            w.SetComponent<TextBox>(es[0], new TextBox("Slow Time")); 
             w.SetComponent<PauseButton>(es[1], PauseButton.Get()); 
+            w.SetComponent<TextBox>(es[1], new TextBox("Pause Time")); 
             w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
+            w.SetComponent<TextBox>(es[2], new TextBox("Fast Time")); 
         }; 
 
         world.AddSystem(ts, tf); 

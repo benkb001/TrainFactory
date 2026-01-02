@@ -49,7 +49,6 @@ public class DrawTrainInterfaceSystem {
 
         //draw Add Cart button 
         //TODO: this should only be clickable if there is a cart to add at the city
-        int addCartEntity = EntityFactory.Add(w, setScene: false); 
 
         AddCartInterfaceButton cartBtn = new AddCartInterfaceButton(CartDest: t, CartSource: t.ComingFrom); 
 
@@ -62,6 +61,15 @@ public class DrawTrainInterfaceSystem {
 
         int addCartInterfaceEnt = DrawButtonSystem.Draw<AddCartInterfaceButton>(addCartMsg, w); 
         LinearLayoutWrap.AddChild(addCartInterfaceEnt, buttonsContainerEnt, buttonsContainer, w);
+
+        //draw button to go to Set Train Program Interface
+        int programBtn = EntityFactory.Add(w);
+        LinearLayoutWrap.AddChild(programBtn, buttonsContainerEnt, buttonsContainer, w); 
+        w.SetComponent<Frame>(programBtn, new Frame(0, 0, buttonWidth, buttonHeight)); 
+        w.SetComponent<Outline>(programBtn, new Outline()); 
+        w.SetComponent<TextBox>(programBtn, new TextBox("Program train?")); 
+        w.SetComponent<Button>(programBtn, new Button()); 
+        w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t));
     }
 
     private static void addEmbark(LinearLayout container, int containerEnt, Train t, World w, float height) {

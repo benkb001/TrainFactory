@@ -19,7 +19,7 @@ public static class RegisterSystems {
 
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
-        TALExecutionSystem.Register(w); //***** 
+        TALExecutionSystem.Register(w);
         TrainTravelSystem.Register(w); 
         w.AddSystem(MachineUpdateSystem.Ts, MachineUpdateSystem.Tf); 
         AssemblerSystem.Register<TrainAssembler, Train>(w); 
@@ -54,10 +54,12 @@ public static class RegisterSystems {
         AddCartInterfaceClickSystem.Register(w); 
         UpgradeTrainClickSystem.Register(w); 
         InventoryIndexSystem.Register<Train>(w); 
+        SetTrainProgramClickSystem.Register(w); 
+        SetTrainProgramInterfaceClickSystem.Register(w); 
 
         OpenMapSystem.Register(w); 
 
-        RedrawMapSystem.Register(w); //**** 
+        RedrawMapSystem.Register(w);
 
         SceneSystem.RegisterPop(w); 
         SceneSystem.RegisterPush(w);
@@ -79,6 +81,8 @@ public static class RegisterSystems {
         DrawInventoryContainerSystem.Register<Train>(w); 
         DrawTrainInterfaceSystem.Register(w); 
         DrawTravelingInterfaceSystem.Register(w); 
+        DrawMachineInterfaceSystem.Register(w); 
+        DrawSetTrainProgramInterfaceSystem.Register(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
@@ -100,6 +104,7 @@ public static class RegisterSystems {
         InventoryFastTransferSystem.Register(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
+        ManualCraftUpdateSystem.Register(w); 
         ProgressBarUpdateSystem.Register(w); 
         
         ButtonSystem.RegisterUnclick(w);

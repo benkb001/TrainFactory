@@ -16,12 +16,12 @@ using System.Reflection;
 public class UpgradeMachineOnClick {
     public static Action Create(World w, Machine m) {
         return () => {
-            if (m.Inv.ItemCount(ItemID.MachineUpgrade) >= 1) {
-                m.Inv.Take(ItemID.MachineUpgrade, 1); 
+            if (m.Inv.ItemCount(m.UpgradeItemID) >= 1) {
+                m.Inv.Take(m.UpgradeItemID, 1); 
                 m.Upgrade(1); 
 
                 PopFactory.Build(w, scene: 1, late: true, delay: 1); 
-                MakeMessage.DrawMachineInterface(w, m, playerAtMachine: true); 
+                MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m, playerAtMachine: true)); 
                 
             }
         }; 

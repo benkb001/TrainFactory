@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+using TrainGame.Utils;
+using TrainGame.Constants;
+
 public enum CraftState {
     Idle, 
     Crafting, 
@@ -33,6 +36,8 @@ public class Machine {
     private int productDelivered; 
     private int numCrafting; 
     private CraftState state = CraftState.Idle; 
+    private string upgradeItemID; 
+    private bool allowManual; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
     public int CraftTicks => craftTicks; 
@@ -47,9 +52,12 @@ public class Machine {
     public bool CraftComplete => curCraftTicks >= craftTicks; 
     public CraftState State => state; 
     public Dictionary<string, int> Recipe => recipe; 
+    public string UpgradeItemID => upgradeItemID; 
+    public bool AllowManual => allowManual; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
-        string id = "", bool produceInfinite = false, float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null) {
+        string id = "", bool produceInfinite = false, float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
+        string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false) {
         this.Inv = Inv;
         this.PlayerInv = PlayerInv; 
         this.recipe = recipe;
@@ -61,9 +69,11 @@ public class Machine {
         this.productCount = productCount; 
         this.id = id; 
         this.level = 0; 
+        this.allowManual = allowManual;
 
         this.requestedAmount = 0; 
         this.curCraftTicks = 0; 
+        this.upgradeItemID = upgradeItemID; 
 
         SetCraftTicks(); 
     }
