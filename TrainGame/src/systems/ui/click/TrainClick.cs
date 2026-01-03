@@ -24,9 +24,6 @@ public class TrainClickSystem() {
 
             Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
             if (!t.IsTraveling()) {
-                View.EnterMenu(w);
-                PushFactory.Build(w);
-
                 int dm = EntityFactory.Add(w, setScene: false); 
                 w.SetComponent<DrawTrainInterfaceMessage>(dm, new DrawTrainInterfaceMessage(t)); 
             }

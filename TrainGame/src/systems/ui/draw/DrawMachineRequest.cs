@@ -22,10 +22,6 @@ public class DrawMachineRequestSystem() {
         float width = dm.Width; 
         float height = dm.Height; 
         int viewEntity = EntityFactory.Add(w); 
-
-        if (dm.SetMenu) {
-            w.SetComponent<Menu>(viewEntity, Menu.Get()); 
-        }
         
         float viewHeight = height;
         Vector2 viewPosition = dm.Position;

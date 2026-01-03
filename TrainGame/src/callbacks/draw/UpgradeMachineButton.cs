@@ -16,7 +16,7 @@ using TrainGame.Constants;
 using TrainGame.Utils; 
 
 public class DrawUpgradeMachineButtonCallback {
-    public static int Draw(World w, Machine m, bool playerAtMachine, Vector2 position, float width, float height) {
+    public static int Draw(World w, Machine m, Vector2 position, float width, float height) {
         Color c; 
         string msg; 
 
@@ -40,9 +40,9 @@ public class DrawUpgradeMachineButtonCallback {
         return upgradeEntity; 
     }
 
-    public static Action Create(World w, Machine m, bool playerAtMachine, Vector2 position, float width, float height) {
+    public static Action Create(World w, Machine m, Vector2 position, float width, float height) {
         return () => {
-            Draw(w, m, playerAtMachine, position, width, height); 
+            Draw(w, m, position, width, height); 
         }; 
     }
 }

@@ -23,6 +23,7 @@ public class Machine {
     
     private Dictionary<string, int> recipe;
     private Dictionary<string, int> stored; 
+    private City city; 
     private bool craftComplete = false;
     private int craftTicks;
     private int curCraftTicks; 
@@ -40,6 +41,7 @@ public class Machine {
     private bool allowManual; 
     private int priority; 
     private int numRecipeToStore;
+    private bool playerAtMachine; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
     public int CraftTicks => craftTicks; 
@@ -56,6 +58,8 @@ public class Machine {
     public Dictionary<string, int> Recipe => recipe; 
     public string UpgradeItemID => upgradeItemID; 
     public bool AllowManual => allowManual; 
+    public City GetCity() => city; 
+    public bool PlayerAtMachine => playerAtMachine; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
@@ -113,6 +117,14 @@ public class Machine {
             r = $"{r}{kvp.Key}: {kvp.Value}\n";
         }
         return r; 
+    }
+
+    public void SetPlayerAtMachine(bool at) {
+        this.playerAtMachine = at; 
+    }
+
+    public void SetCity(City city) {
+        this.city = city; 
     }
 
     public void StoreRecipe() {

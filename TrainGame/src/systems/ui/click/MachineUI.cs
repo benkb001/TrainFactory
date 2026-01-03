@@ -18,9 +18,7 @@ public class MachineUIClickSystem() {
         Action<World, int> tf = (w, e) => {
             if (w.GetComponent<Button>(e).Clicked) {
                 Machine m = w.GetComponent<MachineUI>(e).GetMachine();
-                View.EnterMenu(w); 
                 MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m)); 
-                PushFactory.Build(w); 
             }
         }; 
         world.AddSystem(ts, tf); 

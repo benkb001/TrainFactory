@@ -24,9 +24,6 @@ public class UpgradeTrainClickSystem {
                 t.UpgradePower(Constants.UpgradePowerStep); 
             }
 
-            PushFactory.Build(w); 
-            PopFactory.Build(w, scene: 1, late: true, delay: 2); 
-
             MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t)); 
         }); 
     }

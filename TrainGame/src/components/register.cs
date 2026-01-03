@@ -43,6 +43,7 @@ public static class RegisterComponents {
         r<DrawBackgroundMessage>(); 
         r<DrawCallback>(); 
         r<DrawCityDetailsMessage>(); 
+        r<DrawCityInterfaceMessage>();
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
         r<DrawInventoryContainerMessage<Train>>(); 

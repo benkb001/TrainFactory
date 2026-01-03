@@ -15,10 +15,17 @@ using TrainGame.Callbacks;
 public static class DrawMachineInterfaceSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(DrawMachineInterfaceMessage)], (w, e) => {
+            SceneSystem.EnterScene(w, SceneType.MachineInterface); 
+
             DrawMachineInterfaceMessage dm = w.GetComponent<DrawMachineInterfaceMessage>(e); 
             Machine m = dm.GetMachine(); 
-            bool playerAtMachine = dm.PlayerAtMachine;
+            bool playerAtMachine = m.PlayerAtMachine;
 
+            int menuEnt = EntityFactory.Add(w); 
+
+            City city = dm.GetCity();
+            w.SetComponent<Menu>(menuEnt, new Menu(city: city, machine: m));
+            
             //Make container 
             int containerEnt = EntityFactory.Add(w); 
             LinearLayout ll = new LinearLayout("horizontal", "alignlow"); 
@@ -106,7 +113,7 @@ public static class DrawMachineInterfaceSystem {
             Vector2 upgradePosition = Vector2.Zero;  
             float upgradeWidth = pbWidth; 
             float upgradeHeight = pbHeight * 2; 
-            int upgradeEntity = DrawUpgradeMachineButtonCallback.Draw(w, m, playerAtMachine, 
+            int upgradeEntity = DrawUpgradeMachineButtonCallback.Draw(w, m, 
                 upgradePosition, upgradeWidth, upgradeHeight);
             
             //draw manual progress bar if this machine can be manually collected 

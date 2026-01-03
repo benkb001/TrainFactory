@@ -17,8 +17,6 @@ using TrainGame.Callbacks;
 public static class AddCartInterfaceClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<AddCartInterfaceButton>(w, (w, e) => {
-            PushFactory.Build(w); 
-            View.EnterMenu(w); 
             int dm = EntityFactory.Add(w, setScene: false); 
             AddCartInterfaceButton btn = w.GetComponent<AddCartInterfaceButton>(e); 
             w.SetComponent<DrawAddCartInterfaceMessage>(dm, 

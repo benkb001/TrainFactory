@@ -24,7 +24,6 @@ public class ChestInteractSystem() {
                 DrawInventoryCallback.Create(w, chest.PlayerInv, chest.PlayerInvDrawPosition, chest.PlayerInvWidth, 
                     chest.PlayerInvHeight, SetMenu: true);
 
-                PushFactory.Build(w); 
             }
         }; 
         world.AddSystem(ts, tf); 

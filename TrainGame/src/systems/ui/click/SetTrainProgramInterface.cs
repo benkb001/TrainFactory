@@ -11,8 +11,6 @@ public static class SetTrainProgramInterfaceClickSystem {
             SetTrainProgramInterfaceButton b = w.GetComponent<SetTrainProgramInterfaceButton>(e); 
             Train t = b.GetTrain(); 
 
-            PushFactory.Build(w); 
-            View.EnterMenu(w); 
             MakeMessage.Add<DrawSetTrainProgramInterfaceMessage>(w, new DrawSetTrainProgramInterfaceMessage(t)); 
         }); 
     }

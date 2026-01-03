@@ -19,10 +19,6 @@ public class DrawMachineRequestCallback {
     public static void Draw(World w, Machine m, Vector2 Position, float width, float height,
         float margin = 5f, bool SetMenu = true) {
         int viewEntity = EntityFactory.Add(w); 
-
-            if (SetMenu) {
-                w.SetComponent<Menu>(viewEntity, Menu.Get()); 
-            }
             
             float viewHeight = height;
             Vector2 viewPosition = Position;

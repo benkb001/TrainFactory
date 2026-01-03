@@ -64,6 +64,7 @@ public class City : IID {
     //todo: test
     public void AddMachine(Machine m) {
         machines[m.Id] = m; 
+        m.SetCity(this); 
     }
 
     //todo: test

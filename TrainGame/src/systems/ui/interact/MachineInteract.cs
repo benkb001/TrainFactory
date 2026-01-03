@@ -17,10 +17,9 @@ public class MachineInteractSystem() {
     private static Action<World, int> tf = (w, e) => {
         Interactable mInteractable = w.GetComponent<Interactable>(e); 
         if (mInteractable.Interacted) {
-            View.EnterMenu(w); 
             Machine m = w.GetComponent<MachineUI>(e).GetMachine(); 
-            MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m, playerAtMachine: true)); 
-            PushFactory.Build(w); 
+            MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m)); 
+            m.SetPlayerAtMachine(true); 
         }
     }; 
 

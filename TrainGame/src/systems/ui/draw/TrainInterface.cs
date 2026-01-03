@@ -123,8 +123,12 @@ public class DrawTrainInterfaceSystem {
 
     public static void Register(World w) {
         w.AddSystem([typeof(DrawTrainInterfaceMessage)], (w, e) => {
+            SceneSystem.EnterScene(w, SceneType.TrainInterface); 
             DrawTrainInterfaceMessage dm = w.GetComponent<DrawTrainInterfaceMessage>(e); 
             Train t = dm.GetTrain(); 
+
+            int menuEnt = EntityFactory.Add(w); 
+            w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 
 
             Vector2 containerPos = w.GetCameraTopLeft() + new Vector2(10f, 10f); 
             float containerWidth = w.ScreenWidth - 20f; 

@@ -25,11 +25,8 @@ public static class SetTrainProgramClickSystem {
             if (hasMotherboard) {
                 string program = TAL.Scripts[btn.ScriptName](t);
                 TAL.SetTrainProgram(program, t, w); 
-                PopFactory.Build(w); 
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t)); 
             }
-
-            //TODO: Once we fix scene, change this so it redraws here and 
-            //make train interface display which program the train is usign
         });
     }
 }

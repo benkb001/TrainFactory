@@ -78,10 +78,6 @@ public static class DrawInventoryCallback {
         LinearLayoutWrap.AddChild(inventoryEntity, containerEntity, container, w); 
 
         w.SetComponent<Inventory>(inventoryEntity, inv); 
-
-        if (SetMenu) {
-            w.SetComponent<Menu>(inventoryEntity, Menu.Get()); 
-        }
         
         LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
         ll.Padding = Padding; 

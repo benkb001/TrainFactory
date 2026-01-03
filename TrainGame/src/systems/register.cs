@@ -38,7 +38,7 @@ public static class RegisterSystems {
 
         NextDrawTestButtonSystem.Register(w);
         NextDrawTestUISystem.Register(w);
-        CloseMenuSystem.Register(w); 
+        
         ClearLLSystem.Register(w); 
 
         ChestInteractSystem.Register(w); 
@@ -56,6 +56,8 @@ public static class RegisterSystems {
         SetTrainProgramClickSystem.Register(w); 
         SetTrainProgramInterfaceClickSystem.Register(w); 
 
+        CloseMenuSystem.Register(w); 
+        
         OpenMapSystem.Register(w); 
 
         RedrawMapSystem.Register(w);
@@ -82,6 +84,7 @@ public static class RegisterSystems {
         DrawTravelingInterfaceSystem.Register(w); 
         DrawMachineInterfaceSystem.Register(w); 
         DrawSetTrainProgramInterfaceSystem.Register(w); 
+        DrawCityInterfaceSystem.Register(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

@@ -8,4 +8,18 @@ public class Menu {
         }
         return inst; 
     }
+
+    private Train train; 
+    private City city; 
+    private Machine machine;
+
+    public Train GetTrain() => train; 
+    public City GetCity() => city; 
+    public Machine GetMachine() => machine;
+
+    public Menu(Train train = null, City city = null, Machine machine = null) {
+        this.train = train; 
+        this.city = city;
+        this.machine = machine; 
+    } 
 }

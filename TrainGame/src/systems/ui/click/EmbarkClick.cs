@@ -21,14 +21,8 @@ public class EmbarkClickSystem() {
                 Train t = eb.GetTrain();
                 City c = eb.GetDestination(); 
                 TrainWrap.Embark(t, c, w); 
-                
-                int maxScene = SceneSystem.GetMaxScene(w); 
-
-                for (int i = 0; i < maxScene - 1; i++) {
-                    PopFactory.Build(w);
-                }
-
-                MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
+                MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(t.ComingFrom));
+                //MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
             }
         }; 
 

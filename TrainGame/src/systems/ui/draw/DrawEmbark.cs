@@ -43,8 +43,6 @@ public class DrawEmbarkSystem {
         
         List<City> adjacentCities = c.AdjacentCities;
 
-        w.SetComponent<Menu>(llEntity, Menu.Get()); 
-
         foreach (City connected in adjacentCities) {
             int cellEntity = EntityFactory.Add(w); 
             ll.AddChild(cellEntity); 

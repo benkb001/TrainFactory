@@ -18,9 +18,11 @@ public class DrawMapSystem() {
 
         Type[] ts = [typeof(DrawMapMessage)]; 
         Action<World, int> tf = (w, e) => {
+            SceneSystem.EnterScene(w, SceneType.Map); 
             Vector2 topleft = w.GetCameraTopLeft(); 
             int flagEnt = EntityFactory.Add(w); 
             w.SetComponent<MapUIFlag>(flagEnt, MapUIFlag.Get()); 
+            w.SetComponent<Menu>(flagEnt, new Menu());
             List<int> cityDataEntities = w.GetMatchingEntities([typeof(City), typeof(Data)]); 
             int playerLocationEntity = -1; 
             foreach (int cityDataEntity in cityDataEntities) {
@@ -33,7 +35,6 @@ public class DrawMapSystem() {
                 w.SetComponent<Outline>(cityDrawnEntity, new Outline(Depth: Depth.MapCity)); 
                 w.SetComponent<TextBox>(cityDrawnEntity, new TextBox(city.CityId, Depth: Depth.MapCity)); 
                 w.SetComponent<Button>(cityDrawnEntity, new Button(Depth: Depth.MapCity)); 
-                w.SetComponent<Menu>(cityDrawnEntity, Menu.Get()); 
                 if (city.HasPlayer) {
                     playerLocationEntity = cityDrawnEntity; 
                 }

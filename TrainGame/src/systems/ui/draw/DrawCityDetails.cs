@@ -24,7 +24,6 @@ public class DrawCityDetailsSystem() {
             //in the message
             DrawCityDetailsMessage detailMsg = w.GetComponent<DrawCityDetailsMessage>(e); 
             int drawnEntity = EntityFactory.Add(w); 
-            w.SetComponent<Menu>(drawnEntity, Menu.Get()); 
             w.SetComponent<Frame>(drawnEntity, new Frame(detailMsg.Position, 100f, 200f));
             w.SetComponent<TextBox>(drawnEntity, new TextBox(detailMsg.Detail)); 
             w.SetComponent<Background>(drawnEntity, new Background(Colors.UIBG, Depth: Depth.MapCityDetail)); 

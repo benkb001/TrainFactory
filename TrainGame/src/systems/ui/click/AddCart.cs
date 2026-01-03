@@ -21,7 +21,6 @@ public static class AddCartClickSystem {
             Cart cart = btn.CartToAdd; 
             btn.CartDest.AddCart(cart); 
             btn.CartSource.RemoveCart(cart); 
-            PopFactory.Build(w); 
         }); 
     }
 }

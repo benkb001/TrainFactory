@@ -16,9 +16,15 @@ using TrainGame.Constants;
 public static class DrawAddCartInterfaceSystem {
     public static Type[] Ts = [typeof(DrawAddCartInterfaceMessage)]; 
     public static Action<World, int> Tf = (w, e) => {
+        SceneSystem.EnterScene(w, SceneType.CartInterface);
+
+        
         DrawAddCartInterfaceMessage dm = w.GetComponent<DrawAddCartInterfaceMessage>(e); 
         Train CartDest = dm.CartDest; 
         City CartSource = dm.CartSource; 
+
+        int menuEnt = EntityFactory.Add(w); 
+        w.SetComponent<Menu>(menuEnt, new Menu(train: CartDest));
 
         LinearLayout ll = new LinearLayout("horizontal", "alignLow"); 
 
@@ -42,7 +48,6 @@ public static class DrawAddCartInterfaceSystem {
         w.SetComponent<Frame>(labelEntity, new Frame(labelPosition, labelWidth, labelHeight)); 
         w.SetComponent<TextBox>(labelEntity, new TextBox($"Click a cart to add it to {CartDest.Id}!"));
         w.SetComponent<Outline>(labelEntity, new Outline()); 
-        w.SetComponent<Menu>(labelEntity, Menu.Get()); 
         
         w.SetComponent<Frame>(llEntity, new Frame(containerPosition, containerWidth, containerHeight)); 
 

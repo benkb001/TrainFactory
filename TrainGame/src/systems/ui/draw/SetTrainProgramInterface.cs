@@ -16,7 +16,13 @@ using TrainGame.Utils;
 public static class DrawSetTrainProgramInterfaceSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(DrawSetTrainProgramInterfaceMessage)], (w, e) => {
+            SceneSystem.EnterScene(w, SceneType.ProgramInterface); 
+            
             Train t = w.GetComponent<DrawSetTrainProgramInterfaceMessage>(e).GetTrain(); 
+
+            int menuEnt = EntityFactory.Add(w); 
+            w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 
+
             Vector2 llPos = w.GetCameraTopLeft() + new Vector2(10, 10); 
             float llWidth = w.ScreenWidth - 20f; 
             float llHeight = w.ScreenHeight / 4f; 
@@ -28,7 +34,6 @@ public static class DrawSetTrainProgramInterfaceSystem {
             w.SetComponent<LinearLayout>(llEnt, ll);
             w.SetComponent<Frame>(llEnt, new Frame(llPos, llWidth, llHeight)); 
             w.SetComponent<Outline>(llEnt, new Outline()); 
-            w.SetComponent<Menu>(llEnt, Menu.Get()); 
 
             foreach (string script in TAL.Scripts.Select(kvp => kvp.Key)) {
                 int btnEnt = EntityFactory.Add(w); 

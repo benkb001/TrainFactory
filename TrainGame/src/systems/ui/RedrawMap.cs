@@ -49,15 +49,7 @@ public class RedrawMapSystem() {
         }
 
         if (should_redraw) {
-            View.EnterMenu(w); 
-            
-            int dm = EntityFactory.Add(w, setScene: false); 
-            int pushEnt = EntityFactory.Add(w, setScene: false); 
-            int popEnt = EntityFactory.Add(w, setScene: false); 
-            
-            w.SetComponent<DrawMapMessage>(dm, DrawMapMessage.Get());
-            w.SetComponent<PushSceneMessage>(pushEnt, PushSceneMessage.Get()); 
-            w.SetComponent<PopSceneMessage>(popEnt, PopSceneMessage.Get()); 
+            MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get()); 
         }
     }; 
 

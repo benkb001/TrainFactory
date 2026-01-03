@@ -40,27 +40,22 @@
 * ID.GetComponent
 * Set Train Program Button/System
 * New machine flow
+* New scene system 
 
 **** CLEAN UP **** 
 
-* Move draw button logic into generic 
-* Move click system logic into generic 
-* Move stuff in drawMachineRequest to appropriate new files 
+* Re-integrate traveling interface, basically need to check in close menu if 
+  there is no city that has the player, we draw the traveling interface instead 
+  of just returning to rpg scene
+* Add train program to train ui 
 
 **** NEXT FEATURES **** 
 
 * Make it so set train program button also removes old train program if it exists
-* There's a bug with a blank screen that appears after going to mine, coming back 
-  and upgrading some things and exiting machine interface
-* There's a bug that makes it think you are traveling if a different train goes even if youre not in it i think
 * Fix TAL to not let trains go places if there is not a connection at the city they are currently at
 
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
 
-* Change how scene works
-  * I am thinking each potential UI screen or level, etc, has a hardcoded scene value and 
-    camera position, then we just need to keep track of which scene to go to. This will 
-    decouple how a player got to a scene and how many times we should pop. 
 * Catch up on tests
 * Use a UI library, Gum looks pretty good. Whatever i pick will need scrolling, paging, 
   rows/columns, steppers, text input, grayboxing, and a way to easily integrate with the code i have. 

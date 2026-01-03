@@ -23,7 +23,8 @@ public enum SceneType {
     Map,
     ProgramInterface,
     RPG,
-    TrainInterface
+    TrainInterface,
+    None
 }
 
 public class EnterSceneMessage {
@@ -36,28 +37,37 @@ public class EnterSceneMessage {
 }
 
 public static class SceneSystem {
-    public static Dictionary<SceneType, int> CameraPositions = new() {
-        [SceneType.CartInterface] = 1000,
-        [SceneType.CityInterface] = 2000,
-        [SceneType.MachineInterface] = 3000,
-        [SceneType.Map] = 4000,
-        [SceneType.ProgramInterface] = 5000,
-        [SceneType.RPG] = 6000,
-        [SceneType.TrainInterface] = 7000
+    private static SceneType currentScene = SceneType.None; 
+    public static SceneType CurrentScene => currentScene; 
+
+    public static Dictionary<SceneType, Vector2> CameraPositions = new() {
+        [SceneType.CartInterface] = new Vector2(1000, 1000),
+        [SceneType.CityInterface] = new Vector2(2000, 2000),
+        [SceneType.MachineInterface] = new Vector2(3000, 3000),
+        [SceneType.Map] = new Vector2(4000, 4000),
+        [SceneType.ProgramInterface] = new Vector2(5000, 5000),
+        [SceneType.RPG] = new Vector2(6000, 6000),
+        [SceneType.TrainInterface] = new Vector2(7000, 7000)
     };
 
-    public static void EnterScene(World w, SceneType type) {
-        List<int> es = w.GetMatchingEntities([typeof(Scene)]);
-        foreach (int e in es.Where(
-            ent => w.GetComponent<Scene>(ent).Type == type)) {
-                w.RemoveEntity(e); 
+    public static void EnterScene(World w, SceneType type, bool useOldScene = false) {
+        
+        currentScene = type; 
+        
+        foreach (int e in w.GetMatchingEntities([typeof(Scene)]).Where(
+            ent => w.GetComponent<Scene>(ent).Type == currentScene)) {
+                if (useOldScene) {
+                    w.SetComponent<Active>(e, Active.Get());
+                } else {
+                    w.RemoveEntity(e); 
+                }
             }
-        foreach (int e in es.Where(
-            ent => w.GetComponent<Scene>(ent).Type != type)) {
+        foreach (int e in w.GetMatchingEntities([typeof(Scene)]).Where(
+            ent => w.GetComponent<Scene>(ent).Type != currentScene)) {
                 w.RemoveComponent<Active>(e); 
             }
-        int pos = CameraPositions[type]; 
-        w.SetCameraPosition(new Vector2(pos, pos));
+
+        w.SetCameraPosition(CameraPositions[type]);
     }
 
     public static void RegisterPush(World world) {
