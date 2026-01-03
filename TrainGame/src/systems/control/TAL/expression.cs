@@ -1,6 +1,7 @@
 namespace TrainGame.Systems; 
 
 using System;
+using System.Linq;
 using TrainGame.Components; 
 
 public enum ExpressionType {
@@ -205,7 +206,7 @@ public class TALExpression {
             ExpressionType.Multiply => (int)e1.Evaluate() * (int)e2.Evaluate(), 
             ExpressionType.Conditional => condition.Evaluate(), 
             ExpressionType.Access => accessType switch {
-                AccessType.Train => train.Inv.ItemCount(itemID), 
+                AccessType.Train => train.GetInventories().Aggregate(0, (acc, inv) => acc + inv.ItemCount(itemID)), 
                 AccessType.City => city.Inv.ItemCount(itemID),
                 _ => 0
             }, 

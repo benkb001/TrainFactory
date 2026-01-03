@@ -225,7 +225,7 @@ namespace TrainGame.Constants
 
         public static readonly List<string> All = [
             ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Rail, Sand, Water, Wood
+            Glass, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Pump, Rail, Sand, Water, Wood
         ]; 
 
         public static readonly List<string> Liquids = [
@@ -267,10 +267,11 @@ namespace TrainGame.Constants
         public readonly int SlowFactor; 
         public readonly int StartFactor; 
         public readonly string UpgradeItemID; 
+        public readonly int Level;
 
         public MachineArg(string ProductItemId, int ProductCount, Dictionary<string, int> Recipe, int MinTicks, 
             int SlowFactor = 0, int StartFactor = 1, string UpgradeItemID = ItemID.MachineUpgrade,
-            bool AllowManual = false) {
+            bool AllowManual = false, int Level = -1) {
             
             this.ProductItemId = ProductItemId; 
             this.ProductCount = ProductCount; 
@@ -280,6 +281,7 @@ namespace TrainGame.Constants
             this.StartFactor = StartFactor; 
             this.UpgradeItemID = UpgradeItemID; 
             this.AllowManual = AllowManual; 
+            this.Level = Level; 
         }
     }
 
@@ -290,11 +292,11 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Assembler, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 15, 
-                    [ItemID.Glass] = 10
+                    [ItemID.Iron] = 20
                 },
                 MinTicks: 600,
-                UpgradeItemID: ItemID.Assembler
+                UpgradeItemID: ItemID.Assembler,
+                Level: 0
             ),
             [MachineID.Gasifier] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 
@@ -303,7 +305,8 @@ namespace TrainGame.Constants
                     [ItemID.Wood] = 1
                 },
                 MinTicks: 60, 
-                UpgradeItemID: ItemID.Gasifier
+                UpgradeItemID: ItemID.Gasifier,
+                Level: 0
             ), 
             [MachineID.GasifierAssembler] = new MachineArg(
                 ProductItemId: ItemID.Gasifier, 
@@ -480,7 +483,7 @@ namespace TrainGame.Constants
             MachineArg arg = args[id]; 
             return new Machine(inv, arg.Recipe, arg.ProductItemId, arg.ProductCount, arg.MinTicks, 
                 id, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
-                allowManual: arg.AllowManual);
+                allowManual: arg.AllowManual, level: arg.Level);
         }
 
     }
@@ -546,6 +549,17 @@ namespace TrainGame.Constants
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
+            factory.Inv.Add(ItemID.Drill, 1); 
+            factory.Inv.Add(ItemID.Pump, 1); 
+            factory.Inv.Add(ItemID.Greenhouse, 1); 
+            factory.Inv.Add(ItemID.Assembler, 10); 
+            factory.Inv.Add(ItemID.Gasifier, 1);
+            factory.Inv.Add(ItemID.Kiln, 1); 
+            factory.Inv.Add(ItemID.Excavator, 1); 
+            factory.Inv.Add(ItemID.Motherboard, 1); 
+            factory.Inv.Add(ItemID.Iron, 50); 
+            factory.Inv.Add(ItemID.Glass, 20); 
+            factory.AddCart(new Cart("C0", CartType.Liquid)); 
 
             //set assembler components
             (int locomotiveAssemblerEnt, Machine locomotiveAssembler) = machines[MachineID.LocomotiveAssembler]; 

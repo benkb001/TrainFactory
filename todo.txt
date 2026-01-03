@@ -49,9 +49,10 @@
 
 **** NEXT FEATURES **** 
 
-* Add a stepper to set priority in machine interface 
-* Add a stepper to set numbe of recipes to store before letting lower prio machines take. 
-
+* Make it so set train program button also removes old train program if it exists
+* There's a bug with a blank screen that appears after going to mine, coming back 
+  and upgrading some things and exiting machine interface
+* There's a bug that makes it think you are traveling if a different train goes even if youre not in it i think
 * Fix TAL to not let trains go places if there is not a connection at the city they are currently at
 
 **** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 

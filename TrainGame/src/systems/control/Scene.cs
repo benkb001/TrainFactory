@@ -16,7 +16,49 @@ using TrainGame.Components;
 using TrainGame.Constants;
 using System.ComponentModel.DataAnnotations;
 
+public enum SceneType {
+    CartInterface,
+    CityInterface,
+    MachineInterface,
+    Map,
+    ProgramInterface,
+    RPG,
+    TrainInterface
+}
+
+public class EnterSceneMessage {
+    private SceneType type; 
+    public SceneType Type => type; 
+
+    public EnterSceneMessage(SceneType type) {
+        this.type = type; 
+    }
+}
+
 public static class SceneSystem {
+    public static Dictionary<SceneType, int> CameraPositions = new() {
+        [SceneType.CartInterface] = 1000,
+        [SceneType.CityInterface] = 2000,
+        [SceneType.MachineInterface] = 3000,
+        [SceneType.Map] = 4000,
+        [SceneType.ProgramInterface] = 5000,
+        [SceneType.RPG] = 6000,
+        [SceneType.TrainInterface] = 7000
+    };
+
+    public static void EnterScene(World w, SceneType type) {
+        List<int> es = w.GetMatchingEntities([typeof(Scene)]);
+        foreach (int e in es.Where(
+            ent => w.GetComponent<Scene>(ent).Type == type)) {
+                w.RemoveEntity(e); 
+            }
+        foreach (int e in es.Where(
+            ent => w.GetComponent<Scene>(ent).Type != type)) {
+                w.RemoveComponent<Active>(e); 
+            }
+        int pos = CameraPositions[type]; 
+        w.SetCameraPosition(new Vector2(pos, pos));
+    }
 
     public static void RegisterPush(World world) {
         Type[] ts = [typeof(PushSceneMessage)]; 

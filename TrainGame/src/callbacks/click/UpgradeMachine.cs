@@ -20,7 +20,7 @@ public class UpgradeMachineOnClick {
                 m.Inv.Take(m.UpgradeItemID, 1); 
                 m.Upgrade(1); 
 
-                PopFactory.Build(w, scene: 1, late: true, delay: 1); 
+                PopFactory.Build(w, scene: 0, late: true, delay: 1); 
                 MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m, playerAtMachine: true)); 
                 
             }

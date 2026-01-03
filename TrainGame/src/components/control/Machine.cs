@@ -59,12 +59,12 @@ public class Machine {
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
-        string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false) {
+        string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false, int level = -1) {
         this.Inv = Inv;
         this.PlayerInv = PlayerInv; 
         this.recipe = recipe;
         this.minTicks = minTicks; 
-        this.numRecipeToStore = 1;
+        this.numRecipeToStore = 0;
         this.slowFactor = slowFactor; 
         this.startFactor = startFactor; 
         this.priority = 0;
@@ -76,7 +76,7 @@ public class Machine {
             stored = new(); 
         }
         this.id = id; 
-        this.level = 0; 
+        this.level = level; 
         this.allowManual = allowManual;
 
         this.curCraftTicks = 0; 

@@ -560,7 +560,6 @@ public static class NextDrawTestUISystem {
             Bootstrap.InitWorld(w); 
             City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
-            factory.AddCart((new Cart("TestCart", CartType.Freight)));
         }
     };
 
