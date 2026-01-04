@@ -29,9 +29,3 @@ public class EmbarkClickSystem() {
         world.AddSystem(ts, tf); 
     }
 }
-
-public class TrainWrap {
-    public static void Embark(Train t, City dest, World w) {
-        t.Embark(dest, w.Time); 
-    }
-}

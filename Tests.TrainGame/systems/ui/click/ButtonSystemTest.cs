@@ -133,4 +133,23 @@ public class ButtonSystemTest
         w.Update(); 
         Assert.False(w.GetComponent<Button>(e).Clicked); 
     }
+
+    [Fact]
+    public void ButtonSystem_HoldShouldIncreaseHeldTicksEachFrameHeld() {
+        VirtualMouse.Reset();
+        World w = WorldFactory.Build(); 
+        int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 100, 100, setButton: true); 
+        Button b = w.GetComponent<Button>(btnEnt); 
+        VirtualMouse.SetCoordinates(10, 10); 
+        VirtualMouse.LeftClick(); 
+
+        w.Update(); 
+        Assert.Equal(1, b.TicksHeld);
+        w.Update(); 
+        Assert.Equal(2, b.TicksHeld); 
+        w.Update(); 
+        Assert.Equal(3, b.TicksHeld); 
+
+        VirtualMouse.Reset(); 
+    }
 }

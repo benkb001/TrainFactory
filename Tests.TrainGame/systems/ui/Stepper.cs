@@ -32,7 +32,7 @@ public class StepperUISystemTest {
 
     [Fact]
     public void StepperUISystem_ShouldRemoveStepperMessage() {
-                World w = new World(); 
+        World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 

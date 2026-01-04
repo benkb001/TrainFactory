@@ -46,6 +46,24 @@ public static class EntityFactory {
         return e; 
     }
 
+    public static int AddUI(World w, Vector2 position, float width, float height, bool setButton = false, 
+        string text = "", bool setOutline = false) {
+
+        int e = Add(w); 
+        w.SetComponent<Frame>(e, new Frame(position, width, height)); 
+        if (setButton) {
+            w.SetComponent<Button>(e, new Button());
+        }       
+        if (setOutline) {
+            w.SetComponent<Outline>(e, new Outline()); 
+        }
+        if (text != "") {
+            w.SetComponent<TextBox>(e, new TextBox(text)); 
+        }
+        
+        return e; 
+    }
+
     public static int AddButton(World w, float x, float y, float width, float aspectRatio, int depth, Texture2D spr) {
         int e = Add(w); 
         w.SetComponent<Frame>(e, new Frame(x, y, width, width * aspectRatio)); 

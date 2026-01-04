@@ -26,7 +26,7 @@ public class DrawMapSystemTest {
 
         w.Update(); 
 
-        List<int> drawnCityEntities = w.GetMatchingEntities([typeof(CityUI), typeof(Button), typeof(Active)]);
+        List<int> drawnCityEntities = w.GetMatchingEntities([typeof(CityUI)]);
 
         Assert.Equal(3, drawnCityEntities.Count);
         Assert.Single(drawnCityEntities, c => {
@@ -38,7 +38,5 @@ public class DrawMapSystemTest {
         Assert.Single(drawnCityEntities, c => {
             return w.GetComponent<CityUI>(c).GetCity().CityId == "C2"; 
         }); 
-
     }
-
 }

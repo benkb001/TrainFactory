@@ -12,12 +12,6 @@
 
 **** NEED TO TEST **** 
 
-* test player label change automatically when train arrives 
-* test map redrawing when it is supposed to
-* WorldTime ! ! ! ! 
-* Bootstrap.InitWorld
-* ButtonSystem.RegisterHold
-* Stepper holding
 * Inventory split 
 * Speed buttons, pause button
 * Machine crafting multiple at once logic

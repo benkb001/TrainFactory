@@ -13,7 +13,6 @@ using TrainGame.Components;
 using TrainGame.Utils;
 using TrainGame.Constants; 
 
-//TODO: Test the train redrawing branch
 public class RedrawMapSystem() {
     private static Action<World> update = (w) => {
         bool should_redraw = false;

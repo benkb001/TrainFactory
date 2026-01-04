@@ -1,10 +1,12 @@
 namespace TrainGame.Utils; 
 
-//TODO: TEST ! ! !
 public class WorldTime {
     public int Days => days; 
     public int Hours => hours; 
     public int Minutes => minutes; 
+    public int Ticks => ticks; 
+    public int Militicks => militicks; 
+    public int MiliticksPerUpdate => militicksPerUpdate;
 
     private int days = 0; 
     private int hours = 0; 
