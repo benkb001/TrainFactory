@@ -2,22 +2,9 @@
 
 *** BUGS **** 
 
-* Fix LinearLayout stall infinitely if too small bug 
 * Fix bug clicking unresponsive ? 
-* progress bar like 1% when it stops crafting
-* I think there is a bug with position on chest being relative to (0, 0)
-* Machine should remove required items immediately when beginning crafting 
-* weird camera flash happening when clicking through inventory
-    * probably need to delayed pop
-* need to redraw ui when returning to train interface after adding a cart
-* progress bar is starting out with a percentage of green? 
+* Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * Should redraw the city view if a train arrives
-* game is destroying the factory scene even if you aren't in the train, and 
-  not redrawing if you are in the train
-* If an item in a player's hand is returned to inv but inv is full,
-  item should stay in player's hand.
-* Machines still crafting if game is paused, need to have machines 
-  connected to World.wt instead of using ticks directly
 * intermittent bug with split item removing half the items
 * probably related, sometimes fast transfer doesn't work even if there are empty slots 
   * probably a slot is being thought of as having an item due to itemID != "" 
@@ -44,56 +31,47 @@
 
 **** CLEAN UP **** 
 
-* Re-integrate traveling interface, basically need to check in close menu if 
-  there is no city that has the player, we draw the traveling interface instead 
-  of just returning to rpg scene
 * Add train program to train ui 
 
 **** NEXT FEATURES **** 
 
-* Make it so set train program button also removes old train program if it exists
-* Fix TAL to not let trains go places if there is not a connection at the city they are currently at
-
-**** CLEANUP AFTER FIRST PROTOTYPE IS DONE **** 
-
 * Catch up on tests
-* Use a UI library, Gum looks pretty good. Whatever i pick will need scrolling, paging, 
-  rows/columns, steppers, text input, grayboxing, and a way to easily integrate with the code i have. 
-  Ideally it will be organized into classes or i can easily make a wrapper to have components. 
-  Once I've experimented with the new library and figured out how to fit it in, 
-  i need to refactor LinearLayout and Button with new UI components and integrate them. 
-* Go through all files and try to decouple, find a guide online to support this 
-
-**** FUTURE FEATURES **** 
-
+* Switch UI components to use Gum 
+  * First, figure out how to import the package with nuget 
+  * Then, get a simple working example
+  * Figure out how to control UI being drawn relative to screen coordinates, or world coordinates
+  * Figure out how to integrate with button, stepper, and linear layout systems
+  * Figure out how to get scrolling menus and use them where necessary
+  * Decouple linear layout use with inventory container drawing logic, 
+    possibly also stepper logic
+* Add basic save/load 
+* Add a way for players to input their own program for trains
 * Make some statistics available on the map ui
   (like how many idle trains there are, how much resources of each type you have, etc)
-* Make a way to manually get fuel in case you run out of wood/water
 * Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
 * Add progress bar to overworld machines
+* Add number of stored items to machine ui 
+* Make it so set train program button also removes old train program if it exists
+* Fix TAL to not let trains go places if there is not a connection at the city they are currently at
+* Machines still crafting if game is paused, need to have machines 
+  connected to World.wt instead of using ticks directly
+
+**** FUTURE FEATURES **** 
+
+* Make a system to ensure collidables cannot overlap as this results in buggy behavior
+* Add some default toasts
+* Add some tutorials/guides
+* Make it so trains cant run over other trains 
+* Make it so trains need fuel
 * Add combat and reward system
     * Rogue-like/perma-progression mix, time-limited events
       for special rewards at outside cities, permanently available 
-      one at the factory. 
+      one at the factory.
+        * Possibly 'time-crystals' which give you resources using a 
+          heuristic algorithm to calculate how much of each thing the player 
+          would get if that much time passed (like in perfect tower)
 * Add warning if player is going to send a train with an empty inv
-* Make it so LinearLayout is pageable 
-    * This will be important once player gets a high number of trains, 
-      but also if we add a high number of machines to Factory
-* Make it so trains cant run over other trains 
-* Make it so trains need fuel
-* Add a text input view
-* Combine text input with steppers to say how much of things you want to move 
-    between inventories, and how much you want to request to craft
-* Add an option to steppers to make them not negative
-* Add basic save/load 
-* Add some default toasts
-* Make stepper fast when you hold down
-* Make it so button to enter train doesn't appear if player opened map not at a train station 
-* Make scrollable windows 
-* Add some tutorial toasts 
-* Make a system to ensure collidables cannot overlap as this results in buggy behavior
-* Add number of requested items to machine UI 
 
 **** FAR FUTURE FEATURES **** 
 
@@ -110,6 +88,10 @@
 * Add SpaceEven to LinearLayout
 * Add a way for sprites to be drawn separately from collision box 
 * Add a label to progress bar in machine interface to make it clear what it is when not moving
+* TAL Upgrades: 
+  * Add if statements 
+  * Add toasts 
+  * Add statements to set machine priority, storage size
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 
