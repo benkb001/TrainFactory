@@ -12,7 +12,7 @@ using TrainGame.Utils;
 
 public class TrainInteractSystemTest {
     [Fact]
-    public void TrainInteractSystem_ShouldCreateAPushMessageAndADrawMapMessage() {
+    public void TrainInteractSystem_ShouldCreateADrawMapMessage() {
         World w = new World(); 
         RegisterComponents.All(w); 
         TrainInteractSystem.Register(w); 
@@ -24,7 +24,6 @@ public class TrainInteractSystemTest {
         
         w.Update(); 
 
-        Assert.Single(w.GetMatchingEntities([typeof(PushSceneMessage)])); 
         Assert.Single(w.GetMatchingEntities([typeof(DrawMapMessage)])); 
     }
 

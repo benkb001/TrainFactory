@@ -333,6 +333,7 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 14); 
         }, 
         [15] = (w) => {
+            //TODO: make this a screen to test pause, speed, slow buttons 
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(0, 0, 100, 100)); 
             w.SetComponent<Draggable>(label, new Draggable(Vector2.Zero)); 
@@ -365,6 +366,7 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 16); 
         }, 
         [17] = (w) => {
+            //TODO: fix, probably we need a chest view 
             Inventory playerInv = new Inventory("Player", 2, 3); 
             Inventory chestInv = new Inventory("Chest", 4, 4); 
 
@@ -424,120 +426,17 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 18); 
         }, 
         [19] = (w) => {
-            Inventory playerInv = new Inventory(Constants.PlayerInvID, 3, 6); 
-
-            int pInvEnt = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Inventory>(pInvEnt, playerInv); 
-            
-            Inventory invCLeft = new Inventory("CLeft", 3, 6); 
-            Inventory invCRight = new Inventory("CRight", 3, 6); 
-            Inventory invT1 = new Inventory("Train1", 3, 6); 
-            Inventory invT2 = new Inventory("Train2", 3, 6); 
-            Inventory invBlender = new Inventory("Blender", 3, 6); 
-
-            invCLeft.Add(new Inventory.Item(ItemId: ItemID.Wood, Count: 2)); 
-            invCLeft.Add(new Inventory.Item(ItemId: ItemID.Iron, Count: 2));
-            invT2.Add(new Inventory.Item(ItemId: "Banana", Count: 3)); 
-            invT2.Add(new Inventory.Item(ItemId: "Orange", Count: 4)); 
-            playerInv.Add(new Inventory.Item(ItemId: ItemID.TrainUpgrade, Count: 100)); 
-
-            City c1 = new City("CLeft", invCLeft, uiX: 100f, uiY: 20f, realX: 350f, realY: 0f);
-            City c2 = new City(CityID.Factory, invCRight, uiX: 400f, uiY: 20f, realX: 400f, realY: 0f); 
-
-            foreach (string s in CityID.CityMap[CityID.Factory].Machines) {
-                int mEnt = EntityFactory.Add(w, setData: true); 
-                Machine m = Machines.Get(invCRight, s); 
-                w.SetComponent<Machine>(mEnt, m);  
-                c2.AddMachine(m); 
-            }
-
-            c1.HasPlayer = true; 
-            
-            Dictionary<string, int> recipe = new() {
-                ["Apple"] = 1, 
-                ["Banana"] = 1
-            }; 
-
-            Machine blender = new Machine(invCLeft, recipe, "smoothie", 1, 60, "blender", PlayerInv: playerInv);
-
-            int blenderDataEntity = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Machine>(blenderDataEntity, blender); 
-            w.SetComponent<Data>(blenderDataEntity, Data.Get()); 
-
-            c1.AddConnection(c2); 
-            c2.AddConnection(c1); 
-
-            c1.AddMachine(blender); 
-
-            c1.AddCart(new Cart("Solid", CartType.Freight)); 
-            c1.AddCart(new Cart("Liquid", CartType.Liquid)); 
-            
-            int cityEntity1 = EntityFactory.Add(w, setScene: false); 
-            int cityEntity2 = EntityFactory.Add(w, setScene: false); 
-
-            w.SetComponent<City>(cityEntity1, c1);
-            w.SetComponent<City>(cityEntity2, c2);
-
-            int trainEntity = EntityFactory.Add(w); 
-            int trainDataEntity = EntityFactory.Add(w, setScene: false); 
-            Train train = new Train(invT1, c1, Id: "Train1", milesPerHour: 50f); 
-            train.Embark(c2, w.Time); 
-            w.SetComponent<Train>(trainDataEntity, train); 
-            w.SetComponent<Data>(trainDataEntity, Data.Get()); 
-
-            int tEntity2 = EntityFactory.Add(w, setScene: false); 
-            Train train2 = new Train(invT2, c1, Id: "Train2", milesPerHour: 1000f); 
-            w.SetComponent<Train>(tEntity2, train2); 
-            w.SetComponent<Data>(tEntity2, Data.Get()); 
-
-            w.SetComponent<TrainYard>(trainEntity, TrainYard.Get()); 
-            w.SetComponent<Frame>(trainEntity, new Frame(0, 50, 100, 100));
-            w.SetComponent<Interactable>(trainEntity, new Interactable()); 
-            w.SetComponent<Outline>(trainEntity, new Outline()); 
-            w.SetComponent<TextBox>(trainEntity, new TextBox("Train Yard")); 
-            w.SetComponent<Collidable>(trainEntity, Collidable.Get()); 
-
-            int player = EntityFactory.Add(w);  
-            w.SetComponent<Frame>(player, new Frame(0, 150, 100, 100));
-
-            TextBox playerTB = new TextBox("Player. Use WASD to move"); 
-            playerTB.Depth = 1f; 
-            w.SetComponent<TextBox>(player, playerTB); 
-            w.SetComponent<Outline>(player, new Outline(Depth: 1f)); 
-            w.SetComponent<CardinalMovement>(player, new CardinalMovement(4f)); 
-            w.SetComponent<Collidable>(player, Collidable.Get());
-            w.SetComponent<Interactor>(player, Interactor.Get()); 
-
-            //draw blender to test upgrading machine 
-
-            int bEntity = EntityFactory.Add(w); 
-            w.SetComponent<MachineUI>(bEntity, new MachineUI(blender)); 
-            w.SetComponent<Frame>(bEntity, new Frame(300, 300, 100, 100));
-            w.SetComponent<Outline>(bEntity, new Outline()); 
-            w.SetComponent<TextBox>(bEntity, new TextBox("Blender")); 
-            w.SetComponent<Interactable>(bEntity, new Interactable()); 
-            w.SetComponent<Collidable>(bEntity, Collidable.Get()); 
+            int e = EntityFactory.Add(w); 
+            w.SetComponent<Frame>(e, new Frame(Vector2.Zero, 100, 100)); 
+            w.SetComponent<TextBox>(e, new TextBox("Old test, ignore"));
 
             AddNextTestButton(w, 19); 
         }, 
         [20] = (w) => {
-            Inventory inv = new Inventory("Test", 2, 2);
-            inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
-            inv.Add(new Inventory.Item(ItemId: "Orange", Count: 2)); 
+            int e = EntityFactory.Add(w); 
+            w.SetComponent<Frame>(e, new Frame(Vector2.Zero, 100, 100)); 
+            w.SetComponent<TextBox>(e, new TextBox("Another Old test, ignore"));
 
-            DrawInventoryCallback.Create(w, inv, new Vector2(300, 0), 100, 100); 
-
-            Dictionary<string, int> recipe = new() {
-                ["Apple"] = 1, 
-                ["Orange"] = 1
-            }; 
-
-            Machine m = new Machine(inv, recipe, "Smoothie", 1, 60, "Blender"); 
-            int machineEntity = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Machine>(machineEntity, m); 
-            
-            int req_msg = EntityFactory.Add(w); 
-            w.SetComponent(req_msg, new DrawMachineRequestMessage(m, 100, 350, Vector2.Zero, 5f)); 
             AddNextTestButton(w, 20);
         }, 
         [21] = (w) => {

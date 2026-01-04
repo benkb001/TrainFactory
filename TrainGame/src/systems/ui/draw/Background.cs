@@ -11,9 +11,8 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+
 //TODO: Test
-//required order: 
-// make draw-bg message -> push -> draw bg  
 public class DrawBackgroundSystem() {
     public static Type[] ts = [typeof(DrawBackgroundMessage)]; 
     public static Action<World, int> tf = (w, e) => {

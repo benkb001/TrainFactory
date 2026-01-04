@@ -15,7 +15,6 @@ using TrainGame.Components;
 public static class RegisterSystems {
     public static void All(World w) {
         CameraLockSystem.Register(w); 
-        SceneSystem.RegisterPopLate(w); 
 
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
@@ -61,9 +60,6 @@ public static class RegisterSystems {
         OpenMapSystem.Register(w); 
 
         RedrawMapSystem.Register(w);
-
-        SceneSystem.RegisterPop(w); 
-        SceneSystem.RegisterPush(w);
 
         DrawBackgroundSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 

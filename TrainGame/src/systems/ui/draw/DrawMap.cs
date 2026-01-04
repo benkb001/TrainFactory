@@ -12,7 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//needs to be trainInteract -> push -> drawMap
 public class DrawMapSystem() {
     public static void Register(World world) {
 

@@ -12,11 +12,9 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 using TrainGame.Systems; 
 
-//sequential because global state (keyboard)
-[Collection("Sequential")]
 public class CityClickSystemTest {
     [Fact]
-    public void CityClickSystem_ShouldMakeMessageToDrawInventoryTrainsAndMachines() {
+    public void CityClickSystem_ShouldMakeDrawCityInterfaceMessage() {
         World w = new World(); 
         RegisterComponents.All(w); 
         CityClickSystem.Register(w); 
@@ -31,22 +29,7 @@ public class CityClickSystemTest {
         w.SetComponent<Button>(e, new Button(true));
         
         w.Update(); 
-        
-        //TODO: a way to specify between drawcallback types, 
-        //or pick a different way to test
-        List<int> invEs = w.GetMatchingEntities([typeof(DrawCallback)]); 
-        Assert.Single(invEs);
-        int invE = invEs[0]; 
 
-        List<int> tvEs = w.GetMatchingEntities([typeof(DrawTrainsViewMessage)]); 
-        Assert.Single(tvEs);
-        int tvE = tvEs[0]; 
-
-        List<int> mvEs = w.GetMatchingEntities([typeof(DrawMachinesViewMessage)]); 
-        Assert.Single(mvEs);
-        int mvE = mvEs[0]; 
-
-        List<int> es = [invE, tvE, mvE]; 
-        Assert.Distinct(es); 
+        Assert.Single(w.GetComponentArray<DrawCityInterfaceMessage>()); 
     }
 }

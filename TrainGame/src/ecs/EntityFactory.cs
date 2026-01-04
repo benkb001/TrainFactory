@@ -21,7 +21,7 @@ using TrainGame.Utils;
 using TrainGame.Systems;
 
 public static class EntityFactory {
-    public static int Add(World w, bool setScene = true, bool setActive = true, bool setData = false, int scene = -1,
+    public static int Add(World w, bool setScene = true, bool setActive = true, bool setData = false, 
         SceneType type = SceneType.None) {
         int e = w.AddEntity(); 
 
@@ -31,12 +31,15 @@ public static class EntityFactory {
             return e; 
         }
 
-        if (type == SceneType.None) {
-            type = SceneSystem.CurrentScene; 
-        }
+        if (setScene) {
+            if (type == SceneType.None) {
+                type = SceneSystem.CurrentScene; 
+            }
 
-        w.SetComponent<Scene>(e, new Scene(type: type));
-        if (type == SceneSystem.CurrentScene) {
+            w.SetComponent<Scene>(e, new Scene(type: type));
+        }
+        
+        if (setActive && type == SceneSystem.CurrentScene) {
             w.SetComponent<Active>(e, Active.Get()); 
         }
 

@@ -21,12 +21,6 @@ public class DrawInventoryContainerSystem {
     public static int Draw<T>(DrawInventoryContainerMessage<T> dm, World w) where T : IInventorySource {
         InventoryContainer<T> invContainer = dm.InvContainer;
 
-        int scene = 0; 
-
-        if (w.EntityExists(dm.Entity) && w.ComponentContainsEntity<Scene>(dm.Entity)) {
-            scene = w.GetComponent<Scene>(dm.Entity).Value; 
-        }
-
         Inventory inv = invContainer.GetCur(); 
 
         int containerEntity = DrawInventoryCallback.Draw(w, inv,
@@ -39,7 +33,7 @@ public class DrawInventoryContainerSystem {
         int headerRowLLEntity = w.GetComponent<LinearLayout>(outerContainerEntity).GetChildren()[0]; 
         LinearLayout headerRowLL = w.GetComponent<LinearLayout>(headerRowLLEntity); 
 
-        int indexerEntity = EntityFactory.Add(w, scene: scene); 
+        int indexerEntity = EntityFactory.Add(w); 
         LinearLayoutWrap.AddChild(indexerEntity, headerRowLLEntity, headerRowLL, w);
 
         float indexContainerWidth = dm.Width / 8f; 
@@ -57,7 +51,7 @@ public class DrawInventoryContainerSystem {
 
         int[] directions = [-1, 1]; 
         foreach (int d in directions) {
-            int indexEntity = EntityFactory.Add(w, scene: scene); 
+            int indexEntity = EntityFactory.Add(w); 
             w.SetComponent<InventoryIndexer<T>>(indexEntity, new InventoryIndexer<T>(invContainer, containerEntity, 1)); 
             w.SetComponent<Button>(indexEntity, new Button()); 
             w.SetComponent<Outline>(indexEntity, new Outline()); 

@@ -10,10 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.Components; 
 
 public class SceneTest {
-    [Fact]
-    public void Scene_ShouldRespectConstructorArguments() {
-        Scene s = new Scene(10); 
-        Assert.Equal(10, s.Value);
-    }
+    //TODO: write
 }
 

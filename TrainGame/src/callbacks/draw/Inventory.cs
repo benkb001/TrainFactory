@@ -34,13 +34,8 @@ public static class DrawInventoryCallback {
     // returns inventoryEntity, can get the container from LLChild component
     public static int Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
         int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
-        
-        int scene = 0; 
-        if (w.EntityExists(Entity) && w.ComponentContainsEntity<Scene>(Entity)) {
-            scene = w.GetComponent<Scene>(Entity).Value; 
-        }
 
-        int containerEntity = w.EntityExists(ParentEntity) ? ParentEntity : EntityFactory.Add(w, scene: scene); 
+        int containerEntity = w.EntityExists(ParentEntity) ? ParentEntity : EntityFactory.Add(w); 
         LinearLayout container = new LinearLayout("vertical", "alignlow"); 
         Frame f = new Frame(Position, Width, Height); 
         w.SetComponent<LinearLayout>(containerEntity, container); 
@@ -53,7 +48,7 @@ public static class DrawInventoryCallback {
             float labelWidth = Constants.LabelHeight * 2; 
             invHeight -= Constants.LabelHeight; 
 
-            int rowLLEntity = EntityFactory.Add(w, scene: scene); 
+            int rowLLEntity = EntityFactory.Add(w); 
             LinearLayoutWrap.AddChild(rowLLEntity, containerEntity, container, w); 
 
             LinearLayout rowLL = new LinearLayout("horizontal", "alignlow"); 
@@ -61,7 +56,7 @@ public static class DrawInventoryCallback {
             w.SetComponent<LinearLayout>(rowLLEntity, rowLL); 
             w.SetComponent<Frame>(rowLLEntity, new Frame(0, 0, Width, Constants.LabelHeight)); 
 
-            int labelEntity = EntityFactory.Add(w, scene: scene); 
+            int labelEntity = EntityFactory.Add(w); 
             LinearLayoutWrap.AddChild(labelEntity, rowLLEntity, rowLL, w);
             
             w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
@@ -97,7 +92,7 @@ public static class DrawInventoryCallback {
         float cellWidth = (rowWidth  - (Padding * (cols + 1))) / cols; 
 
         for (int i = 0; i < rows; i++) {
-            int row = EntityFactory.Add(w, scene: scene); 
+            int row = EntityFactory.Add(w); 
             
             w.SetComponent<Frame>(row, new Frame(0, 0, rowWidth, rowHeight)); 
             w.SetComponent<Outline>(row, new Outline(Depth: Constants.InventoryRowOutlineDepth)); 
@@ -108,7 +103,7 @@ public static class DrawInventoryCallback {
             w.SetComponent<LinearLayout>(row, rowLL);
 
             for (int j = 0; j < cols; j++) {
-                int cell = EntityFactory.Add(w, scene: scene); 
+                int cell = EntityFactory.Add(w); 
 
                 w.SetComponent<Frame>(cell, new Frame(0, 0, cellWidth, cellHeight));
                 w.SetComponent<Outline>(cell, new Outline(Depth: Constants.InventoryCellOutlineDepth)); 

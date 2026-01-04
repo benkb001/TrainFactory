@@ -32,7 +32,7 @@ public class AssemblerTest {
         AssemblerSystem.Register<TestAssembler, Test>(w); 
 
         Inventory inv = new Inventory("Test", 2, 2); 
-        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
+        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1, level: 0, numRecipeToStore: 1); 
         TestAssembler asm = new TestAssembler(m);
         int e = EntityFactory.Add(w, setData: true); 
         w.SetComponent<TestAssembler>(e, asm);

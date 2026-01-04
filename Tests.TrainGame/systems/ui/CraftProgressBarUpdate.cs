@@ -12,7 +12,7 @@ public class CraftProgressBarUpdateSystemTest {
 
         Inventory inv = new Inventory("Test", 2, 2); 
         Dictionary<string, int> recipe = new(); 
-        Machine m = new Machine(inv, recipe, "smoothie", 1, 10);
+        Machine m = new Machine(inv, recipe, "smoothie", 1, 10, level: 0, numRecipeToStore: 1);
         ProgressBar pb = new ProgressBar(MaxWidth: 100f); 
         Backgrounds bgs = new Backgrounds(); 
         bgs.Add(new Background(Color.White), new Frame(0, 0, 10, 10));

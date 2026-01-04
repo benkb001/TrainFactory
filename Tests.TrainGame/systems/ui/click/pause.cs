@@ -19,8 +19,6 @@ public class PauseButtonSystemTest {
         
         PauseButtonSystem.Register(w); 
         UnpauseButtonSystem.Register(w); 
-        //SceneSystem.RegisterPush(w); 
-        //SceneSystem.RegisterPop(w); 
 
         GameClockViewSystem.Register(w); 
 

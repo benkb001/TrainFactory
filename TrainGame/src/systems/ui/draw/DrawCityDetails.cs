@@ -12,8 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//required order: 
-// cityClick -> push -> drawCityDetail 
 public class DrawCityDetailsSystem() {
     public static void Register(World world) {
         Type[] ts = [typeof(DrawCityDetailsMessage)]; 

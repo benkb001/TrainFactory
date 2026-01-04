@@ -12,7 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//needs to be trainInteract -> push -> drawTrainDetail
 public class DrawEmbarkSystem {
 
     public static int Draw(DrawEmbarkMessage msg, World w) {

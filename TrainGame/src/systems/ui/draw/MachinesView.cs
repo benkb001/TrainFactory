@@ -12,7 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//needs to be clickCity -> push -> drawMachine
 public class DrawMachinesViewSystem() {
     public static void Draw(DrawMachinesViewMessage dm, World w) {
         List<Machine> machines = dm.Machines; 

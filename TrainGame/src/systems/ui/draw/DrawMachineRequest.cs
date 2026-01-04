@@ -12,8 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//must be make -> push -> drawMachineRequest
-
 public class DrawMachineRequestSystem() {
     private static Type[] ts = [typeof(DrawMachineRequestMessage)]; 
     private static Action<World, int> tf = (w, e) => {

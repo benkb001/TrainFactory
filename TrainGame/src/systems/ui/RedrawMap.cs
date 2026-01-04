@@ -18,15 +18,6 @@ public class RedrawMapSystem() {
     private static Action<World> update = (w) => {
         bool should_redraw = false;
 
-        int num_pop_msgs = w.GetComponentArray<PopSceneMessage>().Count; 
-        List<int> es = w.GetMatchingEntities([typeof(Scene), typeof(MapUIFlag)]); 
-        if (num_pop_msgs > 0 && es.Any(e => {
-            int scene = w.GetComponent<Scene>(e).Value; 
-            return scene == num_pop_msgs; 
-        })) {
-            should_redraw = true; 
-        }
-
         if (!should_redraw) {
             List<int> tuiEnts = w.GetMatchingEntities([typeof(TrainUI), typeof(MapUIFlag), typeof(Active)]);
             if (tuiEnts.Any(e => {

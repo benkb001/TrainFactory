@@ -20,8 +20,6 @@ public class NextDrawTestButtonSystemTest {
         
         PauseButtonSystem.Register(w); 
         UnpauseButtonSystem.Register(w); 
-        SceneSystem.RegisterPush(w); 
-        SceneSystem.RegisterPop(w); 
 
         GameClockViewSystem.Register(w); 
 

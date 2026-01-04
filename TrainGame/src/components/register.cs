@@ -84,9 +84,6 @@ public static class RegisterComponents {
         r<Outline>(); 
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
-        r<PopLateMessage>(); 
-        r<PushSceneMessage>(); 
-        r<PopSceneMessage>(); 
         r<ProgressBar>(); 
         r<Scene>(); 
         r<SetTrainProgramButton>(); 
