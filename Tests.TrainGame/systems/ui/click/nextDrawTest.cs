@@ -16,7 +16,7 @@ public class NextDrawTestButtonSystemTest {
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
 
-        ButtonSystem.RegisterClick(w);
+        //ButtonSystem.RegisterClick(w);
         
         PauseButtonSystem.Register(w); 
         UnpauseButtonSystem.Register(w); 

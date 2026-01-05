@@ -10,8 +10,6 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.Utils; 
 
-//sequential because global state (mouse)
-[Collection("Sequential")]
 public class NextDrawTestSystemTest {
     [Fact]
     public void NextDrawTest_ShouldMoveButtonWhenClickedFirst() {
@@ -26,21 +24,15 @@ public class NextDrawTestSystemTest {
 
         int e = EntityFactory.Add(w); 
 
-        w.SetComponent<Button>(e, new Button()); 
+        w.SetComponent<Button>(e, new Button(true)); 
         w.SetComponent<Frame>(e, new Frame(0, 0, 100, 100)); 
         w.SetComponent<NextDrawTestButton>(e, new NextDrawTestButton());
-
-        VirtualMouse.SetCoordinates(1, 1); 
-        VirtualMouse.LeftClick(); 
 
         Assert.True(w.GetComponent<Frame>(0).GetX() == 0); 
         w.Update(); 
 
         VirtualMouse.LeftRelease(); 
 
-        //It's two here because clicking the button creates a NextTestControl component attached to a different entity
-        //Then that entity gets cleared and the new button is made. 
         Assert.False(w.GetComponent<Frame>(2).GetX() == 0); 
-        VirtualMouse.Reset(); 
     }
 }

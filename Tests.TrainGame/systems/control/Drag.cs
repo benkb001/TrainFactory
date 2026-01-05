@@ -28,8 +28,8 @@ public class DragTest {
         w.SetComponent<Draggable>(drag, new Draggable()); 
 
          
-        VirtualMouse.SetCoordinates(0, 0); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.SetCoordinates(1, 1); 
+        VirtualMouse.LeftPress(); 
 
         w.Update(); 
 
@@ -51,7 +51,7 @@ public class DragTest {
         w.SetComponent<Draggable>(drag, new Draggable()); 
 
         VirtualMouse.SetCoordinates(0, 0); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
         VirtualMouse.SetCoordinates(100, 200); 
         w.Update(); 
@@ -74,7 +74,7 @@ public class DragTest {
         w.SetComponent<Draggable>(drag, new Draggable()); 
 
         VirtualMouse.SetCoordinates(0, 0); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
         Assert.True(w.GetComponent<Draggable>(drag).IsHeld()); 
         VirtualMouse.LeftRelease(); 

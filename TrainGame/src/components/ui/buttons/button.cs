@@ -18,9 +18,11 @@ public class Button {
     public bool Clicked => ClickType == Click.Left; 
     public bool ShiftClicked => ClickType == Click.Shift; 
     
+    public bool Hovered = false; 
     public Click ClickType = Click.None; 
     public float Depth = 0f; 
     public int TicksHeld = 0; 
+    public int RightTicksHeld = 0;
     private Action onClick;
 
     public Button(bool Clicked = false, float Depth = 0f, Action onClick = null) {

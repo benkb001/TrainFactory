@@ -141,7 +141,7 @@ public class ButtonSystemTest
         int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 100, 100, setButton: true); 
         Button b = w.GetComponent<Button>(btnEnt); 
         VirtualMouse.SetCoordinates(10, 10); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
 
         w.Update(); 
         Assert.Equal(1, b.TicksHeld);

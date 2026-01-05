@@ -57,7 +57,7 @@ public class InventoryDragSystemTest {
         w.Update(); 
 
         VirtualMouse.SetCoordinates(5, 5); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
 
         VirtualMouse.SetCoordinates(105, 5); 
@@ -112,7 +112,7 @@ public class InventoryDragSystemTest {
         Vector2 targetVector = w.GetComponent<Frame>(row2.GetChildren()[targetCol]).Position; 
 
         VirtualMouse.SetCoordinates(5, 5); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
 
         VirtualMouse.SetCoordinates(105, 5); 
@@ -159,7 +159,7 @@ public class InventoryDragSystemTest {
         w.Update(); 
 
         VirtualMouse.SetCoordinates(5, 5); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
 
         VirtualMouse.SetCoordinates(105, 5); 
@@ -196,7 +196,7 @@ public class InventoryDragSystemTest {
         w.Update(); 
 
         VirtualMouse.SetCoordinates(5, 5); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
 
         VirtualMouse.SetCoordinates(105, 0 - (int)InventoryDragSystem.Threshold); 

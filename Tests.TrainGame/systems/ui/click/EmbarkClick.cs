@@ -11,12 +11,9 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.Utils; 
 
-//sequential because global state (keyboard)
-[Collection("Sequential")]
 public class EmbarkClickSystemTest {
     [Fact]
     public void EmbarkClickSystem_ShouldEmbarkClickedTrain() {
-        VirtualMouse.Reset(); 
         World w = WorldFactory.Build(); 
         Inventory inv = new Inventory("Test", 1, 1); 
         City cStart = new City("start", inv, 100f, 100f);
@@ -27,13 +24,11 @@ public class EmbarkClickSystemTest {
 
         int embarkEntity = EntityFactory.Add(w); 
         w.SetComponent<Frame>(embarkEntity, new Frame(0, 0, 100, 100)); 
-        w.SetComponent<Button>(embarkEntity, new Button()); 
+        w.SetComponent<Button>(embarkEntity, new Button(true)); 
         w.SetComponent<EmbarkButton>(embarkEntity, new EmbarkButton(cEnd, t));
 
-        VirtualMouse.LeftClick(new Vector2(1, 1));
         w.Update(); 
         Assert.Equal(cEnd, t.GoingTo); 
         Assert.True(t.IsTraveling()); 
-        VirtualMouse.Reset(); 
     }
 }

@@ -23,7 +23,7 @@ public class DragSystem {
             draggable.Hold(); 
         }
 
-        if (b.Clicked) {
+        if (draggable.IsReleased() && b.TicksHeld == 1) {
             draggable.PickUp(); 
             draggable.SnapPosition = f.Position; 
             draggable.RelativeClickPosition = w.GetWorldMouseCoordinates() - f.Position; 

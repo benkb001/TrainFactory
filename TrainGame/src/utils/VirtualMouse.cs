@@ -40,11 +40,7 @@ public static class VirtualMouse {
     }
 
     public static MouseState GetState() {
-        if (useVirtualMouse) {
-            return vm; 
-        } else {
-            return Mouse.GetState(); 
-        }
+        return vm; 
     }
 
     public static Vector2 GetCoordinates() {
@@ -60,21 +56,29 @@ public static class VirtualMouse {
             vm.XButton2, vm.HorizontalScrollWheelValue); 
     }
 
-    public static void LeftClick() {
-        UseVirtualMouse();
+    public static void LeftPress() {
+        UseVirtualMouse(); 
         vm = new MouseState(vm.X, vm.Y, vm.ScrollWheelValue,
             ButtonState.Pressed, vm.MiddleButton, 
             vm.RightButton, vm.XButton1, 
             vm.XButton2, vm.HorizontalScrollWheelValue); 
     }
 
-    public static void LeftClick(Vector2 position) {
-        SetCoordinates((int)position.X, (int)position.Y); 
+    public static void LeftClick() {
         UseVirtualMouse();
+        prev_mouse = new MouseState(prev_mouse.X, prev_mouse.Y, prev_mouse.ScrollWheelValue,
+            ButtonState.Pressed, prev_mouse.MiddleButton, 
+            prev_mouse.RightButton, prev_mouse.XButton1, 
+            prev_mouse.XButton2, prev_mouse.HorizontalScrollWheelValue); 
         vm = new MouseState(vm.X, vm.Y, vm.ScrollWheelValue,
-            ButtonState.Pressed, vm.MiddleButton, 
+            ButtonState.Released, vm.MiddleButton, 
             vm.RightButton, vm.XButton1, 
             vm.XButton2, vm.HorizontalScrollWheelValue); 
+    }
+
+    public static void LeftClick(Vector2 position) {
+        SetCoordinates((int)position.X, (int)position.Y); 
+        LeftClick(); 
     }
 
     public static void RightClick() {
@@ -127,13 +131,13 @@ public static class VirtualMouse {
     }
 
     public static bool LeftClicked() {
-        return prev_mouse.LeftButton == ButtonState.Released && 
-                GetState().LeftButton == ButtonState.Pressed; 
+        return prev_mouse.LeftButton == ButtonState.Pressed && 
+                GetState().LeftButton == ButtonState.Released; 
     }
 
     public static bool RightClicked() {
-        return prev_mouse.RightButton == ButtonState.Released && 
-                GetState().RightButton == ButtonState.Pressed; 
+        return prev_mouse.RightButton == ButtonState.Pressed && 
+                GetState().RightButton == ButtonState.Released; 
     }
 
     public static bool IsScrollingUp() {

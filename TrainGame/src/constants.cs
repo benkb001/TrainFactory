@@ -37,6 +37,10 @@ namespace TrainGame.Constants
         public const float PlayerSpeed = 5f; 
         public const int PlayerOutlineThickness = 1; 
 
+        public const int ButtonOutlineThickness = 1; 
+        public const int ButtonHeldOutlineThickness = 2; 
+        public const int ButtonHoveredOutlineThickness = 3; 
+
         public static readonly float EmbarkLayoutWidth = 200f; 
         public static readonly float EmbarkLayoutHeight = 500f;
         public static readonly float EmbarkLayoutPadding = 5f;  

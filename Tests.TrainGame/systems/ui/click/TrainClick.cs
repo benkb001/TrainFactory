@@ -12,13 +12,9 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 using TrainGame.Systems; 
 
-//sequential because global state (keyboard)
-[Collection("Sequential")]
 public class TrainClickSystemTest {
     [Fact]
     public void TrainClickSystem_ShouldDrawCityAndTrainInventories() {
-        VirtualMouse.Reset(); 
-
         World w = WorldFactory.Build(); 
         
         Inventory trainInv = new Inventory("TrainInv", 1, 1); 
@@ -28,10 +24,9 @@ public class TrainClickSystemTest {
         
         int tUIEntity = EntityFactory.Add(w); 
         w.SetComponent<Frame>(tUIEntity, new Frame(0, 0, 100, 100)); 
-        w.SetComponent<Button>(tUIEntity, new Button()); 
+        w.SetComponent<Button>(tUIEntity, new Button(true)); 
         w.SetComponent<TrainUI>(tUIEntity, new TrainUI(t)); 
         
-        VirtualMouse.LeftClick(new Vector2(1, 1)); 
         w.Update(); 
 
         List<int> es = w.GetMatchingEntities([typeof(Inventory), typeof(LinearLayout)]); 
@@ -39,7 +34,5 @@ public class TrainClickSystemTest {
         Assert.Equal(2, es.Count);
         Assert.Single(es, e => w.GetComponent<Inventory>(e) == trainInv);
         Assert.Single(es, e => w.GetComponent<Inventory>(e) == cityInv); 
-
-        VirtualMouse.Reset(); 
     }
 }

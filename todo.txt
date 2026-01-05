@@ -30,14 +30,10 @@
 **** NEXT FEATURES **** 
 
 * Catch up on tests
-* Switch UI components to use Gum 
-  * First, figure out how to import the package with nuget 
-  * Then, get a simple working example
-  * Figure out how to control UI being drawn relative to screen coordinates, or world coordinates
-  * Figure out how to integrate with button, stepper, and linear layout systems
-  * Figure out how to get scrolling menus and use them where necessary
-  * Decouple linear layout use with inventory container drawing logic, 
-    possibly also stepper logic
+* Improve UI
+  * Add paging for LL 
+  * Decoupling with LL and inventory container 
+  * Add text input 
 * Add basic save/load 
 * Add a way for players to input their own program for trains
 * Make some statistics available on the map ui

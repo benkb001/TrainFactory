@@ -26,6 +26,7 @@ public static class RegisterSystems {
 
         ButtonSystem.RegisterHold(w); 
         ButtonSystem.RegisterClick(w);
+        ButtonSystem.RegisterHighlight(w); 
         InteractSystem.RegisterInteract(w); 
         
         PauseButtonSystem.Register(w);
@@ -108,6 +109,7 @@ public static class RegisterSystems {
         ProgressBarUpdateSystem.Register(w); 
         
         ButtonSystem.RegisterUnclick(w);
+        ButtonSystem.RegisterClearHovered(w); 
         InteractSystem.RegisterUninteract(w); 
         TrainFlagUpdateSystem.Register(w); 
         MachineUpdateSystem.RegisterEndFrame(w); 

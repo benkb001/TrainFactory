@@ -36,13 +36,10 @@ public class VirtualMouseTest
     [Fact]
     void VirtualMouse_ShouldBeAbleToClick() {
         VirtualMouse.Reset(); 
+
+        Assert.False(VirtualMouse.LeftClicked()); 
         VirtualMouse.LeftClick(); 
-        VirtualMouse.RightClick(); 
-
-        MouseState m = VirtualMouse.GetState(); 
-
-        Assert.Equal(ButtonState.Pressed, m.LeftButton); 
-        Assert.Equal(ButtonState.Pressed, m.RightButton); 
+        Assert.True(VirtualMouse.LeftClicked()); 
     }
 
     [Fact]

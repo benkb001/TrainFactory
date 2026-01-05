@@ -25,4 +25,8 @@ public class Outline {
     public void SetColor(Color c) {
         color = c; 
     }
+
+    public void SetThickness(int t) {
+        this.thickness = t; 
+    }
 }

@@ -37,7 +37,7 @@ public class InvetoryPickUpUISystemTest {
         w.Update(); 
 
         VirtualMouse.SetCoordinates(5, 5); 
-        VirtualMouse.LeftClick(); 
+        VirtualMouse.LeftPress(); 
         w.Update(); 
 
         LinearLayout ll1 = w.GetComponent<LinearLayout>(invEntity); 
