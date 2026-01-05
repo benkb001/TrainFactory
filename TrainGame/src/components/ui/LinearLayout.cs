@@ -26,6 +26,7 @@ public class LinearLayout {
     public int ChildCount => children.Count; 
     public bool UsePaging => usePaging; 
     public List<int> PagedChildren => pagedChildren; 
+    public int ChildrenPerPage => childrenPerPage; 
 
     public LinearLayout(string d, string s, bool usePaging = false, int childrenPerPage = 10) {
         SetDirection(d); 
@@ -89,6 +90,8 @@ public class LinearLayout {
     public List<int> GetChildren() {
         return children; 
     }
+
+    public List<int> GetPagedChildren() => pagedChildren; 
 
     public bool AddChild(int e) {
         bool duplicateChild = children.Contains(e);

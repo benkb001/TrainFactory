@@ -53,8 +53,9 @@ public static class RegisterSystems {
         AddCartInterfaceClickSystem.Register(w); 
         UpgradeTrainClickSystem.Register(w); 
         InventoryIndexSystem.Register<Train>(w); 
-        SetTrainProgramClickSystem.Register(w); 
+        SetTrainProgramClickSystem.Register(w);
         SetTrainProgramInterfaceClickSystem.Register(w); 
+        LLPageSystem.Register(w); 
 
         CloseMenuSystem.Register(w); 
         

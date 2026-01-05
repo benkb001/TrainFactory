@@ -79,6 +79,7 @@ public static class RegisterComponents {
         r<LinearLayout>(); 
         r<Lines>(); 
         r<LLChild>(); 
+        r<LLPageButton>(); 
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 

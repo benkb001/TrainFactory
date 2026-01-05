@@ -15,27 +15,135 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Systems; 
 
-public class LLPageButton {
-    public readonly LinearLayout LL; 
-    private int delta; 
-    public int Delta => delta; 
-    public LLPageButton(LinearLayout ll, int delta) {
-        this.delta = delta; 
-        this.LL = ll; 
-    }
-}
+public class LinearLayoutContainer {
+    private int llEnt; 
+    private LinearLayout ll;
+    private float llWidth; 
+    private float llHeight; 
+    
+    public float LLWidth => llWidth; 
+    public float LLHeight => llHeight; 
 
-public static class LLPageSystem {
-    public static void Register(World w) {
-        ClickSystem.Register<LLPageButton>(w, (w, e) => {
-            LLPageButton pb = w.GetComponent<LLPageButton>(e);
-            LinearLayout ll = pb.LL; 
-            ll.Page(pb.Delta);
-        }); 
+    public LinearLayoutContainer(int llEnt, LinearLayout ll, float llWidth, float llHeight) {
+        this.llEnt = llEnt; 
+        this.ll = ll; 
+        this.llWidth = llWidth; 
+        this.llHeight = llHeight; 
+    }
+
+    public void AddChild(int e, World w) {
+        LinearLayoutWrap.AddChild(e, llEnt, ll, w);
+    }
+
+    public void ResizeChildren(World w) {
+        LinearLayoutWrap.ResizeChildren(llEnt, w); 
     }
 }
 
 public class LinearLayoutWrap {
+    public static LinearLayoutContainer Add(World w, Vector2 position, float width, float height, 
+        bool usePaging = false, int childrenPerPage = 10, string direction = "horizontal", 
+        string align = "alignlow", float padding = 5f, string label = "", bool outline = true) {
+        
+        //add the outer linear layout, has two children: header row and main ll
+        int outerLLEnt = EntityFactory.Add(w); 
+        w.SetComponent<Frame>(outerLLEnt, new Frame(position, width, height)); 
+        LinearLayout outerLL = new LinearLayout("vertical", "alignlow"); 
+        w.SetComponent<LinearLayout>(outerLLEnt, outerLL); 
+        outerLL.Padding = padding; 
+
+        //add header row ll
+        LinearLayout headerRowLL = new LinearLayout("horizontal", "alignlow"); 
+        int headerRowLLEnt = EntityFactory.Add(w); 
+        w.SetComponent<LinearLayout>(headerRowLLEnt, headerRowLL); 
+        float headerHeight = height / 8f;
+        float headerWidth = Math.Max(20, width - (2 * padding)); 
+        w.SetComponent<Frame>(headerRowLLEnt, new Frame(Vector2.Zero, headerWidth, headerHeight)); 
+        headerRowLL.Padding = padding; 
+
+        bool useHeader = false; 
+
+        //labelWidth and labelHeight are used for both the label and the dimensions 
+        //of the pager buttons, if either are included
+        float labelWidth = (headerWidth / 2f) - (3 * padding); 
+        float labelHeight = Math.Max(5f, headerHeight - (2 * padding));
+
+        //add the main ll, wait to add till after header
+        int mainLLEnt = EntityFactory.Add(w); 
+        LinearLayout mainLL = new LinearLayout(direction, align, usePaging, childrenPerPage); 
+        w.SetComponent<LinearLayout>(mainLLEnt, mainLL); 
+        float mainLLWidth = width - 2 * padding; 
+        float mainLLHeight = height - headerHeight - 3 * padding; 
+        w.SetComponent<Frame>(mainLLEnt, new Frame(Vector2.Zero, mainLLWidth, mainLLHeight)); 
+        mainLL.Padding = padding; 
+
+        if (outline) {
+            w.SetComponent<Outline>(outerLLEnt, new Outline()); 
+            w.SetComponent<Outline>(headerRowLLEnt, new Outline()); 
+            w.SetComponent<Outline>(mainLLEnt, new Outline()); 
+        }
+
+        if (label != "") {
+            useHeader = true;
+            int labelEnt = EntityFactory.Add(w); 
+            
+            w.SetComponent<Frame>(labelEnt, new Frame(Vector2.Zero, labelWidth, labelHeight)); 
+            w.SetComponent<TextBox>(labelEnt, new TextBox(label)); 
+            if (outline) {
+                w.SetComponent<Outline>(labelEnt, new Outline()); 
+            }
+            AddChild(labelEnt, headerRowLLEnt, headerRowLL, w);
+        } 
+
+        if (usePaging) {
+            useHeader = true; 
+            int pageLLEnt = EntityFactory.Add(w); 
+            LinearLayout pageLL = new LinearLayout("horizontal", "alignlow"); 
+            w.SetComponent<LinearLayout>(pageLLEnt, pageLL); 
+            pageLL.Padding = padding; 
+
+            AddChild(pageLLEnt, headerRowLLEnt, headerRowLL, w); 
+
+            float pageHeight = Math.Max(5f, labelHeight - (2 * padding)); 
+            float pageWidth = pageHeight; 
+            float pageLLWidth = (pageWidth * 2) + (3 * padding); 
+
+            w.SetComponent<Frame>(pageLLEnt, new Frame(Vector2.Zero, pageLLWidth, labelHeight)); 
+
+            int[] ds = [-1, 1]; 
+
+            foreach (int d in ds) {
+                int curEnt = EntityFactory.Add(w);
+                AddChild(curEnt, pageLLEnt, pageLL, w); 
+                List<Vector2> points = [
+                    new Vector2(0, 0),
+                    new Vector2(0, pageHeight),
+                    new Vector2(pageWidth * d, pageHeight / 2f),
+                ]; 
+
+                w.SetComponent<Frame>(curEnt, new Frame(points));
+                w.SetComponent<Button>(curEnt, new Button()); 
+                w.SetComponent<LLPageButton>(curEnt, new LLPageButton(mainLL, d));
+                w.SetComponent<Outline>(curEnt, new Outline()); 
+            }
+            
+
+            if (outline) {
+                w.SetComponent<Outline>(pageLLEnt, new Outline()); 
+            }
+        }
+
+        if (useHeader) {
+            AddChild(headerRowLLEnt, outerLLEnt, outerLL, w); 
+        } else {
+            w.RemoveEntity(headerRowLLEnt); 
+        }
+
+        AddChild(mainLLEnt, outerLLEnt, outerLL, w); 
+
+        return new LinearLayoutContainer(mainLLEnt, mainLL, mainLLWidth, mainLLHeight); 
+    }
+
     public static void Clear(int e, World w, LinearLayout ll = null) {
         if (ll == null) {
             if (w.ComponentContainsEntity<LinearLayout>(e)) {
@@ -64,7 +172,8 @@ public class LinearLayoutWrap {
     public static void ResizeChildren(int llEntity, World w, bool recurse = false) {
         LinearLayout ll = w.GetComponent<LinearLayout>(llEntity); 
         List<int> cs = ll.GetChildren(); 
-        int numChildren = cs.Count; 
+        List<int> pagedChildren = ll.GetPagedChildren(); 
+        int numChildren = ll.UsePaging ? ll.ChildrenPerPage : cs.Count; 
         Frame llFrame = w.GetComponent<Frame>(llEntity);
 
         float width = 0f; 
@@ -78,10 +187,10 @@ public class LinearLayoutWrap {
             width = (llFrame.GetWidth() - ((1 + numChildren) * ll.Padding)) / numChildren; 
         }
 
-        foreach (int c in ll.GetChildren()) {
+        foreach (int c in ll.UsePaging ? pagedChildren : cs) {
             w.SetComponent<Frame>(c, new Frame(0, 0, width, height));
             if (recurse && w.ComponentContainsEntity<LinearLayout>(c)) {
-                ResizeChildren(c, w); 
+                ResizeChildren(c, w, recurse: true); 
             }
         }
     }

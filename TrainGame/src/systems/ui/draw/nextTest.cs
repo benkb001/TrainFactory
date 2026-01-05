@@ -448,9 +448,16 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 19); 
         }, 
         [20] = (w) => {
-            int e = EntityFactory.Add(w); 
-            w.SetComponent<Frame>(e, new Frame(Vector2.Zero, 100, 100)); 
-            w.SetComponent<TextBox>(e, new TextBox("Another Old test, ignore"));
+            LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero,
+            400f, 300f, usePaging: true, childrenPerPage: 5, label: "Test");
+            
+            for (int i = 0; i < 9; i++) {
+                int cur = EntityFactory.Add(w); 
+                w.SetComponent<TextBox>(cur, new TextBox($"{i}")); 
+                w.SetComponent<Outline>(cur, new Outline()); 
+                w.SetComponent<Frame>(cur, new Frame(Vector2.Zero, 50f, 50f)); 
+                llc.AddChild(cur, w); 
+            }
 
             AddNextTestButton(w, 20);
         }, 
