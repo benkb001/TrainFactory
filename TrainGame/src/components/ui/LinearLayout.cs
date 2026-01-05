@@ -16,15 +16,25 @@ using TrainGame.Constants;
 
 public class LinearLayout {
     private List<int> children;
+    private List<int> pagedChildren;
+    private int pageIndex = 0; 
+    private int childrenPerPage;
+    private bool usePaging;
     private string direction;
     private string spacing; 
     public float Padding; 
     public int ChildCount => children.Count; 
+    public bool UsePaging => usePaging; 
+    public List<int> PagedChildren => pagedChildren; 
 
-    public LinearLayout(string d, string s) {
+    public LinearLayout(string d, string s, bool usePaging = false, int childrenPerPage = 10) {
         SetDirection(d); 
         SetSpacing(s); 
         children = new List<int>(); 
+        pagedChildren = new List<int>(); 
+        
+        this.usePaging = usePaging; 
+        this.childrenPerPage = childrenPerPage; 
     }
 
     //alignLow is left/top, alignHigh is right/bottom, shoves the children frames towards that direction
@@ -83,7 +93,12 @@ public class LinearLayout {
     public bool AddChild(int e) {
         bool duplicateChild = children.Contains(e);
         if (!duplicateChild) {
-            children.Add(e); 
+            if (usePaging) {
+                pagedChildren.Add(e); 
+                Page(0); 
+            } else {
+                children.Add(e); 
+            }
         }
         return !duplicateChild; 
     }
@@ -109,5 +124,12 @@ public class LinearLayout {
         }
         return !duplicateChild; 
     }
-    
+
+    public void Page(int delta) {
+        int newPage = pageIndex + delta; 
+        if (newPage >= 0 && newPage <= (pagedChildren.Count - childrenPerPage)) {
+            pageIndex = newPage; 
+            children = pagedChildren.GetRange(pageIndex, childrenPerPage); 
+        }
+    }
 }

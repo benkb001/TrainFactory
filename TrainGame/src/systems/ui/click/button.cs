@@ -15,16 +15,21 @@ using TrainGame.Constants;
 
 public static class ButtonSystem {
 
-    public static void RegisterClick(World world) {
+    public static void RegisterHold(World world) {
         Action<World> update = (w) => {
 
             Vector2 mousePoint = w.GetWorldMouseCoordinates(); 
 
+            int e = -1; 
+
             List<int> es = w.GetMatchingEntities([typeof(Button), typeof(Frame), typeof(Active)]).OrderBy(
-                e => w.GetComponent<Button>(e).Depth).Where(e => w.GetComponent<Frame>(e).Contains(mousePoint)).ToList(); 
-            
+                e => -1f * w.GetComponent<Button>(e).Depth).Where(
+                    e => w.GetComponent<Frame>(e).Contains(mousePoint)).ToList(); 
             if (es.Count > 0) {
-                int e = es[0]; 
+                e = es[0]; 
+            }
+
+            if (e != -1) {
                 Button b = w.GetComponent<Button>(e); 
                 b.Hovered = true; 
 
@@ -51,7 +56,7 @@ public static class ButtonSystem {
         world.AddSystem(types, transformer);
     }
 
-    public static void RegisterHold(World world) {
+    public static void RegisterClick(World world) {
         world.AddSystem((w) => {
             Vector2 mousePoint = w.GetWorldMouseCoordinates(); 
             KeyValuePair<int, Button> held = w.GetComponentArray<Button>().Where(

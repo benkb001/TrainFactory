@@ -24,8 +24,8 @@ public static class RegisterSystems {
         AssemblerSystem.Register<TrainAssembler, Train>(w); 
         AssemblerSystem.Register<CartAssembler, Cart>(w); 
 
-        ButtonSystem.RegisterHold(w); 
-        ButtonSystem.RegisterClick(w);
+        ButtonSystem.RegisterClick(w); 
+        ButtonSystem.RegisterHold(w);
         ButtonSystem.RegisterHighlight(w); 
         InteractSystem.RegisterInteract(w); 
         

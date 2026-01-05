@@ -20,6 +20,17 @@ public static class LinearLayoutSystem {
         LinearLayout layout = w.GetComponent<LinearLayout>(e); 
         Frame layout_frame = w.GetComponent<Frame>(e); 
         List<int> children = layout.GetChildren();
+        List<int> pagedChildren = layout.PagedChildren;
+
+        if (layout.UsePaging) {
+            foreach (int cEnt in pagedChildren) {
+                (Frame f, bool success) = w.GetComponentSafe<Frame>(cEnt); 
+                if (success) {
+                    f.SetCoordinates(SceneSystem.CameraPositions[SceneType.OffScreen]);
+                }
+            }
+        }
+
         if (layout.IsSpaceEven()) {
             
         } else if (layout.IsHorizontal()) {

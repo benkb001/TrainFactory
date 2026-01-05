@@ -130,6 +130,16 @@ public static class VirtualMouse {
         return GetState().RightButton == ButtonState.Pressed; 
     }
 
+    public static bool LeftPushed() {
+        return GetState().LeftButton == ButtonState.Pressed && 
+            prev_mouse.LeftButton == ButtonState.Released; 
+    }
+
+    public static bool RightPushed() {
+        return GetState().RightButton == ButtonState.Pressed && 
+            prev_mouse.RightButton == ButtonState.Released; 
+    }
+
     public static bool LeftClicked() {
         return prev_mouse.LeftButton == ButtonState.Pressed && 
                 GetState().LeftButton == ButtonState.Released; 

@@ -21,6 +21,7 @@ public enum SceneType {
     CityInterface,
     MachineInterface,
     Map,
+    OffScreen,
     ProgramInterface,
     RPG,
     TrainInterface,
@@ -42,6 +43,7 @@ public static class SceneSystem {
     public static SceneType CurrentScene => currentScene; 
 
     public static Dictionary<SceneType, Vector2> CameraPositions = new() {
+        [SceneType.OffScreen] = new Vector2(-2000, -2000),
         [SceneType.CartInterface] = new Vector2(1000, 1000),
         [SceneType.CityInterface] = new Vector2(2000, 2000),
         [SceneType.MachineInterface] = new Vector2(3000, 3000),

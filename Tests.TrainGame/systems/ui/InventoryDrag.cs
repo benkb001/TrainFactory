@@ -18,6 +18,7 @@ public class InventoryDragSystemTest {
 
     private void RegisterDependencies(World w) {
         ButtonSystem.RegisterClick(w);
+        ButtonSystem.RegisterHold(w); 
 
         DrawCallbackSystem.Register(w); 
         InventoryControlSystem.RegisterUpdate(w); 

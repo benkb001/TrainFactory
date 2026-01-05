@@ -48,7 +48,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(21)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(17)); 
         }, 
         [2] = (w) => {
             AddNextTestButton(w, 2); 
@@ -427,9 +427,24 @@ public static class NextDrawTestUISystem {
         }, 
         [19] = (w) => {
             int e = EntityFactory.Add(w); 
+            LinearLayout ll = new LinearLayout("horizontal", "alignlow", usePaging: true, childrenPerPage: 2); 
+            w.SetComponent<LinearLayout>(e, ll); 
             w.SetComponent<Frame>(e, new Frame(Vector2.Zero, 100, 100)); 
-            w.SetComponent<TextBox>(e, new TextBox("Old test, ignore"));
+            w.SetComponent<Outline>(e, new Outline()); 
 
+            for (int i = 0; i < 3; i++) {
+                int cur = EntityFactory.Add(w); 
+                w.SetComponent<TextBox>(cur, new TextBox($"{i}")); 
+                w.SetComponent<Outline>(cur, new Outline()); 
+                LinearLayoutWrap.AddChild(cur, e, ll, w); 
+            }
+
+            LinearLayoutWrap.ResizeChildren(e, w);
+
+            int labelEnt = EntityFactory.Add(w); 
+            w.SetComponent<Frame>(labelEnt, new Frame(200, 0, 100, 100)); 
+            w.SetComponent<Outline>(labelEnt, new Outline());
+            w.SetComponent<TextBox>(labelEnt, new TextBox("0 and 1 should be showing, no 3")); 
             AddNextTestButton(w, 19); 
         }, 
         [20] = (w) => {

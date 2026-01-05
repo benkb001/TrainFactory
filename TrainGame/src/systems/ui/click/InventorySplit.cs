@@ -22,7 +22,9 @@ public class InventorySplitSystem {
 
                 int half = item.Count / 2; 
                 Inventory.Item taken = inv.Take(item.Row, item.Column, half); 
-                inv.Add(taken, newCell: true);
+                int num_taken = taken.Count; 
+                int num_added = inv.Add(taken, newCell: true);
+                inv.Add(item.Id, num_taken - num_added); 
             }
         }); 
     }

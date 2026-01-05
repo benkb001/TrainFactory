@@ -13,6 +13,27 @@ using _Color = System.Drawing.Color;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 using TrainGame.Constants; 
+using TrainGame.Systems; 
+
+public class LLPageButton {
+    public readonly LinearLayout LL; 
+    private int delta; 
+    public int Delta => delta; 
+    public LLPageButton(LinearLayout ll, int delta) {
+        this.delta = delta; 
+        this.LL = ll; 
+    }
+}
+
+public static class LLPageSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<LLPageButton>(w, (w, e) => {
+            LLPageButton pb = w.GetComponent<LLPageButton>(e);
+            LinearLayout ll = pb.LL; 
+            ll.Page(pb.Delta);
+        }); 
+    }
+}
 
 public class LinearLayoutWrap {
     public static void Clear(int e, World w, LinearLayout ll = null) {

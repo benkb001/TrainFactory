@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +24,7 @@ public class DragSystem {
             draggable.Hold(); 
         }
 
-        if (draggable.IsReleased() && b.TicksHeld == 1) {
+        if (draggable.IsReleased() && b.TicksHeld == 1 && !w.GetComponentArray<Draggable>().Any(kvp => !kvp.Value.IsReleased())) {
             draggable.PickUp(); 
             draggable.SnapPosition = f.Position; 
             draggable.RelativeClickPosition = w.GetWorldMouseCoordinates() - f.Position; 

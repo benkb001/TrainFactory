@@ -54,7 +54,7 @@ public class Inventory {
         }
 
         if (index == -1 ) {
-            index = items.FindIndex(item => item.ItemId == "");
+            index = items.FindIndex(item => item.IsEmpty());
         }
         
         if (index == -1) {
@@ -90,7 +90,7 @@ public class Inventory {
 
         ensureValidIndices(row, col); 
         int idx = getIndex(row, col); 
-        if (items[idx].ItemId == i.ItemId || items[idx].ItemId == "") {
+        if (items[idx].ItemId == i.ItemId || items[idx].IsEmpty()) {
             (int num_adding, int _) = getNumToAdd(i, idx); 
             i.Row = row; 
             i.Column = col; 
@@ -328,7 +328,7 @@ public class Inventory {
         }
 
         public bool IsEmpty() {
-            return ItemId == "" && Count == 0; 
+            return ItemId == "" || Count == 0; 
         }
     }
 }
