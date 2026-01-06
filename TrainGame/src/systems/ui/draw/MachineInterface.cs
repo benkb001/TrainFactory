@@ -44,7 +44,7 @@ public static class DrawMachineInterfaceSystem {
             float leftColWidth = invWidth + 10f; 
 
             int invEnt = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
-                Padding: Constants.InventoryPadding, DrawLabel: true); 
+                Padding: Constants.InventoryPadding, DrawLabel: true).GetInventoryEntity(); 
             int invContainerEnt = LinearLayoutWrap.GetParent(invEnt, w); 
 
             //draw left column and add machine inv to it

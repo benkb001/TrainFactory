@@ -13,6 +13,7 @@
 **** NEED TO TEST **** 
 
 * Inventory split 
+* Inventory fast transfer
 * Speed buttons, pause button
 * Machine crafting multiple at once logic
 * new inventory transfer functions 
@@ -23,10 +24,6 @@
 * New machine flow
 * New scene system 
 * LL Paging
-
-**** CLEAN UP **** 
-
-* Add train program to train ui 
 
 **** NEXT FEATURES **** 
 
@@ -42,6 +39,7 @@
       but for now container is good, having 2 pagers right next to each other 
       probably is a bit awk 
 * Add basic save/load 
+* Clicking add cart button is not returning to train interface, its just staying there
 * Add a way for players to input their own program for trains
 * Make some statistics available on the map ui
   (like how many idle trains there are, how much resources of each type you have, etc)
@@ -53,10 +51,10 @@
 * Fix TAL to not let trains go places if there is not a connection at the city they are currently at
 * Machines still crafting if game is paused, need to have machines 
   connected to World.wt instead of using ticks directly
+* Add train program to train ui 
 
 **** FUTURE FEATURES **** 
 
-* Make a system to ensure collidables cannot overlap as this results in buggy behavior
 * Add some default toasts
 * Add some tutorials/guides
 * Make it so trains cant run over other trains 
@@ -69,6 +67,7 @@
           heuristic algorithm to calculate how much of each thing the player 
           would get if that much time passed (like in perfect tower)
 * Add warning if player is going to send a train with an empty inv
+* Make a system to ensure collidables cannot overlap as this results in buggy behavior
 
 **** FAR FUTURE FEATURES **** 
 
@@ -89,6 +88,7 @@
   * Add if statements 
   * Add toasts 
   * Add statements to set machine priority, storage size
+  * Add expression to get time since arrival/time since departure
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 

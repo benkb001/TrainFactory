@@ -15,6 +15,35 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Utils; 
 
+public class InventoryView {
+    int parentEntity; 
+    int mainEntity; 
+    int headerEntity; 
+    LinearLayout parentLL; 
+    LinearLayout mainLL; 
+    LinearLayout headerRowLL; 
+    Inventory inv; 
+    public int GetInventoryEntity() => mainEntity; 
+    public Inventory GetInventory() => inv; 
+
+    public InventoryView(int parentEntity, int mainEntity, int headerEntity, 
+        LinearLayout parentLL, LinearLayout mainLL, LinearLayout headerRowLL, 
+        Inventory inv) {
+        
+        this.parentEntity = parentEntity; 
+        this.headerEntity = headerEntity;
+        this.mainEntity = mainEntity; 
+        this.parentLL = parentLL; 
+        this.mainLL = mainLL; 
+        this.headerRowLL = headerRowLL; 
+        this.inv = inv; 
+    }
+
+    public void AddChildToHeader(int cEnt, World w) {
+        LinearLayoutWrap.AddChild(cEnt, headerEntity, headerRowLL, w);
+    }
+}
+
 public static class DrawInventoryCallback {
     public static DrawCallback Instantiate(World w, Inventory inv, Vector2 Position, float Width, 
         float Height, int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
@@ -32,7 +61,7 @@ public static class DrawInventoryCallback {
     }
 
     // returns inventoryEntity, can get the container from LLChild component
-    public static int Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
+    public static InventoryView Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
         int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
 
         int containerEntity = w.EntityExists(ParentEntity) ? ParentEntity : EntityFactory.Add(w); 
@@ -43,21 +72,23 @@ public static class DrawInventoryCallback {
 
         float invHeight = Height; 
         float drawY = Position.Y; 
+        int headerRowLLEntity = -1; 
+        LinearLayout headerRowLL = null; 
 
         if (DrawLabel) {
             float labelWidth = Constants.LabelHeight * 2; 
             invHeight -= Constants.LabelHeight; 
 
-            int rowLLEntity = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(rowLLEntity, containerEntity, container, w); 
+            headerRowLLEntity = EntityFactory.Add(w); 
+            LinearLayoutWrap.AddChild(headerRowLLEntity, containerEntity, container, w); 
 
-            LinearLayout rowLL = new LinearLayout("horizontal", "alignlow"); 
-            rowLL.Padding = Constants.InventoryPadding; 
-            w.SetComponent<LinearLayout>(rowLLEntity, rowLL); 
-            w.SetComponent<Frame>(rowLLEntity, new Frame(0, 0, Width, Constants.LabelHeight)); 
+            headerRowLL = new LinearLayout("horizontal", "alignlow"); 
+            headerRowLL.Padding = Constants.InventoryPadding; 
+            w.SetComponent<LinearLayout>(headerRowLLEntity, headerRowLL); 
+            w.SetComponent<Frame>(headerRowLLEntity, new Frame(0, 0, Width, Constants.LabelHeight)); 
 
             int labelEntity = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(labelEntity, rowLLEntity, rowLL, w);
+            LinearLayoutWrap.AddChild(labelEntity, headerRowLLEntity, headerRowLL, w);
             
             w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
             w.SetComponent<Outline>(labelEntity, new Outline()); 
@@ -119,6 +150,8 @@ public static class DrawInventoryCallback {
             }
             LinearLayoutWrap.AddChild(row, inventoryEntity, ll, w); 
         }
-        return inventoryEntity; 
+
+        return new InventoryView(containerEntity, inventoryEntity, headerRowLLEntity, 
+            container, ll, headerRowLL, inv); 
     }
 }

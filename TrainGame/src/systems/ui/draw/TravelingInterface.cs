@@ -46,6 +46,7 @@ public class DrawTravelingInterfaceSystem {
             w.SetComponent<Outline>(timeEnt, new Outline()); 
             w.SetComponent<TextBox>(timeEnt, new TextBox("")); 
 
+            //TODO: Decouple
             int invEnt = EntityFactory.Add(w); 
             InventoryContainer<Train> invCont = new InventoryContainer<Train>(t); 
             DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(

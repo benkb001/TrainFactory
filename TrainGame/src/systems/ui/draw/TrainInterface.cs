@@ -102,11 +102,12 @@ public class DrawTrainInterfaceSystem {
         DrawInventoryContainerMessage<Train> containerDm = new DrawInventoryContainerMessage<Train>(
             new InventoryContainer<Train>(t), Vector2.Zero, trainInvWidth, trainInvHeight, SetMenu: true);
         
+        //TODO: Decouple, shouldn't have to know how to get the parent container
         int trainInvEnt = DrawInventoryContainerSystem.Draw<Train>(containerDm, w); 
         int trainOuterEnt = w.GetComponent<LLChild>(trainInvEnt).ParentEntity; 
 
         int cityInvEnt = DrawInventoryCallback.Draw(w, cityInv, Vector2.Zero, cityInvWidth, cityInvHeight, 
-            Padding: Constants.InventoryPadding, SetMenu: true, DrawLabel: true);
+            Padding: Constants.InventoryPadding, SetMenu: true, DrawLabel: true).GetInventoryEntity();
         int cityOuterEnt = w.GetComponent<LLChild>(cityInvEnt).ParentEntity; 
 
         LinearLayout invsContainer = new LinearLayout("vertical", "alignlow"); 

@@ -32,6 +32,7 @@ public class InventoryIndexSystem {
 
             container.Index = index; 
             
+            //TODO: Decouple
             int parentEnt = LinearLayoutWrap.ClearParent(containerEntity, w);
             (Frame f, bool success) = w.GetComponentSafe<Frame>(parentEnt); 
             Vector2 position = success ? f.Position : w.GetComponent<Frame>(containerEntity).Position; 

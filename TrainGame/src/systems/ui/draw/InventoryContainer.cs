@@ -23,18 +23,15 @@ public class DrawInventoryContainerSystem {
 
         Inventory inv = invContainer.GetCur(); 
 
-        int containerEntity = DrawInventoryCallback.Draw(w, inv,
+        InventoryView invView = DrawInventoryCallback.Draw(w, inv,
             dm.Position, dm.Width, dm.Height, Padding: Constants.InventoryPadding, SetMenu: dm.SetMenu, 
             DrawLabel: true, Entity: dm.Entity, ParentEntity: dm.ParentEntity);
         
+        int containerEntity = invView.GetInventoryEntity();
         w.SetComponent<InventoryContainer<T>>(containerEntity, invContainer); 
-        
-        int outerContainerEntity = w.GetComponent<LLChild>(containerEntity).ParentEntity; 
-        int headerRowLLEntity = w.GetComponent<LinearLayout>(outerContainerEntity).GetChildren()[0]; 
-        LinearLayout headerRowLL = w.GetComponent<LinearLayout>(headerRowLLEntity); 
 
         int indexerEntity = EntityFactory.Add(w); 
-        LinearLayoutWrap.AddChild(indexerEntity, headerRowLLEntity, headerRowLL, w);
+        invView.AddChildToHeader(indexerEntity, w); 
 
         float indexContainerWidth = dm.Width / 8f; 
         float indexContainerHeight = indexContainerWidth / 2f; 

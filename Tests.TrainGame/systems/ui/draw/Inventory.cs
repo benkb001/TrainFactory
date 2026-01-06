@@ -272,8 +272,8 @@ public class InventoryUISystemTest {
     public void InventoryUISystem_DrawShouldReturnAnEntityWithAnInventoryComponent() {
         World w = WorldFactory.Build(); 
         Inventory inv = new Inventory("Test", 2, 2); 
-        int e = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 0f, 0f); 
-        Assert.Equal(inv, w.GetComponent<Inventory>(e));
+        InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 0f, 0f); 
+        Assert.Equal(inv, invView.GetInventory());
     }
     //TODO: Handle possibility of making it with padding too much to be drawn and it makes row widths negative
 }
