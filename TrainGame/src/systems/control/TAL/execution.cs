@@ -91,7 +91,7 @@ public class TALBody {
             switch (i.Type) {
                 case InstructionType.Go: 
                     city = i.C; 
-                    if (t.ComingFrom.AdjacentCities.Contains(city)) {
+                    if (train.ComingFrom.AdjacentCities.Contains(city)) {
                         TrainWrap.Embark(train, city, w); 
                     }
                     

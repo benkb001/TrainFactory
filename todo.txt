@@ -16,8 +16,6 @@
 * Train flag update, isEmbarking
 * ID.GetComponent
 * Set Train Program Button/System
-* New machine flow
-* New scene system 
 * LL Paging
 
 **** NEXT FEATURES **** 

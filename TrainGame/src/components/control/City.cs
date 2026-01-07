@@ -59,6 +59,10 @@ public class City : IID {
         if (!AdjacentCities.Contains(c)) {
             AdjacentCities.Add(c); 
         }
+
+        if (!c.AdjacentCities.Contains(this)) {
+            c.AdjacentCities.Add(this); 
+        }
     }
 
     //todo: test

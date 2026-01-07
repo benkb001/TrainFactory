@@ -361,4 +361,8 @@ public static class InventoryWrap {
             Constants.InventoryPadding + Constants.LabelHeight;
         return (width, height);
     }
+
+    public static int ItemCount(List<Inventory> invs, string itemID) {
+        return invs.Aggregate(0, (acc, inv) => acc + inv.ItemCount(itemID));
+    }
 }

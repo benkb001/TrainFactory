@@ -48,7 +48,8 @@ public enum TokenType {
     LessEqual, 
     GreaterEqual,
     Error,
-    End
+    End,
+    Self
 }
 
 public class TALToken {
@@ -129,9 +130,10 @@ public class TALLexer {
     public static Regex rxTrain = new Regex(@"\G[A-Za-z]([A-Za-z0-9]*)");
     public static Regex rxAnd = new Regex(@"\GAND");
     public static Regex rxOr = new Regex(@"\GOR");
+    public static Regex rxSelf = new Regex(@"\GSELF");
 
     public static List<Regex> rxs = [
-        rxCity, rxItem, rxTrue, rxFalse, rxAnd, rxOr, rxInt, 
+        rxCity, rxItem, rxTrue, rxFalse, rxAnd, rxOr, rxSelf, rxInt, 
         rxLoad, rxUnload, rxGo, rxWait, rxWhile, rxPlus, rxMinus, 
         rxMultiply, rxDivide, rxOpenCurly, rxCloseCurly,
         rxSemi, rxAccess, rxEqual, rxNotEqual, rxNot, 
@@ -166,7 +168,8 @@ public class TALLexer {
         [rxGreater] = (m) => new TALToken(TokenType.Greater), 
         [rxLess] = (m) => new TALToken(TokenType.Less),
         [rxWait] = (m) => new TALToken(TokenType.Wait), 
-        [rxWhile] = (m) => new TALToken(TokenType.While)
+        [rxWhile] = (m) => new TALToken(TokenType.While),
+        [rxSelf] = (m) => new TALToken(TokenType.Self)
     };
 
     public static TALToken MatchToToken(Match m, Regex r) {

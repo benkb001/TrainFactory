@@ -206,7 +206,7 @@ public class TALExpression {
             ExpressionType.Multiply => (int)e1.Evaluate() * (int)e2.Evaluate(), 
             ExpressionType.Conditional => condition.Evaluate(), 
             ExpressionType.Access => accessType switch {
-                AccessType.Train => train.GetInventories().Aggregate(0, (acc, inv) => acc + inv.ItemCount(itemID)), 
+                AccessType.Train => InventoryWrap.ItemCount(train.GetInventories(), itemID), 
                 AccessType.City => city.Inv.ItemCount(itemID),
                 _ => 0
             }, 
