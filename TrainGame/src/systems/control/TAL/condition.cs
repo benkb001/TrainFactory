@@ -34,15 +34,15 @@ public class TALConditional {
 
     public bool Evaluate() {
         return type switch {
-            ConditionType.And => (bool)e1.Evaluate() && (bool)e2.Evaluate(), 
-            ConditionType.Equal => (bool)e1.Evaluate() == (bool)e2.Evaluate(), 
+            ConditionType.And => ((bool)e1.Evaluate()) && ((bool)e2.Evaluate()), 
+            ConditionType.Equal => e1.Evaluate().Equals(e2.Evaluate()),
             ConditionType.False => false, 
             ConditionType.Greater => (int)e1.Evaluate() > (int)e2.Evaluate(), 
-            ConditionType.GreaterEqual => (int)e1.Evaluate() > (int)e2.Evaluate(), 
+            ConditionType.GreaterEqual => (int)e1.Evaluate() >= (int)e2.Evaluate(), 
             ConditionType.Less => (int)e1.Evaluate() < (int)e2.Evaluate(), 
             ConditionType.LessEqual => (int)e1.Evaluate() <= (int)e2.Evaluate(),  
             ConditionType.Not => !(bool)e1.Evaluate(), 
-            ConditionType.NotEqual => e1.Evaluate() != e2.Evaluate(),
+            ConditionType.NotEqual => !(e1.Evaluate().Equals(e2.Evaluate())),
             ConditionType.Or => (bool)e1.Evaluate() || (bool)e2.Evaluate(), 
             ConditionType.True => true,
             _ => false
