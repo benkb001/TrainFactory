@@ -24,14 +24,14 @@ public class DrawCitySystem {
         int playerEntity = EntityFactory.Add(w); 
         int playerInvDataEnt = InventoryWrap.GetEntity(Constants.PlayerInvID, w); 
 
-        int playerInvEnt = EntityFactory.Add(w); 
         float playerInvHeight = 100f; 
         float playerInvWidth = w.ScreenWidth - 100f; 
         Vector2 playerInvPosition = topleft + new Vector2(50f, w.ScreenHeight - 120f); 
         Inventory playerInv = w.GetComponent<Inventory>(playerInvDataEnt); 
-        DrawInventoryCallback.Draw(w, playerInv, playerInvPosition, playerInvWidth, 
-            playerInvHeight, Entity: playerInvEnt, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
+        InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, playerInvPosition, playerInvWidth, 
+            playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
 
+        int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
         w.SetComponent<Interactor>(playerEntity, Interactor.Get());
         w.SetComponent<CardinalMovement>(playerEntity, new CardinalMovement(Constants.PlayerSpeed)); 

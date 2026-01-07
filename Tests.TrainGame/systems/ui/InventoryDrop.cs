@@ -28,11 +28,8 @@ public class InvetoryDropUISystemTest {
         Inventory.Item apple = new Inventory.Item(ItemId: "Apple", Count: 2); 
         inv.Add(apple, 1, 1); 
 
-        int invEntity = EntityFactory.Add(w); 
-
-        w.SetComponent<Inventory>(invEntity, inv); 
-
-        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 100, 100, Entity: invEntity);
+        InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 100, 100);
+        int invEntity = invView.GetInventoryEntity(); 
 
         w.Update(); 
 

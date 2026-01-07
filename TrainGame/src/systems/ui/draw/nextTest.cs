@@ -348,20 +348,14 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 15); 
         }, 
         [16] = (w) => {
-            int inv = EntityFactory.Add(w); 
             Inventory i = new Inventory("Test", 2, 2);
             i.Add(new Inventory.Item(ItemId: "Apple", Count: 1)); 
             i.Add(new Inventory.Item(ItemId: "Apple", Count: 1), 1, 0); 
-            w.SetComponent<Inventory>(inv, i); 
 
-            DrawInventoryCallback.Create(w, i, Vector2.Zero, 100, 100, Entity: inv, Padding: 5f); 
+            DrawInventoryCallback.Draw(w, i, Vector2.Zero, 100, 100, Padding: 5f); 
 
-            int other_inv_entity = EntityFactory.Add(w);  
             Inventory inv_other = new Inventory("Other", 2, 2); 
-            w.SetComponent<Inventory>(other_inv_entity, inv_other); 
-
-            DrawInventoryCallback.Create(w, inv_other, new Vector2(0, 100), 100, 100, 
-                Entity: other_inv_entity, Padding: 5f); 
+            DrawInventoryCallback.Draw(w, inv_other, new Vector2(0, 100), 100, 100, Padding: 5f); 
  
             AddNextTestButton(w, 16); 
         }, 
@@ -464,16 +458,15 @@ public static class NextDrawTestUISystem {
         [21] = (w) => {
             Inventory inv = new Inventory("Player", 1, 10); 
             inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2));
-            int invEntity = EntityFactory.Add(w); 
 
-            DrawInventoryCallback.Create(w, inv, Vector2.Zero, 800, 80, Entity: invEntity); 
+            InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 800, 80); 
 
             int playerEntity = EntityFactory.Add(w);
             w.SetComponent<Frame>(playerEntity, new Frame(150, 150, 100, 100)); 
             w.SetComponent<Outline>(playerEntity, new Outline()); 
             w.SetComponent<CardinalMovement>(playerEntity, new CardinalMovement(4f)); 
             w.SetComponent<Collidable>(playerEntity, Collidable.Get());
-            w.SetComponent<HeldItem>(playerEntity, new HeldItem(inv, invEntity)); 
+            w.SetComponent<HeldItem>(playerEntity, new HeldItem(inv, invView.GetInventoryEntity())); 
             w.LockCamera(); 
             AddNextTestButton(w, 21);
         }, 

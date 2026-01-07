@@ -11,6 +11,8 @@ using _Color = System.Drawing.Color;
 
 using TrainGame.ECS; 
 using TrainGame.Components; 
+using TrainGame.Systems;
+using TrainGame.Callbacks; 
 
 public class InventoryIndexSystemTest {
     [Fact]
@@ -25,25 +27,16 @@ public class InventoryIndexSystemTest {
             t.AddCart(new Cart($"C{i}", CartType.Freight));
         }
 
-        InventoryContainer<Train> container = new InventoryContainer<Train>(t); 
-        int cEntity = EntityFactory.Add(w); 
-        w.SetComponent<InventoryContainer<Train>>(cEntity, container); 
-        w.SetComponent<Frame>(cEntity, new Frame(Vector2.Zero, 100, 100));
+        DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(
+            t, 
+            Vector2.Zero, 
+            100, 
+            100
+        );
 
-        int[] ds = [-1, 1]; 
+        InventoryContainer<Train> container = DrawInventoryContainerSystem.Draw<Train>(dm, w);
 
-        List<int> es = new(); 
-
-        for (int i = 0; i < 2; i++) {
-            InventoryIndexer<Train> dexer = new InventoryIndexer<Train>(container, cEntity, ds[i]);
-
-            int dEnt = EntityFactory.Add(w); 
-            w.SetComponent<InventoryIndexer<Train>>(dEnt, dexer); 
-
-            es.Add(dEnt); 
-        }
-
-        w.SetComponent<Button>(es[0], new Button(true)); 
+        w.SetComponent<Button>(container.PageBackwardEnt, new Button(true)); 
         w.Update(); 
         
         Assert.Contains("C2", w.GetComponent<Inventory>(w.GetMatchingEntities([typeof(Inventory)])[0]).Id); 

@@ -100,15 +100,12 @@ public class DrawTrainInterfaceSystem {
         float invsContainerHeight = height; 
 
         DrawInventoryContainerMessage<Train> containerDm = new DrawInventoryContainerMessage<Train>(
-            new InventoryContainer<Train>(t), Vector2.Zero, trainInvWidth, trainInvHeight, SetMenu: true);
+            t, Vector2.Zero, trainInvWidth, trainInvHeight);
         
-        //TODO: Decouple, shouldn't have to know how to get the parent container
-        int trainInvEnt = DrawInventoryContainerSystem.Draw<Train>(containerDm, w); 
-        int trainOuterEnt = w.GetComponent<LLChild>(trainInvEnt).ParentEntity; 
+        InventoryContainer<Train> trainInvContainer = DrawInventoryContainerSystem.Draw<Train>(containerDm, w); 
 
-        int cityInvEnt = DrawInventoryCallback.Draw(w, cityInv, Vector2.Zero, cityInvWidth, cityInvHeight, 
-            Padding: Constants.InventoryPadding, SetMenu: true, DrawLabel: true).GetInventoryEntity();
-        int cityOuterEnt = w.GetComponent<LLChild>(cityInvEnt).ParentEntity; 
+        InventoryView cityInvView = DrawInventoryCallback.Draw(w, cityInv, Vector2.Zero, cityInvWidth, cityInvHeight, 
+            Padding: Constants.InventoryPadding, DrawLabel: true);
 
         LinearLayout invsContainer = new LinearLayout("vertical", "alignlow"); 
         invsContainer.Padding = Constants.InventoryPadding;
@@ -118,8 +115,8 @@ public class DrawTrainInterfaceSystem {
 
         w.SetComponent<LinearLayout>(invsContainerEnt, invsContainer); 
         w.SetComponent<Frame>(invsContainerEnt, new Frame(0, 0, invsContainerWidth, invsContainerHeight));
-        LinearLayoutWrap.AddChild(trainOuterEnt, invsContainerEnt, invsContainer, w); 
-        LinearLayoutWrap.AddChild(cityOuterEnt, invsContainerEnt, invsContainer, w); 
+        LinearLayoutWrap.AddChild(trainInvContainer.GetParentEntity(), invsContainerEnt, invsContainer, w); 
+        LinearLayoutWrap.AddChild(cityInvView.GetParentEntity(), invsContainerEnt, invsContainer, w); 
     }
 
     public static void Register(World w) {

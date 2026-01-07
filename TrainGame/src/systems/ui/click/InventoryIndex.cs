@@ -12,6 +12,7 @@ using TrainGame.Callbacks;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Systems;
 
 public class InventoryIndexSystem {
     public static void Register<T>(World w) where T : IInventorySource {
@@ -30,27 +31,7 @@ public class InventoryIndexSystem {
                 index = 0; 
             }
 
-            container.Index = index; 
-            
-            //TODO: Decouple
-            int parentEnt = LinearLayoutWrap.ClearParent(containerEntity, w);
-            (Frame f, bool success) = w.GetComponentSafe<Frame>(parentEnt); 
-            Vector2 position = success ? f.Position : w.GetComponent<Frame>(containerEntity).Position; 
-
-            Inventory inv = container.GetCur(); 
-            (float width, float height) = InventoryWrap.GetUI(inv); 
-
-            DrawInventoryContainerMessage<T> dm = new DrawInventoryContainerMessage<T>(
-                container,
-                position,
-                Width: width, 
-                Height: height, 
-                ParentEntity: parentEnt
-            ); 
-
-            int dmEnt = EntityFactory.Add(w); 
-            w.SetComponent<DrawInventoryContainerMessage<T>>(dmEnt, dm); 
-            
+            container.Redraw(index, w); 
         }); 
     }
 }

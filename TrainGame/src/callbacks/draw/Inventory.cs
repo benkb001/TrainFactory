@@ -15,56 +15,27 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Utils; 
 
-public class InventoryView {
-    int parentEntity; 
-    int mainEntity; 
-    int headerEntity; 
-    LinearLayout parentLL; 
-    LinearLayout mainLL; 
-    LinearLayout headerRowLL; 
-    Inventory inv; 
-    public int GetInventoryEntity() => mainEntity; 
-    public Inventory GetInventory() => inv; 
-
-    public InventoryView(int parentEntity, int mainEntity, int headerEntity, 
-        LinearLayout parentLL, LinearLayout mainLL, LinearLayout headerRowLL, 
-        Inventory inv) {
-        
-        this.parentEntity = parentEntity; 
-        this.headerEntity = headerEntity;
-        this.mainEntity = mainEntity; 
-        this.parentLL = parentLL; 
-        this.mainLL = mainLL; 
-        this.headerRowLL = headerRowLL; 
-        this.inv = inv; 
-    }
-
-    public void AddChildToHeader(int cEnt, World w) {
-        LinearLayoutWrap.AddChild(cEnt, headerEntity, headerRowLL, w);
-    }
-}
-
 public static class DrawInventoryCallback {
     public static DrawCallback Instantiate(World w, Inventory inv, Vector2 Position, float Width, 
-        float Height, int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+        float Height, int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
             return new DrawCallback(() => {
-                Draw(w, inv, Position, Width, Height, Entity, ParentEntity, Padding, SetMenu, DrawLabel); 
+                Draw(w, inv, Position, Width, Height, Entity, Padding, SetMenu, DrawLabel); 
         }); 
     }
 
     public static void Create(World w, Inventory inv, Vector2 Position, float Width, float Height, 
-        int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+        int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
         
         int e = EntityFactory.Add(w); 
         w.SetComponent<DrawCallback>(e, Instantiate(w, inv, Position, Width, Height, 
-            Entity: Entity, ParentEntity: ParentEntity, Padding, SetMenu, DrawLabel)); 
+            Entity: Entity, Padding, SetMenu, DrawLabel)); 
     }
 
     // returns inventoryEntity, can get the container from LLChild component
     public static InventoryView Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
-        int Entity = -1, int ParentEntity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+        int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
 
-        int containerEntity = w.EntityExists(ParentEntity) ? ParentEntity : EntityFactory.Add(w); 
+        int containerEntity = w.EntityExists(Entity) ? Entity : EntityFactory.Add(w); 
         LinearLayout container = new LinearLayout("vertical", "alignlow"); 
         Frame f = new Frame(Position, Width, Height); 
         w.SetComponent<LinearLayout>(containerEntity, container); 
@@ -95,11 +66,7 @@ public static class DrawInventoryCallback {
             w.SetComponent<TextBox>(labelEntity, new TextBox(inv.GetId())); 
         }
 
-        if (!w.EntityExists(Entity)) {
-            Entity = EntityFactory.Add(w); 
-        }
-
-        int inventoryEntity = Entity; 
+        int inventoryEntity = EntityFactory.Add(w); 
 
         LinearLayoutWrap.AddChild(inventoryEntity, containerEntity, container, w); 
 

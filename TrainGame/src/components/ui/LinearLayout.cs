@@ -96,12 +96,12 @@ public class LinearLayout {
     public bool AddChild(int e) {
         bool duplicateChild = children.Contains(e);
         if (!duplicateChild) {
+            children.Add(e); 
+            pagedChildren.Add(e); 
             if (usePaging) {
-                pagedChildren.Add(e); 
+                
                 Page(0); 
-            } else {
-                children.Add(e); 
-            }
+            } 
         }
         return !duplicateChild; 
     }

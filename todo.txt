@@ -28,11 +28,8 @@
 **** NEXT FEATURES **** 
 
 * Catch up on tests
+  * Fix Inventory draw tests 
 * Improve UI
-  * Decoupling with LL and inventory container 
-    * There are too many classes with some sort of 'inventory container' 
-      name, but another that provides some abstractions for adding components 
-      to inventory header could be good. 
   * Add text input 
   * Use LL Paging where appropriate
     * Machine list in factory, train list, eventually inventory probably, 

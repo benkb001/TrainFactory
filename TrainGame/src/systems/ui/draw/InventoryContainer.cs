@@ -18,16 +18,18 @@ using TrainGame.Callbacks;
 
 public class DrawInventoryContainerSystem {
     
-    public static int Draw<T>(DrawInventoryContainerMessage<T> dm, World w) where T : IInventorySource {
-        InventoryContainer<T> invContainer = dm.InvContainer;
+    public static InventoryContainer<T> Draw<T>(DrawInventoryContainerMessage<T> dm, World w) where T : IInventorySource {
+        T invSource = dm.InvSource;
+        int index = dm.Index; 
 
-        Inventory inv = invContainer.GetCur(); 
+        Inventory inv = invSource.GetInventories()[index]; 
 
         InventoryView invView = DrawInventoryCallback.Draw(w, inv,
             dm.Position, dm.Width, dm.Height, Padding: Constants.InventoryPadding, SetMenu: dm.SetMenu, 
-            DrawLabel: true, Entity: dm.Entity, ParentEntity: dm.ParentEntity);
+            DrawLabel: true, Entity: dm.Entity);
         
         int containerEntity = invView.GetInventoryEntity();
+        InventoryContainer<T> invContainer = new InventoryContainer<T>(invSource, invView, index);
         w.SetComponent<InventoryContainer<T>>(containerEntity, invContainer); 
 
         int indexerEntity = EntityFactory.Add(w); 
@@ -49,7 +51,7 @@ public class DrawInventoryContainerSystem {
         int[] directions = [-1, 1]; 
         foreach (int d in directions) {
             int indexEntity = EntityFactory.Add(w); 
-            w.SetComponent<InventoryIndexer<T>>(indexEntity, new InventoryIndexer<T>(invContainer, containerEntity, 1)); 
+            w.SetComponent<InventoryIndexer<T>>(indexEntity, new InventoryIndexer<T>(invContainer, containerEntity, d)); 
             w.SetComponent<Button>(indexEntity, new Button()); 
             w.SetComponent<Outline>(indexEntity, new Outline()); 
 
@@ -63,9 +65,14 @@ public class DrawInventoryContainerSystem {
             w.SetComponent<Frame>(indexEntity, new Frame(points));
 
             ll.AddChild(indexEntity); 
+            if (d == -1) {
+                invContainer.SetPageBackwardEntity(indexEntity); 
+            } else {
+                invContainer.SetPageForwardEntity(indexEntity); 
+            }
         }
 
-        return containerEntity; 
+        return invContainer; 
     }
 
     public static void Register<T>(World w) where T : IInventorySource {

@@ -31,9 +31,8 @@ public class InventoryDragSystemTest {
         //not registering the above so i can test it generates the correct thing
         ButtonSystem.RegisterUnclick(w);
     }
-    
-    [Fact]
-    public void InventoryDragSystem_ShouldMakeAnOrganizeInventoryMessageWhenItemDroppedOverANewSlot() {
+
+    private (World, Inventory, Inventory, Inventory.Item, int, int) init() {
         VirtualMouse.Reset(); 
         World w = new World(); 
         RegisterComponents.All(w); 
@@ -46,14 +45,18 @@ public class InventoryDragSystemTest {
 
         inv1.Add(apple, 1, 1); 
 
-        int invEntity1 = EntityFactory.Add(w); 
-        int invEntity2 = EntityFactory.Add(w); 
+        InventoryView invView1 = DrawInventoryCallback.Draw(w, inv1, Vector2.Zero, 100, 100);
+        InventoryView invView2 = DrawInventoryCallback.Draw(w, inv2, new Vector2(100, 0), 100, 100);
 
-        w.SetComponent<Inventory>(invEntity1, inv1); 
-        w.SetComponent<Inventory>(invEntity2, inv2); 
+        int invEnt1 = invView1.GetInventoryEntity(); 
+        int invEnt2 = invView2.GetInventoryEntity();
 
-        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
-        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
+        return (w, inv1, inv2, apple, invEnt1, invEnt2);
+    }
+    
+    [Fact]
+    public void InventoryDragSystem_ShouldMakeAnOrganizeInventoryMessageWhenItemDroppedOverANewSlot() {
+        (World w, Inventory inv1, Inventory inv2, Inventory.Item apple, int invEntity1, int invEntity2) = init();
 
         w.Update(); 
 
@@ -93,22 +96,16 @@ public class InventoryDragSystemTest {
         inv1.Add(curItem, curRow, curCol); 
         inv2.Add(targetItem, targetRow, targetCol); 
 
-        int invEntity1 = EntityFactory.Add(w); 
-        int invEntity2 = EntityFactory.Add(w); 
-
-        w.SetComponent<Inventory>(invEntity1, inv1); 
-        w.SetComponent<Inventory>(invEntity2, inv2); 
-
-        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
-        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
+        InventoryView invView1 = DrawInventoryCallback.Draw(w, inv1, Vector2.Zero, 100, 100);
+        InventoryView invView2 = DrawInventoryCallback.Draw(w, inv2, new Vector2(100, 0), 100, 100);
 
         w.Update(); 
 
-        LinearLayout ll1 = w.GetComponent<LinearLayout>(invEntity1); 
+        LinearLayout ll1 = w.GetComponent<LinearLayout>(invView1.GetInventoryEntity()); 
         LinearLayout row1 = w.GetComponent<LinearLayout>(ll1.GetChildren()[curRow]); 
         Draggable curDraggable = w.GetComponent<Draggable>(row1.GetChildren()[curCol]); 
 
-        LinearLayout ll2 = w.GetComponent<LinearLayout>(invEntity2); 
+        LinearLayout ll2 = w.GetComponent<LinearLayout>(invView2.GetInventoryEntity()); 
         LinearLayout row2 = w.GetComponent<LinearLayout>(ll2.GetChildren()[targetRow]); 
         Vector2 targetVector = w.GetComponent<Frame>(row2.GetChildren()[targetCol]).Position; 
 
@@ -136,26 +133,7 @@ public class InventoryDragSystemTest {
 
     [Fact]
     public void InventoryDragSystem_ShouldNotMakeMessagesIfItemIsHeld() {
-        VirtualMouse.Reset(); 
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterDependencies(w); 
-        
-        Inventory inv1 = new Inventory("Test1", 2, 2); 
-        Inventory inv2 = new Inventory("Test2", 2, 2); 
-
-        Inventory.Item apple = new Inventory.Item(ItemId: "Apple", Count: 2); 
-
-        inv1.Add(apple, 1, 1); 
-
-        int invEntity1 = EntityFactory.Add(w); 
-        int invEntity2 = EntityFactory.Add(w); 
-
-        w.SetComponent<Inventory>(invEntity1, inv1); 
-        w.SetComponent<Inventory>(invEntity2, inv2); 
-
-        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
-        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
+        (World w, Inventory inv1, Inventory inv2, Inventory.Item apple, int invEntity1, int invEntity2) = init();
 
         w.Update(); 
 
@@ -173,26 +151,7 @@ public class InventoryDragSystemTest {
 
     [Fact]
     public void InventoryDragSystem_ShouldNotMakeMessagesIfItemIsDroppedFurtherThanThreshold() {
-        VirtualMouse.Reset(); 
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        RegisterDependencies(w); 
-        
-        Inventory inv1 = new Inventory("Test1", 2, 2); 
-        Inventory inv2 = new Inventory("Test2", 2, 2); 
-
-        Inventory.Item apple = new Inventory.Item(ItemId: "Apple", Count: 2); 
-
-        inv1.Add(apple, 1, 1); 
-
-        int invEntity1 = EntityFactory.Add(w); 
-        int invEntity2 = EntityFactory.Add(w); 
-
-        w.SetComponent<Inventory>(invEntity1, inv1); 
-        w.SetComponent<Inventory>(invEntity2, inv2); 
-
-        DrawInventoryCallback.Create(w, inv1, Vector2.Zero, 100, 100, Entity: invEntity1);
-        DrawInventoryCallback.Create(w, inv2, new Vector2(100, 0), 100, 100, Entity: invEntity2);
+        (World w, Inventory inv1, Inventory inv2, Inventory.Item apple, int invEntity1, int invEntity2) = init();
 
         w.Update(); 
 

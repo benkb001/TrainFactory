@@ -299,6 +299,10 @@ public class Inventory {
         ensureValidIndices(getIndex(row, col)); 
     }
 
+    public void EnsureValidIndices(int row, int col) {
+        ensureValidIndices(row, col); 
+    }
+
     private int stackSize(string itemId) {
         return Constants.ItemStackSize(itemId) * level; 
     }

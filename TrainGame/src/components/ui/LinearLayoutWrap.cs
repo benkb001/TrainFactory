@@ -202,11 +202,15 @@ public class LinearLayoutWrap {
         c.Depth = GetDepth(childEntity, w);  
     }
 
-    public static int GetDepth(int childEntity, World w) {
+    public static int GetDepth(int childEntity, World w, int depth = 0) {
         if (w.ComponentContainsEntity<LLChild>(childEntity)) {
-            return 1 + GetDepth(w.GetComponent<LLChild>(childEntity).ParentEntity, w);
+            int parentEntity = w.GetComponent<LLChild>(childEntity).ParentEntity;
+            if (parentEntity == childEntity) {
+                throw new InvalidOperationException($"Entity {parentEntity} thinks it is its own parent linear layout");
+            }
+            return GetDepth(parentEntity, w, depth + 1);
         }
-        return 0; 
+        return depth; 
     }
 
     public static int GetParent(int childEntity, World w) {

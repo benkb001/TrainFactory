@@ -20,10 +20,10 @@ public class HeldItemDrawSystemTest() {
         World w = WorldFactory.Build(); 
         Inventory inv = new Inventory("Player", 1, 10); 
         inv.Add(new Inventory.Item(ItemId: "Apple", Count: 2), 0, 1);
-        int invEntity = EntityFactory.Add(w); 
 
-        DrawInventoryCallback.Create(w, inv, Vector2.Zero, 800, 80, Entity: invEntity);
-
+        InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 800, 80);
+        int invEntity = invView.GetInventoryEntity(); 
+        
         int playerEntity = EntityFactory.Add(w);
         w.SetComponent<Frame>(playerEntity, new Frame(150, 150, 100, 100)); 
         w.SetComponent<HeldItem>(playerEntity, new HeldItem(inv, invEntity)); 

@@ -57,14 +57,13 @@ public class InventoryControlSystemTest {
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
 
-        int inventoryEntity = EntityFactory.Add(w); 
         Inventory inv = new Inventory("Test", 10, 5); 
         
         float inventoryWidth = 100f; 
         float inventoryPadding = 5f; 
 
-        DrawInventoryCallback.Create(w, inv, Vector2.Zero, inventoryWidth, 
-            Height: 200f, Entity: inventoryEntity, Padding: inventoryPadding);
+        InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, inventoryWidth, 
+            Height: 200f, Padding: inventoryPadding);
 
         w.Update(); 
 
@@ -73,9 +72,7 @@ public class InventoryControlSystemTest {
 
         w.Update(); 
         
-        int rowEntity = w.GetComponent<LinearLayout>(inventoryEntity).GetChildren()[3]; 
-        int cellEntity = w.GetComponent<LinearLayout>(rowEntity).GetChildren()[4]; 
-
+        int cellEntity = invView.GetCellEntity(3, 4, w); 
         Assert.Equal("Apple", w.GetComponent<Inventory.Item>(cellEntity).ItemId); 
     }
 
