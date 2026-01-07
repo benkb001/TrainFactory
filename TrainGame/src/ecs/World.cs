@@ -40,6 +40,7 @@ public partial class World {
     public WorldTime Time => wt; 
     public readonly float ScreenHeight = 0f; 
     public readonly float ScreenWidth = 0f; 
+    public int MiliticksPerUpdate => wt.MiliticksPerUpdate; 
 
     //TODO: consider replacing with checks for specific variables being null
     private bool isTest = false;  

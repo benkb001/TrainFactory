@@ -209,4 +209,9 @@ public class Machine {
     public void SetStorageSize(int size) {
         this.numRecipeToStore = size; 
     }
+
+    public static Machine GetDefault() {
+        Inventory inv = new Inventory("Default", 1, 1); 
+        return new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
+    }
 }

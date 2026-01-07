@@ -13,5 +13,5 @@ using TrainGame.Systems;
 using TrainGame.Utils; 
 
 public class DrawCitySystemTest {
-    //TODO: Write
+    //this is kinda just implementation detail, not sure how to test
 }

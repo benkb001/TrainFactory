@@ -10,36 +10,31 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.Utils; 
 
-public class PauseButtonSystemTest {
-    private void RegisterDependencies(World w) {
-        CardinalMovementSystem.Register(w); 
-        MovementSystem.Register(w); 
+public class WorldTimeButtonSystemsTest {
+    [Fact]
+    public void PauseButton_ClickShouldStopWorldTimePassage() {
+        World w = WorldFactory.Build(); 
 
-        ButtonSystem.RegisterClick(w);
-        
-        PauseButtonSystem.Register(w); 
-        UnpauseButtonSystem.Register(w); 
-
-        GameClockViewSystem.Register(w); 
-
-        NextDrawTestButtonSystem.Register(w);
-        NextDrawTestUISystem.Register(w);
-
-        StepperButtonSystem.Register(w); 
-        StepperUISystem.Register(w); 
-        
-        ToastSystem.Register(w); 
-
-        InventoryControlSystem.RegisterUpdate(w); 
-        
-        LinearLayoutSystem.Register(w); 
-
-        DragSystem.Register(w); 
-        InventoryDragSystem.Register(w); 
-        InventoryControlSystem.RegisterOrganize(w); 
-        
-        ButtonSystem.RegisterUnclick(w);
+        int pbEnt = EntityFactory.Add(w); 
+        w.SetComponent<Button>(pbEnt, new Button(true)); 
+        w.SetComponent<PauseButton>(pbEnt, PauseButton.Get()); 
+        w.Update(); 
+        Assert.Equal(0, w.MiliticksPerUpdate);
     }
 
-    //todo: write
+    [Fact]
+    public void SpeedButton_ClickShouldChangewWorldTimePassageSpeed() {
+        World w = WorldFactory.Build(); 
+        int slowEnt = EntityFactory.Add(w); 
+        w.SetComponent<Button>(slowEnt, new Button(true)); 
+        w.SetComponent<SlowTimeButton>(slowEnt, SlowTimeButton.Get()); 
+        w.Update(); 
+        int slowTime = w.MiliticksPerUpdate; 
+
+        int fastEnt = EntityFactory.Add(w); 
+        w.SetComponent<Button>(fastEnt, new Button(true)); 
+        w.SetComponent<SpeedTimeButton>(fastEnt, SpeedTimeButton.Get()); 
+        w.Update();
+        Assert.True(w.MiliticksPerUpdate > slowTime); 
+    }
 }

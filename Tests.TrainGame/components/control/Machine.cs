@@ -82,4 +82,32 @@ public class MachineTest {
         m.DeliverRecipe(); 
         Assert.Equal(1, inv.ItemCount("Smoothie")); 
     }
+
+    private (Inventory, Machine) init2() {
+        Inventory inv = new Inventory("Test", 1, 3); 
+        inv.Add("Apple", 50);
+        inv.Add("Banana", 30); 
+        Machine m = new Machine(inv, new Dictionary<string, int>() {
+            ["Apple"] = 1, 
+            ["Banana"] = 1
+        }, "Smoothie", 1, minTicks: 1, level: 0, numRecipeToStore: 1);
+        return (inv, m); 
+    }
+
+    [Fact]
+    public void Machine_ShouldStoreAsManyItemsAsStorageSizeAllows() {
+        (Inventory inv, Machine m) = init2(); 
+        m.SetStorageSize(30); 
+        m.StoreRecipe(); 
+        Assert.Equal(0, inv.ItemCount("Banana")); 
+        Assert.Equal(20, inv.ItemCount("Apple")); 
+    }
+
+    [Fact]
+    public void Machine_GetNumCraftableShouldNotBeGreaterThanNumRecipesStored() {
+        (Inventory inv, Machine m) = init2(); 
+        m.SetStorageSize(30); 
+        m.StoreRecipe(); 
+        Assert.False(m.GetNumCraftable() > 30); 
+    }
 }

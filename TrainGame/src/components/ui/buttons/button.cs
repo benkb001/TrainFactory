@@ -34,6 +34,10 @@ public class Button {
         this.onClick = onClick; 
     }
 
+    public Button(Click type) {
+        this.ClickType = type; 
+    }
+
     public void OnClick() {
         if (onClick != null) {
             onClick(); 

@@ -29,10 +29,7 @@ public class InventoryFastTransferSystem {
                         inv => inv != invClicked).FirstOrDefault(); 
 
                     if (invOther != default(Inventory)) {
-                        Inventory.Item itemClicked = invClicked.Take(itemID, invClicked.ItemCount(itemID));
-                        int taken = itemClicked.Count; 
-                        int added = invOther.Add(itemClicked);  
-                        invClicked.Add(new Inventory.Item(ItemId: itemID, Count: taken - added)); 
+                        invClicked.TransferAllTo(invOther, itemID);
                     }
                 }
             }

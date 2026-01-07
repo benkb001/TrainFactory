@@ -10,6 +10,16 @@ using TrainGame.Systems;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
+[Collection("Sequential")]
 public class CloseMenuSystemTest {
-    //TODO: Write
+    [Fact]
+    public void CloseMenuSystem_ShouldChangeActiveScene() {
+        World w = WorldFactory.Build(); 
+        SceneSystem.EnterScene(w, SceneType.Map); 
+        int e = EntityFactory.Add(w); 
+        w.SetComponent<Menu>(e, new Menu()); 
+        VirtualKeyboard.Press(KeyBinds.Interact);
+        w.Update(); 
+        Assert.NotEqual(SceneType.Map, SceneSystem.CurrentScene); 
+    }
 }

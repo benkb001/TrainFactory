@@ -260,6 +260,46 @@ public class InventoryTest {
         }); 
     }
 
+
+    [Fact]
+    public void Inventory_TransferToShouldSendAsManyItemsAsPossibleToOtherInventories() {
+        List<Inventory> invs = new(); 
+
+        Inventory from = new Inventory("Test", 2, 2); 
+        from.Add("StackSize1", 4); 
+
+        Inventory to1 = new Inventory("T1", 1, 1); 
+        invs.Add(to1); 
+        Inventory to2 = new Inventory("T2", 1, 1); 
+        invs.Add(to2); 
+
+        from.TransferTo(invs, "StackSize1", 3);
+        Assert.Equal(2, from.ItemCount("StackSize1")); 
+
+        Assert.Equal(1, to1.ItemCount("StackSize1")); 
+        Assert.Equal(1, to2.ItemCount("StackSize1")); 
+    }
+
+    [Fact]
+    public void Inventory_TransferFromShouldTakeAsManyItemsAsPossibleFromInventories() {
+        List<Inventory> invs = new(); 
+
+        Inventory to = new Inventory("Test", 2, 2); 
+
+        Inventory from1 = new Inventory("T1", 1, 1); 
+        invs.Add(from1); 
+        Inventory from2 = new Inventory("T2", 1, 1); 
+        invs.Add(from2); 
+
+        from1.Add("StackSize1", 1); 
+        from2.Add("StackSize1", 1); 
+
+        to.TransferFrom(invs, "StackSize1", 3); 
+        Assert.Equal(2, to.ItemCount("StackSize1"));
+        Assert.Equal(0, from1.ItemCount("StackSize1"));
+        Assert.Equal(0, from2.ItemCount("StackSize1"));
+    }
+
     [Fact]
     public void Inventory_ItemCountShouldSayTheNumberOfItemsContained() {
         Inventory inv = new Inventory("Test", 2, 2); 

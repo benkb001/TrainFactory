@@ -12,11 +12,6 @@
 
 **** NEED TO TEST **** 
 
-* Inventory split 
-* Inventory fast transfer
-* Speed buttons, pause button
-* Machine crafting multiple at once logic
-* new inventory transfer functions 
 * TAL
 * Train flag update, isEmbarking
 * ID.GetComponent
@@ -28,7 +23,6 @@
 **** NEXT FEATURES **** 
 
 * Catch up on tests
-  * Fix Inventory draw tests 
 * Improve UI
   * Add text input 
   * Use LL Paging where appropriate

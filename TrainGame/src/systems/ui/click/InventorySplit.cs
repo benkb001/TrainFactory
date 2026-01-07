@@ -12,7 +12,6 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-//TODO: test
 public class InventorySplitSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Inventory.Item), typeof(Button), typeof(Active)], (w, e) => {

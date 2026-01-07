@@ -10,6 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.Components; 
 
 public class SceneTest {
-    //TODO: write
+    //add if functionality expands
 }
 

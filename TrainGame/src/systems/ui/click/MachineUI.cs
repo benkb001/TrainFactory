@@ -14,7 +14,7 @@ using TrainGame.Utils;
 //needs to be clickSystem -> drawSystem
 public class MachineUIClickSystem() {
     public static void Register(World world) {
-        Type[] ts = [typeof(MachineUI), typeof(Button), typeof(Frame), typeof(Active)]; 
+        Type[] ts = [typeof(MachineUI), typeof(Button), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             if (w.GetComponent<Button>(e).Clicked) {
                 Machine m = w.GetComponent<MachineUI>(e).GetMachine();

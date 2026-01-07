@@ -169,6 +169,10 @@ public class Inventory {
         Add(itemID, takenCount - added);
     }
 
+    public void TransferAllTo(Inventory otherInv, string itemID) {
+        TransferTo(otherInv, itemID, ItemCount(itemID)); 
+    }
+
     public int TransferFrom(List<Inventory> invs, string itemID, int itemCount) { 
         int taken = 0; 
         int i = 0; 
