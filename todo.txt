@@ -2,20 +2,13 @@
 
 *** BUGS **** 
 
-* Fix bug clicking unresponsive ? 
 * Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
-* Should redraw the city view if a train arrives
 * intermittent bug with split item removing half the items
 * probably related, sometimes fast transfer doesn't work even if there are empty slots 
   * probably a slot is being thought of as having an item due to itemID != "" 
-* World time passage should resume automatically when exiting map view 
 
 **** NEED TO TEST **** 
 
-* TAL
-* Train flag update, isEmbarking
-* ID.GetComponent
-* Set Train Program Button/System
 * LL Paging
 
 **** NEXT FEATURES **** 
@@ -28,6 +21,8 @@
       but for now container is good, having 2 pagers right next to each other 
       probably is a bit awk 
 * Add basic save/load 
+* World time passage should resume automatically when exiting map view 
+* Should redraw the city view if a train arrives
 * Clicking add cart button is not returning to train interface, its just staying there
 * Add a way for players to input their own program for trains
 * Make some statistics available on the map ui

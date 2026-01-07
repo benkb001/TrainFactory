@@ -589,50 +589,50 @@ namespace TrainGame.Constants
         public const string WoodFactoryLoop = "WoodFactoryLoop"; 
         public const string WaterFactoryLoop = "WaterFactoryLoop"; 
 
-        public static Dictionary<string, Func<Train, string>> Scripts = new() {
-            [IronFactoryLoop] = (t) => @"
+        public static Dictionary<string, string> Scripts = new() {
+            [IronFactoryLoop] = @"
                 LOAD Factory.Fuel / 2 Fuel; 
                 GO TO Mine; 
-                UNLOAD " + t.Id + @".Fuel Fuel; 
+                UNLOAD SELF.Fuel Fuel; 
                 WHILE Mine.Fuel > 0 {
                     WAIT;
                 }
                 LOAD Mine.Iron Iron; 
                 GO TO Factory; 
-                UNLOAD " + t.Id + @".Iron Iron; 
+                UNLOAD SELF.Iron Iron; 
             ",
-            [WaterFactoryLoop] = (t) => @"
+            [WaterFactoryLoop] = @"
                 LOAD Factory.Fuel / 2 Fuel; 
                 GO TO Coast;
-                UNLOAD " + t.Id + @".Fuel Fuel;
+                UNLOAD SELF.Fuel Fuel;
                 WHILE Coast.Fuel > 0 {
                     WAIT;
                 }
                 LOAD Coast.Water Water; 
                 GO TO Factory; 
-                UNLOAD " + t.Id + @".Water Water;
+                UNLOAD SELF.Water Water;
             ",
-            [SandFactoryLoop] = (t) => @"
+            [SandFactoryLoop] = @"
                 LOAD Factory.Fuel / 2 Fuel; 
                 GO TO Coast;
-                UNLOAD " + t.Id + @".Fuel Fuel;
+                UNLOAD SELF.Fuel Fuel;
                 WHILE Coast.Fuel > 0 {
                     WAIT;
                 }
                 LOAD Coast.Sand Sand; 
                 GO TO Factory; 
-                UNLOAD " + t.Id + @".Sand Sand;
+                UNLOAD SELF.Sand Sand;
             ",
-            [WoodFactoryLoop] = (t) => @"
+            [WoodFactoryLoop] = @"
                 LOAD Factory.Water Water; 
                 GO TO Greenhouse;
-                UNLOAD " + t.Id + @".Water Water;
+                UNLOAD SELF.Water Water;
                 WHILE Greenhouse.Water > 0 {
                     WAIT;
                 }
                 LOAD Greenhouse.Wood Wood; 
                 GO TO Factory; 
-                UNLOAD " + t.Id + @".Wood Wood;
+                UNLOAD SELF.Wood Wood;
             ",
         };
 
@@ -640,6 +640,7 @@ namespace TrainGame.Constants
             TALBody body = TALParser.ParseProgram(program, w, t); 
             int bodyEntity = EntityFactory.Add(w, setData: true); 
             w.SetComponent<TALBody>(bodyEntity, body); 
+            t.SetProgram(program); 
             return body;
         }
     }

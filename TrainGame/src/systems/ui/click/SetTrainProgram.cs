@@ -23,7 +23,7 @@ public static class SetTrainProgramClickSystem {
             }
 
             if (hasMotherboard) {
-                string program = TAL.Scripts[btn.ScriptName](t);
+                string program = TAL.Scripts[btn.ScriptName];
                 TAL.SetTrainProgram(program, t, w); 
                 MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t)); 
             }
