@@ -92,4 +92,28 @@ public class LinearLayoutComponentTest {
             ll.SetDirection("alignhgh"); 
         }); 
     }
+
+    [Fact]
+    public void LinearLayout_ShouldNotReturnMoreChildrenThanPageCount() {
+        LinearLayout ll = new LinearLayout(usePaging: true, childrenPerPage: 1);
+        ll.AddChild(0); 
+        ll.AddChild(1); 
+        Assert.Single(ll.GetChildren()); 
+    }
+
+    [Fact]
+    public void LinearLayout_PageShouldSetChildrenToThoseInRange() {
+        LinearLayout ll = new LinearLayout(usePaging: true, childrenPerPage: 2); 
+        for (int i = 0; i < 10; i++) {
+            ll.AddChild(i);
+        }
+
+        ll.Page(2); 
+        Assert.Equal(2, ll.GetChildren()[0]); 
+        Assert.Equal(3, ll.GetChildren()[1]); 
+
+        ll.Page(-2); 
+        Assert.Equal(0, ll.GetChildren()[0]); 
+        Assert.Equal(1, ll.GetChildren()[1]); 
+    }
 }

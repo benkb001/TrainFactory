@@ -68,4 +68,24 @@ public class LinearLayoutSystemTest {
         Assert.Equal(0, w.GetComponent<Frame>(grandChildEnt).Position.X); 
         Assert.Equal(0, w.GetComponent<Frame>(grandChildEnt).Position.Y); 
     }
+
+    [Fact]
+    public void LinearLayoutSystem_ShouldPlaceChildrenNotOnActivePageOutsideOfScreen() {
+        World w = WorldFactory.Build(); 
+        LinearLayout ll = new LinearLayout(usePaging: true, childrenPerPage: 3);
+        int llEnt = EntityFactory.Add(w); 
+        w.SetComponent<LinearLayout>(llEnt, ll); 
+        w.SetComponent<Frame>(llEnt, new Frame(Vector2.Zero, 100, 100)); 
+
+        for (int i = 0; i < 10; i++) {
+            int e = EntityFactory.Add(w); 
+            w.SetComponent<Frame>(e, new Frame(0, 0, 10, 10)); 
+            LinearLayoutWrap.AddChild(e, llEnt, ll, w); 
+        }
+
+        ll.Page(2); 
+
+        w.Update(); 
+        Assert.True(w.GetComponent<Frame>(ll.PagedChildren[0]).Position.X < -1000); 
+    }
 }

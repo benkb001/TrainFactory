@@ -28,7 +28,7 @@ public class LinearLayout {
     public List<int> PagedChildren => pagedChildren; 
     public int ChildrenPerPage => childrenPerPage; 
 
-    public LinearLayout(string d, string s, bool usePaging = false, int childrenPerPage = 10) {
+    public LinearLayout(string d = "horizontal", string s = "alignlow", bool usePaging = false, int childrenPerPage = 10) {
         SetDirection(d); 
         SetSpacing(s); 
         children = new List<int>(); 
@@ -99,7 +99,6 @@ public class LinearLayout {
             children.Add(e); 
             pagedChildren.Add(e); 
             if (usePaging) {
-                
                 Page(0); 
             } 
         }

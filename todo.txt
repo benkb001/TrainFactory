@@ -9,7 +9,6 @@
 
 **** NEED TO TEST **** 
 
-* LL Paging
 
 **** NEXT FEATURES **** 
 
@@ -29,20 +28,16 @@
   (like how many idle trains there are, how much resources of each type you have, etc)
 * Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
-* Add progress bar to overworld machines
 * Add number of stored items to machine ui 
 * Make it so set train program button also removes old train program if it exists
-* Fix TAL to not let trains go places if there is not a connection at the city they are currently at
+  * I'm thinking we just put a TALbody onto train and then have execution filter for
+    trains with non-null programs
 * Machines still crafting if game is paused, need to have machines 
   connected to World.wt instead of using ticks directly
 * Add train program to train ui 
 
 **** FUTURE FEATURES **** 
 
-* Add some default toasts
-* Add some tutorials/guides
-* Make it so trains cant run over other trains 
-* Make it so trains need fuel
 * Add combat and reward system
     * Rogue-like/perma-progression mix, time-limited events
       for special rewards at outside cities, permanently available 
@@ -51,16 +46,21 @@
           heuristic algorithm to calculate how much of each thing the player 
           would get if that much time passed (like in perfect tower)
 * Add warning if player is going to send a train with an empty inv
-* Make a system to ensure collidables cannot overlap as this results in buggy behavior
+* Add some default toasts
+* Make it so trains need fuel
+* Change how carts work 
+  * Probably trains should have a different inventory for each 
+    type, such as solid/liquid, and others if added. Then adding a 
+    cart just increases a scaling factor on the stack sizes of the 
+    corresponding inventory type 
 
 **** FAR FUTURE FEATURES **** 
 
 * Add a tile system for rpg mode
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
-* Implement player making custom notifications based on train conditions, 
-    like a toast pops up when the train has a certain amount of wood or something 
-* Consider making a train interior so player can do certain things while waiting inside a train? 
+* Consider making a train interior so player can do certain things while waiting inside a train
+* Add some tutorials/guides
 
 **** NICE TO HAVE LOW PRIORITY **** 
 
@@ -73,9 +73,11 @@
   * Add toasts 
   * Add statements to set machine priority, storage size
   * Add expression to get time since arrival/time since departure
+* Make a system to ensure collidables cannot overlap as this results in buggy behavior
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 
 * Make drawing System based
 * Make UI Drawing based on screen coordinates
 * Make inventory draw messages automatically move around or resize other inventories as necessary
+* Make it so trains cant run over other trains 
