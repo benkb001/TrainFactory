@@ -97,6 +97,7 @@ public static class RegisterComponents {
         r<StepperMessage>(); 
         r<TALBody>();
         r<TextBox>(); 
+        r<TextInput>(); 
         r<Toast>(); 
         r<Train>(); 
         r<TrainAssembler>(); 

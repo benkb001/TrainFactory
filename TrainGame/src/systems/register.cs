@@ -14,7 +14,7 @@ using TrainGame.Components;
 
 public static class RegisterSystems {
     public static void All(World w) {
-        CameraLockSystem.Register(w); 
+        //CameraLockSystem.Register(w); 
 
         CardinalMovementSystem.Register(w); 
         MovementSystem.Register(w); 
@@ -56,6 +56,9 @@ public static class RegisterSystems {
         SetTrainProgramClickSystem.Register(w);
         SetTrainProgramInterfaceClickSystem.Register(w); 
         LLPageSystem.Register(w); 
+        TextInputSystem.RegisterDeactivate(w); 
+        TextInputSystem.RegisterActivate(w); 
+        TextInputSystem.RegisterType(w); 
 
         CloseMenuSystem.Register(w); 
         

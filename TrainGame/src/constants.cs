@@ -121,6 +121,15 @@ namespace TrainGame.Constants
         public static readonly Keys MoveRight = Keys.D;
         public static readonly Keys Interact = Keys.E; 
         public static readonly Keys OpenMap = Keys.M; 
+
+        public static readonly Keys[] AlphaList = {
+            Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,
+            Keys.F, Keys.G, Keys.H, Keys.I, Keys.J, 
+            Keys.K, Keys.L, Keys.M, Keys.N, Keys.O, 
+            Keys.P, Keys.Q, Keys.R, Keys.S, Keys.T, 
+            Keys.U, Keys.V, Keys.W, Keys.X, Keys.Y, 
+            Keys.Z
+        };
     }
 
     public static class Colors {

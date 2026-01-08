@@ -95,6 +95,7 @@ public partial class World {
     public void UnlockCamera() {
         if (!isTest) {
             camera.Unlock(); 
+            Console.WriteLine("Unlocked"); 
         }
         cameraLocked = false;
     }
@@ -165,6 +166,10 @@ public partial class World {
 
     public void StopTracking() {
         trackedEntity = -1; 
+    }
+
+    public Vector2 MeasureString(string s) {
+        return font.MeasureString(s.Replace(" ", "  "));
     }
 
     //unfortunately cannot just throw this in with a regular system because I don't want 

@@ -48,7 +48,7 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(17)); 
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(22)); 
         }, 
         [2] = (w) => {
             AddNextTestButton(w, 2); 
@@ -474,6 +474,12 @@ public static class NextDrawTestUISystem {
             Bootstrap.InitWorld(w); 
             City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
+        }, 
+        [23] = (w) => {
+            w.LockCamera(); 
+            int e = EntityFactory.Add(w); 
+            Vector2 topleft = w.GetCameraTopLeft();
+            TextInputWrap.AddTextInput(w, topleft, 500, 350);
         }
     };
 

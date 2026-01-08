@@ -9,16 +9,20 @@
 
 **** NEED TO TEST **** 
 
+* TextInput
 
 **** NEXT FEATURES **** 
 
-* Catch up on tests
 * Improve UI
-  * Add text input 
   * Use LL Paging where appropriate
     * Machine list in factory, train list, eventually inventory probably, 
       but for now container is good, having 2 pagers right next to each other 
       probably is a bit awk 
+    * Improve textbox drawing for textInput
+      * switch to monospaced font 
+      * begin drawing cursor 
+      * autopage with cursor
+      * Add + * / - { } . ! = 0-9
 * Add basic save/load 
 * World time passage should resume automatically when exiting map view 
 * Should redraw the city view if a train arrives

@@ -23,6 +23,7 @@ public class LinearLayoutContainer {
     
     public float LLWidth => llWidth; 
     public float LLHeight => llHeight; 
+    public int LLEnt => llEnt; 
 
     public LinearLayoutContainer(int llEnt, LinearLayout ll, float llWidth, float llHeight) {
         this.llEnt = llEnt; 
