@@ -3,11 +3,11 @@
   <SourceFile>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/Default.spritefont</SourceFile>
   <SourceTime>2025-10-20T20:40:48.1949798-04:00</SourceTime>
   <DestFile>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/bin/DesktopGL/Content/Default.xnb</DestFile>
-  <DestTime>2025-10-20T20:43:47.9435654-04:00</DestTime>
+  <DestTime>2026-01-08T15:43:34.9475568-05:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2025-06-02T06:31:02-04:00</ImporterTime>
+  <ImporterTime>2025-12-18T14:08:34-05:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2025-06-02T06:31:02-04:00</ProcessorTime>
+  <ProcessorTime>2025-12-18T14:08:34-05:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

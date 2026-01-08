@@ -22,7 +22,6 @@
       * switch to monospaced font 
       * begin drawing cursor 
       * autopage with cursor
-      * Add + * / - { } . ! = 0-9
 * Add basic save/load 
 * World time passage should resume automatically when exiting map view 
 * Should redraw the city view if a train arrives
