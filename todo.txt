@@ -65,6 +65,8 @@
 * Augment Sprite/DrawSystem to handle animation/spritesheets
 * Consider making a train interior so player can do certain things while waiting inside a train
 * Add some tutorials/guides
+* Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
+  if completed give high rewards 
 
 **** NICE TO HAVE LOW PRIORITY **** 
 

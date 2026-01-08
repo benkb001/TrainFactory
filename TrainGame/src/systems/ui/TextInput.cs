@@ -19,11 +19,12 @@ public static class TextInputSystem {
         List<string> words = new(); 
         string cur = ""; 
         while (i < word.Length) {
-            if (word[i] == '\n') {
+            char c = word[i]; 
+            if (c == '\n' || c == ' ') {
                 if (cur != "") {
                     words.Add(cur); 
                 }
-                words.Add("\n");
+                words.Add(c.ToString());
                 cur = ""; 
             } else {
                 cur += word[i]; 
@@ -39,6 +40,10 @@ public static class TextInputSystem {
     }
 
     public static void RegisterActivate(World w) {
+        foreach (object o in Enum.GetValues<Keys>()) {
+            Console.WriteLine(o); 
+        }
+        
         ClickSystem.Register<TextInput>(w, (w, e) => {
             w.GetComponent<TextInput>(e).Active = true; 
         }); 
@@ -65,10 +70,11 @@ public static class TextInputSystem {
             tIn.IncrementVisibility(); 
             if (tIn.Active) {
                 bool changed = false; 
+                bool shift = VirtualKeyboard.IsPressed(Keys.LeftShift);
                 foreach (Keys k in KeyBinds.AlphaList) {
                     if (VirtualKeyboard.IsClicked(k)) {
                         string s = k.ToString(); 
-                        if (!VirtualKeyboard.IsPressed(Keys.LeftShift)) {
+                        if (!shift) {
                             s = s.ToLower(); 
                         }
                         tIn.AddChar(s); 
@@ -76,18 +82,24 @@ public static class TextInputSystem {
                     }
                 }
 
+                foreach (KeyValuePair<Keys, string> kvp in KeyBinds.StringMap) {
+                    if (VirtualKeyboard.IsClicked(kvp.Key)) {
+                        tIn.AddChar(kvp.Value); 
+                        changed = true; 
+                    }
+                }
+
+                foreach (KeyValuePair<(Keys, bool), string> kvp in KeyBinds.StringMapShift.Where(
+                    kvp => kvp.Key.Item2 == shift
+                )) {
+                    if (VirtualKeyboard.IsClicked(kvp.Key.Item1)) {
+                        tIn.AddChar(kvp.Value); 
+                        changed = true; 
+                    }
+                }
+
                 if (VirtualKeyboard.IsClicked(Keys.Back)) {
                     tIn.DeleteChar(); 
-                    changed = true; 
-                }
-
-                if (VirtualKeyboard.IsClicked(Keys.Enter)) {
-                    tIn.AddChar("\n");
-                    changed = true; 
-                }
-
-                if (VirtualKeyboard.IsClicked(Keys.Space)) {
-                    tIn.AddChar(" ");
                     changed = true; 
                 }
 
@@ -109,19 +121,9 @@ public static class TextInputSystem {
 
                 if (changed) {
                     string text = tIn.Text; 
-                    string[] words = text.Split(" "); 
-                    words = words.Aggregate(
-                        seed: new List<string>(),
-                        func: (acc, word) => {
-                            foreach (string cur in format(word)) {
-                                acc.Add(cur); 
-                            }
-                            return acc; 
-                        },
-                        resultSelector: acc => acc.ToArray()
-                    );
+                    List<string> words = format(text); 
 
-                    for (int j = 0; j < words.Length; j++) {
+                    for (int j = 0; j < words.Count; j++) {
                         words[j] = words[j].Substring(0, Math.Min(words[j].Length, tIn.CharsPerRow)); 
                     }
 
@@ -132,15 +134,14 @@ public static class TextInputSystem {
                     int i = 0; 
                     int lineIndex = 0; 
 
-                    while (i < words.Length) {
+                    while (i < words.Count) {
                         string line = ""; 
                         if (words[i] == "\n") {
-                            lineIndex++; 
                             i++;
                             continue; 
                         }
 
-                        while (i < words.Length && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
+                        while (i < words.Count && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
                             string word = words[i]; 
                             line += word;
                             line += " "; 
@@ -156,6 +157,11 @@ public static class TextInputSystem {
 
                         int lineEnt = ll.PagedChildren[lineIndex]; 
                         w.GetComponent<TextBox>(lineEnt).Text = line; 
+                        lineIndex++; 
+                    }
+
+                    while (lineIndex < ll.PagedChildren.Count) {
+                        w.GetComponent<TextBox>(ll.PagedChildren[lineIndex]).Text = ""; 
                         lineIndex++; 
                     }
                 }
