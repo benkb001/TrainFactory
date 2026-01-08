@@ -121,6 +121,7 @@ public static class TextInputSystem {
 
                 if (changed) {
                     string text = tIn.Text; 
+                    Console.WriteLine($"text: {text}");
                     List<string> words = format(text); 
 
                     for (int j = 0; j < words.Count; j++) {
@@ -144,7 +145,6 @@ public static class TextInputSystem {
                         while (i < words.Count && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
                             string word = words[i]; 
                             line += word;
-                            line += " "; 
                             i++;
                         }
                         

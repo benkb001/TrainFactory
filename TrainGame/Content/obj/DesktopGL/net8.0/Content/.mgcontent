@@ -4,8 +4,8 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/AnonymousPro.spritefont</File>
     <File>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/Images/button.png</File>
-    <File>/Users/benkb01/Code/TrainGameFactory/TrainGame/Content/Default.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

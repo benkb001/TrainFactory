@@ -169,7 +169,7 @@ public partial class World {
     }
 
     public Vector2 MeasureString(string s) {
-        return font.MeasureString(s.Replace(" ", "  "));
+        return font.MeasureString(s);
     }
 
     //unfortunately cannot just throw this in with a regular system because I don't want 
@@ -249,7 +249,7 @@ public partial class World {
 
             _spriteBatch.DrawString(
                  font,
-                 m.message.Replace(" ", "  "), 
+                 m.message, 
                  pos, 
                  m.color, 
                  m.rotation, 
@@ -280,7 +280,7 @@ public partial class World {
             while (words_drawn < words.Length && tb.Scale > 0f) {
                 string cur = ""; 
                 while (words_drawn < words.Length && 
-                        (font.MeasureString((cur + words[words_drawn]).Replace(" ", "  ")).X * tb.Scale) < width) {
+                        (font.MeasureString((cur + words[words_drawn])).X * tb.Scale) < width) {
                     cur += words[words_drawn]; 
                     cur += " "; 
                     words_drawn++; 
@@ -302,7 +302,7 @@ public partial class World {
                 Vector2 pos = new Vector2(x + tb.Padding, lineY + tb.Padding); 
                 _spriteBatch.DrawString(
                     font,
-                    line.Replace(" ", "  "), 
+                    line, 
                     pos, 
                     tb.TextColor, 
                     0f, 

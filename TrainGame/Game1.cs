@@ -44,7 +44,7 @@ public class Game1 : Game {
         w.SetTexture(Textures.Pixel, _pixel); 
         w.SetPixelTexture(_pixel); 
 
-        SpriteFont font = Content.Load<SpriteFont>("Default");
+        SpriteFont font = Content.Load<SpriteFont>("AnonymousPro");
         w.SetFont(font); 
         
         RegisterComponents.All(w); 
