@@ -16,10 +16,21 @@ using TrainGame.Systems;
 using TrainGame.Constants;
 
 public class PersistentStateTest {
+    //TODO: Write (assertions)
     [Fact]
     public void PersistentState_SaveShouldWriteToSpecifiedFile() {
         World w = WorldFactory.Build(); 
         Bootstrap.InitWorld(w); 
         PersistentState.Save(w, "test"); 
+    }
+
+    [Fact]
+    public void PersistentState_LoadShouldReadFromSpecifiedFile() {
+        World w = WorldFactory.Build(); 
+        Bootstrap.InitWorld(w); 
+        PersistentState.Save(w, "test"); 
+
+        World w2 = WorldFactory.Build(); 
+        PersistentState.Load(w2, "test"); 
     }
 }

@@ -44,6 +44,10 @@ public class City : IID {
 
     private Dictionary<string, Cart> carts = new(); 
     public Dictionary<string, Cart> Carts => carts; 
+    
+    public static string GetInvID(string cityID) {
+        return $"{cityID} Depot";
+    }
 
     public City(string cityId, Inventory Inv, float uiX = 0f, float uiY = 0f, float realX = 0f, float realY = 0f) {
         this.cityId = cityId; 

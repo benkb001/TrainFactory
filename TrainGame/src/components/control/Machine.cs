@@ -36,7 +36,7 @@ public class Machine : IID {
     private float startFactor; 
     private int productDelivered; 
     private int numCrafting; 
-    private CraftState state = CraftState.Idle; 
+    private CraftState state;
     private string upgradeItemID; 
     private bool allowManual; 
     private int priority; 
@@ -60,10 +60,12 @@ public class Machine : IID {
     public bool AllowManual => allowManual; 
     public City GetCity() => city; 
     public bool PlayerAtMachine => playerAtMachine; 
+    public int CurCraftTicks => curCraftTicks; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
-        string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false, int level = -1, int numRecipeToStore = 0) {
+        string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false, int level = -1, int curCraftTicks = 0, 
+        int numRecipeToStore = 0, CraftState state = CraftState.Idle, int priority = 0) {
         this.Inv = Inv;
         this.PlayerInv = PlayerInv; 
         this.recipe = recipe;
@@ -71,7 +73,8 @@ public class Machine : IID {
         this.numRecipeToStore = numRecipeToStore;
         this.slowFactor = slowFactor; 
         this.startFactor = startFactor; 
-        this.priority = 0;
+        this.state = state; 
+        this.priority = priority;
         this.productItemId = productItemId;
         this.productCount = productCount; 
         if (recipe != null) {
@@ -83,7 +86,7 @@ public class Machine : IID {
         this.level = level; 
         this.allowManual = allowManual;
 
-        this.curCraftTicks = 0; 
+        this.curCraftTicks = curCraftTicks; 
         this.upgradeItemID = upgradeItemID; 
 
         SetCraftTicks(); 

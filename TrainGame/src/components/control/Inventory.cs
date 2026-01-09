@@ -25,6 +25,8 @@ public class Inventory : IID {
 
     public int Level => level; 
     public string Id => inventoryId; 
+    public int Rows => rows; 
+    public int Cols => cols; 
 
     public Inventory(string id, int r, int c) {
         inventoryId = id;

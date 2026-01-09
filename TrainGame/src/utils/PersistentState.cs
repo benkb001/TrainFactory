@@ -59,7 +59,6 @@ public static class PersistentState {
             Train t = kvp.Value; 
             string id = kvp.Key; 
             return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
-                ["arrivalTime"] = JSONObjectFromWorldTime(t.ArrivalTime),
                 ["comingFromID"] = t.ComingFrom.GetID(),
                 ["goingToID"] = t.GoingTo.GetID(),
                 ["inventoryID"] = t.Inv.GetID(),
@@ -72,28 +71,124 @@ public static class PersistentState {
             });
         })));
 
-        dom.Add("cities", new JsonObject(cities.Select(kvp => {
-            City city = kvp.Value; 
-            string id = kvp.Key; 
-            return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
-                ["inventoryID"] = city.Inv.GetID(),
-                ["trains"] = JsonSerializer.Serialize(city.Trains.Select(trainKVP => trainKVP.Key).ToArray()),
-            });
-        })));
-
+        //TODO: Add whitelist info 
         dom.Add("inventories", new JsonObject(invs.Select(kvp => {
             Inventory inv = kvp.Value; 
             string id = kvp.Key; 
-            JsonObject invJson = new JsonObject(ItemID.All.Select(itemID => {
+            JsonObject itemsJson = new JsonObject(ItemID.All.Select(itemID => {
                 return new KeyValuePair<string, JsonNode>(itemID, inv.ItemCount(itemID));
             }));
-            return new KeyValuePair<string, JsonNode>(id, invJson); 
+
+            return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
+                ["rows"] = inv.Rows, 
+                ["cols"] = inv.Cols, 
+                ["items"] = itemsJson
+            }); 
         })));
 
+        dom.Add("machines", new JsonObject(machines.Select(kvp => {
+            string machineID = kvp.Key; 
+            Machine machine = kvp.Value; 
+            return new KeyValuePair<string, JsonNode>(machineID, new JsonObject() {
+                ["state"] = Convert.ToInt32(machine.State),
+                ["curCraftTicks"] = machine.CurCraftTicks,
+                ["level"] = machine.Level,
+                ["numRecipeToStore"] = machine.NumRecipeToStore,
+                ["priority"] = machine.Priority
+            });
+        })));
+
+        //Console.WriteLine(dom.ToString()); 
         File.WriteAllText(filepath, dom.ToString());
     }
 
     public static void Load(World w, string filepath) {
         
+        WorldTime WorldTimeFromJSONObject(JsonObject wtData) {
+            return new WorldTime(
+                days: (int)wtData["days"],
+                hours: (int)wtData["hours"],
+                minutes: (int)wtData["minutes"],
+                ticks: (int)wtData["ticks"]
+            );
+        }
+
+        JsonObject dom = JsonNode.Parse(File.ReadAllText(filepath)).AsObject(); 
+
+        w.PassTime(WorldTimeFromJSONObject(dom["time"].AsObject()));
+
+        Dictionary<string, Inventory> inventories = new(); 
+        Dictionary<string, City> cities = new(); 
+
+        foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
+            string invID = kvp.Key; 
+            JsonObject invData = kvp.Value.AsObject(); 
+            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"]); 
+            foreach (string itemID in ItemID.All) {
+                inv.Add(itemID, (int)invData["items"][itemID]);
+            }
+            inventories.Add(invID, inv); 
+            int e = EntityFactory.Add(w, setData: true); 
+            w.SetComponent<Inventory>(e, inv); 
+        }
+
+        foreach (KeyValuePair<string, CityArg> kvp in CityID.CityMap) {
+            string cityId = kvp.Key; 
+            CityArg args = kvp.Value; 
+
+            Inventory inv = inventories[City.GetInvID(cityId)];
+
+            int cityEnt = EntityFactory.Add(w, setData: true); 
+            City c = new City(cityId, inv, args.UiX, args.UiY, args.RealX, args.RealY); 
+            w.SetComponent<City>(cityEnt, c); 
+            cities[cityId] = c;
+
+            foreach (string machineID in args.Machines) {
+                JsonObject machineData = dom["machines"][machineID].AsObject(); 
+                CraftState state = JsonSerializer.Deserialize<CraftState>((int)machineData["state"]);
+                int curCraftTicks = (int)machineData["curCraftTicks"];
+                int priority = (int)machineData["priority"]; 
+                int level = (int)machineData["level"];
+                int numRecipeToStore = (int)machineData["numRecipeToStore"];
+
+                Machine m = Machines.Get(
+                    inv, 
+                    machineID, 
+                    curCraftTicks: curCraftTicks, 
+                    state: state,
+                    priority: priority,
+                    level: level,
+                    numRecipeToStore: numRecipeToStore
+                ); 
+
+                int machineEnt = EntityFactory.Add(w, setData: true); 
+                w.SetComponent<Machine>(machineEnt, m); 
+                c.AddMachine(m); 
+            }
+        }
+
+        foreach (KeyValuePair<string, JsonNode> kvp in dom["trains"].AsObject()) {
+            string trainID = kvp.Key; 
+            JsonObject trainData = kvp.Value.AsObject(); 
+            Inventory inv = inventories[(string)trainData["inventoryID"]]; 
+            bool isTraveling = (bool)trainData["isTraveling"]; 
+            float mass = (float)trainData["mass"]; 
+            float power = (float)trainData["power"]; 
+            float milesPerHour = (float)trainData["milesPerHour"]; 
+            string comingFromID = (string)trainData["comingFromID"]; 
+            City comingFrom = cities[comingFromID]; 
+
+            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass); 
+            int e = EntityFactory.Add(w, setData: true); 
+            w.SetComponent<Train>(e, t); 
+
+            if (isTraveling) {
+                string goingToID = (string)trainData["goingToID"]; 
+                City goingTo = cities[goingToID];
+                WorldTime left = WorldTimeFromJSONObject(trainData["left"].AsObject()); 
+                
+                t.Embark(goingTo, left);
+            }
+        }
     }
 }

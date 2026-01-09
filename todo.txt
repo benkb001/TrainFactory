@@ -22,6 +22,7 @@
       * begin drawing cursor 
       * autopage with cursor
 * Add basic save/load 
+  * Need to finish load and refine save, for stuff like machines 
 * World time passage should resume automatically when exiting map view 
 * Should redraw the city view if a train arrives
 * Clicking add cart button is not returning to train interface, its just staying there
