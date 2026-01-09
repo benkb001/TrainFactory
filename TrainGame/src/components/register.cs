@@ -80,12 +80,14 @@ public static class RegisterComponents {
         r<Lines>(); 
         r<LLChild>(); 
         r<LLPageButton>(); 
+        r<LoadButton>(); 
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
         r<ProgressBar>(); 
+        r<SaveButton>(); 
         r<Scene>(); 
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 

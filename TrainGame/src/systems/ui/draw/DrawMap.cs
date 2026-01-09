@@ -12,7 +12,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class DrawMapSystem() {
+public static class DrawMapSystem {
     public static void Register(World world) {
 
         Type[] ts = [typeof(DrawMapMessage)]; 
@@ -81,8 +81,15 @@ public class DrawMapSystem() {
             w.SetComponent<TextBox>(clockEnt, new TextBox("")); 
             w.SetComponent<Outline>(clockEnt, new Outline()); 
 
-            w.RemoveEntity(e);
+            //add save in bottom-right corner 
 
+            float saveWidth = clockWidth; 
+            float saveHeight = clockHeight; 
+            Vector2 savePosition = topleft + new Vector2(10f, w.ScreenHeight - saveHeight - 10f); 
+            int saveEnt = EntityFactory.AddUI(w, savePosition, saveWidth, saveHeight, setButton: true, 
+                text: "Save", setOutline: true);
+            w.SetComponent<SaveButton>(saveEnt, new SaveButton());
+            
             //add speed buttons in top-left corner 
             float buttonWidth = clockWidth / 2f; 
             float buttonHeight = clockHeight / 2f; 
@@ -102,6 +109,8 @@ public class DrawMapSystem() {
             w.SetComponent<TextBox>(es[1], new TextBox("Pause Time")); 
             w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
             w.SetComponent<TextBox>(es[2], new TextBox("Fast Time")); 
+
+            w.RemoveEntity(e);
         }; 
 
         world.AddSystem(ts, tf); 

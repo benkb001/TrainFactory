@@ -52,6 +52,21 @@ public static class PersistentState {
         Dictionary<string, Inventory> invs = toDict<Inventory>(2); 
         Dictionary<string, Machine> machines = toDict<Machine>(3); 
 
+        City cityWithPlayer = cities.Where(kvp => kvp.Value.HasPlayer).FirstOrDefault().Value; 
+        string playerLocation = ""; 
+        if (cityWithPlayer.Equals(default(City))) {
+            Train trainWithPlayer = trains.Where(kvp => kvp.Value.HasPlayer).FirstOrDefault().Value; 
+            if (trainWithPlayer.Equals(default(Train))) {
+                throw new InvalidOperationException("Cannot save, was unable to find player"); 
+            } else {
+                playerLocation = trainWithPlayer.Id; 
+            }
+        } else {
+            playerLocation = cityWithPlayer.Id; 
+        }
+
+        dom.Add("playerLocation", playerLocation);
+
         //TODO: Catch-Up, once we change how carts
         //are implemented, that info should be saved here
 
@@ -103,7 +118,8 @@ public static class PersistentState {
     }
 
     public static void Load(World w, string filepath) {
-        
+        w.Clear(); 
+
         WorldTime WorldTimeFromJSONObject(JsonObject wtData) {
             return new WorldTime(
                 days: (int)wtData["days"],
@@ -119,6 +135,7 @@ public static class PersistentState {
 
         Dictionary<string, Inventory> inventories = new(); 
         Dictionary<string, City> cities = new(); 
+        Dictionary<string, Train> trains = new(); 
 
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
             string invID = kvp.Key; 
@@ -181,6 +198,7 @@ public static class PersistentState {
             Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass); 
             int e = EntityFactory.Add(w, setData: true); 
             w.SetComponent<Train>(e, t); 
+            trains[trainID] = t; 
 
             if (isTraveling) {
                 string goingToID = (string)trainData["goingToID"]; 
@@ -189,6 +207,13 @@ public static class PersistentState {
                 
                 t.Embark(goingTo, left);
             }
+        }
+
+        string playerLocation = (string)dom["playerLocation"];
+        if (cities.ContainsKey(playerLocation)) {
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(cities[playerLocation]));
+        } else if (trains.ContainsKey(playerLocation)) {
+            MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(trains[playerLocation]));
         }
     }
 }

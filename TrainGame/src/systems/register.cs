@@ -59,6 +59,8 @@ public static class RegisterSystems {
         TextInputSystem.RegisterDeactivate(w); 
         TextInputSystem.RegisterActivate(w); 
         TextInputSystem.RegisterType(w); 
+        SaveClickSystem.Register(w); 
+        LoadClickSystem.Register(w); 
 
         CloseMenuSystem.Register(w); 
         

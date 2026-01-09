@@ -1,0 +1,307 @@
+{
+  "time": {
+    "days": 0,
+    "hours": 0,
+    "minutes": 31,
+    "ticks": 33
+  },
+  "playerLocation": "Mine",
+  "trains": {
+    "T0": {
+      "comingFromID": "Mine",
+      "goingToID": "Mine",
+      "inventoryID": "T0",
+      "isTraveling": false,
+      "left": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 15,
+        "ticks": 35
+      },
+      "mass": 1000,
+      "milesPerHour": 25,
+      "power": 25000,
+      "program": null
+    }
+  },
+  "inventories": {
+    "Factory Depot": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 10,
+        "Drill": 1,
+        "Excavator": 1,
+        "Fuel": 50,
+        "Gasifier": 1,
+        "Greenhouse": 1,
+        "Glass": 20,
+        "GunUpgrade": 0,
+        "Iron": 50,
+        "Kiln": 1,
+        "MachineUpgrade": 0,
+        "Motherboard": 1,
+        "Oil": 0,
+        "Pump": 1,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    },
+    "Greenhouse Depot": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    },
+    "Coast Depot": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    },
+    "Mine Depot": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 2,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    },
+    "PlayerInv": {
+      "rows": 1,
+      "cols": 10,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    },
+    "T0": {
+      "rows": 1,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      }
+    }
+  },
+  "machines": {
+    "Cargo Wagon Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Assembler Factory": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": 0,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Drill Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Excavator Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Gasifier": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": 0,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "GasifierAssembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Greenhouse Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Kiln": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "KilnAssembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Locomotive Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Liquid Wagon Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Motherboard Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Pump Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Train Upgrade Assembler": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Greenhouse": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Excavator": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Pump": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    },
+    "Drill": {
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
+      "priority": 0
+    }
+  }
+}

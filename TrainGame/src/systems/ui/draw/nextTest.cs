@@ -48,7 +48,11 @@ public static class NextDrawTestUISystem {
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
             w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
             w.SetComponent<Button>(label, new Button());
-            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(22)); 
+
+            w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(21)); 
+
+            int loadButton = EntityFactory.AddUI(w, w.GetCameraTopLeft(), 100, 100, text: "Load", setButton: true, setOutline: true); 
+            w.SetComponent<LoadButton>(loadButton, new LoadButton()); 
         }, 
         [2] = (w) => {
             AddNextTestButton(w, 2); 

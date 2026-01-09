@@ -71,6 +71,8 @@ namespace TrainGame.Constants
         public const string PlayerInvID = "PlayerInv"; 
         public const string PlayerStr = "Player"; 
 
+        public const string DefaultSaveFile = "game"; 
+
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.ArmorUpgrade => 100,
