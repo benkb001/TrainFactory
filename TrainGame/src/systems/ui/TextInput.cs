@@ -40,10 +40,6 @@ public static class TextInputSystem {
     }
 
     public static void RegisterActivate(World w) {
-        foreach (object o in Enum.GetValues<Keys>()) {
-            Console.WriteLine(o); 
-        }
-        
         ClickSystem.Register<TextInput>(w, (w, e) => {
             w.GetComponent<TextInput>(e).Active = true; 
         }); 
@@ -70,6 +66,7 @@ public static class TextInputSystem {
             tIn.IncrementVisibility(); 
             if (tIn.Active) {
                 bool changed = false; 
+                bool movedCursor = false; 
                 bool shift = VirtualKeyboard.IsPressed(Keys.LeftShift);
                 foreach (Keys k in KeyBinds.AlphaList) {
                     if (VirtualKeyboard.IsClicked(k)) {
@@ -105,23 +102,26 @@ public static class TextInputSystem {
 
                 if (VirtualKeyboard.IsClicked(Keys.Left)) {
                     tIn.CursorLeft(); 
+                    movedCursor = true; 
                 }
 
                 if (VirtualKeyboard.IsClicked(Keys.Right)) {
                     tIn.CursorRight(); 
+                    movedCursor = true; 
                 }
 
                 if (VirtualKeyboard.IsClicked(Keys.Down)) {
                     tIn.CursorDown(); 
+                    movedCursor = true; 
                 }
 
                 if (VirtualKeyboard.IsClicked(Keys.Up)) {
                     tIn.CursorUp(); 
+                    movedCursor = true; 
                 }
 
                 if (changed) {
                     string text = tIn.Text; 
-                    Console.WriteLine($"text: {text}");
                     List<string> words = format(text); 
 
                     for (int j = 0; j < words.Count; j++) {
@@ -164,6 +164,10 @@ public static class TextInputSystem {
                         w.GetComponent<TextBox>(ll.PagedChildren[lineIndex]).Text = ""; 
                         lineIndex++; 
                     }
+                }
+
+                if (changed || movedCursor) {
+                    
                 }
             }
         });

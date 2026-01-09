@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.ECS; 
 using TrainGame.Constants; 
 
-public class Inventory {
+public class Inventory : IID {
     private string inventoryId; 
 
     private List<Item> items; 
@@ -266,6 +266,10 @@ public class Inventory {
         foreach (string s in ItemID.Liquids) {
             Whitelist(s); 
         }
+    }
+
+    public string GetID() {
+        return Id; 
     }
 
     private (int, int) getNumToAdd(Item i, int index) {

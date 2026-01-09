@@ -27,6 +27,7 @@ public class Train : IInventorySource, IID {
     private static HashSet<string> usedIDs = new(); 
     private string program; 
 
+    public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
@@ -38,6 +39,7 @@ public class Train : IInventorySource, IID {
     public float Mass => mass; 
     public bool IsEmbarking => isEmbarking; 
     public string Program => program; 
+    public float Power => power; 
 
     public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f, float power = 0f, float mass = 1f) {
         if (ID.Used(Id) || Id.Equals("")) {
@@ -67,6 +69,9 @@ public class Train : IInventorySource, IID {
         Carts = new(); 
 
         origin.AddTrain(this);
+
+        this.left = new WorldTime(); 
+        this.arrivalTime = new WorldTime(); 
     }
 
     public void Embark(City destination, WorldTime now) {

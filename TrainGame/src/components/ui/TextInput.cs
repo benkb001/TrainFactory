@@ -21,6 +21,7 @@ public class TextInput {
     private int charsPerRow; 
     public string Text => text; 
     public int CharsPerRow => charsPerRow; 
+    public int CursorIndex => cursorIndex; 
 
     private static int cursorFramesVisible = 30; 
 
@@ -41,7 +42,6 @@ public class TextInput {
         if (cursorIndex > 0 && text.Length > 0) {
             text = text.Remove(cursorIndex - 1, 1);
             cursorIndex--; 
-            Console.WriteLine("Deleted");
         }
     }
 

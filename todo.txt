@@ -19,7 +19,6 @@
       but for now container is good, having 2 pagers right next to each other 
       probably is a bit awk 
     * Improve textbox drawing for textInput
-      * switch to monospaced font 
       * begin drawing cursor 
       * autopage with cursor
 * Add basic save/load 

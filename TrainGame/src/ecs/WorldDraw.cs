@@ -95,7 +95,6 @@ public partial class World {
     public void UnlockCamera() {
         if (!isTest) {
             camera.Unlock(); 
-            Console.WriteLine("Unlocked"); 
         }
         cameraLocked = false;
     }

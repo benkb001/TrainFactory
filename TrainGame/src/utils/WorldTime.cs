@@ -152,4 +152,8 @@ public class WorldTime {
     public override string ToString() {
         return $"days: {days}, hours: {hours}, minutes: {minutes}, ticks: {ticks}"; 
     }
+
+    public string ToJSONString() {
+        return "{" + ToString() + "}";
+    }
 }

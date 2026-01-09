@@ -19,7 +19,7 @@ public enum CraftState {
     Delivering
 }
 
-public class Machine {
+public class Machine : IID {
     
     private Dictionary<string, int> recipe;
     private Dictionary<string, int> stored; 
@@ -208,6 +208,10 @@ public class Machine {
 
     public void SetStorageSize(int size) {
         this.numRecipeToStore = size; 
+    }
+
+    public string GetID() {
+        return Id; 
     }
 
     public static Machine GetDefault() {
