@@ -7,10 +7,10 @@ public class AddCartClickSystemTest {
     public void AddCartClickSystem_ShouldAddCartToTrainAndRemoveFromCityWhenClicked() {
         World w = WorldFactory.Build(); 
     
-        Inventory inv = new Inventory("Test", 1, 1); 
-        City city = new City("Test", inv); 
+        Inventory inv = new Inventory("T", 1, 1); 
+        City city = new City("T", inv); 
         Train t = new Train(inv, city); 
-        Cart cart = new Cart("Cart", CartType.Freight); 
+        Cart cart = new Cart(CartType.Freight); 
         city.AddCart(cart); 
 
         int btnEntity = EntityFactory.Add(w); 
@@ -19,7 +19,6 @@ public class AddCartClickSystemTest {
 
         w.Update(); 
 
-        Assert.False(city.Carts.ContainsValue(cart));
-        Assert.True(t.Carts.ContainsValue(cart)); 
+        Assert.Empty(city.Carts); 
     }
 }

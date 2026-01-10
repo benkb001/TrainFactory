@@ -42,8 +42,8 @@ public class City : IID {
     private Dictionary<string, Machine> machines = new(); 
     public Dictionary<string, Machine> Machines => machines; 
 
-    private Dictionary<string, Cart> carts = new(); 
-    public Dictionary<string, Cart> Carts => carts; 
+    private List<Cart> carts = new(); 
+    public List<Cart> Carts => carts; 
     
     public static string GetInvID(string cityID) {
         return $"{cityID} Depot";
@@ -82,12 +82,12 @@ public class City : IID {
 
     //todo: test
     public void AddCart(Cart c) {
-        carts[c.Id] = c; 
+        carts.Add(c); 
     }
 
     //todo: test
     public void RemoveCart(Cart c) {
-        carts.Remove(c.Id); 
+        carts.Remove(c); 
     }
 
     //todo: test

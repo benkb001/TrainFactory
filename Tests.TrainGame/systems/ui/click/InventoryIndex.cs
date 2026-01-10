@@ -24,7 +24,7 @@ public class InventoryIndexSystemTest {
         Train t = new Train(inv, city); 
 
         for (int i = 0; i < 3; i++) {
-            t.AddCart(new Cart($"C{i}", CartType.Freight));
+            t.AddCart(new Cart(CartType.Freight));
         }
 
         DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(
@@ -39,7 +39,7 @@ public class InventoryIndexSystemTest {
         w.SetComponent<Button>(container.PageBackwardEnt, new Button(true)); 
         w.Update(); 
         
-        Assert.Contains("C2", w.GetComponent<Inventory>(w.GetMatchingEntities([typeof(Inventory)])[0]).Id); 
+        Assert.Contains("Freight", w.GetComponent<Inventory>(w.GetMatchingEntities([typeof(Inventory)])[0]).Id); 
         //todo: could test more but its kinda annoying since the whole container gets redrawn on each click
     }
 }

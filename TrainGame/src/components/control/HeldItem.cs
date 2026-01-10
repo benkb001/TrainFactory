@@ -17,6 +17,7 @@ public class HeldItem {
     public int InvIndex => invIndex; 
     public int InvSize => invSize; 
     public string ItemId => item.ItemId; 
+    public int Count => item.Count; 
     public int ItemCount => item.Count; 
     public int LabelEntity; 
     public int InventoryEntity; 

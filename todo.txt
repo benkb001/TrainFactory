@@ -6,6 +6,7 @@
 * intermittent bug with split item removing half the items
 * probably related, sometimes fast transfer doesn't work even if there are empty slots 
   * probably a slot is being thought of as having an item due to itemID != "" 
+* Player holding wood after loading even with seemingly empty inv
 
 **** NEED TO TEST **** 
 
@@ -21,8 +22,8 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Add basic save/load 
-  * Need to finish load and refine save, for stuff like machines 
+* Fix how carts work
+* Add program setting, and carts to save/load
 * World time passage should resume automatically when exiting map view 
 * Should redraw the city view if a train arrives
 * Clicking add cart button is not returning to train interface, its just staying there

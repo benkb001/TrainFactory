@@ -55,8 +55,11 @@ namespace TrainGame.Constants
         public const float TrainDefaultPower = 25000f; 
         public const float UpgradePowerStep = 1000f; 
         public const float TrainDefaultMass = 1000f; 
-        public const float FreightCartBaseMass = 1250f; 
-        public const float LiquidCartBaseMass = 750f; 
+
+        public static readonly Dictionary<CartType, float> CartMass = new() {
+            [CartType.Freight] = 1250f, 
+            [CartType.Liquid] = 750f
+        };
 
         public const int CartRows = 3; 
         public const int CartCols = 5; 
@@ -603,11 +606,11 @@ namespace TrainGame.Constants
             trainInv.SetSolid(); 
             w.SetComponent<Inventory>(trainInvDataEnt, trainInv); 
 
-            int trainDataEnt = EntityFactory.Add(w, setData: true); 
             (int _, City factory) = cities[CityID.Factory];
+            
             Train t = new Train(trainInv, factory, "T0", 
                 power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
-            w.SetComponent<Train>(trainDataEnt, t); 
+            int trainDataEnt = TrainWrap.Add(w, t);
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
@@ -621,7 +624,7 @@ namespace TrainGame.Constants
             factory.Inv.Add(ItemID.Motherboard, 1); 
             factory.Inv.Add(ItemID.Iron, 50); 
             factory.Inv.Add(ItemID.Glass, 20); 
-            factory.AddCart(new Cart("C0", CartType.Liquid)); 
+            factory.AddCart(new Cart(CartType.Liquid)); 
 
             //set assembler components
             (int locomotiveAssemblerEnt, Machine locomotiveAssembler) = machines[MachineID.LocomotiveAssembler]; 

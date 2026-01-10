@@ -22,6 +22,11 @@ public class AssemblerSystem {
                 U assembled = asm.Assemble(); 
                 int assembledEnt = EntityFactory.Add(w, setData: true); 
                 w.SetComponent<U>(assembledEnt, assembled);
+
+                //dont love it but dont want to remove generics for assembly registering
+                if (assembled is Train t) {
+                    TrainWrap.Add(w, t); 
+                }
             }
         }); 
     }

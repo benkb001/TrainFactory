@@ -37,7 +37,7 @@ public class HeldItemDrawSystem() {
             held.SetItem(index);
         }
 
-        if (held.ItemId != "") {
+        if (held.ItemId != "" && held.Count > 0) {
             if (!w.EntityExists(held.LabelEntity)) {
                 held.LabelEntity = EntityFactory.Add(w); 
             }

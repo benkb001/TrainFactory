@@ -77,4 +77,15 @@ public static class EntityFactory {
         w.SetComponent<Inventory>(e, inv); 
         return e; 
     }
+
+    public static int GetDataEntity<T>(World w, T component) {
+        List<KeyValuePair<int, T>> es = w.GetComponentArray<T>().Where(kvp => Object.ReferenceEquals(kvp.Value, component)).ToList(); 
+        if (es.Count == 0) {
+            return -1; 
+        } else if (es.Count == 1) {
+            return es[0].Key; 
+        } else {
+            throw new InvalidOperationException($"Data for {typeof(T)} had more than 1 data entity set");
+        }
+    }
 }   

@@ -17,8 +17,6 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Utils; 
 
-
-
 public static class NextDrawTestUISystem {
 
     private static Type[] ts = [typeof(NextDrawTestControl)]; 

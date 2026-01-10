@@ -32,7 +32,7 @@ public class Train : IInventorySource, IID {
     public City ComingFrom => comingFrom; 
     public City GoingTo => goingTo; 
     public readonly Inventory Inv; 
-    public readonly Dictionary<string, Cart> Carts; 
+    public Dictionary<CartType, Inventory> Carts;
     public readonly string Id; 
     public bool HasPlayer = false; 
     public float MilesPerHour => milesPerHour; 
@@ -41,7 +41,11 @@ public class Train : IInventorySource, IID {
     public string Program => program; 
     public float Power => power; 
 
-    public Train(Inventory Inv, City origin, string Id = "", float milesPerHour = 0f, float power = 0f, float mass = 1f) {
+    public const string DefaultID = ""; 
+
+    public Train(Inventory Inv, City origin, string Id = DefaultID, float milesPerHour = 0f, float power = 0f, float mass = 1f,
+        Dictionary<CartType, Inventory> Carts = null) {
+        
         if (ID.Used(Id) || Id.Equals("")) {
             Id = ID.GetNext(Constants.TrainStr); 
         }
@@ -66,7 +70,13 @@ public class Train : IInventorySource, IID {
         this.mass = mass;
         setMPH(); 
 
-        Carts = new(); 
+        if (Carts == null) {
+            this.Carts = new Dictionary<CartType, Inventory>(); 
+            this.Carts[CartType.Freight] = new Inventory($"{Id} Freight Cart", Constants.CartRows, Constants.CartCols, 0);
+            this.Carts[CartType.Liquid] = new Inventory($"{Id} Liquid Cart", Constants.CartRows, Constants.CartCols, 0);
+        } else {
+            this.Carts = Carts; 
+        }
 
         origin.AddTrain(this);
 
@@ -138,8 +148,8 @@ public class Train : IInventorySource, IID {
 
     //TODO: TEST 
     public void AddCart(Cart cart) {
-        Carts[cart.Id] = cart; 
-        mass += cart.Mass; 
+        mass += Constants.CartMass[cart.Type]; 
+        Carts[cart.Type].Upgrade();
         setMPH(); 
     }
     
@@ -158,8 +168,10 @@ public class Train : IInventorySource, IID {
     public List<Inventory> GetInventories() {
         List<Inventory> invs = new(); 
         invs.Add(Inv); 
-        foreach (KeyValuePair<string, Cart> kvp in Carts) {
-            invs.Add(kvp.Value.Inv); 
+        foreach (KeyValuePair<CartType, Inventory> kvp in Carts) {
+            if (kvp.Value.Level > 0) {
+                invs.Add(kvp.Value); 
+            }
         }
         return invs; 
     }

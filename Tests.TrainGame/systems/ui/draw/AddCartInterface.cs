@@ -11,7 +11,7 @@ public class DrawAddCartInterfaceSystemTest {
         City city = new City("Test", inv); 
         Train train = new Train(inv, city); 
 
-        city.AddCart(new Cart("Test", CartType.Freight)); 
+        city.AddCart(new Cart(CartType.Freight)); 
         int btn = w.AddEntity(); 
         w.SetComponent<Button>(btn, new Button(true)); 
         w.SetComponent<AddCartInterfaceButton>(btn, new AddCartInterfaceButton(

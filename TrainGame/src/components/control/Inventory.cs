@@ -19,7 +19,7 @@ public class Inventory : IID {
     private List<Item> items; 
     private int rows; 
     private int cols; 
-    private int level = 1; 
+    private int level; 
     private HashSet<string> whitelist;
     private bool filtered = false; 
 
@@ -28,10 +28,11 @@ public class Inventory : IID {
     public int Rows => rows; 
     public int Cols => cols; 
 
-    public Inventory(string id, int r, int c) {
+    public Inventory(string id, int r, int c, int level = 1) {
         inventoryId = id;
         rows = r; 
         cols = c; 
+        this.level = level; 
         items = new(); 
         whitelist = new(); 
         for (int i = 0; i < r; i++) {

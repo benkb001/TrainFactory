@@ -17,7 +17,7 @@ public class CartAssembler : IAssembler<Cart> {
 
     public Cart Assemble() {
         string id = ID.GetNext($"{type}Cart");
-        Cart cart = new Cart(id, type);
+        Cart cart = new Cart(type);
         city.AddCart(cart); 
         return cart; 
     }       

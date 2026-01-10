@@ -93,18 +93,18 @@ public class TrainTest {
         Assert.Equal(100f, t.MilesPerHour); 
         t.UpgradeInventory(); 
         Assert.Equal(1000f / (10f + Constants.InvUpgradeMass), t.MilesPerHour);
-        Cart c = new Cart("test", CartType.Freight); 
+        Cart c = new Cart(CartType.Freight); 
         t.AddCart(c); 
 
-        Assert.Equal(1000f / (10f + Constants.FreightCartBaseMass + Constants.InvUpgradeMass), t.MilesPerHour); 
+        Assert.Equal(1000f / (10f + Constants.CartMass[CartType.Freight] + Constants.InvUpgradeMass), t.MilesPerHour); 
     }
 
     [Fact]
     public void Train_AddCartShouldAddCart() {
         Train t = new Train(inv, c1, power: 100f, mass: 10f); 
-        Cart c = new Cart("test", CartType.Freight); 
+        Cart c = new Cart(CartType.Freight); 
         t.AddCart(c); 
-        Assert.Equal(c, t.Carts["test"]); 
+        Assert.Equal(1, t.Carts[CartType.Freight].Level); 
     }
 
     [Fact]

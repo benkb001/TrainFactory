@@ -51,13 +51,12 @@ public static class DrawAddCartInterfaceSystem {
         
         w.SetComponent<Frame>(llEntity, new Frame(containerPosition, containerWidth, containerHeight)); 
 
-        foreach (KeyValuePair<string, Cart> kvp in CartSource.Carts) {
-            string id = kvp.Key; 
-            Cart cart = kvp.Value; 
+        foreach (Cart cart in CartSource.Carts) {
+            string type = cart.Type.ToString(); 
 
             int cEntity = EntityFactory.Add(w); 
             w.SetComponent<Outline>(cEntity, new Outline()); 
-            w.SetComponent<TextBox>(cEntity, new TextBox(id)); 
+            w.SetComponent<TextBox>(cEntity, new TextBox(type)); 
             w.SetComponent<Button>(cEntity, new Button()); 
             w.SetComponent<AddCartButton>(cEntity, new AddCartButton(CartDest, CartSource, cart)); 
             ll.AddChild(cEntity); 

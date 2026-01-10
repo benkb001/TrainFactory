@@ -97,7 +97,8 @@ public static class PersistentState {
             return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
                 ["rows"] = inv.Rows, 
                 ["cols"] = inv.Cols, 
-                ["items"] = itemsJson
+                ["items"] = itemsJson,
+                ["level"] = inv.Level
             }); 
         })));
 

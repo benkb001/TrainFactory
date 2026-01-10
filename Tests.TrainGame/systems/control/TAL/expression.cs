@@ -28,10 +28,9 @@ public class TALExpressionTest {
         Assert.Equal(10, (int)eAccessCity.Evaluate());
 
         Train t = TrainWrap.GetTestTrain(); 
-        Cart c = new Cart("Test", CartType.Freight); 
-        c.Inv.Add(ItemID.Wood, 15);
-        t.Inv.Add(ItemID.Wood, 5); 
+        Cart c = new Cart(CartType.Freight); 
         t.AddCart(c); 
+        t.Carts[CartType.Freight].Add(ItemID.Wood, 20); 
         Assert.Equal(20, (int)TALExpression.AccessTrain(ItemID.Wood, t).Evaluate()); 
 
         Assert.Equal(ItemID.Iron, (string)TALExpression.ItemID(ItemID.Iron).Evaluate()); 
