@@ -106,6 +106,7 @@ public static class RegisterComponents {
         r<TrainUI>(); 
         r<TrainYard>(); 
         r<UnpauseButton>(); 
+        r<UpgradeMachineButton>(); 
         r<UpgradeTrainButton>(); 
         r<Velocity>(); 
     }

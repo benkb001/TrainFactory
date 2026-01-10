@@ -141,7 +141,7 @@ public static class PersistentState {
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
             string invID = kvp.Key; 
             JsonObject invData = kvp.Value.AsObject(); 
-            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"]); 
+            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"], (int)invData["level"]); 
             foreach (string itemID in ItemID.All) {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
@@ -195,10 +195,14 @@ public static class PersistentState {
             float milesPerHour = (float)trainData["milesPerHour"]; 
             string comingFromID = (string)trainData["comingFromID"]; 
             City comingFrom = cities[comingFromID]; 
+            Dictionary<CartType, Inventory> carts = new(); 
 
-            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass); 
-            int e = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Train>(e, t); 
+            foreach (CartType type in Cart.AllTypes) {
+                carts[type] = inventories[Train.GetCartID(type, trainID)]; 
+            }
+
+            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass, Carts: carts); 
+            TrainWrap.Add(w, t); 
             trains[trainID] = t; 
 
             if (isTraveling) {

@@ -24,10 +24,7 @@ public class DrawUpgradeMachineButtonCallback {
 
         c = Colors.UIAccent; 
         msg = $"Place one {m.UpgradeItemID} to increase throughput?"; 
-        w.SetComponent<Button>(upgradeEntity, new Button(
-            onClick: UpgradeMachineOnClick.Create(w, m)
-        ));
-
+        
         Background bg = new Background(c); 
         TextBox tb = new TextBox(msg); 
         Outline o = new Outline(); 
@@ -37,6 +34,8 @@ public class DrawUpgradeMachineButtonCallback {
         w.SetComponent<TextBox>(upgradeEntity, tb); 
         w.SetComponent<Outline>(upgradeEntity, o); 
         w.SetComponent<Frame>(upgradeEntity, f); 
+        w.SetComponent<Button>(upgradeEntity, new Button()); 
+        w.SetComponent<UpgradeMachineButton>(upgradeEntity, new UpgradeMachineButton(m)); 
         return upgradeEntity; 
     }
 

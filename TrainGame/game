@@ -2,24 +2,24 @@
   "time": {
     "days": 0,
     "hours": 0,
-    "minutes": 31,
-    "ticks": 33
+    "minutes": 54,
+    "ticks": 4
   },
-  "playerLocation": "Mine",
+  "playerLocation": "Factory",
   "trains": {
     "T0": {
-      "comingFromID": "Mine",
-      "goingToID": "Mine",
+      "comingFromID": "Factory",
+      "goingToID": "Factory",
       "inventoryID": "T0",
       "isTraveling": false,
       "left": {
         "days": 0,
         "hours": 0,
-        "minutes": 15,
-        "ticks": 35
+        "minutes": 0,
+        "ticks": 0
       },
-      "mass": 1000,
-      "milesPerHour": 25,
+      "mass": 1750,
+      "milesPerHour": 14.285714,
       "power": 25000,
       "program": null
     }
@@ -30,15 +30,15 @@
       "cols": 5,
       "items": {
         "ArmorUpgrade": 0,
-        "Assembler": 10,
+        "Assembler": 9,
         "Drill": 1,
         "Excavator": 1,
         "Fuel": 50,
         "Gasifier": 1,
         "Greenhouse": 1,
-        "Glass": 20,
+        "Glass": 5,
         "GunUpgrade": 0,
-        "Iron": 50,
+        "Iron": 20,
         "Kiln": 1,
         "MachineUpgrade": 0,
         "Motherboard": 1,
@@ -48,7 +48,8 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
     },
     "Greenhouse Depot": {
       "rows": 3,
@@ -73,7 +74,8 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
     },
     "Coast Depot": {
       "rows": 3,
@@ -98,7 +100,8 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
     },
     "Mine Depot": {
       "rows": 3,
@@ -113,7 +116,7 @@
         "Greenhouse": 0,
         "Glass": 0,
         "GunUpgrade": 0,
-        "Iron": 2,
+        "Iron": 0,
         "Kiln": 0,
         "MachineUpgrade": 0,
         "Motherboard": 0,
@@ -123,7 +126,8 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
     },
     "PlayerInv": {
       "rows": 1,
@@ -148,7 +152,8 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
     },
     "T0": {
       "rows": 1,
@@ -173,7 +178,60 @@
         "Sand": 0,
         "Water": 0,
         "Wood": 0
-      }
+      },
+      "level": 1
+    },
+    "T0 Freight Cart": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      },
+      "level": 0
+    },
+    "T0 Liquid Cart": {
+      "rows": 3,
+      "cols": 5,
+      "items": {
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 0,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 0,
+        "GunUpgrade": 0,
+        "Iron": 0,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Water": 0,
+        "Wood": 0
+      },
+      "level": 1
     }
   },
   "machines": {
@@ -248,10 +306,10 @@
       "priority": 0
     },
     "Liquid Wagon Assembler": {
-      "state": 0,
-      "curCraftTicks": 0,
-      "level": -1,
-      "numRecipeToStore": 0,
+      "state": 1,
+      "curCraftTicks": 757,
+      "level": 0,
+      "numRecipeToStore": 1,
       "priority": 0
     },
     "Motherboard Assembler": {

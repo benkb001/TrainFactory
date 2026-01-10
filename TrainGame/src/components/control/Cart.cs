@@ -13,6 +13,7 @@ using TrainGame.Constants;
 
 public class Cart {
     public readonly CartType Type; 
+    public static CartType[] AllTypes = [CartType.Freight, CartType.Liquid]; 
 
     public Cart(CartType type) {
         this.Type = type; 

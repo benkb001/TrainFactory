@@ -1,4 +1,4 @@
-namespace TrainGame.Callbacks; 
+namespace TrainGame.Systems; 
 
 using System; 
 using System.Drawing; 
@@ -7,23 +7,24 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using TrainGame.Components; 
-using TrainGame.Constants; 
-using TrainGame.ECS; 
-using TrainGame.Utils;
-using System.Reflection;
+using Color = Microsoft.Xna.Framework.Color; 
+using _Color = System.Drawing.Color; 
 
-public class UpgradeMachineOnClick {
-    public static Action Create(World w, Machine m) {
-        return () => {
-            Console.WriteLine("Clicked upgrade button"); 
+using TrainGame.Components; 
+using TrainGame.ECS; 
+using TrainGame.Constants; 
+using TrainGame.Utils; 
+
+public static class UpgradeMachineClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<UpgradeMachineButton>(w, (w, e) => {
+            Machine m = w.GetComponent<UpgradeMachineButton>(e).GetMachine(); 
             if (m.Inv.ItemCount(m.UpgradeItemID) >= 1) {
-                Console.WriteLine("Passed check"); 
                 m.Inv.Take(m.UpgradeItemID, 1); 
                 m.Upgrade(1); 
 
                 MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m)); 
             }
-        }; 
+        }); 
     }
 }

@@ -72,8 +72,9 @@ public class Train : IInventorySource, IID {
 
         if (Carts == null) {
             this.Carts = new Dictionary<CartType, Inventory>(); 
-            this.Carts[CartType.Freight] = new Inventory($"{Id} Freight Cart", Constants.CartRows, Constants.CartCols, 0);
-            this.Carts[CartType.Liquid] = new Inventory($"{Id} Liquid Cart", Constants.CartRows, Constants.CartCols, 0);
+            foreach (CartType type in Cart.AllTypes) {
+                this.Carts[type] = new Inventory(GetCartID(type, Id), Constants.CartRows, Constants.CartCols, 0); 
+            }
         } else {
             this.Carts = Carts; 
         }
@@ -186,6 +187,10 @@ public class Train : IInventorySource, IID {
 
     public void SetProgram(string program) {
         this.program = program; 
+    }
+
+    public static string GetCartID(CartType type, string trainID) {
+        return $"{trainID} {type} Cart";
     }
 
     private void setMPH() {

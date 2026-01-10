@@ -61,6 +61,7 @@ public static class RegisterSystems {
         TextInputSystem.RegisterType(w); 
         SaveClickSystem.Register(w); 
         LoadClickSystem.Register(w); 
+        UpgradeMachineClickSystem.Register(w); 
 
         CloseMenuSystem.Register(w); 
         

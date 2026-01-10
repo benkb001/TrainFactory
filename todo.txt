@@ -7,6 +7,7 @@
 * probably related, sometimes fast transfer doesn't work even if there are empty slots 
   * probably a slot is being thought of as having an item due to itemID != "" 
 * Player holding wood after loading even with seemingly empty inv
+* randomly zooming in ? 
 
 **** NEED TO TEST **** 
 
@@ -22,7 +23,6 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Fix how carts work
 * Add program setting, and carts to save/load
 * World time passage should resume automatically when exiting map view 
 * Should redraw the city view if a train arrives
