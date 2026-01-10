@@ -6,9 +6,11 @@ using TrainGame.ECS;
 
 public class TALExecutionSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(TALBody), typeof(Data)], (w, e) => { 
-            TALBody body = w.GetComponent<TALBody>(e); 
-            body.Execute(w); 
+        w.AddSystem([typeof(Train), typeof(Data)], (w, e) => { 
+            Train t = w.GetComponent<Train>(e); 
+            if (t.Executable != null) {
+                t.Executable.Execute(w); 
+            }
         });
     }
 }

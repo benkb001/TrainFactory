@@ -73,6 +73,7 @@ public static class PersistentState {
         dom.Add("trains", new JsonObject(trains.Select(kvp => {
             Train t = kvp.Value; 
             string id = kvp.Key; 
+            int nextInstruction = (t.Executable == null) ? 0 : t.Executable.NextInstruction; 
             return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
                 ["comingFromID"] = t.ComingFrom.GetID(),
                 ["goingToID"] = t.GoingTo.GetID(),
@@ -81,6 +82,7 @@ public static class PersistentState {
                 ["left"] = JSONObjectFromWorldTime(t.DepartureTime),
                 ["mass"] = t.Mass, 
                 ["milesPerHour"] = t.MilesPerHour, 
+                ["nextInstruction"] = nextInstruction,
                 ["power"] = t.Power,
                 ["program"] = t.Program
             });
@@ -185,6 +187,16 @@ public static class PersistentState {
             }
         }
 
+        foreach (KeyValuePair<string, City> kvp in cities) {
+            string cityID = kvp.Key; 
+            City city = kvp.Value; 
+            
+            foreach (string otherCityID in CityID.CityMap[cityID].AdjacentCities) {
+                City otherCity = cities[otherCityID]; 
+                city.AddConnection(otherCity);
+            }
+        }
+
         foreach (KeyValuePair<string, JsonNode> kvp in dom["trains"].AsObject()) {
             string trainID = kvp.Key; 
             JsonObject trainData = kvp.Value.AsObject(); 
@@ -204,6 +216,11 @@ public static class PersistentState {
             Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass, Carts: carts); 
             TrainWrap.Add(w, t); 
             trains[trainID] = t; 
+            string program = (string)trainData["program"];
+            int nextInstruction = (int)trainData["nextInstruction"];
+            if (program != "") {
+                TAL.SetTrainProgram(program, t, w, nextInstruction);
+            }
 
             if (isTraveling) {
                 string goingToID = (string)trainData["goingToID"]; 

@@ -69,12 +69,13 @@ public class TALBody {
     private List<TALInstruction> instructions; 
     private int nextInstruction; 
     public int InstructionCount => instructions.Count; 
+    public int NextInstruction => nextInstruction; 
     private Train train; 
 
-    public TALBody(List<TALInstruction> instructions, Train train) {
+    public TALBody(List<TALInstruction> instructions, Train train, int nextInstruction = 0) {
         this.instructions = instructions; 
         this.train = train; 
-        nextInstruction = 0; 
+        this.nextInstruction = nextInstruction;
     }
 
     public void Execute(World w) {

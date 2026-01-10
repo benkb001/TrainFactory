@@ -697,11 +697,10 @@ namespace TrainGame.Constants
             ",
         };
 
-        public static TALBody SetTrainProgram(string program, Train t, World w) {
-            TALBody body = TALParser.ParseProgram(program, w, t); 
-            int bodyEntity = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<TALBody>(bodyEntity, body); 
+        public static TALBody SetTrainProgram(string program, Train t, World w, int nextInstruction = 0) {
+            TALBody body = TALParser.ParseProgram(program, w, t, nextInstruction); 
             t.SetProgram(program); 
+            t.SetExecutable(body); 
             return body;
         }
     }

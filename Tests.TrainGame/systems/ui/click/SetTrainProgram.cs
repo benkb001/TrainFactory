@@ -17,6 +17,6 @@ public class SetTrainProgramClickSystemTest {
         w.SetComponent<SetTrainProgramButton>(e, new SetTrainProgramButton(TAL.IronFactoryLoop, t));
         w.Update(); 
         Assert.Equal(TAL.Scripts[TAL.IronFactoryLoop], t.Program); 
-        Assert.Single(w.GetMatchingEntities([typeof(TALBody), typeof(Data)]));
+        Assert.NotNull(t.Executable); 
     }
 }

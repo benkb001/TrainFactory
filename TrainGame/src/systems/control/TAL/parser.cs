@@ -244,13 +244,13 @@ public static class TALParser {
         }
     }
 
-    public static TALBody ParseProgram(List<TALToken> ts, World w, Train t) {
-        return new TALBody(ParseBody(ts, w, t), t);
+    public static TALBody ParseProgram(List<TALToken> ts, World w, Train t, int nextInstruction = 0) {
+        return new TALBody(ParseBody(ts, w, t), t, nextInstruction);
     }
 
-    public static TALBody ParseProgram(string program, World w, Train t) {
+    public static TALBody ParseProgram(string program, World w, Train t, int nextInstruction = 0) {
         List<TALToken> ts = TALLexer.Tokenize(program); 
-        return new TALBody(ParseBody(ts, w, t), t);
+        return new TALBody(ParseBody(ts, w, t), t, nextInstruction);
     }
 }
 

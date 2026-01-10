@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Systems; 
 
 public class Train : IInventorySource, IID {
 
@@ -26,6 +27,7 @@ public class Train : IInventorySource, IID {
     private bool isEmbarking; 
     private static HashSet<string> usedIDs = new(); 
     private string program; 
+    private TALBody executable; 
 
     public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
@@ -40,6 +42,7 @@ public class Train : IInventorySource, IID {
     public bool IsEmbarking => isEmbarking; 
     public string Program => program; 
     public float Power => power; 
+    public TALBody Executable => executable; 
 
     public const string DefaultID = ""; 
 
@@ -187,6 +190,10 @@ public class Train : IInventorySource, IID {
 
     public void SetProgram(string program) {
         this.program = program; 
+    }
+
+    public void SetExecutable(TALBody executable) {
+        this.executable = executable; 
     }
 
     public static string GetCartID(CartType type, string trainID) {

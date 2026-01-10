@@ -2,26 +2,27 @@
   "time": {
     "days": 0,
     "hours": 0,
-    "minutes": 54,
-    "ticks": 4
+    "minutes": 10,
+    "ticks": 32
   },
   "playerLocation": "Factory",
   "trains": {
     "T0": {
       "comingFromID": "Factory",
-      "goingToID": "Factory",
+      "goingToID": "Mine",
       "inventoryID": "T0",
-      "isTraveling": false,
+      "isTraveling": true,
       "left": {
         "days": 0,
         "hours": 0,
-        "minutes": 0,
-        "ticks": 0
+        "minutes": 8,
+        "ticks": 28
       },
-      "mass": 1750,
-      "milesPerHour": 14.285714,
+      "mass": 1000,
+      "milesPerHour": 25,
+      "nextInstruction": 2,
       "power": 25000,
-      "program": null
+      "program": "\n                LOAD Factory.Fuel / 2 Fuel; \n                GO TO Mine; \n                UNLOAD SELF.Fuel Fuel; \n                WHILE Mine.Fuel \u003E 0 {\n                    WAIT;\n                }\n                LOAD Mine.Iron Iron; \n                GO TO Factory; \n                UNLOAD SELF.Iron Iron; \n            "
     }
   },
   "inventories": {
@@ -30,18 +31,18 @@
       "cols": 5,
       "items": {
         "ArmorUpgrade": 0,
-        "Assembler": 9,
+        "Assembler": 10,
         "Drill": 1,
         "Excavator": 1,
-        "Fuel": 50,
+        "Fuel": 25,
         "Gasifier": 1,
         "Greenhouse": 1,
-        "Glass": 5,
+        "Glass": 20,
         "GunUpgrade": 0,
-        "Iron": 20,
+        "Iron": 50,
         "Kiln": 1,
         "MachineUpgrade": 0,
-        "Motherboard": 1,
+        "Motherboard": 0,
         "Oil": 0,
         "Pump": 1,
         "Rail": 0,
@@ -163,7 +164,7 @@
         "Assembler": 0,
         "Drill": 0,
         "Excavator": 0,
-        "Fuel": 0,
+        "Fuel": 25,
         "Gasifier": 0,
         "Greenhouse": 0,
         "Glass": 0,
@@ -231,7 +232,7 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 0
     }
   },
   "machines": {
@@ -306,10 +307,10 @@
       "priority": 0
     },
     "Liquid Wagon Assembler": {
-      "state": 1,
-      "curCraftTicks": 757,
-      "level": 0,
-      "numRecipeToStore": 1,
+      "state": 0,
+      "curCraftTicks": 0,
+      "level": -1,
+      "numRecipeToStore": 0,
       "priority": 0
     },
     "Motherboard Assembler": {
