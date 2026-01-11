@@ -260,6 +260,13 @@ public class InventoryTest {
         }); 
     }
 
+    [Fact]
+    public void Inventory_ItemCountShouldBeEqualToNumAddedBeforeTaking() {
+        Inventory inv = new Inventory("Test", 1, 1); 
+        inv.Add("Apple", 10); 
+        Assert.Equal(10, inv.ItemCount("Apple")); 
+    }
+
 
     [Fact]
     public void Inventory_TransferToShouldSendAsManyItemsAsPossibleToOtherInventories() {

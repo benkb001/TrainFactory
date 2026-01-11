@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -24,6 +25,8 @@ public static class DrawMapSystem {
             w.SetComponent<Menu>(flagEnt, new Menu());
             List<int> cityDataEntities = w.GetMatchingEntities([typeof(City), typeof(Data)]); 
             int playerLocationEntity = -1; 
+
+            //draw cities
             foreach (int cityDataEntity in cityDataEntities) {
                 City city = w.GetComponent<City>(cityDataEntity); 
                 int cityDrawnEntity = EntityFactory.Add(w); 
@@ -39,6 +42,7 @@ public static class DrawMapSystem {
                 }
             }
 
+            //draw player label
             if (playerLocationEntity != -1) {
                 Frame f = w.GetComponent<Frame>(playerLocationEntity); 
                 int labelEntity = EntityFactory.Add(w); 
@@ -48,6 +52,7 @@ public static class DrawMapSystem {
                 w.SetComponent<Label>(labelEntity, new Label(playerLocationEntity)); 
             }
 
+            //draw moving trains
             List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Data)]); 
             foreach (int trainDataEntity in trainDataEntities) {
                 Train train = w.GetComponent<Train>(trainDataEntity); 
@@ -70,45 +75,97 @@ public static class DrawMapSystem {
                 }
             }
 
-            //add clock in top-right corner
+            //add container for hud on left
+            float hudWidth = w.ScreenWidth / 3f; 
+            float hudHeight = w.ScreenHeight - 20f; 
+            LinearLayoutContainer hud = LinearLayoutWrap.Add(
+                w, 
+                topleft + new Vector2(10, 0),
+                hudWidth, 
+                hudHeight,
+                direction: "vertical", 
+                align: "alignlow", 
+                outline: false
+            );
 
-            float clockWidth = w.ScreenWidth / 4f; 
-            float clockHeight = clockWidth / 2f; 
-            Vector2 clockPosition = topleft + new Vector2(w.ScreenWidth - clockWidth - 10f, 10f); 
+            //add clock to top of HUD
+
             int clockEnt = EntityFactory.Add(w); 
             w.SetComponent<GameClockView>(clockEnt, GameClockView.Get()); 
-            w.SetComponent<Frame>(clockEnt, new Frame(clockPosition, clockWidth, clockHeight)); 
             w.SetComponent<TextBox>(clockEnt, new TextBox("")); 
             w.SetComponent<Outline>(clockEnt, new Outline()); 
+            float clockWidth = hudWidth; 
+            float clockHeight = hudWidth / 5f; 
+            w.SetComponent<Frame>(clockEnt, new Frame(0, 0, clockWidth, clockHeight));
+            hud.AddChild(clockEnt, w); 
 
-            //add save in bottom-right corner 
+            //add speed buttons to HUD
 
-            float saveWidth = clockWidth; 
-            float saveHeight = clockHeight; 
-            Vector2 savePosition = topleft + new Vector2(10f, w.ScreenHeight - saveHeight - 10f); 
-            int saveEnt = EntityFactory.AddUI(w, savePosition, saveWidth, saveHeight, setButton: true, 
-                text: "Save", setOutline: true);
-            w.SetComponent<SaveButton>(saveEnt, new SaveButton());
-            
-            //add speed buttons in top-left corner 
-            float buttonWidth = clockWidth / 2f; 
-            float buttonHeight = clockHeight / 2f; 
+            float speedButtonRowWidth = hudWidth; 
+            float speedButtonRowHeight = speedButtonRowWidth / 5f; 
+
+            LinearLayoutContainer speedButtonRow = LinearLayoutWrap.Add(
+                w, 
+                Vector2.Zero, 
+                speedButtonRowWidth, 
+                speedButtonRowHeight, 
+                direction: "horizontal",
+                outline: false
+            );
+
             int[] es = new int[3]; 
             for (int i = 0; i < 3; i++) {
                 int buttonEnt = EntityFactory.Add(w); 
                 es[i] = buttonEnt; 
-                w.SetComponent<Frame>(buttonEnt, new Frame(topleft + new Vector2((10 + ((buttonWidth + 10) * i)), 10), 
-                    buttonWidth, buttonHeight)); 
                 w.SetComponent<Outline>(buttonEnt, new Outline()); 
                 w.SetComponent<Button>(buttonEnt, new Button()); 
+                speedButtonRow.AddChild(buttonEnt, w); 
             }
+
+            speedButtonRow.ResizeChildren(w); 
+            hud.AddChild(speedButtonRow.GetParentEntity(), w); 
 
             w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
             w.SetComponent<TextBox>(es[0], new TextBox("Slow Time")); 
             w.SetComponent<PauseButton>(es[1], PauseButton.Get()); 
             w.SetComponent<TextBox>(es[1], new TextBox("Pause Time")); 
             w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
-            w.SetComponent<TextBox>(es[2], new TextBox("Fast Time")); 
+            w.SetComponent<TextBox>(es[2], new TextBox("Fast Time"));
+
+            //add save button to HUD 
+
+            float saveWidth = clockWidth; 
+            float saveHeight = clockHeight; 
+            int saveEnt = EntityFactory.AddUI(w, Vector2.Zero, saveWidth, saveHeight, setButton: true, 
+                text: "Save", setOutline: true);
+            w.SetComponent<SaveButton>(saveEnt, new SaveButton());
+            hud.AddChild(saveEnt, w); 
+
+            //add item summary to HUD 
+            float itemSumWidth = hudWidth;
+            float itemSumHeight = hudHeight / 1.6f; 
+            LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, itemSumWidth, 
+                itemSumHeight, outline: true, usePaging: true, childrenPerPage: 4, direction: "vertical");
+            
+            List<Inventory> invs = w.GetMatchingEntities([typeof(Inventory), typeof(Data)]).Select(
+                ent => w.GetComponent<Inventory>(ent)).ToList(); 
+            
+            List<string> itemStrings = ItemID.All.Select(
+                s => new KeyValuePair<string, int>(s, invs.Aggregate(0, (acc, inv) => acc + inv.ItemCount(s)))
+            ).Where(kvp => kvp.Value > 0).Aggregate(new List<string>(), (acc, kvp) => {
+                acc.Add($"{kvp.Key}: {kvp.Value}\n");
+                return acc; 
+            }).ToList();
+
+            foreach (string s in itemStrings) {
+                int iEnt = EntityFactory.Add(w); 
+                w.SetComponent<TextBox>(iEnt, new TextBox(s)); 
+
+                llc.AddChild(iEnt, w);
+            }
+
+            llc.ResizeChildren(w); 
+            hud.AddChild(llc.GetParentEntity(), w); 
 
             w.RemoveEntity(e);
         }; 

@@ -106,6 +106,7 @@ public class LinearLayout {
     }
 
     public bool RemoveChild(int e) {
+        pagedChildren.Remove(e); 
         return children.Remove(e); 
     }
 

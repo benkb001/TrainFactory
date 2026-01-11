@@ -245,20 +245,20 @@ namespace TrainGame.Constants
                     MachineID.PumpAssembler,
                     MachineID.TrainUpgradeAssembler
                 ], 
-                350f, 210f, 0f, 0f, 
+                550f, 210f, 0f, 0f, 
                 [CityID.Greenhouse, CityID.Coast, CityID.Mine]
             ),
             [CityID.Greenhouse] = new CityArg(
                 [MachineID.Greenhouse],
-                350f, 10f, 0f, -2.5f, [CityID.Factory]
+                550f, 10f, 0f, -2.5f, [CityID.Factory]
             ),
             [CityID.Coast] = new CityArg(
                 [MachineID.Excavator, MachineID.Pump], 
-                150f, 210f, -2.5f, 0f, [CityID.Factory]
+                350f, 210f, -2.5f, 0f, [CityID.Factory]
             ),
             [CityID.Mine] = new CityArg(
                 [MachineID.Drill], 
-                350f, 410f, 0f, 2.5f, [CityID.Factory]
+                550f, 410f, 0f, 2.5f, [CityID.Factory]
             )
         };
     }

@@ -96,7 +96,7 @@ public static class RegisterSystems {
         DrawCityInterfaceSystem.Register(w); 
         DrawWriteProgramInterfaceSystem.Register(w); 
         DrawViewProgramInterfaceSystem.Register(w); 
-        CameraReturnSystem.Register(w); 
+        //CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 

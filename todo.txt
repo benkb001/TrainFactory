@@ -22,8 +22,6 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Make some statistics available on the map ui
-  (like how many idle trains there are, how much resources of each type you have, etc)
 * Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
 * Add number of stored items to machine ui 

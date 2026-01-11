@@ -119,7 +119,7 @@ public class LinearLayoutWrap {
 
             AddChild(pageLLEnt, headerRowLLEnt, headerRowLL, w); 
 
-            float pageHeight = Math.Max(5f, labelHeight - (2 * padding)); 
+            float pageHeight = Math.Max(30f, labelHeight - (2 * padding)); 
             float pageWidth = pageHeight; 
             float pageLLWidth = (pageWidth * 2) + (3 * padding); 
 
@@ -132,7 +132,7 @@ public class LinearLayoutWrap {
                 AddChild(curEnt, pageLLEnt, pageLL, w); 
                 
                 w.SetComponent<Frame>(curEnt, new Frame(0, 0, pageHeight, pageWidth / 2f));
-                w.SetComponent<TextBox>(curEnt, new TextBox((d == -1 ? "Previous" : "Next")));
+                w.SetComponent<TextBox>(curEnt, new TextBox((d == -1 ? "Prev" : "Next")));
                 w.SetComponent<Button>(curEnt, new Button()); 
                 w.SetComponent<LLPageButton>(curEnt, new LLPageButton(mainLL, d));
                 w.SetComponent<Outline>(curEnt, new Outline()); 

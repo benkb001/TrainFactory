@@ -17,6 +17,7 @@ public class Inventory : IID {
     private string inventoryId; 
 
     private List<Item> items; 
+    private Dictionary<string, int> itemCountMap; 
     private int rows; 
     private int cols; 
     private int level; 
@@ -37,6 +38,7 @@ public class Inventory : IID {
         this.level = level; 
         items = new(); 
         whitelist = new(); 
+        itemCountMap = new(); 
 
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
@@ -86,6 +88,8 @@ public class Inventory : IID {
         items[index].Count += i.Count; 
         i.Inv = this;
         
+        editItemCountMap(i.ItemId, num_adding); 
+
         if (num_remaining > 0) {
             return num_adding + Add(new Item(ItemId: i.ItemId, Count: num_remaining)); 
         }
@@ -111,6 +115,7 @@ public class Inventory : IID {
             i.Inv = this; 
             items[idx].ItemId = i.ItemId; 
             items[idx].Count += num_adding; 
+            editItemCountMap(i.ItemId, num_adding); 
             return num_adding; 
         }
         return 0; 
@@ -130,18 +135,18 @@ public class Inventory : IID {
                 items[i].Count -= taken; 
             }
         }
+
+        editItemCountMap(itemId, -1 * found); 
         return new Item(ItemId: itemId, Count: found); 
     }
 
     //TODO: Test
     public int ItemCount(string itemId) {
-        int found = 0; 
-        for (int i = 0; i < items.Count; i++) {
-            if (items[i].ItemId == itemId) {
-                found += items[i].Count; 
-            }
+        if (itemCountMap.ContainsKey(itemId)) {
+            return itemCountMap[itemId];
         }
-        return found; 
+
+        return 0; 
     }
 
     public void Upgrade() {
@@ -155,6 +160,7 @@ public class Inventory : IID {
         i.Row = -1; 
         i.Column = -1; 
         items[idx] = new Item(Row: row, Column: col, Inv: this); 
+        editItemCountMap(i.ItemId, -1 * i.Count);
         return i; 
     }
 
@@ -172,6 +178,7 @@ public class Inventory : IID {
             i.ItemId = ""; 
         }
 
+        editItemCountMap(id, -1 * taken); 
         return new Item(Row: -1, Column: -1, Inv: this, ItemId: id, Count: taken);
     }
 
@@ -321,6 +328,14 @@ public class Inventory : IID {
         }
 
         ensureValidIndices(getIndex(row, col)); 
+    }
+
+    private void editItemCountMap(string item, int delta) {
+        if (itemCountMap.ContainsKey(item)) {
+            itemCountMap[item] += delta; 
+        } else {
+            itemCountMap[item] = delta; 
+        }
     }
 
     public void EnsureValidIndices(int row, int col) {
