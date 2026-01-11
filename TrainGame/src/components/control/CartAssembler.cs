@@ -34,5 +34,6 @@ public class CartAssembler : IAssembler<Cart> {
 
 public enum CartType {
     Liquid,
-    Freight
+    Freight,
+    General
 }

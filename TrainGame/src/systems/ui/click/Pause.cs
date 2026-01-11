@@ -14,7 +14,7 @@ public class PauseButtonSystem() {
     private static Type[] ts = [typeof(PauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         if (w.GetComponent<Button>(e).Clicked) {
-            w.SetMiliticksPerUpdate(0); 
+            WorldTimeWrap.SetTimePassPaused(w); 
         }
     }; 
 
@@ -24,20 +24,15 @@ public class PauseButtonSystem() {
 }
 
 public class UnpauseButtonSystem() {
-    private static Type[] ts = [typeof(UnpauseButton), typeof(Button), typeof(Active)]; 
-    private static Action<World, int> tf = (w, e) => {
-        w.SetMiliticksPerUpdate(1000); 
-    }; 
-
     public static void Register(World w) {
-        w.AddSystem(ts, tf); 
+        ClickSystem.Register<UnpauseButton>(w, (w, e) => WorldTimeWrap.SetTimePassSlow(w)); 
     }
 }
 
 public class SpeedTimeClickSystem() {
     public static void Register(World w) {
         ClickSystem.Register<SpeedTimeButton>(w, (w, e) => {
-            w.SetMiliticksPerUpdate(3000); 
+            WorldTimeWrap.SetTimePassFast(w); 
         }); 
     }
 }
@@ -45,7 +40,21 @@ public class SpeedTimeClickSystem() {
 public class SlowTimeClickSystem() {
     public static void Register(World w) {
         ClickSystem.Register<SlowTimeButton>(w, (w, e) => {
-            w.SetMiliticksPerUpdate(1000); 
+            WorldTimeWrap.SetTimePassSlow(w); 
         }); 
+    }
+}
+
+public static class WorldTimeWrap {
+    public static void SetTimePassSlow(World w) {
+        w.SetMiliticksPerUpdate(1000); 
+    }
+
+    public static void SetTimePassPaused(World w) {
+        w.SetMiliticksPerUpdate(0); 
+    }
+
+    public static void SetTimePassFast(World w) {
+        w.SetMiliticksPerUpdate(3000); 
     }
 }

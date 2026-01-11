@@ -97,10 +97,11 @@ public static class PersistentState {
             }));
 
             return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
-                ["rows"] = inv.Rows, 
                 ["cols"] = inv.Cols, 
+                ["filter"] = Convert.ToInt32(inv.Filter),
                 ["items"] = itemsJson,
-                ["level"] = inv.Level
+                ["level"] = inv.Level,
+                ["rows"] = inv.Rows
             }); 
         })));
 
@@ -116,7 +117,6 @@ public static class PersistentState {
             });
         })));
 
-        //Console.WriteLine(dom.ToString()); 
         File.WriteAllText(filepath, dom.ToString());
     }
 
@@ -143,7 +143,9 @@ public static class PersistentState {
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
             string invID = kvp.Key; 
             JsonObject invData = kvp.Value.AsObject(); 
-            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"], (int)invData["level"]); 
+            CartType filter = JsonSerializer.Deserialize<CartType>((int)invData["filter"]);
+            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"], 
+                (int)invData["level"], filter); 
             foreach (string itemID in ItemID.All) {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
@@ -218,7 +220,7 @@ public static class PersistentState {
             trains[trainID] = t; 
             string program = (string)trainData["program"];
             int nextInstruction = (int)trainData["nextInstruction"];
-            if (program != "") {
+            if (!string.IsNullOrEmpty(program)) {
                 TAL.SetTrainProgram(program, t, w, nextInstruction);
             }
 

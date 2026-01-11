@@ -76,7 +76,9 @@ public class Train : IInventorySource, IID {
         if (Carts == null) {
             this.Carts = new Dictionary<CartType, Inventory>(); 
             foreach (CartType type in Cart.AllTypes) {
-                this.Carts[type] = new Inventory(GetCartID(type, Id), Constants.CartRows, Constants.CartCols, 0); 
+                Inventory curInv = new Inventory(GetCartID(type, Id), 
+                    Constants.CartRows, Constants.CartCols, 0, type);
+                this.Carts[type] = curInv; 
             }
         } else {
             this.Carts = Carts; 

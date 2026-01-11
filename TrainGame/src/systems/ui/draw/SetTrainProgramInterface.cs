@@ -25,26 +25,48 @@ public static class DrawSetTrainProgramInterfaceSystem {
 
             Vector2 llPos = w.GetCameraTopLeft() + new Vector2(10, 10); 
             float llWidth = w.ScreenWidth - 20f; 
-            float llHeight = w.ScreenHeight / 4f; 
+            float llHeight = w.ScreenHeight - 20f; 
 
-            int llEnt = EntityFactory.Add(w); 
-            LinearLayout ll = new LinearLayout("horizontal", "alignlow"); 
-            ll.Padding = 5f; 
+            LinearLayoutContainer outerContainer = LinearLayoutWrap.Add(w, llPos, llWidth, llHeight, 
+                direction: "vertical", outline: false);
 
-            w.SetComponent<LinearLayout>(llEnt, ll);
-            w.SetComponent<Frame>(llEnt, new Frame(llPos, llWidth, llHeight)); 
-            w.SetComponent<Outline>(llEnt, new Outline()); 
+            LinearLayoutContainer prewrittenRow = LinearLayoutWrap.Add(w, Vector2.Zero, 0, 0, 
+                usePaging: true, childrenPerPage: 5, label: "Pre-Written Scripts", outline: true); 
 
-            foreach (string script in TAL.Scripts.Select(kvp => kvp.Key)) {
-                int btnEnt = EntityFactory.Add(w); 
-                LinearLayoutWrap.AddChild(btnEnt, llEnt, ll, w); 
-                w.SetComponent<Button>(btnEnt, new Button()); 
-                w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(script, t));
-                w.SetComponent<Outline>(btnEnt, new Outline()); 
-                w.SetComponent<TextBox>(btnEnt, new TextBox($"Set to {script}? Requires 1 Motherboard"));
+            foreach (KeyValuePair<string, string> kvp in TAL.Scripts) {
+                string programName = kvp.Key; 
+                int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, 
+                    setButton: true, setOutline: true, text: programName);
+                string program = kvp.Value; 
+                string programExplanation = TAL.ScriptExplanations[programName]; 
+                ViewProgramInterfaceData data = new ViewProgramInterfaceData(programName, program, programExplanation, t); 
+                EnterInterfaceButton<ViewProgramInterfaceData> btn = new EnterInterfaceButton<ViewProgramInterfaceData>(data);
+                w.SetComponent<EnterInterfaceButton<ViewProgramInterfaceData>>(btnEnt, btn); 
+                prewrittenRow.AddChild(btnEnt, w); 
             }
 
-            LinearLayoutWrap.ResizeChildren(llEnt, w); 
+            LinearLayoutContainer playerRow =  LinearLayoutWrap.Add(w, Vector2.Zero, 0, 0, 
+                usePaging: true, childrenPerPage: 5, label: "Player-Written Scripts", outline: true); 
+            
+            List<KeyValuePair<string, string>> playerScripts = TAL.PlayerScripts.ToList(); 
+            playerScripts.Add(new KeyValuePair<string, string>("new", "")); 
+
+            foreach (KeyValuePair<string , string> kvp in playerScripts) {
+                string programName = kvp.Key; 
+                string program = kvp.Value; 
+                int btnEnt = EntityFactory.Add(w); 
+                w.SetComponent<Button>(btnEnt, new Button()); 
+                WriteProgramInterfaceData d = new WriteProgramInterfaceData(t, program, programName); 
+                w.SetComponent<EnterInterfaceButton<WriteProgramInterfaceData>>(btnEnt, 
+                    new EnterInterfaceButton<WriteProgramInterfaceData>(d));
+                w.SetComponent<Outline>(btnEnt, new Outline()); 
+                w.SetComponent<TextBox>(btnEnt, new TextBox($"{programName}"));
+                playerRow.AddChild(btnEnt, w); 
+            }
+
+            outerContainer.AddChild(prewrittenRow.GetParentEntity(), w); 
+            outerContainer.AddChild(playerRow.GetParentEntity(), w);
+            outerContainer.ResizeChildren(w, recurse: true); 
             w.RemoveEntity(e); 
         }); 
     }

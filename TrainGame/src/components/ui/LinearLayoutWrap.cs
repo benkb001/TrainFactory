@@ -19,14 +19,17 @@ public class LinearLayoutContainer {
     private int llEnt; 
     private LinearLayout ll;
     private float llWidth; 
-    private float llHeight; 
+    private float llHeight;
+    private int parentEntity;  
     
     public float LLWidth => llWidth; 
     public float LLHeight => llHeight; 
     public int LLEnt => llEnt; 
+    public int GetParentEntity() => parentEntity; 
 
-    public LinearLayoutContainer(int llEnt, LinearLayout ll, float llWidth, float llHeight) {
+    public LinearLayoutContainer(int llEnt, int parentEnt, LinearLayout ll, float llWidth, float llHeight) {
         this.llEnt = llEnt; 
+        this.parentEntity = parentEnt; 
         this.ll = ll; 
         this.llWidth = llWidth; 
         this.llHeight = llHeight; 
@@ -36,12 +39,17 @@ public class LinearLayoutContainer {
         LinearLayoutWrap.AddChild(e, llEnt, ll, w);
     }
 
-    public void ResizeChildren(World w) {
-        LinearLayoutWrap.ResizeChildren(llEnt, w); 
+    public void ResizeChildren(World w, bool recurse = false) {
+        LinearLayoutWrap.ResizeChildren(llEnt, w, recurse); 
     }
 }
 
 public class LinearLayoutWrap {
+    public static LinearLayoutContainer AddOuter(World w, string label = "") {
+        return Add(w, w.GetCameraTopLeft() + new Vector2(10, 10), w.ScreenWidth - 20, 
+        w.ScreenHeight - 20, direction: "vertical", label: label, outline: false);
+    }
+    
     public static LinearLayoutContainer Add(World w, Vector2 position, float width, float height, 
         bool usePaging = false, int childrenPerPage = 10, string direction = "horizontal", 
         string align = "alignlow", float padding = 5f, string label = "", bool outline = true) {
@@ -116,13 +124,9 @@ public class LinearLayoutWrap {
             foreach (int d in ds) {
                 int curEnt = EntityFactory.Add(w);
                 AddChild(curEnt, pageLLEnt, pageLL, w); 
-                List<Vector2> points = [
-                    new Vector2(0, 0),
-                    new Vector2(0, pageHeight),
-                    new Vector2(pageWidth * d, pageHeight / 2f),
-                ]; 
-
-                w.SetComponent<Frame>(curEnt, new Frame(points));
+                
+                w.SetComponent<Frame>(curEnt, new Frame(0, 0, pageHeight, pageWidth / 2f));
+                w.SetComponent<TextBox>(curEnt, new TextBox((d == -1 ? "Previous" : "Next")));
                 w.SetComponent<Button>(curEnt, new Button()); 
                 w.SetComponent<LLPageButton>(curEnt, new LLPageButton(mainLL, d));
                 w.SetComponent<Outline>(curEnt, new Outline()); 
@@ -142,7 +146,7 @@ public class LinearLayoutWrap {
 
         AddChild(mainLLEnt, outerLLEnt, outerLL, w); 
 
-        return new LinearLayoutContainer(mainLLEnt, mainLL, mainLLWidth, mainLLHeight); 
+        return new LinearLayoutContainer(mainLLEnt, outerLLEnt, mainLL, mainLLWidth, mainLLHeight); 
     }
 
     public static void Clear(int e, World w, LinearLayout ll = null) {

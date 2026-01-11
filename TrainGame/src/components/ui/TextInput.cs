@@ -27,8 +27,8 @@ public class TextInput {
 
     public bool Active = false;
 
-    public TextInput(int charsPerRow) {
-        text = ""; 
+    public TextInput(int charsPerRow, string defaultText = "") {
+        text = defaultText;
         cursorIndex = 0; 
         this.charsPerRow = charsPerRow; 
     }
@@ -76,18 +76,37 @@ public class TextInput {
     }
 }
 
+public class TextInputContainer {
+    private TextInput input; 
+    private int textInputEntity; 
+    private int parentEntity; 
+
+    public int GetTextInputEntity() => textInputEntity; 
+    public int GetParentEntity() => parentEntity; 
+    public string GetText() => input.Text;
+
+    public TextInputContainer(TextInput input, int entity, int parentEntity) {
+        this.textInputEntity = entity; 
+        this.parentEntity = parentEntity; 
+        this.input = input; 
+    }
+}
+
 public static class TextInputWrap {
 
-    public static void AddTextInput(World w, Vector2 position, float width, float height) {
-        int e = EntityFactory.Add(w); 
+    public static TextInputContainer Add(World w, Vector2 position, float width, float height, 
+        string label = "", string defaultText = "") {
+
         int childrenPerPage = GetChildrenPerPage(w, height); 
         LinearLayoutContainer llc = LinearLayoutWrap.Add(w, position, width, height, usePaging: true, 
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
-            outline: true);
-        TextInput input = new TextInput(GetCharsPerRow(w, width)); 
+            outline: true, label: label);
+        TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText); 
         int llEnt = llc.LLEnt; 
         w.SetComponent<TextInput>(llEnt, input); 
         w.SetComponent<Button>(llEnt, new Button()); 
+
+        return new TextInputContainer(input, llEnt, llc.GetParentEntity());  
     }
 
     public static int GetCharsPerRow(World w, float width) {

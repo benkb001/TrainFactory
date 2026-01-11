@@ -16,9 +16,7 @@ using System.Reflection;
 public class UpgradeMachineOnClick {
     public static Action Create(World w, Machine m) {
         return () => {
-            Console.WriteLine("Clicked upgrade button"); 
             if (m.Inv.ItemCount(m.UpgradeItemID) >= 1) {
-                Console.WriteLine("Passed check"); 
                 m.Inv.Take(m.UpgradeItemID, 1); 
                 m.Upgrade(1); 
 

@@ -22,24 +22,35 @@ public class Inventory : IID {
     private int level; 
     private HashSet<string> whitelist;
     private bool filtered = false; 
+    private CartType filter; 
 
     public int Level => level; 
     public string Id => inventoryId; 
     public int Rows => rows; 
     public int Cols => cols; 
+    public CartType Filter => filter; 
 
-    public Inventory(string id, int r, int c, int level = 1) {
+    public Inventory(string id, int r, int c, int level = 1, CartType type = CartType.General) {
         inventoryId = id;
         rows = r; 
         cols = c; 
         this.level = level; 
         items = new(); 
         whitelist = new(); 
+
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 items.Add(new Item(Row: i, Column: j, Inv: this)); 
             }
         }
+
+        if (type == CartType.Freight) {
+            SetSolid(); 
+        } else if (type == CartType.Liquid) {
+            SetLiquid(); 
+        }
+
+        filter = type; 
     }
 
     //todo: need to re-factor in other places because it might add a portion of the items but not all
@@ -260,12 +271,14 @@ public class Inventory : IID {
     }
 
     public void SetSolid() {
+        filter = CartType.Freight; 
         foreach (string s in ItemID.Solids) {
             Whitelist(s); 
         }
     }
 
     public void SetLiquid() {
+        filter = CartType.Liquid; 
         foreach (string s in ItemID.Liquids) {
             Whitelist(s); 
         }

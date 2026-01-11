@@ -62,6 +62,8 @@ public static class RegisterSystems {
         SaveClickSystem.Register(w); 
         LoadClickSystem.Register(w); 
         UpgradeMachineClickSystem.Register(w); 
+        EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
+        EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
 
         CloseMenuSystem.Register(w); 
         
@@ -89,6 +91,8 @@ public static class RegisterSystems {
         DrawMachineInterfaceSystem.Register(w); 
         DrawSetTrainProgramInterfaceSystem.Register(w); 
         DrawCityInterfaceSystem.Register(w); 
+        DrawWriteProgramInterfaceSystem.Register(w); 
+        DrawViewProgramInterfaceSystem.Register(w); 
         CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

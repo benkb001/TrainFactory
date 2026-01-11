@@ -46,6 +46,8 @@ public static class RegisterComponents {
         r<DrawCityInterfaceMessage>();
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
+        r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
+        r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
         r<DrawInventoryContainerMessage<Train>>(); 
         r<DrawMachineInterfaceMessage>(); 
         r<DrawMachineRequestMessage>(); 
@@ -56,6 +58,8 @@ public static class RegisterComponents {
         r<DrawTrainsViewMessage>();
         r<DrawTravelingInterfaceMessage>();
         r<EmbarkButton>(); 
+        r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
+        r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<Frame>(); 
         r<GameClockView>();
         r<HeldItem>(); 

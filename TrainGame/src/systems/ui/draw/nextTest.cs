@@ -481,7 +481,7 @@ public static class NextDrawTestUISystem {
             w.LockCamera(); 
             int e = EntityFactory.Add(w); 
             Vector2 topleft = w.GetCameraTopLeft();
-            TextInputWrap.AddTextInput(w, topleft, 500, 350);
+            TextInputWrap.Add(w, topleft, 500, 350);
         }
     };
 

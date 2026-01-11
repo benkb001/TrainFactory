@@ -1,40 +1,40 @@
 {
   "time": {
     "days": 0,
-    "hours": 0,
-    "minutes": 10,
-    "ticks": 32
+    "hours": 3,
+    "minutes": 9,
+    "ticks": 36
   },
   "playerLocation": "Factory",
   "trains": {
     "T0": {
-      "comingFromID": "Factory",
-      "goingToID": "Mine",
+      "comingFromID": "Coast",
+      "goingToID": "Coast",
       "inventoryID": "T0",
-      "isTraveling": true,
+      "isTraveling": false,
       "left": {
         "days": 0,
-        "hours": 0,
-        "minutes": 8,
-        "ticks": 28
+        "hours": 1,
+        "minutes": 11,
+        "ticks": 0
       },
       "mass": 1000,
       "milesPerHour": 25,
-      "nextInstruction": 2,
+      "nextInstruction": 0,
       "power": 25000,
-      "program": "\n                LOAD Factory.Fuel / 2 Fuel; \n                GO TO Mine; \n                UNLOAD SELF.Fuel Fuel; \n                WHILE Mine.Fuel \u003E 0 {\n                    WAIT;\n                }\n                LOAD Mine.Iron Iron; \n                GO TO Factory; \n                UNLOAD SELF.Iron Iron; \n            "
+      "program": null
     }
   },
   "inventories": {
     "Factory Depot": {
-      "rows": 3,
       "cols": 5,
+      "filter": 2,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 10,
         "Drill": 1,
         "Excavator": 1,
-        "Fuel": 25,
+        "Fuel": 0,
         "Gasifier": 1,
         "Greenhouse": 1,
         "Glass": 20,
@@ -42,19 +42,20 @@
         "Iron": 50,
         "Kiln": 1,
         "MachineUpgrade": 0,
-        "Motherboard": 0,
+        "Motherboard": 1,
         "Oil": 0,
-        "Pump": 1,
+        "Pump": 0,
         "Rail": 0,
         "Sand": 0,
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 3
     },
     "Greenhouse Depot": {
-      "rows": 3,
       "cols": 5,
+      "filter": 2,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
@@ -76,17 +77,18 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 3
     },
     "Coast Depot": {
-      "rows": 3,
       "cols": 5,
+      "filter": 2,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
         "Drill": 0,
         "Excavator": 0,
-        "Fuel": 0,
+        "Fuel": 6,
         "Gasifier": 0,
         "Greenhouse": 0,
         "Glass": 0,
@@ -99,14 +101,15 @@
         "Pump": 0,
         "Rail": 0,
         "Sand": 0,
-        "Water": 0,
+        "Water": 880,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 3
     },
     "Mine Depot": {
-      "rows": 3,
       "cols": 5,
+      "filter": 2,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
@@ -128,11 +131,12 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 3
     },
     "PlayerInv": {
-      "rows": 1,
       "cols": 10,
+      "filter": 2,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
@@ -154,17 +158,18 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 1
     },
     "T0": {
-      "rows": 1,
       "cols": 5,
+      "filter": 1,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
         "Drill": 0,
         "Excavator": 0,
-        "Fuel": 25,
+        "Fuel": 0,
         "Gasifier": 0,
         "Greenhouse": 0,
         "Glass": 0,
@@ -180,11 +185,12 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 1
+      "level": 1,
+      "rows": 1
     },
     "T0 Freight Cart": {
-      "rows": 3,
       "cols": 5,
+      "filter": 1,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
@@ -206,11 +212,12 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 0
+      "level": 0,
+      "rows": 3
     },
     "T0 Liquid Cart": {
-      "rows": 3,
       "cols": 5,
+      "filter": 0,
       "items": {
         "ArmorUpgrade": 0,
         "Assembler": 0,
@@ -232,7 +239,8 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 0
+      "level": 0,
+      "rows": 3
     }
   },
   "machines": {
@@ -351,7 +359,7 @@
     "Pump": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
+      "level": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },

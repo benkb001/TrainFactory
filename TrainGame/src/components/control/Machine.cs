@@ -191,8 +191,8 @@ public class Machine : IID {
         craftComplete = false; 
     }
 
-    public void UpdateCrafting() {
-        curCraftTicks++; 
+    public void UpdateCrafting(int militicks) {
+        curCraftTicks += militicks / 1000; 
         craftComplete = curCraftTicks >= craftTicks; 
     }
 

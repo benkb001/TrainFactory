@@ -29,7 +29,7 @@ public class MachineUpdateSystem {
             }
 
             if (m.State == CraftState.Crafting) {
-                m.UpdateCrafting(); 
+                m.UpdateCrafting(w.MiliticksPerUpdate); 
             }
 
             if (m.CraftComplete && m.State == CraftState.Crafting) {

@@ -87,7 +87,7 @@ public class TALBody {
         int amount; 
         string itemID; 
         bool executing = true; 
-        while (executing) {
+        while (executing && nextInstruction < instructions.Count) {
             TALInstruction i = instructions[nextInstruction];
             switch (i.Type) {
                 case InstructionType.Go: 

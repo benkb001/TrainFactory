@@ -13,7 +13,7 @@ using TrainGame.Components;
 using TrainGame.Utils;
 using TrainGame.Constants; 
 
-public class CloseMenuSystem() {
+public static class CloseMenuSystem {
 
     private static void returnFrom(SceneType type, Menu menu, World w) {
         City city; 
@@ -26,6 +26,7 @@ public class CloseMenuSystem() {
             case SceneType.Map: 
                 //TODO: this needs to be more dynamic, maybe we need to keep track of last scenes
                 SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
+                WorldTimeWrap.SetTimePassSlow(w); 
                 break;
             case SceneType.TrainInterface: 
                 train = menu.GetTrain(); 

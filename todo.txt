@@ -20,19 +20,21 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Add cart whitelist info to save/load
-* World time passage should resume automatically when exiting map view 
-* Should redraw the city view if a train arrives
-* Clicking add cart button is not returning to train interface, its just staying there
 * Add a way for players to input their own program for trains
+  * Add text input for the program name 
+    * Add a system that will copy text from intput to box, [TextInput, TextBox]
+    * Add an option for linearLayoutWrap to make title editable 
+  * Add a system to associate the button that connects a program to a train, 
+    for entities that also have a component for player written script input, 
+    that runs before the regular submit system. This will query the textInput 
+    components for the program and program name and set the buttons fields. 
+  * Make it so submit button toasts if compiling was successful or not
+  * Move classes into appropriate files once done, from systems/ui/click/SetTrainProgram.cs
 * Make some statistics available on the map ui
   (like how many idle trains there are, how much resources of each type you have, etc)
 * Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
 * Add number of stored items to machine ui 
-* Make it so set train program button also removes old train program if it exists
-  * I'm thinking we just put a TALbody onto train and then have execution filter for
-    trains with non-null programs
 * Machines still crafting if game is paused, need to have machines 
   connected to World.wt instead of using ticks directly
 * Add train program to train ui 
@@ -73,9 +75,10 @@
 * Add a label to progress bar in machine interface to make it clear what it is when not moving
 * TAL Upgrades: 
   * Add if statements 
-  * Add toasts 
+  * Add toasts ? 
   * Add statements to set machine priority, storage size
   * Add expression to get time since arrival/time since departure
+  * Add comments
 * Make a system to ensure collidables cannot overlap as this results in buggy behavior
 
 **** NOT SURE WE WANT BUT MAYBE **** 
