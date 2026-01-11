@@ -53,12 +53,15 @@ public static class RegisterSystems {
         AddCartInterfaceClickSystem.Register(w); 
         UpgradeTrainClickSystem.Register(w); 
         InventoryIndexSystem.Register<Train>(w); 
+        SetPlayerProgramClickSystem.Register(w); 
         SetTrainProgramClickSystem.Register(w);
         SetTrainProgramInterfaceClickSystem.Register(w); 
         LLPageSystem.Register(w); 
         TextInputSystem.RegisterDeactivate(w); 
         TextInputSystem.RegisterActivate(w); 
         TextInputSystem.RegisterType(w); 
+        TextInputSystem.RegisterFormat(w); 
+        TextInputSystem.RegisterCopy(w); 
         SaveClickSystem.Register(w); 
         LoadClickSystem.Register(w); 
         UpgradeMachineClickSystem.Register(w); 

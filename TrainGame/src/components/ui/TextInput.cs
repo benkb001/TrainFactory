@@ -22,14 +22,16 @@ public class TextInput {
     public string Text => text; 
     public int CharsPerRow => charsPerRow; 
     public int CursorIndex => cursorIndex; 
+    public bool Changed = true; 
+    public bool MovedCursor = false; 
 
     private static int cursorFramesVisible = 30; 
 
     public bool Active = false;
 
-    public TextInput(int charsPerRow, string defaultText = "") {
+    public TextInput(int charsPerRow = 0, string defaultText = "") {
         text = defaultText;
-        cursorIndex = 0; 
+        cursorIndex = defaultText.Length; 
         this.charsPerRow = charsPerRow; 
     }
 
@@ -78,35 +80,52 @@ public class TextInput {
 
 public class TextInputContainer {
     private TextInput input; 
+    private TextInput labelInput; 
     private int textInputEntity; 
     private int parentEntity; 
+    private int labelEntity; 
 
     public int GetTextInputEntity() => textInputEntity; 
     public int GetParentEntity() => parentEntity; 
     public string GetText() => input.Text;
+    public int LabelEntity => labelEntity; 
+    public TextInput GetTextInput() => input; 
+    public TextInput GetLabelInput() => labelInput; 
 
-    public TextInputContainer(TextInput input, int entity, int parentEntity) {
+    public TextInputContainer(TextInput input, TextInput labelInput, int entity, int parentEntity, int labelEntity) {
         this.textInputEntity = entity; 
         this.parentEntity = parentEntity; 
         this.input = input; 
+        this.labelEntity = labelEntity;
+        this.labelInput = labelInput; 
     }
 }
 
 public static class TextInputWrap {
 
     public static TextInputContainer Add(World w, Vector2 position, float width, float height, 
-        string label = "", string defaultText = "") {
+        string label = "", string defaultText = "", bool editableLabel = false) {
 
         int childrenPerPage = GetChildrenPerPage(w, height); 
         LinearLayoutContainer llc = LinearLayoutWrap.Add(w, position, width, height, usePaging: true, 
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
             outline: true, label: label);
         TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText); 
+        Console.WriteLine($"Default text: {defaultText}");
         int llEnt = llc.LLEnt; 
         w.SetComponent<TextInput>(llEnt, input); 
         w.SetComponent<Button>(llEnt, new Button()); 
 
-        return new TextInputContainer(input, llEnt, llc.GetParentEntity());  
+        TextInput labelInput = null; 
+
+        if (editableLabel && label != "") {
+            int labelEnt = llc.LabelEntity; 
+            w.SetComponent<Button>(labelEnt, new Button());
+            labelInput = new TextInput(defaultText: label);
+            w.SetComponent<TextInput>(labelEnt, labelInput); 
+        }
+
+        return new TextInputContainer(input, labelInput, llEnt, llc.GetParentEntity(), llc.LabelEntity);  
     }
 
     public static int GetCharsPerRow(World w, float width) {

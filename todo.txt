@@ -9,6 +9,7 @@
 
 * TextInput
 * Persistent Data
+* UI for setting program, if any clear assertions
 
 **** NEXT FEATURES **** 
 
@@ -21,15 +22,15 @@
       * begin drawing cursor 
       * autopage with cursor
 * Add a way for players to input their own program for trains
-  * Add text input for the program name 
-    * Add a system that will copy text from intput to box, [TextInput, TextBox]
-    * Add an option for linearLayoutWrap to make title editable 
   * Add a system to associate the button that connects a program to a train, 
     for entities that also have a component for player written script input, 
     that runs before the regular submit system. This will query the textInput 
     components for the program and program name and set the buttons fields. 
   * Make it so submit button toasts if compiling was successful or not
   * Move classes into appropriate files once done, from systems/ui/click/SetTrainProgram.cs
+  * Add close menu system stuff for new interfaces 
+    * Maybe could make new generic stuff have an interface to get a menu object 
+      and then could refactor other draw things to use it? 
 * Make some statistics available on the map ui
   (like how many idle trains there are, how much resources of each type you have, etc)
 * Add player inventory to city interface, so player can put stuff from their inv to city

@@ -175,6 +175,8 @@ namespace TrainGame.Constants
             [(Keys.OemPeriod, true)] = ">",
             [(Keys.OemQuestion, false)] = "/",
             [(Keys.OemQuestion, true)] = "?",
+            [(Keys.OemSemicolon, false)] = ";",
+            [(Keys.OemSemicolon, true)] = ":"
             
         };
     }

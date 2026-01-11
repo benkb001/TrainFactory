@@ -61,13 +61,14 @@ public static class TextInputSystem {
     }
 
     public static void RegisterType(World w) {
-        w.AddSystem([typeof(TextInput), typeof(LinearLayout), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(TextInput), typeof(Active)], (w, e) => {
             TextInput tIn = w.GetComponent<TextInput>(e); 
             tIn.IncrementVisibility(); 
             if (tIn.Active) {
                 bool changed = false; 
                 bool movedCursor = false; 
                 bool shift = VirtualKeyboard.IsPressed(Keys.LeftShift);
+
                 foreach (Keys k in KeyBinds.AlphaList) {
                     if (VirtualKeyboard.IsClicked(k)) {
                         string s = k.ToString(); 
@@ -120,56 +121,72 @@ public static class TextInputSystem {
                     movedCursor = true; 
                 }
 
-                if (changed) {
-                    string text = tIn.Text; 
-                    List<string> words = format(text); 
+                tIn.Changed = changed; 
+                tIn.MovedCursor = movedCursor; 
+            }
+        }); 
+    }
+    
+    public static void RegisterFormat(World w) {
+        w.AddSystem([typeof(TextInput), typeof(LinearLayout), typeof(Frame), typeof(Active)], (w, e) => {
+            TextInput tIn = w.GetComponent<TextInput>(e); 
+            bool changed = tIn.Changed; 
+            
+            if (changed) {
+                string text = tIn.Text; 
+                List<string> words = format(text); 
 
-                    for (int j = 0; j < words.Count; j++) {
-                        words[j] = words[j].Substring(0, Math.Min(words[j].Length, tIn.CharsPerRow)); 
-                    }
-
-                    LinearLayout ll = w.GetComponent<LinearLayout>(e); 
-                    Frame frame = w.GetComponent<Frame>(e); 
-                    float lineWidth = frame.GetWidth(); 
-                    float lineHeight = frame.GetHeight() / ll.ChildrenPerPage;
-                    int i = 0; 
-                    int lineIndex = 0; 
-
-                    while (i < words.Count) {
-                        string line = ""; 
-                        if (words[i] == "\n") {
-                            i++;
-                            continue; 
-                        }
-
-                        while (i < words.Count && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
-                            string word = words[i]; 
-                            line += word;
-                            i++;
-                        }
-                        
-                        while (ll.PagedChildren.Count <= lineIndex) {
-                            int curLineEnt = EntityFactory.Add(w); 
-                            w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
-                            w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
-                            LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
-                        }
-
-                        int lineEnt = ll.PagedChildren[lineIndex]; 
-                        w.GetComponent<TextBox>(lineEnt).Text = line; 
-                        lineIndex++; 
-                    }
-
-                    while (lineIndex < ll.PagedChildren.Count) {
-                        w.GetComponent<TextBox>(ll.PagedChildren[lineIndex]).Text = ""; 
-                        lineIndex++; 
-                    }
+                for (int j = 0; j < words.Count; j++) {
+                    words[j] = words[j].Substring(0, Math.Min(words[j].Length, tIn.CharsPerRow)); 
                 }
 
-                if (changed || movedCursor) {
+                LinearLayout ll = w.GetComponent<LinearLayout>(e); 
+                Frame frame = w.GetComponent<Frame>(e); 
+                float lineWidth = frame.GetWidth(); 
+                float lineHeight = frame.GetHeight() / ll.ChildrenPerPage;
+                int i = 0; 
+                int lineIndex = 0; 
+
+                while (i < words.Count) {
+                    string line = ""; 
+                    if (words[i] == "\n") {
+                        i++;
+                        continue; 
+                    }
+
+                    while (i < words.Count && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
+                        string word = words[i]; 
+                        line += word;
+                        i++;
+                    }
                     
+                    while (ll.PagedChildren.Count <= lineIndex) {
+                        int curLineEnt = EntityFactory.Add(w); 
+                        w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
+                        w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
+                        LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
+                    }
+
+                    int lineEnt = ll.PagedChildren[lineIndex]; 
+                    w.GetComponent<TextBox>(lineEnt).Text = line; 
+                    lineIndex++; 
+                }
+
+                while (lineIndex < ll.PagedChildren.Count) {
+                    w.GetComponent<TextBox>(ll.PagedChildren[lineIndex]).Text = ""; 
+                    lineIndex++; 
                 }
             }
+
+            tIn.Changed = false; 
+        }); 
+    }
+
+    public static void RegisterCopy(World w) {
+        w.AddSystem([typeof(TextBox), typeof(TextInput)], (w, e) => {
+            TextBox tb = w.GetComponent<TextBox>(e); 
+            TextInput input = w.GetComponent<TextInput>(e); 
+            tb.Text = input.Text; 
         });
     }
 }

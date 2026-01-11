@@ -21,18 +21,23 @@ public class LinearLayoutContainer {
     private float llWidth; 
     private float llHeight;
     private int parentEntity;  
+    private int labelEntity; 
     
     public float LLWidth => llWidth; 
     public float LLHeight => llHeight; 
     public int LLEnt => llEnt; 
+    public int LabelEntity => labelEntity; 
     public int GetParentEntity() => parentEntity; 
 
-    public LinearLayoutContainer(int llEnt, int parentEnt, LinearLayout ll, float llWidth, float llHeight) {
+    public LinearLayoutContainer(int llEnt, int parentEnt, int labelEntity, 
+        LinearLayout ll, float llWidth, float llHeight) {
+        
         this.llEnt = llEnt; 
         this.parentEntity = parentEnt; 
         this.ll = ll; 
         this.llWidth = llWidth; 
         this.llHeight = llHeight; 
+        this.labelEntity = labelEntity; 
     }
 
     public void AddChild(int e, World w) {
@@ -91,10 +96,11 @@ public class LinearLayoutWrap {
             w.SetComponent<Outline>(headerRowLLEnt, new Outline()); 
             w.SetComponent<Outline>(mainLLEnt, new Outline()); 
         }
-
+        
+        int labelEnt = -1; 
         if (label != "") {
             useHeader = true;
-            int labelEnt = EntityFactory.Add(w); 
+            labelEnt = EntityFactory.Add(w); 
             
             w.SetComponent<Frame>(labelEnt, new Frame(Vector2.Zero, labelWidth, labelHeight)); 
             w.SetComponent<TextBox>(labelEnt, new TextBox(label)); 
@@ -146,7 +152,7 @@ public class LinearLayoutWrap {
 
         AddChild(mainLLEnt, outerLLEnt, outerLL, w); 
 
-        return new LinearLayoutContainer(mainLLEnt, outerLLEnt, mainLL, mainLLWidth, mainLLHeight); 
+        return new LinearLayoutContainer(mainLLEnt, outerLLEnt, labelEnt, mainLL, mainLLWidth, mainLLHeight); 
     }
 
     public static void Clear(int e, World w, LinearLayout ll = null) {

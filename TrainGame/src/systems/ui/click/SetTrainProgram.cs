@@ -35,6 +35,31 @@ public static class DrawSystem {
     }
 }
 
+public class SetPlayerProgramButton {
+    public readonly TextInput ProgramNameInput; 
+    public readonly TextInput ProgramInput;
+
+    public SetPlayerProgramButton(TextInput ProgramNameInput, TextInput ProgramInput) {
+        this.ProgramNameInput = ProgramNameInput; 
+        this.ProgramInput = ProgramInput; 
+    }
+}
+
+public static class SetPlayerProgramClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register([typeof(SetPlayerProgramButton), typeof(SetTrainProgramButton)], w, (w, e) => {
+            SetPlayerProgramButton playerBtn = w.GetComponent<SetPlayerProgramButton>(e); 
+            SetTrainProgramButton programBtn = w.GetComponent<SetTrainProgramButton>(e); 
+
+            string programName = playerBtn.ProgramNameInput.Text; 
+            string program = playerBtn.ProgramInput.Text; 
+            TAL.PlayerScripts[programName] = program; 
+
+            programBtn.SetProgram(programName, program);
+        });
+    }
+}
+
 public static class DrawWriteProgramInterfaceSystem {
     public static void Register(World w) {
         DrawSystem.Register<DrawInterfaceMessage<WriteProgramInterfaceData>>(w, (w, e) => {
@@ -45,7 +70,7 @@ public static class DrawWriteProgramInterfaceSystem {
                 w.ScreenWidth - 20, w.ScreenHeight - 20, direction: "vertical", align: "alignlow");
             
             TextInputContainer inputContainer = TextInputWrap.Add(w, Vector2.Zero, 
-                w.ScreenWidth - 30, w.ScreenHeight - 100, data.ProgramName, data.Program); 
+                w.ScreenWidth - 30, w.ScreenHeight - 100, data.ProgramName, data.Program, editableLabel: true); 
 
             llc.AddChild(inputContainer.GetParentEntity(), w); 
             
@@ -58,8 +83,12 @@ public static class DrawWriteProgramInterfaceSystem {
                 setOutline: true,
                 text: $"Set to {data.ProgramName}? Requires 1 Motherboard"
             );
+            w.SetComponent<SetPlayerProgramButton>(btnEnt, 
+                new SetPlayerProgramButton(inputContainer.GetLabelInput(), inputContainer.GetTextInput())); 
+            
             w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(data.ProgramName, data.GetTrain(), 
                 data.Program));
+            
 
             llc.AddChild(btnEnt, w); 
         });

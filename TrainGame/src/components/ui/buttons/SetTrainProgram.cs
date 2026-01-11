@@ -14,4 +14,9 @@ public class SetTrainProgramButton {
         this.train = train; 
         this.program = program; 
     }
+
+    public void SetProgram(string programName, string program) {
+        this.scriptName = programName; 
+        this.program = program; 
+    }
 }

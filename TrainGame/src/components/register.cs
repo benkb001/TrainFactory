@@ -93,6 +93,7 @@ public static class RegisterComponents {
         r<ProgressBar>(); 
         r<SaveButton>(); 
         r<Scene>(); 
+        r<SetPlayerProgramButton>();
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 
         r<SlowTimeButton>();

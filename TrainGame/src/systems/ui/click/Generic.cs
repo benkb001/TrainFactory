@@ -23,4 +23,12 @@ public static class ClickSystem {
             }
         ); 
     }
+
+    public static void Register(Type[] ts, World w, Action<World, int> onClick) {
+        w.AddSystem(ts.Concat([typeof(Button), typeof(Active)]).ToArray(), (w, e) => {
+            if (w.GetComponent<Button>(e).Clicked) {
+                onClick(w, e); 
+            }
+        });
+    }
 }
