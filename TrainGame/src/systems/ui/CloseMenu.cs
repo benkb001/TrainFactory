@@ -57,6 +57,12 @@ public static class CloseMenuSystem {
             case SceneType.ProgramInterface: 
                 MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
                 break;
+            case SceneType.ViewProgramInterface: 
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
+                break;
+            case SceneType.WriteProgramInterface: 
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
+                break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
         }
@@ -64,7 +70,7 @@ public static class CloseMenuSystem {
 
     public static void Register(World world) {
         Action<World> update = (w) => {
-            if (VirtualKeyboard.IsClicked(KeyBinds.Interact)) {
+            if (VirtualKeyboard.IsClicked(KeyBinds.Interact) && SceneSystem.CanExitScene(w)) {
                 List<int> menuEntities = w.GetMatchingEntities([typeof(Menu), typeof(Scene), typeof(Active)]); 
 
                 if (menuEntities.Count >= 1) {

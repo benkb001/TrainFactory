@@ -88,4 +88,9 @@ public static class EntityFactory {
             throw new InvalidOperationException($"Data for {typeof(T)} had more than 1 data entity set");
         }
     }
+
+    public static void AddToast(World w, float width, float height, string t) {
+        int e = AddUI(w, w.GetCameraTopLeft(), width, height, setOutline: true, text: t); 
+        w.SetComponent<Toast>(e, new Toast()); 
+    }
 }   

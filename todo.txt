@@ -4,6 +4,7 @@
 
 * Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * randomly zooming in ? 
+* Clicking m to go to map shouldn't happen if player is typing
 
 **** NEED TO TEST **** 
 
@@ -21,23 +22,11 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Add a way for players to input their own program for trains
-  * Add a system to associate the button that connects a program to a train, 
-    for entities that also have a component for player written script input, 
-    that runs before the regular submit system. This will query the textInput 
-    components for the program and program name and set the buttons fields. 
-  * Make it so submit button toasts if compiling was successful or not
-  * Move classes into appropriate files once done, from systems/ui/click/SetTrainProgram.cs
-  * Add close menu system stuff for new interfaces 
-    * Maybe could make new generic stuff have an interface to get a menu object 
-      and then could refactor other draw things to use it? 
 * Make some statistics available on the map ui
   (like how many idle trains there are, how much resources of each type you have, etc)
 * Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
 * Add number of stored items to machine ui 
-* Machines still crafting if game is paused, need to have machines 
-  connected to World.wt instead of using ticks directly
 * Add train program to train ui 
 
 **** FUTURE FEATURES **** 
@@ -57,6 +46,10 @@
     type, such as solid/liquid, and others if added. Then adding a 
     cart just increases a scaling factor on the stack sizes of the 
     corresponding inventory type 
+* Catch up on PersistentState 
+  * Player written programs 
+* Add tutorials 
+  * Syntax for TAL will def be needed 
 
 **** FAR FUTURE FEATURES **** 
 

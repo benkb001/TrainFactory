@@ -76,4 +76,9 @@ public static class SceneSystem {
 
         w.SetCameraPosition(CameraPositions[type]);
     }
+
+    public static bool CanExitScene(World w) {
+        return w.GetMatchingEntities([typeof(TextInput), typeof(Active)]).Where(
+            e => w.GetComponent<TextInput>(e).Active).ToList().Count == 0; 
+    }
 }

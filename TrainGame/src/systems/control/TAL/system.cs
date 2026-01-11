@@ -99,19 +99,28 @@ public class TAL {
 
     public static void BuyTrainProgram(string program, Train t, World w) {
         bool hasMotherboard = false; 
-        Inventory inv = t.ComingFrom.Inv; 
-        
-        if (inv.ItemCount(ItemID.Motherboard) >= 1) {
-            inv.Take(ItemID.Motherboard, 1); 
+        Inventory inv;
+
+        if (t.ComingFrom.Inv.ItemCount(ItemID.Motherboard) >= 1) {
+            inv = t.ComingFrom.Inv; 
             hasMotherboard = true; 
-        } else if (t.Inv.ItemCount(ItemID.Motherboard) >= 1) {
-            t.Inv.Take(ItemID.Motherboard, 1); 
-            hasMotherboard = true; 
+        } else {
+            if (t.Inv.ItemCount(ItemID.Motherboard) >= 1) {
+                hasMotherboard = true; 
+            }
+            inv = t.Inv; 
         }
 
         if (hasMotherboard) {
-            TAL.SetTrainProgram(program, t, w); 
-            //MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t)); 
+            try {
+                TAL.SetTrainProgram(program, t, w); 
+                EntityFactory.AddToast(w, 150, 75, $"Successfully set {t.Id} program!");
+                inv.Take(ItemID.Motherboard, 1); 
+            } catch (InvalidOperationException) {
+                EntityFactory.AddToast(w, 150, 75, $"Failed to compile program for {t.Id}");
+            }
+        } else {
+            EntityFactory.AddToast(w, 150, 75, $"You must place a Motherboard in {t.Id}'s inventory to program it!");
         }
     }
 

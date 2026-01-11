@@ -623,7 +623,7 @@ namespace TrainGame.Constants
             factory.Inv.Add(ItemID.Gasifier, 1);
             factory.Inv.Add(ItemID.Kiln, 1); 
             factory.Inv.Add(ItemID.Excavator, 1); 
-            factory.Inv.Add(ItemID.Motherboard, 1); 
+            factory.Inv.Add(ItemID.Motherboard, 5); 
             factory.Inv.Add(ItemID.Iron, 50); 
             factory.Inv.Add(ItemID.Glass, 20); 
             factory.AddCart(new Cart(CartType.Liquid)); 

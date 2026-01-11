@@ -111,7 +111,7 @@ public static class TextInputWrap {
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
             outline: true, label: label);
         TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText); 
-        Console.WriteLine($"Default text: {defaultText}");
+
         int llEnt = llc.LLEnt; 
         w.SetComponent<TextInput>(llEnt, input); 
         w.SetComponent<Button>(llEnt, new Button()); 
