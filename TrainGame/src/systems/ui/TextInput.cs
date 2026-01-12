@@ -132,9 +132,10 @@ public static class TextInputSystem {
             TextInput tIn = w.GetComponent<TextInput>(e); 
             bool changed = tIn.Changed; 
             
-            if (changed) {
+            if (changed || tIn.MovedCursor) {
                 string text = tIn.Text; 
                 List<string> words = format(text); 
+                List<string> lines = new(); 
 
                 for (int j = 0; j < words.Count; j++) {
                     words[j] = words[j].Substring(0, Math.Min(words[j].Length, tIn.CharsPerRow)); 
@@ -145,7 +146,6 @@ public static class TextInputSystem {
                 float lineWidth = frame.GetWidth(); 
                 float lineHeight = frame.GetHeight() / ll.ChildrenPerPage;
                 int i = 0; 
-                int lineIndex = 0; 
 
                 while (i < words.Count) {
                     string line = ""; 
@@ -160,21 +160,44 @@ public static class TextInputSystem {
                         i++;
                     }
                     
-                    while (ll.PagedChildren.Count <= lineIndex) {
-                        int curLineEnt = EntityFactory.Add(w); 
-                        w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
-                        w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
-                        LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
-                    }
-
-                    int lineEnt = ll.PagedChildren[lineIndex]; 
-                    w.GetComponent<TextBox>(lineEnt).Text = line; 
-                    lineIndex++; 
+                    lines.Add(line); 
                 }
+
+                tIn.Lines = lines; 
+                tIn.SynchronizeCursor(); 
+
+                while (ll.PagedChildren.Count < lines.Count + 1) {
+                    int curLineEnt = EntityFactory.Add(w); 
+                    w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
+                    w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
+                    LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
+                }
+
+                for (int j = 0; j < lines.Count; j++) {
+                    w.GetComponent<TextBox>(ll.PagedChildren[j]).Text = lines[j]; 
+                }
+
+                int lineIndex = lines.Count; 
 
                 while (lineIndex < ll.PagedChildren.Count) {
                     w.GetComponent<TextBox>(ll.PagedChildren[lineIndex]).Text = ""; 
                     lineIndex++; 
+                }
+
+                (int cursorCol, int cursorRow) = tIn.CursorCoordinates;
+
+                if (cursorRow >= 0 && cursorRow < ll.PagedChildren.Count) {
+                    int cursorLineEnt = ll.PagedChildren[cursorRow];
+                    Vector2 linePosition = w.GetComponent<Frame>(cursorLineEnt).Position; 
+                    string cursorLineStr = w.GetComponent<TextBox>(cursorLineEnt).Text; 
+                    int col = Math.Min(cursorCol, cursorLineStr.Length - 1); 
+                    col = Math.Max(0, col); 
+                    Vector2 baseChar = w.MeasureString("A");
+                    float charWidth = baseChar.X - 2.75f;
+                    float charHeight = baseChar.Y; 
+                    float strWidth = (cursorLineStr.Length == 0) ? 5 : charWidth * (cursorLineStr.Substring(0, col).Length + 1); 
+                    Vector2 cursorPosition = linePosition + new Vector2(strWidth, charHeight / 8f); 
+                    w.GetComponent<Frame>(tIn.CursorEnt).SetCoordinates(cursorPosition);  
                 }
             }
 
@@ -190,3 +213,16 @@ public static class TextInputSystem {
         });
     }
 }
+
+/*
+while (ll.PagedChildren.Count <= lineIndex) {
+    int curLineEnt = EntityFactory.Add(w); 
+    w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
+    w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
+    LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
+}
+
+int lineEnt = ll.PagedChildren[lineIndex]; 
+w.GetComponent<TextBox>(lineEnt).Text = line; 
+lineIndex++; 
+*/

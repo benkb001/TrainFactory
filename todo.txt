@@ -27,8 +27,8 @@
 **** NEXT FEATURES **** 
 
 * Improve textbox drawing for textInput
-  * begin drawing cursor 
-  * autopage with cursor
+  * fix cursor size and make it blink 
+  * fix cursor drawing at column 0 when string nonzero length
 
 **** FUTURE FEATURES **** 
 

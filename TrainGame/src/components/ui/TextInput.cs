@@ -17,33 +17,48 @@ using TrainGame.Constants;
 public class TextInput {
     private string text; 
     private int cursorIndex; 
+    private (int, int) cursorCoordinates = (0, 0);  
     private int cursorVisibilityFrame = 0; 
     private int charsPerRow; 
+    private int cursorEnt = -1; 
     public string Text => text; 
     public int CharsPerRow => charsPerRow; 
     public int CursorIndex => cursorIndex; 
     public bool Changed = true; 
     public bool MovedCursor = false; 
+    public (int, int) CursorCoordinates => cursorCoordinates; 
+    public List<string> Lines = new(); 
+    public int CursorEnt => cursorEnt; 
 
     private static int cursorFramesVisible = 30; 
 
     public bool Active = false;
 
-    public TextInput(int charsPerRow = 0, string defaultText = "") {
+    public TextInput(int charsPerRow = 0, string defaultText = "", int cursorEnt = -1) {
         text = defaultText;
         cursorIndex = defaultText.Length; 
-        this.charsPerRow = charsPerRow; 
+        this.charsPerRow = charsPerRow;
+        this.cursorEnt = cursorEnt; 
     }
 
     public void AddChar(string s) {
         text = text.Insert(cursorIndex, s); 
         cursorIndex++; 
+        /*
+        if (cursorCoordinates.Item1 < Lines.Count) {
+
+            Lines[cursorCoordinates.Item1].Insert(cursorCoordinates.Item2, s); 
+        }
+        
+        setCursorCoordinatesFromIndex(); 
+        */
     }
 
     public void DeleteChar() {
         if (cursorIndex > 0 && text.Length > 0) {
             text = text.Remove(cursorIndex - 1, 1);
             cursorIndex--; 
+            setCursorCoordinatesFromIndex();
         }
     }
 
@@ -55,10 +70,15 @@ public class TextInput {
         cursorVisibilityFrame = (cursorVisibilityFrame + 1) % (cursorFramesVisible * 2); 
     }
 
+    public void SynchronizeCursor() {
+        setCursorCoordinatesFromIndex();
+    }
+
     private void changeCursor(int delta) {
         cursorIndex += delta; 
         cursorIndex = Math.Max(0, cursorIndex); 
         cursorIndex = Math.Min(cursorIndex, text.Length); 
+        setCursorCoordinatesFromIndex(); 
     }
 
     public void CursorLeft() {
@@ -70,11 +90,39 @@ public class TextInput {
     }
 
     public void CursorUp() {
-        changeCursor(-charsPerRow); 
+        cursorCoordinates.Item2 = Math.Max(0, cursorCoordinates.Item2 - 1); 
+        if (cursorCoordinates.Item2 < Lines.Count && cursorCoordinates.Item2 > -1) {
+            cursorCoordinates.Item1 = Math.Min(cursorCoordinates.Item1, Lines[cursorCoordinates.Item2].Length); 
+        }
+        setCursorIndexFromCoordinates();
     }
 
     public void CursorDown() {
-        changeCursor(charsPerRow); 
+        if (cursorCoordinates.Item2 + 1 < Lines.Count) {
+            cursorCoordinates.Item2 = cursorCoordinates.Item2 + 1;
+            cursorCoordinates.Item1 = Math.Min(cursorCoordinates.Item1, Lines[cursorCoordinates.Item2].Length); 
+            setCursorIndexFromCoordinates(); 
+        }
+    }
+
+    private void setCursorCoordinatesFromIndex() {
+        int i = 0; 
+        int charsConsumed = 0; 
+        while (i < Lines.Count && (charsConsumed + Lines[i].Length) < cursorIndex) {
+            charsConsumed += Lines[i].Length + 1; 
+            i++; 
+        }
+        cursorCoordinates = (cursorIndex - charsConsumed, i);
+    }
+
+    private void setCursorIndexFromCoordinates() {
+        (int column,  int row) = cursorCoordinates;
+        int index = 0; 
+        for (int i = 0; i < row && i < Lines.Count; i++) {
+            index += Lines[i].Length + 1; 
+        }
+        index += column; 
+        cursorIndex = index; 
     }
 }
 
@@ -110,7 +158,8 @@ public static class TextInputWrap {
         LinearLayoutContainer llc = LinearLayoutWrap.Add(w, position, width, height, usePaging: true, 
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
             outline: true, label: label);
-        TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText); 
+        int cursorEnt = EntityFactory.AddUI(w, Vector2.Zero, 2, 20, setOutline: true); 
+        TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText, cursorEnt); 
 
         int llEnt = llc.LLEnt; 
         w.SetComponent<TextInput>(llEnt, input); 
