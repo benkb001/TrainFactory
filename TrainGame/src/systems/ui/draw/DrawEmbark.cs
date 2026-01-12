@@ -35,7 +35,11 @@ public class DrawEmbarkSystem {
 
         int labelEntity = EntityFactory.Add(w); 
         w.SetComponent<Outline>(labelEntity, new Outline()); 
-        string summary = $"{t.Id}\nMPH: {t.MilesPerHour}\nCarts: {t.Carts.Count}\nSend to a new city?"; 
+        string summary = $"{t.Id}\n"; 
+        summary += $"MPH: {t.MilesPerHour}\n"; 
+        summary += $"Carts: {t.Carts.Count}\n"; 
+        summary += $"Program: {t.ProgramName}\n"; 
+        summary += "Send to a new city?"; 
         w.SetComponent<TextBox>(labelEntity, new TextBox(summary)); 
         w.SetComponent<Frame>(labelEntity, new Frame(0, 0, buttonWidth, buttonHeight * 2)); 
         ll.AddChild(labelEntity); 

@@ -71,6 +71,7 @@ public static class RegisterComponents {
         r<Inventory.Item>();
         r<InventoryOrganizeMessage>();
         r<Machine>(); 
+        r<MachineHeader>();
         r<MachinePriorityStepper>();
         r<MachineRequestButton>(); 
         r<MachineStorageStepper>();

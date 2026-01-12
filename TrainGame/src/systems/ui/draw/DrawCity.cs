@@ -15,7 +15,6 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Systems;
 
-
 public class DrawCitySystem {
     private static float machineWidth = 50f; 
     private static float machineHeight = 50f; 

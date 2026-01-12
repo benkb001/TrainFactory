@@ -97,7 +97,7 @@ public class TAL {
         [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse)
     };
 
-    public static void BuyTrainProgram(string program, Train t, World w) {
+    public static void BuyTrainProgram(string program, Train t, World w, string programName = "") {
         bool hasMotherboard = false; 
         Inventory inv;
 
@@ -113,7 +113,7 @@ public class TAL {
 
         if (hasMotherboard) {
             try {
-                TAL.SetTrainProgram(program, t, w); 
+                TAL.SetTrainProgram(program, t, w, programName: programName); 
                 EntityFactory.AddToast(w, 150, 75, $"Successfully set {t.Id} program!");
                 inv.Take(ItemID.Motherboard, 1); 
             } catch (InvalidOperationException) {
@@ -124,9 +124,9 @@ public class TAL {
         }
     }
 
-    public static TALBody SetTrainProgram(string program, Train t, World w, int nextInstruction = 0) {
+    public static TALBody SetTrainProgram(string program, Train t, World w, int nextInstruction = 0, string programName = "") {
         TALBody body = TALParser.ParseProgram(program, w, t, nextInstruction); 
-        t.SetProgram(program); 
+        t.SetProgram(program, programName); 
         t.SetExecutable(body); 
         return body;
     }

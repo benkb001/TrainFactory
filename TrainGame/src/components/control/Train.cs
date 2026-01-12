@@ -27,6 +27,7 @@ public class Train : IInventorySource, IID {
     private bool isEmbarking; 
     private static HashSet<string> usedIDs = new(); 
     private string program; 
+    private string programName = "None"; 
     private TALBody executable; 
 
     public WorldTime DepartureTime => left; 
@@ -41,6 +42,7 @@ public class Train : IInventorySource, IID {
     public float Mass => mass; 
     public bool IsEmbarking => isEmbarking; 
     public string Program => program; 
+    public string ProgramName => programName; 
     public float Power => power; 
     public TALBody Executable => executable; 
 
@@ -190,8 +192,9 @@ public class Train : IInventorySource, IID {
         return Id; 
     }
 
-    public void SetProgram(string program) {
+    public void SetProgram(string program, string programName = "") {
         this.program = program; 
+        this.programName = programName; 
     }
 
     public void SetExecutable(TALBody executable) {

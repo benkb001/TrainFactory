@@ -62,14 +62,9 @@ public static class DrawMachineInterfaceSystem {
             LinearLayoutWrap.AddChild(headerEntity, leftColEnt, leftCol, w);
             float headerWidth = invWidth;
             float headerHeight = w.ScreenHeight - invHeight - Constants.LabelHeight - 20f; 
-            
-            string hStr = $"{m.Id}\n"; 
-            hStr += $"Level: {m.Level}\n"; 
-            hStr += $"Craft Speed: {m.GetCraftSpeedFormatted()}"; 
-            hStr += $"Recipe: \n{m.GetRecipeFormatted()}"; 
-            TextBox headerTextBox = new TextBox(hStr); 
 
-            w.SetComponent<TextBox>(headerEntity, new TextBox(hStr)); 
+            w.SetComponent<TextBox>(headerEntity, new TextBox("")); 
+            w.SetComponent<MachineHeader>(headerEntity, new MachineHeader(m)); 
             w.SetComponent<Frame>(headerEntity, new Frame(Vector2.Zero, headerWidth, headerHeight)); 
             w.SetComponent<Outline>(headerEntity, new Outline());
 

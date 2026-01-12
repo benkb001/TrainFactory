@@ -27,8 +27,8 @@
       * begin drawing cursor 
       * autopage with cursor
 * Make inventory move if player walks over it
-* Add number of stored items to machine ui 
-* Add train program to train ui 
+* Add scrolling to LL paging
+  * If you scroll and the mouse is inside the ll entity
 
 **** FUTURE FEATURES **** 
 
@@ -49,6 +49,7 @@
     corresponding inventory type 
 * Catch up on PersistentState 
   * Player written programs 
+  * machine.lifetimeProductsCrafted
 * Add tutorials 
   * Syntax for TAL will def be needed 
 

@@ -42,6 +42,7 @@ public class Machine : IID {
     private int priority; 
     private int numRecipeToStore;
     private bool playerAtMachine; 
+    private int lifetimeProductsCrafted; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
     public int CraftTicks => craftTicks; 
@@ -56,11 +57,13 @@ public class Machine : IID {
     public bool CraftComplete => craftComplete; 
     public CraftState State => state; 
     public Dictionary<string, int> Recipe => recipe; 
+    public Dictionary<string, int> Stored => stored;
     public string UpgradeItemID => upgradeItemID; 
     public bool AllowManual => allowManual; 
     public City GetCity() => city; 
     public bool PlayerAtMachine => playerAtMachine; 
     public int CurCraftTicks => curCraftTicks; 
+    public int LifetimeProductsCrafted => lifetimeProductsCrafted; 
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
@@ -180,6 +183,7 @@ public class Machine : IID {
         int productToDeliver = productCount * numCrafting; 
         int productLeft = productToDeliver - productDelivered; 
         int curDelivered = Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productLeft));
+        lifetimeProductsCrafted += curDelivered; 
         productDelivered += curDelivered; 
         if (productDelivered >= productToDeliver) {
             state = CraftState.Idle; 

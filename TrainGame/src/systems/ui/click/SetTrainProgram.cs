@@ -20,8 +20,10 @@ public static class SetTrainProgramClickSystem {
             Train t = btn.GetTrain(); 
             Inventory inv = t.ComingFrom.Inv; 
             string program = btn.Program;
+            string programName = btn.ProgramName; 
 
-            TAL.BuyTrainProgram(program, t, w);
+            TAL.BuyTrainProgram(program, t, w, programName);
+            Console.WriteLine(programName); 
         });
     }
 }

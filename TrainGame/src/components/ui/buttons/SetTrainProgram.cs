@@ -6,6 +6,7 @@ public class SetTrainProgramButton {
     private Train train; 
 
     public string ScriptName => scriptName;
+    public string ProgramName => scriptName;
     public string Program => program;  
     public Train GetTrain() => train; 
 
