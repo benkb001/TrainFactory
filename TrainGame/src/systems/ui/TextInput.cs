@@ -8,6 +8,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+using Color = Microsoft.Xna.Framework.Color; 
+using _Color = System.Drawing.Color; 
+
 using TrainGame.Components; 
 using TrainGame.ECS;
 using TrainGame.Utils;
@@ -63,8 +66,17 @@ public static class TextInputSystem {
     public static void RegisterType(World w) {
         w.AddSystem([typeof(TextInput), typeof(Active)], (w, e) => {
             TextInput tIn = w.GetComponent<TextInput>(e); 
-            tIn.IncrementVisibility(); 
+            Outline cursorOutline = w.GetComponent<Outline>(tIn.CursorEnt);
+
             if (tIn.Active) {
+                tIn.IncrementCursorVisibility(); 
+
+                if (tIn.CursorIsVisible()) {
+                    cursorOutline.SetColor(Color.White); 
+                } else {
+                    cursorOutline.SetColor(Color.Transparent); 
+                }
+
                 bool changed = false; 
                 bool movedCursor = false; 
                 bool shift = VirtualKeyboard.IsPressed(Keys.LeftShift);
@@ -123,6 +135,8 @@ public static class TextInputSystem {
 
                 tIn.Changed = changed; 
                 tIn.MovedCursor = movedCursor; 
+            } else {
+                cursorOutline.SetColor(Color.Transparent); 
             }
         }); 
     }
@@ -186,16 +200,22 @@ public static class TextInputSystem {
 
                 (int cursorCol, int cursorRow) = tIn.CursorCoordinates;
 
+                //TODO: the manual scaling here is actually a bug resulting 
+                //from not using the textbox scale on measure string, but 
+                //for now this is fine. It would be fixed if we ensured 
+                //paging didnt resize row height to scale down text, then 
+                //could use regular measuring like in RegisterCopy below
+
                 if (cursorRow >= 0 && cursorRow < ll.PagedChildren.Count) {
                     int cursorLineEnt = ll.PagedChildren[cursorRow];
                     Vector2 linePosition = w.GetComponent<Frame>(cursorLineEnt).Position; 
                     string cursorLineStr = w.GetComponent<TextBox>(cursorLineEnt).Text; 
-                    int col = Math.Min(cursorCol, cursorLineStr.Length - 1); 
+                    int col = Math.Min(cursorCol, cursorLineStr.Length); 
                     col = Math.Max(0, col); 
                     Vector2 baseChar = w.MeasureString("A");
                     float charWidth = baseChar.X - 2.75f;
                     float charHeight = baseChar.Y; 
-                    float strWidth = (cursorLineStr.Length == 0) ? 5 : charWidth * (cursorLineStr.Substring(0, col).Length + 1); 
+                    float strWidth = charWidth * (cursorLineStr.Substring(0, col).Length); 
                     Vector2 cursorPosition = linePosition + new Vector2(strWidth, charHeight / 8f); 
                     w.GetComponent<Frame>(tIn.CursorEnt).SetCoordinates(cursorPosition);  
                 }
@@ -206,10 +226,15 @@ public static class TextInputSystem {
     }
 
     public static void RegisterCopy(World w) {
-        w.AddSystem([typeof(TextBox), typeof(TextInput)], (w, e) => {
+        w.AddSystem([typeof(TextBox), typeof(Frame), typeof(TextInput), typeof(Active)], (w, e) => {
             TextBox tb = w.GetComponent<TextBox>(e); 
             TextInput input = w.GetComponent<TextInput>(e); 
             tb.Text = input.Text; 
+            Frame cursorFrame = w.GetComponent<Frame>(input.CursorEnt); 
+            Frame tbFrame = w.GetComponent<Frame>(e); 
+            int cIndex = Math.Min(input.CursorIndex, tb.Text.Length);
+            Vector2 measure = w.MeasureString(tb.Text.Substring(0, cIndex));
+            cursorFrame.SetCoordinates(tbFrame.Position + new Vector2(measure.X, measure.Y / 8f)); 
         });
     }
 }

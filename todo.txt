@@ -26,12 +26,6 @@
 
 **** NEXT FEATURES **** 
 
-* Improve textbox drawing for textInput
-  * fix cursor size and make it blink 
-  * fix cursor drawing at column 0 when string nonzero length
-
-**** FUTURE FEATURES **** 
-
 * Add combat and reward system
     * Rogue-like/perma-progression mix, time-limited events
       for special rewards at outside cities, permanently available 
@@ -39,6 +33,9 @@
         * Possibly 'time-crystals' which give you resources using a 
           heuristic algorithm to calculate how much of each thing the player 
           would get if that much time passed (like in perfect tower)
+
+**** FUTURE FEATURES **** 
+
 * Add warning if player is going to send a train with an empty inv
 * Add some default toasts
 * Make it so trains need fuel

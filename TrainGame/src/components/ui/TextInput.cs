@@ -62,11 +62,11 @@ public class TextInput {
         }
     }
 
-    public bool IsVisible() {
+    public bool CursorIsVisible() {
         return (cursorVisibilityFrame / cursorFramesVisible) > 0; 
     }
 
-    public void IncrementVisibility() {
+    public void IncrementCursorVisibility() {
         cursorVisibilityFrame = (cursorVisibilityFrame + 1) % (cursorFramesVisible * 2); 
     }
 
@@ -158,7 +158,7 @@ public static class TextInputWrap {
         LinearLayoutContainer llc = LinearLayoutWrap.Add(w, position, width, height, usePaging: true, 
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
             outline: true, label: label);
-        int cursorEnt = EntityFactory.AddUI(w, Vector2.Zero, 2, 20, setOutline: true); 
+        int cursorEnt = addCursor(w); 
         TextInput input = new TextInput(GetCharsPerRow(w, width), defaultText, cursorEnt); 
 
         int llEnt = llc.LLEnt; 
@@ -169,8 +169,9 @@ public static class TextInputWrap {
 
         if (editableLabel && label != "") {
             int labelEnt = llc.LabelEntity; 
+            int cEnt = addCursor(w); 
             w.SetComponent<Button>(labelEnt, new Button());
-            labelInput = new TextInput(defaultText: label);
+            labelInput = new TextInput(defaultText: label, cursorEnt: cEnt);
             w.SetComponent<TextInput>(labelEnt, labelInput); 
         }
 
@@ -189,5 +190,9 @@ public static class TextInputWrap {
     public static int GetChildrenPerPage(World w, float height) {
         float oneCharHeight = w.MeasureString("A").Y; 
         return (int)(height / oneCharHeight); 
+    }
+
+    private static int addCursor(World w) {
+        return EntityFactory.AddUI(w, Vector2.Zero, 2, 20, setOutline: true); 
     }
 }
