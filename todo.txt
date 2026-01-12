@@ -12,6 +12,10 @@
 * Persistent Data
 * UI for setting program, if any clear assertions
 
+**** CLEAN UP **** 
+
+* Remove DrawTrainsViewSystem and DrawMachinesViewSystems
+
 **** NEXT FEATURES **** 
 
 * Improve UI
@@ -22,7 +26,6 @@
     * Improve textbox drawing for textInput
       * begin drawing cursor 
       * autopage with cursor
-* Add player inventory to city interface, so player can put stuff from their inv to city
 * Make inventory move if player walks over it
 * Add number of stored items to machine ui 
 * Add train program to train ui 

@@ -12,7 +12,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class DrawTrainsViewSystem() {
+public class DrawTrainsViewSystem {
     public static void Draw(DrawTrainsViewMessage dm, World w) {
         List<Train> trains = dm.Trains; 
 

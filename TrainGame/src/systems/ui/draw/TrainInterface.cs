@@ -91,8 +91,6 @@ public class DrawTrainInterfaceSystem {
     private static void addInvs(LinearLayout container, int containerEnt, Train t, World w, float height) {
         Inventory trainInv = t.Inv; 
         Inventory cityInv = t.ComingFrom.Inv; 
-        
-        float cellWidth = Constants.InventoryCellSize + Constants.InventoryPadding; 
 
         (float trainInvWidth, float trainInvHeight) = InventoryWrap.GetUI(trainInv); 
         (float cityInvWidth, float cityInvHeight) = InventoryWrap.GetUI(cityInv); 

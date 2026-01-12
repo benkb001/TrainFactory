@@ -33,7 +33,7 @@ public static class DrawInventoryCallback {
 
     // returns inventoryEntity, can get the container from LLChild component
     public static InventoryView Draw(World w, Inventory inv, Vector2 Position, float Width, float Height, 
-        int Entity = -1, float Padding = 0f, bool SetMenu = true, bool DrawLabel = false) {
+        int Entity = -1, float Padding = Constants.InventoryPadding, bool SetMenu = true, bool DrawLabel = false) {
 
         int containerEntity = w.EntityExists(Entity) ? Entity : EntityFactory.Add(w); 
         LinearLayout container = new LinearLayout("vertical", "alignlow"); 

@@ -381,7 +381,15 @@ public static class InventoryWrap {
         if (w.ComponentContainsEntity<Inventory>(entity)) {
             return w.GetComponent<Inventory>(entity); 
         }
-        return w.GetComponentArray<Inventory>().Where(pair => pair.Value.GetId() == inventoryId).FirstOrDefault().Value; 
+        return GetByID(w, inventoryId); 
+    }
+
+    public static Inventory GetPlayerInv(World w) {
+        return GetByID(w, Constants.PlayerInvID); 
+    }
+
+    public static Inventory GetByID(World w, string inventoryID) {
+        return w.GetComponentArray<Inventory>().Where(pair => pair.Value.GetId() == inventoryID).FirstOrDefault().Value; 
     }
 
     public static int GetEntity(string inventoryId, World w) {
@@ -389,12 +397,12 @@ public static class InventoryWrap {
             e => w.GetComponent<Inventory>(e).Id == inventoryId).FirstOrDefault(); 
     }
 
-    public static (float, float) GetUI(Inventory inv) {
+    public static (float, float) GetUI(Inventory inv, float scale = 1f) {
         float width = inv.GetCols() * (Constants.InventoryCellSize + Constants.InventoryPadding) + 
             Constants.InventoryPadding; 
         float height = inv.GetRows() * (Constants.InventoryCellSize + Constants.InventoryPadding) +
             Constants.InventoryPadding + Constants.LabelHeight;
-        return (width, height);
+        return (width * scale, height * scale);
     }
 
     public static int ItemCount(List<Inventory> invs, string itemID) {

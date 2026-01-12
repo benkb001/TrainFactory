@@ -28,6 +28,7 @@ public class LinearLayoutContainer {
     public int LLEnt => llEnt; 
     public int LabelEntity => labelEntity; 
     public int GetParentEntity() => parentEntity; 
+    public List<int> GetChildren() => ll.GetChildren(); 
 
     public LinearLayoutContainer(int llEnt, int parentEnt, int labelEntity, 
         LinearLayout ll, float llWidth, float llHeight) {
@@ -51,8 +52,8 @@ public class LinearLayoutContainer {
 
 public class LinearLayoutWrap {
     public static LinearLayoutContainer AddOuter(World w, string label = "") {
-        return Add(w, w.GetCameraTopLeft() + new Vector2(10, 10), w.ScreenWidth - 20, 
-        w.ScreenHeight - 20, direction: "vertical", label: label, outline: false);
+        return Add(w, w.GetCameraTopLeft(), w.ScreenWidth, 
+        w.ScreenHeight, direction: "vertical", label: label, outline: false, padding: 5f);
     }
     
     public static LinearLayoutContainer Add(World w, Vector2 position, float width, float height, 
@@ -93,7 +94,6 @@ public class LinearLayoutWrap {
 
         if (outline) {
             w.SetComponent<Outline>(outerLLEnt, new Outline()); 
-            w.SetComponent<Outline>(headerRowLLEnt, new Outline()); 
             w.SetComponent<Outline>(mainLLEnt, new Outline()); 
         }
         

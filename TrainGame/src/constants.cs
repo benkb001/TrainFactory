@@ -45,8 +45,8 @@ namespace TrainGame.Constants
         public static readonly float EmbarkLayoutHeight = 500f;
         public static readonly float EmbarkLayoutPadding = 5f;  
 
-        public static float InventoryCellSize = 60f; 
-        public static float InventoryPadding = 5f;
+        public const float InventoryCellSize = 60f; 
+        public const float InventoryPadding = 5f;
 
         public static float LabelHeight = 25f; 
 
