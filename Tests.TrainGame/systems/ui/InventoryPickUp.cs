@@ -33,7 +33,7 @@ public class InvetoryPickUpUISystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(5, 5); 
+        VirtualMouse.SetCoordinates(10, 10); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 

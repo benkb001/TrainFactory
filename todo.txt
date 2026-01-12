@@ -11,24 +11,24 @@
 * TextInput
 * Persistent Data
 * UI for setting program, if any clear assertions
+* ScreenAnchor system 
+* LL scroll paging
+* LLwrap depth setting when adding a child with children
+* Player walk over inv system
 
 **** CLEAN UP **** 
 
 * Remove DrawTrainsViewSystem and DrawMachinesViewSystems
+* Theres a bunch of VirtualMouse.SetCoordinates(10, 10) lines
+  that cause tests to fail if we slightly change how drawing 
+  linear Layout or inventory works, at least we can unify them 
+  into one constant value or change how we are testing this 
 
 **** NEXT FEATURES **** 
 
-* Improve UI
-  * Use LL Paging where appropriate
-    * Machine list in factory, train list, eventually inventory probably, 
-      but for now container is good, having 2 pagers right next to each other 
-      probably is a bit awk 
-    * Improve textbox drawing for textInput
-      * begin drawing cursor 
-      * autopage with cursor
-* Make inventory move if player walks over it
-* Add scrolling to LL paging
-  * If you scroll and the mouse is inside the ll entity
+* Improve textbox drawing for textInput
+  * begin drawing cursor 
+  * autopage with cursor
 
 **** FUTURE FEATURES **** 
 

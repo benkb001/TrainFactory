@@ -92,6 +92,30 @@ public partial class World {
         cameraLocked = true; 
     }
 
+    public void LockCameraZoom() {
+        if (!isTest) {
+            camera.LockZoom();
+        }
+    }
+
+    public void LockCameraPan() {
+        if (!isTest) {
+            camera.LockPan();
+        }
+    }
+
+    public void UnlockCameraZoom() {
+        if (!isTest) {
+            camera.UnlockZoom();
+        }
+    }
+
+    public void UnlockCameraPan() {
+        if (!isTest) {
+            camera.UnlockPan();
+        }
+    }
+
     public void UnlockCamera() {
         if (!isTest) {
             camera.Unlock(); 

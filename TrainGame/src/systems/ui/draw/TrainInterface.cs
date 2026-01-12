@@ -28,11 +28,20 @@ public class DrawTrainInterfaceSystem {
         w.SetComponent<LinearLayout>(buttonsContainerEnt, buttonsContainer);
         w.SetComponent<Frame>(buttonsContainerEnt, new Frame(0, 0, buttonsContainerWidth, buttonsContainerHeight)); 
 
-        //add upgrade button    
-        //TODO: This should only be clickable if the player is at the city
-
         float buttonWidth = buttonsContainerWidth - (2 * Constants.InventoryPadding); 
         float buttonHeight = buttonsContainerHeight / 6f; 
+
+        //add train summary 
+        string summary = $"{t.Id}\n"; 
+        summary += $"MPH: {t.MilesPerHour}\n"; 
+        summary += $"Carts: {t.Carts.Count}\n"; 
+        summary += $"Program: {t.ProgramName}\n"; 
+
+        int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight * 2, setOutline: true, 
+            text: summary);
+        LinearLayoutWrap.AddChild(sumEnt, buttonsContainerEnt, buttonsContainer, w);
+
+        //add upgrade button    
 
         Inventory playerInv = InventoryWrap.GetyByEntityOrId(w, inventoryId: Constants.PlayerInvID);
 
@@ -138,11 +147,10 @@ public class DrawTrainInterfaceSystem {
             w.SetComponent<LinearLayout>(containerEnt, container); 
             w.SetComponent<Frame>(containerEnt, new Frame(containerPos, containerWidth, containerHeight)); 
 
-            addEmbark(container, containerEnt, t, w, columnHeight); 
-            addInvs(container, containerEnt, t, w, columnHeight); 
             addButtons(container, containerEnt, t, w, columnHeight); 
+            addInvs(container, containerEnt, t, w, columnHeight); 
+            addEmbark(container, containerEnt, t, w, columnHeight); 
              
-            //TODO: add a way to remove carts here
             w.RemoveEntity(e); 
         }); 
     }

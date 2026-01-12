@@ -93,13 +93,18 @@ public static class DrawCityInterfaceSystem {
 
             float invScale = 0.7f;
             (float invWidth, float invHeight) = InventoryWrap.GetUI(inv, invScale); 
-            (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv, invScale); 
+            float playerInvWidth = 0f; 
+            float playerInvHeight = 0f; 
+            InventoryView playerInvView = null; 
 
+            if (playerInv != null) {
+                (playerInvWidth, playerInvHeight) = InventoryWrap.GetUI(playerInv, invScale); 
+                playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
+                    playerInvHeight, DrawLabel: true);
+            }
+            
             InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
                 Padding: Constants.InventoryPadding, DrawLabel: true); 
-
-            InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
-                playerInvHeight, DrawLabel: true);
 
             float invRowWidth = outerContainer.LLWidth; 
             float invRowHeight = Math.Max(playerInvHeight, invHeight) + 20f; 
@@ -114,7 +119,10 @@ public static class DrawCityInterfaceSystem {
             );
 
             invRow.AddChild(invView.GetParentEntity(), w); 
-            invRow.AddChild(playerInvView.GetParentEntity(), w); 
+
+            if (playerInv != null) {
+                invRow.AddChild(playerInvView.GetParentEntity(), w); 
+            }
 
             outerContainer.AddChild(invRow.GetParentEntity(), w);
 

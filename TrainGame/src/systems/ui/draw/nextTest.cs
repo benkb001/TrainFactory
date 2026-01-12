@@ -482,6 +482,14 @@ public static class NextDrawTestUISystem {
             int e = EntityFactory.Add(w); 
             Vector2 topleft = w.GetCameraTopLeft();
             TextInputWrap.Add(w, topleft, 500, 350);
+        },
+        [24] = (w) => {
+            w.UnlockCamera(); 
+            int ui = EntityFactory.AddUI(w, Vector2.Zero, 100, 100, text: "This should stay in topleft corner"); 
+            w.SetComponent<ScreenAnchor>(ui, new ScreenAnchor(Vector2.Zero)); 
+            
+            int label = EntityFactory.AddUI(w, w.GetCameraTopLeft() + new Vector2(100, 100), 100, 100, 
+                text: "this should move around when camera is panned");
         }
     };
 

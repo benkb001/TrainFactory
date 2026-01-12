@@ -22,7 +22,7 @@ public class DrawEmbarkSystem {
         float height = msg.Height; 
         float padding = msg.Padding; 
         float buttonWidth = msg.Width - (2 * msg.Padding); 
-        float buttonHeight = msg.Height / 6f;
+        float buttonHeight = msg.Height / 7f;
 
         Vector2 pos = msg.Position; 
 
@@ -35,13 +35,9 @@ public class DrawEmbarkSystem {
 
         int labelEntity = EntityFactory.Add(w); 
         w.SetComponent<Outline>(labelEntity, new Outline()); 
-        string summary = $"{t.Id}\n"; 
-        summary += $"MPH: {t.MilesPerHour}\n"; 
-        summary += $"Carts: {t.Carts.Count}\n"; 
-        summary += $"Program: {t.ProgramName}\n"; 
-        summary += "Send to a new city?"; 
+        string summary = "Send to a new city?"; 
         w.SetComponent<TextBox>(labelEntity, new TextBox(summary)); 
-        w.SetComponent<Frame>(labelEntity, new Frame(0, 0, buttonWidth, buttonHeight * 2)); 
+        w.SetComponent<Frame>(labelEntity, new Frame(0, 0, buttonWidth, buttonHeight)); 
         ll.AddChild(labelEntity); 
         
         List<City> adjacentCities = c.AdjacentCities;

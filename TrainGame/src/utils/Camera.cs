@@ -26,7 +26,8 @@ public class Camera {
     public Rectangle Bounds { get; protected set; }
     public Rectangle VisibleArea { get; protected set; }
     public Matrix Transform { get; protected set; }
-    private bool locked;
+    private bool zoomLocked; 
+    private bool panLocked; 
 
     private float currentMouseWheelValue, previousMouseWheelValue, zoom, previousZoom;
 
@@ -55,7 +56,8 @@ public class Camera {
         Bounds = viewport.Bounds;
         Zoom = 1f;
         Position = Vector2.Zero;
-        locked = false;
+        panLocked = false; 
+        zoomLocked = false; 
     }
 
     private void UpdateVisibleArea()
@@ -104,66 +106,84 @@ public class Camera {
     }
 
     public void Lock() {
-        locked = true;
+        panLocked = true; 
+        zoomLocked = true; 
     }
 
     public void Unlock() {
-        locked = false; 
+        panLocked = false; 
+        zoomLocked = false; 
+    }
+
+    public void LockPan() {
+        panLocked = true; 
+    }
+
+    public void UnlockPan() {
+        panLocked = false; 
+    }
+
+    public void LockZoom() {
+        zoomLocked = true; 
+    }
+
+    public void UnlockZoom() {
+        zoomLocked = false; 
     }
 
     public void UpdateCamera(Viewport bounds, bool force = false) {
-        if (!locked || force) {
-            Bounds = bounds.Bounds;
-            UpdateMatrix();
+        Bounds = bounds.Bounds;
+        UpdateMatrix();
 
-            Vector2 cameraMovement = Vector2.Zero;
-            int moveSpeed;
+        Vector2 cameraMovement = Vector2.Zero;
+        int moveSpeed;
 
-            if (Zoom > .8f)
-            {
-                moveSpeed = 15;
-            }
-            else if (Zoom < .8f && Zoom >= .6f)
-            {
-                moveSpeed = 20;
-            }
-            else if (Zoom < .6f && Zoom > .35f)
-            {
-                moveSpeed = 25;
-            }
-            else if (Zoom <= .35f)
-            {
-                moveSpeed = 30;
-            }
-            else
-            {
-                moveSpeed = 10;
-            }
+        if (Zoom > .8f)
+        {
+            moveSpeed = 15;
+        }
+        else if (Zoom < .8f && Zoom >= .6f)
+        {
+            moveSpeed = 20;
+        }
+        else if (Zoom < .6f && Zoom > .35f)
+        {
+            moveSpeed = 25;
+        }
+        else if (Zoom <= .35f)
+        {
+            moveSpeed = 30;
+        }
+        else
+        {
+            moveSpeed = 10;
+        }
 
-            
-            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveUp))
-            {
-                cameraMovement.Y = -moveSpeed;
-            }
+        
+        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveUp))
+        {
+            cameraMovement.Y = -moveSpeed;
+        }
 
-            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveDown))
-            {
-                cameraMovement.Y = moveSpeed;
-            }
+        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveDown))
+        {
+            cameraMovement.Y = moveSpeed;
+        }
 
-            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveLeft))
-            {
-                cameraMovement.X = -moveSpeed;
-            }
+        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveLeft))
+        {
+            cameraMovement.X = -moveSpeed;
+        }
 
-            if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveRight))
-            {
-                cameraMovement.X = moveSpeed;
-            }
-            
-            previousMouseWheelValue = currentMouseWheelValue;
-            currentMouseWheelValue = Mouse.GetState().ScrollWheelValue;
+        if (Keyboard.GetState().IsKeyDown(KeyBinds.CameraMoveRight))
+        {
+            cameraMovement.X = moveSpeed;
+        }
+        
+        previousMouseWheelValue = currentMouseWheelValue;
+        currentMouseWheelValue = Mouse.GetState().ScrollWheelValue;
 
+        if (!zoomLocked || force) {
             if (currentMouseWheelValue > previousMouseWheelValue)
             {
                 AdjustZoom(.05f);
@@ -173,10 +193,13 @@ public class Camera {
             {
                 AdjustZoom(-.05f);
             }
+        }
 
-            previousZoom = zoom;
-            zoom = Zoom;
 
+        previousZoom = zoom;
+        zoom = Zoom;
+
+        if (!panLocked || force) {
             MoveCamera(cameraMovement);
         }
     }

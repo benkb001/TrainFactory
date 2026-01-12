@@ -58,11 +58,21 @@ public class LinearLayoutWrap {
     
     public static LinearLayoutContainer Add(World w, Vector2 position, float width, float height, 
         bool usePaging = false, int childrenPerPage = 10, string direction = "horizontal", 
-        string align = "alignlow", float padding = 5f, string label = "", bool outline = true) {
+        string align = "alignlow", float padding = 5f, string label = "", bool outline = true,
+        bool screenAnchor = false, bool background = false) {
         
         //add the outer linear layout, has two children: header row and main ll
         int outerLLEnt = EntityFactory.Add(w); 
         w.SetComponent<Frame>(outerLLEnt, new Frame(position, width, height)); 
+
+        if (screenAnchor) {
+            w.SetComponent<ScreenAnchor>(outerLLEnt, new ScreenAnchor(position)); 
+        }
+
+        if (background) {
+            w.SetComponent<Background>(outerLLEnt, new Background(Colors.UIBG, 1f));
+        }
+
         LinearLayout outerLL = new LinearLayout("vertical", "alignlow"); 
         w.SetComponent<LinearLayout>(outerLLEnt, outerLL); 
         outerLL.Padding = padding; 
@@ -210,7 +220,23 @@ public class LinearLayoutWrap {
         ll.AddChild(childEntity); 
         LLChild c = new LLChild(linearLayoutEntity);
         w.SetComponent<LLChild>(childEntity, c);
-        c.Depth = GetDepth(childEntity, w);  
+        c.Depth = GetDepth(childEntity, w);
+        (LinearLayout childLL, bool success) = w.GetComponentSafe<LinearLayout>(childEntity); 
+        if (success) {
+            resetChildrenDepth(childEntity, childLL, w); 
+        }
+    }
+
+    private static void resetChildrenDepth(int llEnt, LinearLayout ll, World w) {
+        foreach (int cEnt in ll.GetChildren()) {
+            LLChild c = new LLChild(llEnt); 
+            w.SetComponent<LLChild>(cEnt, c); 
+            c.Depth = GetDepth(cEnt, w); 
+            (LinearLayout childLL, bool success) = w.GetComponentSafe<LinearLayout>(cEnt); 
+            if (success) {
+                resetChildrenDepth(cEnt, childLL, w); 
+            }
+        }
     }
 
     public static int GetDepth(int childEntity, World w, int depth = 0) {

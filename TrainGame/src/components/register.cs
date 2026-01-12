@@ -91,9 +91,11 @@ public static class RegisterComponents {
         r<Outline>(); 
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
+        r<PlayerInvFlag>(); 
         r<ProgressBar>(); 
         r<SaveButton>(); 
         r<Scene>(); 
+        r<ScreenAnchor>(); 
         r<SetPlayerProgramButton>();
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 

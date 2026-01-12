@@ -77,6 +77,7 @@ public static class CloseMenuSystem {
                     int e = menuEntities[0]; 
                     Menu menu = w.GetComponent<Menu>(e); 
                     SceneType type = w.GetComponent<Scene>(e).Type; 
+                    w.LockCamera(); 
                     returnFrom(type, menu, w); 
                 }
             }

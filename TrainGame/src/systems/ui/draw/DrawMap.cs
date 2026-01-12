@@ -19,6 +19,8 @@ public static class DrawMapSystem {
         Type[] ts = [typeof(DrawMapMessage)]; 
         Action<World, int> tf = (w, e) => {
             SceneSystem.EnterScene(w, SceneType.Map); 
+            w.UnlockCameraPan(); 
+            w.LockCameraZoom(); 
             Vector2 topleft = w.GetCameraTopLeft(); 
             int flagEnt = EntityFactory.Add(w); 
             w.SetComponent<MapUIFlag>(flagEnt, MapUIFlag.Get()); 
@@ -80,12 +82,13 @@ public static class DrawMapSystem {
             float hudHeight = w.ScreenHeight - 20f; 
             LinearLayoutContainer hud = LinearLayoutWrap.Add(
                 w, 
-                topleft + new Vector2(10, 0),
+                new Vector2(10, 0),
                 hudWidth, 
                 hudHeight,
                 direction: "vertical", 
                 align: "alignlow", 
-                outline: false
+                outline: false,
+                screenAnchor: true
             );
 
             //add clock to top of HUD
@@ -103,7 +106,6 @@ public static class DrawMapSystem {
 
             float speedButtonRowWidth = hudWidth; 
             float speedButtonRowHeight = speedButtonRowWidth / 5f; 
-
             LinearLayoutContainer speedButtonRow = LinearLayoutWrap.Add(
                 w, 
                 Vector2.Zero, 

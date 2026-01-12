@@ -57,6 +57,7 @@ public static class RegisterSystems {
         SetTrainProgramClickSystem.Register(w);
         SetTrainProgramInterfaceClickSystem.Register(w); 
         LLPageSystem.Register(w); 
+        LLPageSystem.RegisterScroll(w); 
         TextInputSystem.RegisterDeactivate(w); 
         TextInputSystem.RegisterActivate(w); 
         TextInputSystem.RegisterType(w); 
@@ -108,6 +109,9 @@ public static class RegisterSystems {
 
         InventoryControlSystem.RegisterUpdate(w); 
         
+        PlayerInventoryPositionSystem.Register(w); 
+        
+        ScreenAnchorSystem.Register(w); 
         LinearLayoutSystem.Register(w);
         LabelPositionSystem.Register(w); 
 

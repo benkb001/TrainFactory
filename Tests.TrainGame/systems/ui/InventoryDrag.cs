@@ -57,10 +57,11 @@ public class InventoryDragSystemTest {
     [Fact]
     public void InventoryDragSystem_ShouldMakeAnOrganizeInventoryMessageWhenItemDroppedOverANewSlot() {
         (World w, Inventory inv1, Inventory inv2, Inventory.Item apple, int invEntity1, int invEntity2) = init();
+        VirtualMouse.Reset(); 
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(5, 5); 
+        VirtualMouse.SetCoordinates(10, 10); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -109,7 +110,7 @@ public class InventoryDragSystemTest {
         LinearLayout row2 = w.GetComponent<LinearLayout>(ll2.GetChildren()[targetRow]); 
         Vector2 targetVector = w.GetComponent<Frame>(row2.GetChildren()[targetCol]).Position; 
 
-        VirtualMouse.SetCoordinates(5, 5); 
+        VirtualMouse.SetCoordinates(10, 10); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -137,7 +138,7 @@ public class InventoryDragSystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(5, 5); 
+        VirtualMouse.SetCoordinates(10, 10); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -155,7 +156,7 @@ public class InventoryDragSystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(5, 5); 
+        VirtualMouse.SetCoordinates(10, 10); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 

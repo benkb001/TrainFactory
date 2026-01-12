@@ -27,8 +27,11 @@ public class DrawCitySystem {
         float playerInvWidth = w.ScreenWidth - 100f; 
         Vector2 playerInvPosition = topleft + new Vector2(50f, w.ScreenHeight - 120f); 
         Inventory playerInv = w.GetComponent<Inventory>(playerInvDataEnt); 
-        InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, playerInvPosition, playerInvWidth, 
+        InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
             playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
+        w.SetComponent<ScreenAnchor>(playerInvView.GetParentEntity(), 
+            new ScreenAnchor(new Vector2(0, w.ScreenHeight - playerInvHeight)));
+        w.SetComponent<PlayerInvFlag>(playerInvView.GetParentEntity(), new PlayerInvFlag()); 
 
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
