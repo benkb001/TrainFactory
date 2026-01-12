@@ -52,6 +52,14 @@ public class Frame {
         return new RectangleF(x, y, width, height); 
     }
 
+    public RectangleF GetRectangle(Vector2 v) {
+        return GetRectangle(v.X, v.Y); 
+    }
+
+    public RectangleF GetRectangle(float x = 0f, float y = 0f) {
+        return new RectangleF(this.x + x, this.y + y, width, height);
+    }
+
     public void SetCoordinates(float x, float y) {
         p.Offset(new Vector2(x - this.x, y - this.y)); 
         this.x = x; 
@@ -108,6 +116,10 @@ public class Frame {
         bool touchingX = touchingLeft || touchingRight && overlapping(p.Top, p.Bottom, other.p.Top, other.p.Bottom); 
 
         return touchingX || touchingY; 
+    }
+
+    public bool IntersectsWith(Frame other) {
+        return GetRectangle().IntersectsWith(other.GetRectangle()); 
     }
 
     private bool overlapping(float x1, float x2, float y1, float y2) {

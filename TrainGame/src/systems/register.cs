@@ -17,6 +17,7 @@ public static class RegisterSystems {
         //CameraLockSystem.Register(w); 
 
         CardinalMovementSystem.Register(w); 
+        MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); 
         TALExecutionSystem.Register(w);
         TrainTravelSystem.Register(w); 
@@ -68,6 +69,7 @@ public static class RegisterSystems {
         UpgradeMachineClickSystem.Register(w); 
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
+        ShootSystem.Register(w);
 
         CloseMenuSystem.Register(w); 
         

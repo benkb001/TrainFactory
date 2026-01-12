@@ -15,6 +15,7 @@
 * LL scroll paging
 * LLwrap depth setting when adding a child with children
 * Player walk over inv system
+* Frame.IntersectsWith
 
 **** CLEAN UP **** 
 
@@ -27,12 +28,30 @@
 **** NEXT FEATURES **** 
 
 * Add combat and reward system
-    * Rogue-like/perma-progression mix, time-limited events
-      for special rewards at outside cities, permanently available 
-      one at the factory.
-        * Possibly 'time-crystals' which give you resources using a 
-          heuristic algorithm to calculate how much of each thing the player 
-          would get if that much time passed (like in perfect tower)
+  * Add code to shoot 
+    * Add code to check if player is holding a gun 
+      * HeldItem doesn't currently have anything for 
+        stats and it'd probably be wrong to add it there, 
+        but we could have a static dict for itemID => damage, 
+        and check if the heldItem is in this dict 
+      * If gun is held and player clicks then make a small bullet with velocity 
+    * Modify movement system to have things that arent collidables
+  * Add system to handle bullets hitting 
+    * Check if a bullet hits an entity with health that's on the opposite team, 
+      it'll damage it and be destroyed 
+      * We'll need a better function in Frame to check for overlaps 
+  * Add system to handle enemy death 
+    * Destroy the entity and drop a certain number of time crystals, 
+      these will just be small toasts but they get automatically added 
+      to the player inventory, stack size will be like 1000
+  * Add system to handle player death 
+    * Probably they just drop all or most time crystals and get teleported to 
+      the factory 
+  * Add code for enemy AI 
+    * A simple algorithm for walking around and one for shooting direction 
+      should be sufficient
+  * Add code to calculate time->products, basically we can divide products by worldtime 
+  * Add UI to spend time crystals, possibly a stepper in machine
 
 **** FUTURE FEATURES **** 
 

@@ -47,10 +47,14 @@ public static class EntityFactory {
     }
 
     public static int AddUI(World w, Vector2 position, float width, float height, bool setButton = false, 
-        string text = "", bool setOutline = false) {
+        string text = "", bool setOutline = false, bool screenAnchor = false) {
 
         int e = Add(w); 
         w.SetComponent<Frame>(e, new Frame(position, width, height)); 
+        if (screenAnchor) {
+            w.SetComponent<ScreenAnchor>(e, new ScreenAnchor(position)); 
+        }
+
         if (setButton) {
             w.SetComponent<Button>(e, new Button());
         }       

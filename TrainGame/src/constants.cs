@@ -272,6 +272,7 @@ namespace TrainGame.Constants
         public const string Gasifier = "Gasifier";
         public const string Greenhouse = "Greenhouse"; 
         public const string Glass = "Glass"; 
+        public const string Gun = "Gun"; 
         public const string GunUpgrade = "GunUpgrade"; 
         public const string Iron = "Iron"; 
         public const string Kiln = "Kiln"; 
@@ -287,7 +288,7 @@ namespace TrainGame.Constants
 
         public static readonly List<string> All = [
             ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Pump, Rail, Sand, Water, Wood
+            Glass, Gun, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Pump, Rail, Sand, Water, Wood
         ]; 
 
         public static readonly List<string> Liquids = [
@@ -295,6 +296,12 @@ namespace TrainGame.Constants
         ]; 
 
         public static readonly List<string> Solids = All.Where(s => !Liquids.Contains(s)).ToList(); 
+    }
+
+    public static class Weapons {
+        public static Dictionary<string, int> GunMap = new() {
+            [ItemID.Gun] = 1
+        };
     }
 
     public static class MachineID {
@@ -600,6 +607,8 @@ namespace TrainGame.Constants
             Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
+
+            playerInv.Add(ItemID.Gun, 1); 
 
             //add one train to factory
 

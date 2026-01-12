@@ -10,10 +10,10 @@ using Microsoft.Xna.Framework.Input;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 
-public class MovementSystem() {
+public class MovementSystem {
     private static Type[] types = [typeof(Collidable), typeof(Frame), typeof(Velocity), typeof(Active)]; 
 
-    public static void Register(World world) {
+    public static void RegisterCollision(World world) {
         Action<World, int> tf = (w, e) => {
             Frame f = w.GetComponent<Frame>(e); 
             Vector2 velocity = w.GetComponent<Velocity>(e).Vector; 
@@ -36,45 +36,42 @@ public class MovementSystem() {
                 }
                 
                 Frame other = w.GetComponent<Frame>(es[i]);
-                RectangleF oRect = other.GetRectangle(); 
+                (Velocity otherVelocity, bool success) = w.GetComponentSafe<Velocity>(es[i]); 
+                Vector2 otherVelocityVec = success ? otherVelocity.Vector : Vector2.Zero; 
+                RectangleF oRect = other.GetRectangle(otherVelocityVec); 
 
                 RectangleF expectedHorizontal = new RectangleF(x + dx, y, width, height); 
                 if (expectedHorizontal.IntersectsWith(oRect)) {
                     if (dx > 0) {
-                        dx = (other.GetX() - width) - x; 
+                        dx = (oRect.Left - width) - x; 
                     } else {
-                        dx = (other.GetX() + other.GetWidth()) - x; 
+                        dx = oRect.Right - x; 
                     }
                 }
 
                 RectangleF expectedVertical = new RectangleF(x + dx, y + dy, width, height);
                 if (expectedVertical.IntersectsWith(oRect)) {
                     if (dy > 0) {
-                        dy = (other.GetY() - height) - y; 
+                        dy = (oRect.Top - height) - y; 
                     } else {
-                        dy = (other.GetY() + other.GetHeight()) - y; 
+                        dy = (oRect.Bottom) - y; 
                     }
                 }
                 
             }
 
-            f.SetCoordinates(x + dx, y + dy);
-
-            float dx_new = dx_og; 
-            float dy_new = dy_og; 
-
-            if (dx_og != dx) {
-                dx_new = 0; 
-            }
-
-            if (dy_og != dy) {
-                dy_new = 0; 
-            }
-
-            w.SetComponent<Velocity>(e, new Velocity(dx_new, dy_new)); 
+            w.SetComponent<Velocity>(e, new Velocity(dx, dy)); 
 
         }; 
 
         world.AddSystem(types, tf); 
+    }
+
+    public static void Register(World w) {
+        w.AddSystem([typeof(Frame), typeof(Velocity), typeof(Active)], (w, e) => {
+            Frame f = w.GetComponent<Frame>(e); 
+            Velocity v = w.GetComponent<Velocity>(e); 
+            f.SetCoordinates(f.Position + v.Vector);
+        });
     }
 }

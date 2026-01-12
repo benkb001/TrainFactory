@@ -10,11 +10,18 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 
 public class MovementTest {
-    [Fact]
-    public void MovementSystem_ShouldAllowEntitiesToMove() {
+
+    private World init() {
         World w = new World(); 
         RegisterComponents.All(w); 
+        MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); 
+        return w; 
+    }
+
+    [Fact]
+    public void MovementSystem_ShouldAllowEntitiesToMove() {
+        World w = init(); 
 
         int x = 10; 
         int y = 10; 
@@ -51,9 +58,7 @@ public class MovementTest {
 
     [Fact]
     public void MovementSystem_ShouldAllowEntitiesToMoveWithZeroPixelGaps() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int x = 10; 
         int y = 10; 
@@ -89,9 +94,7 @@ public class MovementTest {
 
     [Fact]
     public void MovementSystem_ShouldNotAllowEntitiesToCollide() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int x = 10; 
         int y = 10; 
@@ -128,9 +131,7 @@ public class MovementTest {
 
     [Fact]
     public void MovementSystem_ShouldHandleCollisionsWithDiagonalVelocity() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int x = 10; 
         int y = 10; 
@@ -171,17 +172,17 @@ public class MovementTest {
 
     [Fact]
     public void MovementSystem_ShouldHandleCollisionsWitBothEntitiesMoving() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int width = 5; 
         int height = 5; 
 
         //f1 is at 10 moving 10 to the right 
         //f2 is at 30 moving 10 to the left 
-        //since f1 is added first, it should move to 20
-        //so to avoid collision f2 should only move to 20 + width(f1) = 25
+        //since f1 is added first, it should detect the collision
+        //so to avoid collision it moves only 5 to the right, 
+        // occupying (15, 20), and f2 moves 10 to the left, 
+        // occupying (20, 30)
         Frame f1 = new Frame(10, 10, width, height); 
         Frame f2 = new Frame(30, 10, width, height);
 
@@ -209,15 +210,13 @@ public class MovementTest {
 
         w.Update(); 
 
-        Assert.Equal(25, w.GetComponent<Frame>(e2).GetX()); 
-        Assert.Equal(20, w.GetComponent<Frame>(e1).GetX()); 
+        Assert.Equal(20, w.GetComponent<Frame>(e2).GetX()); 
+        Assert.Equal(15, w.GetComponent<Frame>(e1).GetX()); 
     }
 
     [Fact]
     public void MovementSystem_ShouldHandleCollisionsInAllFourCardinalDirections() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int width = 5; 
         int height = 5; 
@@ -271,9 +270,7 @@ public class MovementTest {
         //should stop an object that collides horizontally from moving horizontally, 
         //but should not stop it from moving vertically, and vice-versa
 
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MovementSystem.Register(w); 
+        World w = init(); 
 
         int width = 5; 
         int height = 5; 
@@ -304,6 +301,8 @@ public class MovementTest {
         Assert.Equal(5, w.GetComponent<Frame>(e1).GetX());
         Assert.Equal(10, w.GetComponent<Frame>(e1).GetY());
         Velocity v_test = w.GetComponent<Velocity>(e1); 
+        w.Update();
+        v_test = w.GetComponent<Velocity>(e1); 
         Assert.Equal(0f, v_test.Vector.X); 
         Assert.Equal(10f, v_test.Vector.Y); 
     }
