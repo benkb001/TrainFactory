@@ -76,6 +76,8 @@ namespace TrainGame.Constants
 
         public const string DefaultSaveFile = "game"; 
 
+        public const float BulletSpeed = 8f; 
+
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.ArmorUpgrade => 100,

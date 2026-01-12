@@ -40,7 +40,7 @@ public static class VirtualMouse {
     }
 
     public static MouseState GetState() {
-        return vm; 
+        return useVirtualMouse ? vm : Mouse.GetState(); 
     }
 
     public static Vector2 GetCoordinates() {
@@ -130,9 +130,14 @@ public static class VirtualMouse {
         return GetState().RightButton == ButtonState.Pressed; 
     }
 
-    public static bool LeftPushed() {
-        return GetState().LeftButton == ButtonState.Pressed && 
-            prev_mouse.LeftButton == ButtonState.Released; 
+    public static bool LeftPushed(bool debug = false) {
+        bool leftDown = GetState().LeftButton == ButtonState.Pressed; 
+        bool prevLeftDown = prev_mouse.LeftButton == ButtonState.Pressed; 
+        if (debug) {
+            Console.WriteLine($"cur left down: {leftDown}, prev down: {prevLeftDown}");
+        }
+        return leftDown && !prevLeftDown; 
+            
     }
 
     public static bool RightPushed() {
@@ -167,6 +172,7 @@ public static class VirtualMouse {
         if (!useVirtualMouse) {
             vm = Mouse.GetState(); 
         }
+        
     }
 
     public static void UpdateEndFrame() {

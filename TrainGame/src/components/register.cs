@@ -25,6 +25,7 @@ public static class RegisterComponents {
         r<Background>(); 
         r<Backgrounds>(); 
         r<Body>();
+        r<Bullet>(); 
         r<Button>(); 
         r<CameraReturn>();
         r<CardinalMovement>(); 
@@ -58,10 +59,13 @@ public static class RegisterComponents {
         r<DrawTrainsViewMessage>();
         r<DrawTravelingInterfaceMessage>();
         r<EmbarkButton>(); 
+        r<EnemyBullet>(); 
+        r<EnemyHealth>(); 
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<Frame>(); 
         r<GameClockView>();
+        r<Health>(); 
         r<HeldItem>(); 
         r<Interactable>(); 
         r<Interactor>();  
@@ -91,6 +95,8 @@ public static class RegisterComponents {
         r<Outline>(); 
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
+        r<PlayerBullet>(); 
+        r<PlayerHealth>(); 
         r<PlayerInvFlag>(); 
         r<ProgressBar>(); 
         r<SaveButton>(); 
