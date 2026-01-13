@@ -1,4 +1,4 @@
-namespace TrainGame.Systems; 
+namespace TrainGame.Components; 
 
 using System.Collections.Generic;
 using System.Drawing; 

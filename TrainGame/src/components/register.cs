@@ -90,6 +90,7 @@ public static class RegisterComponents {
         r<LLChild>(); 
         r<LLPageButton>(); 
         r<LoadButton>(); 
+        r<Loot>(); 
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 

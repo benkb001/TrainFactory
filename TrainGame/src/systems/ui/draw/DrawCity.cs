@@ -121,6 +121,14 @@ public class DrawCitySystem {
                 DrawPlayer(topleft, topleft + new Vector2(20, 20), w); 
                 DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
 
+                //start test
+
+                int enemyEnt = EntityFactory.AddUI(w, topleft + new Vector2(200, 200), 50, 50, setOutline: true); 
+                w.SetComponent<Health>(enemyEnt, new Health(10)); 
+                w.SetComponent<EnemyHealth>(enemyEnt, new EnemyHealth()); 
+                w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, 1, Player.GetInventory()));
+
+                //end test
                 Machine[] ms = CityID.CityMap[CityID.Factory].Machines.Select(s => city.Machines[s]).ToArray(); 
                 Vector2 msTopLeft = topleft + new Vector2(20, 130); 
 

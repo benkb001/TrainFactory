@@ -93,8 +93,15 @@ public static class EntityFactory {
         }
     }
 
-    public static void AddToast(World w, float width, float height, string t) {
+    public static int AddToast(World w, float width, float height, string t) {
         int e = AddUI(w, w.GetCameraTopLeft(), width, height, setOutline: true, text: t); 
         w.SetComponent<Toast>(e, new Toast()); 
+        return e; 
+    }
+
+    public static int AddToast(World w, Vector2 pos, float width, float height, string t) {
+        int e = AddUI(w, pos, width, height, setOutline: true, text: t); 
+        w.SetComponent<Toast>(e, new Toast()); 
+        return e; 
     }
 }   

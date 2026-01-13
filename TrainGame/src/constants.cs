@@ -15,6 +15,7 @@ using _Color = System.Drawing.Color;
 using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.ECS; 
+using TrainGame.Utils; 
 
 namespace TrainGame.Constants 
 {
@@ -286,11 +287,13 @@ namespace TrainGame.Constants
         public const string Sand = "Sand"; 
         public const string Water = "Water"; 
         public const string Wood = "Wood"; 
+        public const string TimeCrystal = "Time Crystal"; 
         public const string TrainUpgrade = "TrainUpgrade"; 
 
         public static readonly List<string> All = [
             ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, Gun, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, Pump, Rail, Sand, Water, Wood
+            Glass, Gun, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, 
+            Pump, Rail, Sand, TimeCrystal, Water, Wood
         ]; 
 
         public static readonly List<string> Liquids = [
@@ -611,6 +614,7 @@ namespace TrainGame.Constants
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
 
             playerInv.Add(ItemID.Gun, 1); 
+            Player.SetInventory(playerInv);
 
             //add one train to factory
 

@@ -19,8 +19,12 @@ public static class RegisterSystems {
         CardinalMovementSystem.Register(w); 
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); 
+
         DamageSystem.Register<PlayerHealth, EnemyBullet>(w); 
         DamageSystem.Register<EnemyHealth, PlayerBullet>(w); 
+        LootSystem.Register(w); 
+        DeathSystem.Register(w); 
+        
         TALExecutionSystem.Register(w);
         TrainTravelSystem.Register(w); 
         MachineUpdateSystem.Register(w); 

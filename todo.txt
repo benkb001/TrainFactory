@@ -30,10 +30,6 @@
 **** NEXT FEATURES **** 
 
 * Add combat and reward system
-  * Add system to handle enemy death 
-    * Destroy the entity and drop a certain number of time crystals, 
-      these will just be small toasts but they get automatically added 
-      to the player inventory, stack size will be like 1000
   * Add system to handle player death 
     * Probably they just drop all or most time crystals and get teleported to 
       the factory 
@@ -43,6 +39,7 @@
       should be sufficient
   * Add code to calculate time->products, basically we can divide products by worldtime 
   * Add UI to spend time crystals, possibly a stepper in machine
+  * Add location to fight
 
 **** FUTURE FEATURES **** 
 
@@ -57,6 +54,7 @@
 * Catch up on PersistentState 
   * Player written programs 
   * machine.lifetimeProductsCrafted
+  * Player.SetInventory
 * Add tutorials 
   * Syntax for TAL will def be needed 
 
