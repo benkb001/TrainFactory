@@ -29,8 +29,10 @@ class Health {
     public void ReceiveDamage(int damage) {
         hp = Math.Max(0, hp - damage); 
     }
+
+    public void ResetHP() {
+        hp = maxHP; 
+    }
 }
 
-
-public class PlayerHealth {}
-public class EnemyHealth {}
+public class Enemy {}

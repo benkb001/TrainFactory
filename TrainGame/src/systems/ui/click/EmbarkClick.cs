@@ -21,8 +21,7 @@ public class EmbarkClickSystem() {
                 Train t = eb.GetTrain();
                 City c = eb.GetDestination(); 
                 TrainWrap.Embark(t, c, w); 
-                MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(t.ComingFrom));
-                //MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
+                MakeMessage.Add<DrawMapMessage>(w, new DrawMapMessage());
             }
         }; 
 

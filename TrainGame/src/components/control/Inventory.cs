@@ -140,6 +140,10 @@ public class Inventory : IID {
         return new Item(ItemId: itemId, Count: found); 
     }
 
+    public Item TakeAll(string itemID) {
+        return Take(itemID, ItemCount(itemID)); 
+    }
+
     //TODO: Test
     public int ItemCount(string itemId) {
         if (itemCountMap.ContainsKey(itemId)) {

@@ -4,7 +4,6 @@
 
 * Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * randomly zooming in ? 
-* Clicking m to go to map shouldn't happen if player is typing
 
 **** NEED TO TEST **** 
 
@@ -16,8 +15,8 @@
 * LLwrap depth setting when adding a child with children
 * Player walk over inv system
 * Frame.IntersectsWith
-* Shoot system
-* Damage system
+* Combat systems 
+  * Shoot, death, bullet decay, damage
 
 **** CLEAN UP **** 
 
@@ -30,10 +29,6 @@
 **** NEXT FEATURES **** 
 
 * Add combat and reward system
-  * Add system to handle player death 
-    * Probably they just drop all or most time crystals and get teleported to 
-      the factory 
-  * Add system to remove old bullets 
   * Add code for enemy AI 
     * A simple algorithm for walking around and one for shooting direction 
       should be sufficient
@@ -46,15 +41,10 @@
 * Add warning if player is going to send a train with an empty inv
 * Add some default toasts
 * Make it so trains need fuel
-* Change how carts work 
-  * Probably trains should have a different inventory for each 
-    type, such as solid/liquid, and others if added. Then adding a 
-    cart just increases a scaling factor on the stack sizes of the 
-    corresponding inventory type 
 * Catch up on PersistentState 
   * Player written programs 
   * machine.lifetimeProductsCrafted
-  * Player.SetInventory
+  * Player data ent
 * Add tutorials 
   * Syntax for TAL will def be needed 
 

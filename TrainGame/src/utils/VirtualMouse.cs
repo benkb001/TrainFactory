@@ -133,9 +133,7 @@ public static class VirtualMouse {
     public static bool LeftPushed(bool debug = false) {
         bool leftDown = GetState().LeftButton == ButtonState.Pressed; 
         bool prevLeftDown = prev_mouse.LeftButton == ButtonState.Pressed; 
-        if (debug) {
-            Console.WriteLine($"cur left down: {leftDown}, prev down: {prevLeftDown}");
-        }
+
         return leftDown && !prevLeftDown; 
             
     }

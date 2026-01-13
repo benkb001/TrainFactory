@@ -1,4 +1,4 @@
-namespace TrainGame.Systems; 
+namespace TrainGame.Components; 
 
 using System.Collections.Generic;
 using System.Drawing; 
@@ -15,16 +15,13 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Bullet {
-    private int damage; 
-    private WorldTime created; 
-    public int Damage => damage; 
-    public WorldTime TimeShot => created; 
+class RespawnLocation {
+    private City city; 
+    public RespawnLocation(City city) {
+        this.city = city; 
+    }
 
-    public Bullet(WorldTime created, int damage = 1) {
-        this.created = created.Clone();
-        this.damage = damage; 
+    public City GetCity() {
+        return city; 
     }
 }
-
-public class EnemyBullet {}

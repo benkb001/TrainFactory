@@ -20,9 +20,10 @@ public static class RegisterSystems {
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); 
 
-        DamageSystem.Register<PlayerHealth, EnemyBullet>(w); 
-        DamageSystem.Register<EnemyHealth, PlayerBullet>(w); 
+        DamageSystem.Register<Player, Enemy>(w); 
+        DamageSystem.Register<Enemy, Player>(w); 
         LootSystem.Register(w); 
+        PlayerDeathSystem.Register(w); 
         DeathSystem.Register(w); 
         
         TALExecutionSystem.Register(w);
@@ -76,6 +77,8 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         ShootSystem.Register(w);
+        EnemyShootSystem.Register(w); 
+        RemoveBulletSystem.Register(w); 
 
         CloseMenuSystem.Register(w); 
         

@@ -19,8 +19,9 @@ public class DrawCitySystem {
     private static float machineWidth = 50f; 
     private static float machineHeight = 50f; 
     
-    private static int DrawPlayer(Vector2 topleft, Vector2 position, World w) {
+    private static int DrawPlayer(Vector2 topleft, Vector2 position, City c, World w) {
         int playerEntity = EntityFactory.Add(w); 
+        int playerDataEnt = PlayerWrap.GetEntity(w); 
         int playerInvDataEnt = InventoryWrap.GetEntity(Constants.PlayerInvID, w); 
 
         float playerInvHeight = 100f; 
@@ -42,7 +43,10 @@ public class DrawCitySystem {
         w.SetComponent<Outline>(playerEntity, 
             new Outline(Colors.PlayerOutline, Constants.PlayerOutlineThickness, Depth.PlayerOutline)); 
         w.SetComponent<Background>(playerEntity, new Background(Colors.PlayerBackground, Depth.PlayerBackground));
-        w.SetComponent<TextBox>(playerEntity, new TextBox(Constants.PlayerStr)); 
+        w.SetComponent<Player>(playerEntity, new Player()); 
+        w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerInvDataEnt));
+        w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerInvDataEnt));
+        w.SetComponent<Inventory>(playerEntity, playerInv); 
         return playerEntity; 
     }
 
@@ -94,9 +98,9 @@ public class DrawCitySystem {
         w.SetComponent<MachineUI>(e, new MachineUI(m)); 
     }
 
-    private static void drawDefault(Vector2 topleft, Machine m, World w) {
+    private static void drawDefault(Vector2 topleft, Machine m, City c, World w) {
         DrawWalls(topleft, w); 
-        DrawPlayer(topleft, topleft + new Vector2(20, 20), w); 
+        DrawPlayer(topleft, topleft + new Vector2(20, 20), c, w); 
         DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
 
         DrawMachine(
@@ -118,15 +122,20 @@ public class DrawCitySystem {
         switch (cityID) {
             case CityID.Factory: 
                 DrawWalls(topleft, w); 
-                DrawPlayer(topleft, topleft + new Vector2(20, 20), w); 
+                DrawPlayer(topleft, topleft + new Vector2(20, 20), city, w); 
                 DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
 
                 //start test
 
-                int enemyEnt = EntityFactory.AddUI(w, topleft + new Vector2(200, 200), 50, 50, setOutline: true); 
-                w.SetComponent<Health>(enemyEnt, new Health(10)); 
-                w.SetComponent<EnemyHealth>(enemyEnt, new EnemyHealth()); 
-                w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, 1, Player.GetInventory()));
+                for (int i = 0; i < 2; i++) {
+                    int enemyEnt = EntityFactory.AddUI(w, topleft + new Vector2((i + 1) * 200, 200), 
+                        50, 50, setOutline: true); 
+                    w.SetComponent<Health>(enemyEnt, new Health(10)); 
+                    w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
+                    w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, 1, InventoryWrap.GetPlayerInv(w)));
+                    w.SetComponent<Shooter>(enemyEnt, new Shooter());
+                }
+
 
                 //end test
                 Machine[] ms = CityID.CityMap[CityID.Factory].Machines.Select(s => city.Machines[s]).ToArray(); 
@@ -158,15 +167,15 @@ public class DrawCitySystem {
 
                 break;
             case CityID.Greenhouse: 
-                drawDefault(topleft, city.Machines[MachineID.Greenhouse], w); 
+                drawDefault(topleft, city.Machines[MachineID.Greenhouse], city, w); 
 
                 break;
             case CityID.Mine: 
-                drawDefault(topleft, city.Machines[MachineID.Drill], w); 
+                drawDefault(topleft, city.Machines[MachineID.Drill], city, w); 
                 
                 break;
             case CityID.Coast: 
-                drawDefault(topleft, city.Machines[MachineID.Excavator], w); 
+                drawDefault(topleft, city.Machines[MachineID.Excavator], city, w); 
                 DrawMachine(city.Machines[MachineID.Pump], topleft + new Vector2(20, 200), 50f, 50f, w);
 
                 break; 
@@ -185,7 +194,12 @@ public class DrawCitySystem {
 
     private static Type[] ts = [typeof(DrawCityMessage)];
     private static Action<World, int> tf = (w, e) => {
+        foreach (int ent in w.GetMatchingEntities([typeof(City), typeof(Data)])) {
+            w.GetComponent<City>(ent).HasPlayer = false; 
+        }
+
         City c = w.GetComponent<DrawCityMessage>(e).GetCity();
+        c.HasPlayer = true; 
         SceneSystem.EnterScene(w, SceneType.RPG); 
         Vector2 topleft = w.GetCameraTopLeft(); 
 

@@ -58,7 +58,7 @@ public static class SceneSystem {
     };
 
     public static void EnterScene(World w, SceneType type, bool useOldScene = false) {
-    
+
         currentScene = type; 
         
         foreach (int e in w.GetMatchingEntities([typeof(Scene)]).Where(

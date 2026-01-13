@@ -78,6 +78,7 @@ namespace TrainGame.Constants
         public const string DefaultSaveFile = "game"; 
 
         public const float BulletSpeed = 8f; 
+        public const int BulletSize = 5; 
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {
@@ -612,9 +613,12 @@ namespace TrainGame.Constants
             Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
+            w.SetComponent<Player>(playerInvDataEnt, new Player()); 
+            w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
+            w.SetComponent<RespawnLocation>(playerInvDataEnt, new RespawnLocation(cities[CityID.Coast].Item2));
 
             playerInv.Add(ItemID.Gun, 1); 
-            Player.SetInventory(playerInv);
+            //Player.SetInventory(playerInv);
 
             //add one train to factory
 

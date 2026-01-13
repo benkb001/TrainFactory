@@ -15,16 +15,13 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Bullet {
-    private int damage; 
-    private WorldTime created; 
-    public int Damage => damage; 
-    public WorldTime TimeShot => created; 
-
-    public Bullet(WorldTime created, int damage = 1) {
-        this.created = created.Clone();
-        this.damage = damage; 
+public static class RemoveBulletSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Bullet)], (w, e) => {
+            if (w.Time.IsAfterOrAt(w.GetComponent<Bullet>(e).TimeShot + new WorldTime(minutes: 10))) {
+                w.RemoveEntity(e); 
+                Console.WriteLine($"Removed {e}");
+            }
+        });
     }
 }
-
-public class EnemyBullet {}

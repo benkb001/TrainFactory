@@ -30,10 +30,6 @@ public static class DamageSystem {
                 health.ReceiveDamage(bullet.Damage); 
                 w.RemoveEntity(bulletEnt); 
             }
-
-            if (collidingBulletEnts.Count > 0) {
-                Console.WriteLine(health.HP);
-            }
         });
     }
 }
