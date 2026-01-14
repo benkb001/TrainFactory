@@ -21,6 +21,7 @@ public static class RegisterSystems {
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); //***
 
+        TeleportSystem.Register(w); 
         DamageSystem.Register<Player, Enemy>(w); 
         DamageSystem.Register<Enemy, Player>(w); 
         LootSystem.Register(w); 

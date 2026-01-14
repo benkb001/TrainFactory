@@ -2,7 +2,6 @@
 
 *** BUGS **** 
 
-* Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * randomly zooming in ? 
 * Not drawing traveling interface when exiting map if player is in train
 
@@ -32,12 +31,19 @@
 
 * Don't draw player inv in city interface if player not at inv
 * Draw player health somewhere in RPG mode
+* Add equipment logic 
+  * Armor should decrease damage taken
+  * Add components for temporary buffs that are lost when player 
+    exits the city 
 * Add roguelike-rewards on completing a round 
   * More health, more damage, armor, more time crystals 
     per enemy, player chooses from a random set of 2 or 3 options
 * Add player equip ui 
-  * Probably doing item in inventory works only for weapon
-* Add some sort of dash or movement ability 
+  * We should probably have an inventory entity for armor, for now 
+    it can be 1x1, and a different component that just transfers that 
+    itemID to another component, like PlayerArmor. Then whenever it sets 
+    it to something it wasnt, set a flag that armor needs updating.
+* Add delay between killing enemies and next round spawn
 
 **** FUTURE FEATURES **** 
 
@@ -55,6 +61,7 @@
 * Add a way to pause/resume trains running on a program
   * Will need an interface that displays all trains, but 
     doesn't allow you to go into train interface
+* Add an equipment type to upgrade mobility, ie longer distance/shorter cd
 
 **** FAR FUTURE FEATURES **** 
 
@@ -65,6 +72,7 @@
 * Add some tutorials/guides
 * Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
   if completed give high rewards 
+* Add random fights at each city that also give high-rewards if defeated
 
 **** NICE TO HAVE LOW PRIORITY **** 
 
@@ -86,3 +94,5 @@
 * Make UI Drawing based on screen coordinates
 * Make inventory draw messages automatically move around or resize other inventories as necessary
 * Make it so trains cant run over other trains 
+* Chest system, currently bugged but could revamp it 
+  * possibly relative to zero-zero being an error, not pausing scene definitely

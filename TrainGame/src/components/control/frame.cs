@@ -118,8 +118,8 @@ public class Frame {
         return touchingX || touchingY; 
     }
 
-    public bool IntersectsWith(Frame other) {
-        RectangleF thisRect = GetRectangle(); 
+    public bool IntersectsWith(Frame other, float dx = 0f, float dy = 0f) {
+        RectangleF thisRect = GetRectangle(dx, dy); 
         RectangleF otherRect = other.GetRectangle(); 
 
         return thisRect.IntersectsWith(otherRect); 

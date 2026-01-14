@@ -118,6 +118,7 @@ public static class RegisterComponents {
         r<StepperButton>(); 
         r<StepperMessage>(); 
         r<TALBody>();
+        r<Teleporter>(); 
         r<TextBox>(); 
         r<TextInput>(); 
         r<Toast>(); 

@@ -49,6 +49,7 @@ public static class DrawCitySystem {
         w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerInvDataEnt));
         w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerInvDataEnt));
         w.SetComponent<Inventory>(playerEntity, playerInv); 
+        w.SetComponent<Teleporter>(playerEntity, new Teleporter()); 
 
         w.UnlockCameraPan(); 
         w.TrackEntity(playerEntity); 
