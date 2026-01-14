@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Components; 
 using TrainGame.ECS; 
+using TrainGame.Constants; 
+using TrainGame.Utils; 
 
 public class MachineUpdateSystem {
     public static void Register(World w) {
@@ -42,6 +44,23 @@ public class MachineUpdateSystem {
 
         };
         w.AddSystem(ts, tf, orderer);
+    }
+
+    public static void RegisterConsumeTimeCrystals(World w) {
+        w.AddSystem([typeof(Machine), typeof(Data)], (w, e) => {
+            Machine m = w.GetComponent<Machine>(e); 
+            if (m.Priority < 2 && m.NumRecipeToStore > 0) {
+                float productPerTimeCrystal = m.GetProductsPerTimeCrystal(w.Time); 
+                int numTimeCrystalsToTake = 1; 
+
+                if (productPerTimeCrystal < 1f) {
+                    numTimeCrystalsToTake = (int)(1f / productPerTimeCrystal); 
+                }
+
+                Inventory.Item i = m.Inv.Take(ItemID.TimeCrystal, numTimeCrystalsToTake); 
+                m.Inv.Add(m.ProductItemId, (int)(i.Count * productPerTimeCrystal)); 
+            }
+        });
     }
 
     public static void RegisterEndFrame(World w) {

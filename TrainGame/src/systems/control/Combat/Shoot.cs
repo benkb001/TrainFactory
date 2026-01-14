@@ -25,10 +25,10 @@ public static class ShootSystem {
                 if (w.Time.IsAfterOrAt(lastShot + new WorldTime(ticks: 12))) {
 
                     lastShot = w.Time.Clone(); 
-                    List<HeldItem> ls = w.GetComponentArray<HeldItem>().Where(
-                        kvp => Weapons.GunMap.ContainsKey(kvp.Value.ItemId)).Select(
-                        kvp => kvp.Value).ToList();
                     
+                    List<HeldItem> ls = w.GetMatchingEntities([typeof(HeldItem), typeof(Active)]).Select(
+                        e => w.GetComponent<HeldItem>(e)).Where(h => Weapons.GunMap.ContainsKey(h.ItemId)).ToList(); 
+
                     if (ls.Count > 0) {
                         HeldItem gun = ls[0];
                         int damage = Weapons.GunMap[gun.ItemId]; 

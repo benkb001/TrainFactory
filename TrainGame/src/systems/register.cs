@@ -17,8 +17,9 @@ public static class RegisterSystems {
         //CameraLockSystem.Register(w); 
 
         CardinalMovementSystem.Register(w); 
+        EnemyMovementSystem.Register(w); 
         MovementSystem.RegisterCollision(w); 
-        MovementSystem.Register(w); 
+        MovementSystem.Register(w); //***
 
         DamageSystem.Register<Player, Enemy>(w); 
         DamageSystem.Register<Enemy, Player>(w); 
@@ -29,6 +30,7 @@ public static class RegisterSystems {
         TALExecutionSystem.Register(w);
         TrainTravelSystem.Register(w); 
         MachineUpdateSystem.Register(w); 
+        MachineUpdateSystem.RegisterConsumeTimeCrystals(w); 
         AssemblerSystem.Register<TrainAssembler, Train>(w); 
         AssemblerSystem.Register<CartAssembler, Cart>(w); 
 
@@ -122,7 +124,7 @@ public static class RegisterSystems {
         
         PlayerInventoryPositionSystem.Register(w); 
         
-        ScreenAnchorSystem.Register(w); 
+        ScreenAnchorSystem.Register(w); //***
         LinearLayoutSystem.Register(w);
         LabelPositionSystem.Register(w); 
 

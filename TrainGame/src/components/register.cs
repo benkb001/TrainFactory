@@ -83,6 +83,7 @@ public static class RegisterComponents {
         r<MapUIFlag>();
         r<Menu>(); 
         r<Message>(); 
+        r<Movement>(); 
         r<Label>(); 
         r<LinearLayout>(); 
         r<Lines>(); 

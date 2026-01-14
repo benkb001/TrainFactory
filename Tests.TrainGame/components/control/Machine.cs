@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Components; 
+using TrainGame.Utils; 
 
 public class MachineTest {
 
@@ -109,5 +110,11 @@ public class MachineTest {
         m.SetStorageSize(30); 
         m.StoreRecipe(); 
         Assert.False(m.GetNumCraftable() > 30); 
+    }
+
+    [Fact]
+    public void Machine_ProductsPerTimeCrystalShouldAverageCraftedAndMax() {
+        (Inventory inv, Machine m) = init2(); 
+        Assert.True(Util.FloatEqual(30f, m.GetProductsPerTimeCrystal(new WorldTime(minutes: 1))));
     }
 }

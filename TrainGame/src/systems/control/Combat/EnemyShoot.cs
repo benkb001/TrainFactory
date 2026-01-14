@@ -28,8 +28,14 @@ public static class EnemyShootSystem {
                         Constants.BulletSize, setOutline: true);
                     w.SetComponent<Enemy>(bulletEnt, new Enemy()); 
 
+                    int inaccuracy = shooter.Inaccuracy; 
+                    float offset = (float)(inaccuracy * w.NextDouble()); 
+
+                    playerPos += new Vector2(offset, offset); 
+
                     float speed = shooter.GetBulletSpeed(); 
                     w.SetComponent<Bullet>(bulletEnt, shooter.Shoot(w.Time)); 
+                    
                     Velocity bulletVelocity = new Velocity(Vector2.Normalize(playerPos - enemyPos) * speed);
                     w.SetComponent<Velocity>(bulletEnt, bulletVelocity); 
                 }

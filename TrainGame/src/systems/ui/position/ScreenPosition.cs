@@ -15,7 +15,9 @@ public class ScreenAnchorSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(ScreenAnchor), typeof(Frame), typeof(Active)], (w, e) => {
             Vector2 screenPosition = w.GetComponent<ScreenAnchor>(e).Position; 
-            w.GetComponent<Frame>(e).SetCoordinates(w.GetCameraTopLeft() + screenPosition);
+            Vector2 pos = w.GetCameraTopLeft() + screenPosition;
+            Console.WriteLine($"Screen anchor postiion: {pos}");
+            w.GetComponent<Frame>(e).SetCoordinates(pos);
         });
     }
 }

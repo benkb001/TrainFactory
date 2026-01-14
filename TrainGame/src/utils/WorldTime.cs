@@ -149,6 +149,10 @@ public class WorldTime {
         return hours + (minutes / 60f) + (ticks / 3600f); 
     }
 
+    public int InMinutes() {
+        return (((days * 24) + hours) * 60) + minutes; 
+    }
+
     public override string ToString() {
         return $"days: {days}, hours: {hours}, minutes: {minutes}, ticks: {ticks}"; 
     }

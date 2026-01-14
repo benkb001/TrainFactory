@@ -8,6 +8,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+using Color = Microsoft.Xna.Framework.Color; 
+using _Color = System.Drawing.Color; 
+
 using TrainGame.ECS;  
 using TrainGame.Components; 
 using TrainGame.Utils; 
@@ -23,16 +26,18 @@ public class DrawCitySystem {
         int playerEntity = EntityFactory.Add(w); 
         int playerDataEnt = PlayerWrap.GetEntity(w); 
         int playerInvDataEnt = InventoryWrap.GetEntity(Constants.PlayerInvID, w); 
-
-        float playerInvHeight = 100f; 
-        float playerInvWidth = w.ScreenWidth - 100f; 
-        Vector2 playerInvPosition = topleft + new Vector2(50f, w.ScreenHeight - 120f); 
         Inventory playerInv = w.GetComponent<Inventory>(playerInvDataEnt); 
+
+        (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv); 
+
         InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
             playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
         w.SetComponent<ScreenAnchor>(playerInvView.GetParentEntity(), 
-            new ScreenAnchor(new Vector2(0, w.ScreenHeight - playerInvHeight)));
-        w.SetComponent<PlayerInvFlag>(playerInvView.GetParentEntity(), new PlayerInvFlag()); 
+            new ScreenAnchor(new Vector2((w.ScreenWidth - playerInvWidth) / 2f, w.ScreenHeight - playerInvHeight - 10)));
+        w.SetComponent<PlayerInvFlag>(playerInvView.GetParentEntity(), new PlayerInvFlag());
+        w.SetComponent<Outline>(playerInvView.GetParentEntity(), new Outline(Color.Red, 2));
+        Console.WriteLine(LinearLayoutWrap.GetDepth(playerInvView.GetParentEntity(), w)); 
+        Console.WriteLine(LinearLayoutWrap.GetDepth(playerInvView.GetInventoryEntity(), w)); 
 
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
@@ -47,6 +52,9 @@ public class DrawCitySystem {
         w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerInvDataEnt));
         w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerInvDataEnt));
         w.SetComponent<Inventory>(playerEntity, playerInv); 
+
+        w.UnlockCameraPan(); 
+        w.TrackEntity(playerEntity); 
         return playerEntity; 
     }
 
@@ -134,6 +142,8 @@ public class DrawCitySystem {
                     w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
                     w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, 1, InventoryWrap.GetPlayerInv(w)));
                     w.SetComponent<Shooter>(enemyEnt, new Shooter());
+                    w.SetComponent<Movement>(enemyEnt, new Movement()); 
+                    w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
                 }
 
 

@@ -4,6 +4,7 @@
 
 * Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * randomly zooming in ? 
+* Shooting bullets into ui screen, prob can handle by just decreasing bullet lifetime
 
 **** NEED TO TEST **** 
 
@@ -28,13 +29,9 @@
 
 **** NEXT FEATURES **** 
 
-* Add combat and reward system
-  * Add code for enemy AI 
-    * A simple algorithm for walking around and one for shooting direction 
-      should be sufficient
-  * Add code to calculate time->products, basically we can divide products by worldtime 
-  * Add UI to spend time crystals, possibly a stepper in machine
-  * Add location to fight
+* Add place to fight 
+  * Need a way to enter and code that progressively makes fights harder 
+* Don't draw player inv in city interface if player not at inv
 
 **** FUTURE FEATURES **** 
 

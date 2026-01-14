@@ -41,6 +41,7 @@ public partial class World {
     public readonly float ScreenHeight = 0f; 
     public readonly float ScreenWidth = 0f; 
     public int MiliticksPerUpdate => wt.MiliticksPerUpdate; 
+    private Random random; 
 
     //TODO: consider replacing with checks for specific variables being null
     private bool isTest = false;  
@@ -48,6 +49,7 @@ public partial class World {
 
     public World() { 
         isTest = true;
+        random = new Random(); 
     }
 
     public World(GraphicsDeviceManager gm, GraphicsDevice gd, SpriteBatch s) {
@@ -60,6 +62,7 @@ public partial class World {
         ScreenHeight = gd.Viewport.Height; 
         camera.SetPosition(new Vector2(gd.Viewport.Width / 2, gd.Viewport.Height / 2)); 
         camera.UpdateCamera(graphicsDevice.Viewport); 
+        random = new Random(); 
     }
 
     public void AddComponentType<T>() {
@@ -159,6 +162,10 @@ public partial class World {
         return gameClock.TotalSeconds; 
     }
 
+    public double NextDouble() {
+        return (random.NextDouble() * 2) - 1; 
+    }
+
     public void PassTime(double seconds = 0, double milliseconds = 0) {
         gameClock.PassTime(seconds, milliseconds); 
     }
@@ -210,18 +217,28 @@ public partial class World {
 
     public void Update() {
         VirtualMouse.UpdateStartFrame(); 
-        sm.Update(this); 
         
+        bool tracked = false; 
+
         if (!isTest) {
-            if (cm.ComponentContainsEntity<Frame>(trackedEntity)) {
-                Frame f = cm.GetComponent<Frame>(trackedEntity); 
+            if (GetMatchingEntities([typeof(Frame), typeof(Active)]).Contains(trackedEntity)) {
+                Frame f = GetComponent<Frame>(trackedEntity); 
                 camera.SetPosition(new Vector2(f.GetX(), f.GetY())); 
-            } else if (targetCameraPositionIsCurrent) {
+                tracked = true; 
+            }
+        }
+
+        sm.Update(this); 
+
+        if (!isTest) {
+            if (targetCameraPositionIsCurrent && !tracked) {
                 camera.SetPosition(targetCameraPosition);
                 targetCameraPositionIsCurrent = false; 
             }
             camera.UpdateCamera(graphicsDevice.Viewport); 
+            Console.WriteLine($"Camera pos: {camera.Position}"); 
         }
+
         VirtualMouse.UpdateEndFrame(); 
         VirtualKeyboard.UpdatePrevFrame(); 
         wt.Update();

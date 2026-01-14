@@ -221,6 +221,14 @@ public class Machine : IID {
         return Id; 
     }
 
+    public float GetProductsPerTimeCrystal(WorldTime now) {
+        int minutes = now.InMinutes();
+        float productsPerMinute = ((float)lifetimeProductsCrafted) / minutes; 
+        float craftTimeMinutes = (float)craftTicks / 60f; 
+        float maxProductsPerMinute = (float)(productCount * (level + 1)) / craftTimeMinutes; 
+        return (maxProductsPerMinute + productsPerMinute) / 2; 
+    }
+
     public static Machine GetDefault() {
         Inventory inv = new Inventory("Default", 1, 1); 
         return new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 

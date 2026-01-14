@@ -24,7 +24,7 @@ class Shooter {
     private int ammo; 
     private int maxAmmo; 
 
-    public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = Constants.BulletSpeed, 
+    public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3, 
         int ammo = 10, int skill = 1) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
@@ -49,6 +49,7 @@ class Shooter {
 
     public float GetBulletSpeed() => bulletSpeed; 
     public int GetBulletDamage() => bulletDamage; 
+    public int Inaccuracy => 100 - skill; 
     public bool CanShoot(WorldTime t) {
         return t.IsAfterOrAt(canShoot); 
     }
