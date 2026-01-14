@@ -121,6 +121,20 @@ public class Inventory : IID {
         return 0; 
     }
 
+    public bool TakeRecipe(Dictionary<string, int> recipe) {
+        foreach (KeyValuePair<string, int> kvp in recipe) {
+            if (ItemCount(kvp.Key) < kvp.Value) {
+                return false; 
+            }
+        }
+
+        foreach (KeyValuePair<string, int> kvp in recipe) {
+            Take(kvp.Key, kvp.Value); 
+        }
+
+        return true; 
+    }
+
     //TODO: Test
     public Item Take(string itemId, int count) {
         int found = 0; 

@@ -44,10 +44,14 @@ public static class NextDrawTestUISystem {
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
-            w.SetComponent<Message>(label, new Message("This should stick out of a white box above the button. Click to skip to last test"));
+            w.SetComponent<Message>(label, new Message("New Game"));
             w.SetComponent<Button>(label, new Button());
 
             w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(21)); 
+
+            int lastTest = EntityFactory.AddUI(w, new Vector2(300, 10), 50, 50, setButton: true, 
+                setOutline: true, text: "Last test");
+            w.SetComponent<NextDrawTestButton>(lastTest, new NextDrawTestButton(24));
 
             int loadButton = EntityFactory.AddUI(w, w.GetCameraTopLeft(), 100, 100, text: "Load", setButton: true, setOutline: true); 
             w.SetComponent<LoadButton>(loadButton, new LoadButton()); 
@@ -474,8 +478,10 @@ public static class NextDrawTestUISystem {
         }, 
         [22] = (w) => {
             Bootstrap.InitWorld(w); 
-            City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
-            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
+            City hpp = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.HauntedPowerPlant).FirstOrDefault().Value;
+            hpp.Inv.Add(ItemID.TimeCrystal, 100);
+            hpp.Inv.Add(ItemID.Iron, 100); 
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(hpp));
         }, 
         [23] = (w) => {
             w.LockCamera(); 
@@ -490,6 +496,13 @@ public static class NextDrawTestUISystem {
             
             int label = EntityFactory.AddUI(w, w.GetCameraTopLeft() + new Vector2(100, 100), 100, 100, 
                 text: "this should move around when camera is panned");
+        },
+        [25] = (w) => {
+            Inventory inv = new Inventory("Test", 2, 2); 
+            City c = new City("Test", inv); 
+            VendorInterfaceData d = new VendorInterfaceData(c, VendorID.WeaponCraftsman);
+            DrawInterfaceMessage<VendorInterfaceData> dm = new DrawInterfaceMessage<VendorInterfaceData>(d); 
+            MakeMessage.Add<DrawInterfaceMessage<VendorInterfaceData>>(w, dm); 
         }
     };
 

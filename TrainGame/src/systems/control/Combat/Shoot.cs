@@ -22,7 +22,7 @@ public static class ShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
-                if (w.Time.IsAfterOrAt(lastShot + new WorldTime(ticks: 12))) {
+                if (w.Time.IsAfterOrAt(lastShot + new WorldTime(ticks: 24))) {
 
                     lastShot = w.Time.Clone(); 
                     

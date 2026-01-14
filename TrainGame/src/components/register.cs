@@ -48,6 +48,7 @@ public static class RegisterComponents {
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
+        r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
         r<DrawInventoryContainerMessage<Train>>(); 
         r<DrawMachineInterfaceMessage>(); 
@@ -60,8 +61,10 @@ public static class RegisterComponents {
         r<DrawTravelingInterfaceMessage>();
         r<EmbarkButton>(); 
         r<Enemy>(); 
+        r<EnemySpawner>(); 
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
+        r<EnterInterfaceInteractable<VendorInterfaceData>>();
         r<Frame>(); 
         r<GameClockView>();
         r<Health>(); 
@@ -99,6 +102,7 @@ public static class RegisterComponents {
         r<Player>(); 
         r<PlayerInvFlag>(); 
         r<ProgressBar>(); 
+        r<PurchaseButton>();
         r<RespawnLocation>(); 
         r<SaveButton>(); 
         r<Scene>(); 

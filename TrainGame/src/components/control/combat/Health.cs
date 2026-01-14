@@ -15,7 +15,7 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Health {
+public class Health {
     private int hp; 
     private int maxHP; 
     public int HP => hp; 

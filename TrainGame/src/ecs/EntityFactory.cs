@@ -47,7 +47,8 @@ public static class EntityFactory {
     }
 
     public static int AddUI(World w, Vector2 position, float width, float height, bool setButton = false, 
-        string text = "", bool setOutline = false, bool screenAnchor = false) {
+        string text = "", bool setOutline = false, bool screenAnchor = false, bool setInteractable = false, 
+        bool setCollidable = false) {
 
         int e = Add(w); 
         w.SetComponent<Frame>(e, new Frame(position, width, height)); 
@@ -63,6 +64,12 @@ public static class EntityFactory {
         }
         if (text != "") {
             w.SetComponent<TextBox>(e, new TextBox(text)); 
+        }
+        if (setCollidable) {
+            w.SetComponent<Collidable>(e, new Collidable()); 
+        }
+        if (setInteractable) {
+            w.SetComponent<Interactable>(e, new Interactable()); 
         }
         
         return e; 

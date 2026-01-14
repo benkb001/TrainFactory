@@ -148,10 +148,6 @@ public class LinearLayoutWrap {
                 w.SetComponent<Outline>(curEnt, new Outline()); 
             }
             
-
-            if (outline) {
-                w.SetComponent<Outline>(pageLLEnt, new Outline()); 
-            }
         }
 
         if (useHeader) {

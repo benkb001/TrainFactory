@@ -11,6 +11,18 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 using TrainGame.Constants; 
+using TrainGame.Callbacks; 
+
+public static class DrawUtils {
+    public static void DrawInterface<T>(World w, int e) where T : IInterfaceData {
+        T data = w.GetComponent<DrawInterfaceMessage<T>>(e).Data; 
+        SceneType s = data.GetSceneType(); 
+        SceneSystem.EnterScene(w, s);
+        Menu menu = data.GetMenu(); 
+        int menuEnt = EntityFactory.Add(w); 
+        w.SetComponent<Menu>(menuEnt, menu);
+    }
+}
 
 public static class DrawSystem {
     public static void Register<T>(World w, Action<World, int> tf) {
@@ -24,12 +36,7 @@ public static class DrawSystem {
 public static class DrawInterfaceSystem {
     public static void Register<T>(World w, Action<World, int> tf) where T : IInterfaceData {
         DrawSystem.Register<DrawInterfaceMessage<T>>(w, (w, e) => {
-            T data = w.GetComponent<DrawInterfaceMessage<T>>(e).Data; 
-            SceneType s = data.GetSceneType(); 
-            SceneSystem.EnterScene(w, s);
-            Menu menu = data.GetMenu(); 
-            int menuEnt = EntityFactory.Add(w); 
-            w.SetComponent<Menu>(menuEnt, menu);
+            DrawUtils.DrawInterface<T>(w, e);
             tf(w, e); 
         });
     }

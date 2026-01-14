@@ -166,6 +166,14 @@ public partial class World {
         return (random.NextDouble() * 2) - 1; 
     }
 
+    public float NextFloat() {
+        float f = (float)random.NextDouble(); 
+        if (f < 0f) {
+            throw new InvalidOperationException("bug");
+        }
+        return f;
+    }
+
     public void PassTime(double seconds = 0, double milliseconds = 0) {
         gameClock.PassTime(seconds, milliseconds); 
     }
@@ -236,7 +244,6 @@ public partial class World {
                 targetCameraPositionIsCurrent = false; 
             }
             camera.UpdateCamera(graphicsDevice.Viewport); 
-            Console.WriteLine($"Camera pos: {camera.Position}"); 
         }
 
         VirtualMouse.UpdateEndFrame(); 

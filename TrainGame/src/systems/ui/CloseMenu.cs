@@ -63,6 +63,9 @@ public static class CloseMenuSystem {
             case SceneType.WriteProgramInterface: 
                 MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
                 break;
+            case SceneType.VendorInterface: 
+                SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
+                break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
         }

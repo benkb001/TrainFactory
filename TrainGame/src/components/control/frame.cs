@@ -119,7 +119,10 @@ public class Frame {
     }
 
     public bool IntersectsWith(Frame other) {
-        return GetRectangle().IntersectsWith(other.GetRectangle()); 
+        RectangleF thisRect = GetRectangle(); 
+        RectangleF otherRect = other.GetRectangle(); 
+
+        return thisRect.IntersectsWith(otherRect); 
     }
 
     private bool overlapping(float x1, float x2, float y1, float y2) {

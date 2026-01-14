@@ -6,11 +6,9 @@ using System;
 using TrainGame.Constants; 
 
 class SystemManager {
-    private Dictionary<int, bool[]> entitySignatures; 
     private HashSet<_System> systems;
 
     public SystemManager() {
-        entitySignatures = new(); 
         systems = new(); 
     }
 
@@ -27,7 +25,6 @@ class SystemManager {
     }
 
     public void SetEntitySignature(int entity, bool[] signature) {
-        entitySignatures[entity] = signature; 
 
         foreach (_System s in systems) {
             bool removed = false; 

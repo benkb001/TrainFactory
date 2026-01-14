@@ -26,6 +26,7 @@ public enum SceneType {
     RPG,
     TrainInterface,
     TravelingInterface,
+    VendorInterface,
     ViewProgramInterface,
     WriteProgramInterface,
     None
@@ -54,7 +55,8 @@ public static class SceneSystem {
         [SceneType.RPG] = new Vector2(6000, 6000),
         [SceneType.TrainInterface] = new Vector2(7000, 7000),
         [SceneType.WriteProgramInterface] = new Vector2(8000, 8000),
-        [SceneType.ViewProgramInterface] = new Vector2(9000, 9000)
+        [SceneType.ViewProgramInterface] = new Vector2(9000, 9000),
+        [SceneType.VendorInterface] = new Vector2(10000, 10000)
     };
 
     public static void EnterScene(World w, SceneType type, bool useOldScene = false) {

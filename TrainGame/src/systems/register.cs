@@ -26,6 +26,8 @@ public static class RegisterSystems {
         LootSystem.Register(w); 
         PlayerDeathSystem.Register(w); 
         DeathSystem.Register(w); 
+        EnemySpawnSystem.Register(w); 
+        CollideBulletSystem.Register(w); 
         
         TALExecutionSystem.Register(w);
         TrainTravelSystem.Register(w); 
@@ -78,6 +80,8 @@ public static class RegisterSystems {
         UpgradeMachineClickSystem.Register(w); 
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
+        PurchaseClickSystem.Register(w); 
+        VendorInteractSystem.Register(w);
         ShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
         RemoveBulletSystem.Register(w); 
@@ -110,6 +114,7 @@ public static class RegisterSystems {
         DrawCityInterfaceSystem.Register(w); 
         DrawWriteProgramInterfaceSystem.Register(w); 
         DrawViewProgramInterfaceSystem.Register(w); 
+        DrawVendorInterfaceSystem.Register(w); 
         SetMachineHeaderSystem.Register(w); 
         //CameraReturnSystem.Register(w); 
 

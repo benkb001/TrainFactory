@@ -20,8 +20,27 @@ public static class RemoveBulletSystem {
         w.AddSystem([typeof(Bullet)], (w, e) => {
             if (w.Time.IsAfterOrAt(w.GetComponent<Bullet>(e).TimeShot + new WorldTime(minutes: 10))) {
                 w.RemoveEntity(e); 
-                Console.WriteLine($"Removed {e}");
             }
+        });
+    }
+}
+
+public static class CollideBulletSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Bullet), typeof(Active)], (w, e) => {
+            Frame bulletFrame = w.GetComponent<Frame>(e); 
+
+            List<Frame> collidingFrames = w
+            .GetMatchingEntities([typeof(Frame), typeof(Collidable), typeof(Active)])
+            .Where(ent => !w.ComponentContainsEntity<Shooter>(ent))
+            .Select(collidableEnt => w.GetComponent<Frame>(collidableEnt))
+            .Where(f => bulletFrame.IntersectsWith(f))
+            .ToList();
+
+            if (collidingFrames.Count > 0) {
+                w.RemoveEntity(e); 
+            }
+            
         });
     }
 }

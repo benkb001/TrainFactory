@@ -18,7 +18,7 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Systems;
 
-public class DrawCitySystem {
+public static class DrawCitySystem {
     private static float machineWidth = 50f; 
     private static float machineHeight = 50f; 
     
@@ -35,10 +35,7 @@ public class DrawCitySystem {
         w.SetComponent<ScreenAnchor>(playerInvView.GetParentEntity(), 
             new ScreenAnchor(new Vector2((w.ScreenWidth - playerInvWidth) / 2f, w.ScreenHeight - playerInvHeight - 10)));
         w.SetComponent<PlayerInvFlag>(playerInvView.GetParentEntity(), new PlayerInvFlag());
-        w.SetComponent<Outline>(playerInvView.GetParentEntity(), new Outline(Color.Red, 2));
-        Console.WriteLine(LinearLayoutWrap.GetDepth(playerInvView.GetParentEntity(), w)); 
-        Console.WriteLine(LinearLayoutWrap.GetDepth(playerInvView.GetInventoryEntity(), w)); 
-
+        
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
         w.SetComponent<Interactor>(playerEntity, Interactor.Get());
@@ -111,14 +108,28 @@ public class DrawCitySystem {
         DrawPlayer(topleft, topleft + new Vector2(20, 20), c, w); 
         DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
 
-        DrawMachine(
-            m,
-            topleft + new Vector2(w.ScreenWidth / 2, w.ScreenHeight / 2), 
-            machineWidth, 
-            machineHeight, 
-            w
-        ); 
+        if (m != null) {
+            DrawMachine(
+                m,
+                topleft + new Vector2(w.ScreenWidth / 2, w.ScreenHeight / 2), 
+                machineWidth, 
+                machineHeight, 
+                w
+            );
+        }
+ 
     } 
+
+    private static int drawVendor(World w, Vector2 pos, City city, string vendorID) {
+        int vendorEnt = EntityFactory.AddUI(w, pos, 50, 50, 
+        setOutline: true, setInteractable: true, setCollidable: true, text: vendorID);
+        EnterInterfaceInteractable<VendorInterfaceData> interactable = 
+            new EnterInterfaceInteractable<VendorInterfaceData>(
+                new VendorInterfaceData(city, vendorID));
+        w.SetComponent<EnterInterfaceInteractable<VendorInterfaceData>>(vendorEnt, interactable); 
+        return vendorEnt; 
+    }
+                
 
     //entities should be drawn on the max scene
     private static void DrawLayout(City city, Vector2 topleft, World w) {
@@ -133,21 +144,6 @@ public class DrawCitySystem {
                 DrawPlayer(topleft, topleft + new Vector2(20, 20), city, w); 
                 DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
 
-                //start test
-
-                for (int i = 0; i < 2; i++) {
-                    int enemyEnt = EntityFactory.AddUI(w, topleft + new Vector2((i + 1) * 200, 200), 
-                        50, 50, setOutline: true); 
-                    w.SetComponent<Health>(enemyEnt, new Health(10)); 
-                    w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
-                    w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, 1, InventoryWrap.GetPlayerInv(w)));
-                    w.SetComponent<Shooter>(enemyEnt, new Shooter());
-                    w.SetComponent<Movement>(enemyEnt, new Movement()); 
-                    w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
-                }
-
-
-                //end test
                 Machine[] ms = CityID.CityMap[CityID.Factory].Machines.Select(s => city.Machines[s]).ToArray(); 
                 Vector2 msTopLeft = topleft + new Vector2(20, 130); 
 
@@ -189,6 +185,41 @@ public class DrawCitySystem {
                 DrawMachine(city.Machines[MachineID.Pump], topleft + new Vector2(20, 200), 50f, 50f, w);
 
                 break; 
+            case CityID.HauntedPowerPlant: 
+                DrawPlayer(topleft, topleft - new Vector2(50, 50), city, w); 
+                DrawTrainYard(topleft - new Vector2(50, 50), 50, 50, w); 
+
+                void drawWall(Vector2 pos, float width, float height, World w) {
+                    int e = EntityFactory.AddUI(w, pos, width, height, setOutline: true); 
+                    w.SetComponent<Collidable>(e, new Collidable()); 
+                }
+
+                float roomWidth = 850f; 
+                float roomHeight = 500f; 
+
+                float wallWidth = 50f; 
+
+                Vector2 leftWallPos = topleft + new Vector2(-450, -450);
+                drawWall(topleft + new Vector2(-400, 50), roomWidth, wallWidth, w);
+                drawWall(leftWallPos, wallWidth, 500f, w); 
+                drawWall(topleft + new Vector2(-400, -500), roomWidth, wallWidth, w); 
+                drawWall(topleft + new Vector2(450, -450), wallWidth, roomHeight, w);
+
+                float spawnWidth = roomWidth - 100f; 
+                float spawnHeight = 200f; 
+
+                int enemySpawnEnt = EntityFactory.AddUI(w, leftWallPos + new Vector2(60, 10), 
+                    spawnWidth, spawnHeight, setOutline: true); 
+                w.SetComponent<EnemySpawner>(enemySpawnEnt, new EnemySpawner()); 
+
+                drawWall(leftWallPos + new Vector2(50f, 225f), 300f, 50f, w);
+                    
+                break;
+            case CityID.Armory: 
+                drawDefault(topleft, null, city, w); 
+                drawVendor(w, topleft + new Vector2(50, 50), city, VendorID.ArmorCraftsman); 
+                drawVendor(w, topleft + new Vector2(110, 50), city, VendorID.WeaponCraftsman); 
+                break;
             case CityID.Reservoir: 
                 break;
             case CityID.Collisseum: 

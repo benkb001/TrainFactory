@@ -80,6 +80,8 @@ namespace TrainGame.Constants
         public const float BulletSpeed = 8f; 
         public const int BulletSize = 5; 
 
+        public const float EnemySize = 50f;
+
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.ArmorUpgrade => 100,
@@ -218,10 +220,12 @@ namespace TrainGame.Constants
     }
 
     public static class CityID {
+        public const string Armory = "Armory"; 
         public const string Coast = "Coast"; 
         public const string Collisseum = "Collisseum"; 
         public const string Factory = "Factory"; 
         public const string Greenhouse = "Greenhouse"; 
+        public const string HauntedPowerPlant = "Haunted Power Plant";
         public const string Mine = "Mine"; 
         public const string Reservoir = "Reservoir"; 
         public const string Test = "Test"; 
@@ -250,7 +254,7 @@ namespace TrainGame.Constants
                     MachineID.TrainUpgradeAssembler
                 ], 
                 550f, 210f, 0f, 0f, 
-                [CityID.Greenhouse, CityID.Coast, CityID.Mine]
+                [CityID.Greenhouse, CityID.Coast, CityID.Mine, CityID.HauntedPowerPlant]
             ),
             [CityID.Greenhouse] = new CityArg(
                 [MachineID.Greenhouse],
@@ -258,16 +262,27 @@ namespace TrainGame.Constants
             ),
             [CityID.Coast] = new CityArg(
                 [MachineID.Excavator, MachineID.Pump], 
-                350f, 210f, -2.5f, 0f, [CityID.Factory]
+                350f, 210f, -2.5f, 0f, [CityID.Factory, CityID.Armory]
             ),
             [CityID.Mine] = new CityArg(
                 [MachineID.Drill], 
-                550f, 410f, 0f, 2.5f, [CityID.Factory]
+                550f, 410f, 0f, 2.5f, [CityID.Factory, CityID.Armory]
+            ),
+            [CityID.HauntedPowerPlant] = new CityArg(
+                [], 
+                750f, 210f, 2.5f, 0f, [CityID.Factory]
+            ),
+            [CityID.Armory] = new CityArg(
+                [],
+                350f, 410f, -2.5f, 2.5f, [CityID.Coast, CityID.Mine]
             )
         };
     }
 
     public static class ItemID {
+        public const string Armor1 = "Armor1"; 
+        public const string Armor2 = "Armor2"; 
+        public const string Armor3 = "Armor3"; 
         public const string ArmorUpgrade = "ArmorUpgrade"; 
         public const string Assembler = "Assembler"; 
         public const string Drill = "Drill"; 
@@ -277,6 +292,8 @@ namespace TrainGame.Constants
         public const string Greenhouse = "Greenhouse"; 
         public const string Glass = "Glass"; 
         public const string Gun = "Gun"; 
+        public const string Gun2 = "Gun2"; 
+        public const string Gun3 = "Gun3"; 
         public const string GunUpgrade = "GunUpgrade"; 
         public const string Iron = "Iron"; 
         public const string Kiln = "Kiln"; 
@@ -292,8 +309,8 @@ namespace TrainGame.Constants
         public const string TrainUpgrade = "TrainUpgrade"; 
 
         public static readonly List<string> All = [
-            ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, Gun, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, 
+            Armor1, Armor2, Armor3, ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
+            Glass, Gun, Gun2, Gun3, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, 
             Pump, Rail, Sand, TimeCrystal, Water, Wood
         ]; 
 
@@ -311,8 +328,8 @@ namespace TrainGame.Constants
     }
 
     public static class MachineID {
-        public const string AssemblerFactory = "Assembler Factory"; 
         public const string ArmorUpgradeAssembler = "Armor Upgrade Assembler"; 
+        public const string AssemblerFactory = "Assembler Factory"; 
         public const string CargoWagonAssembler = "Cargo Wagon Assembler"; 
         public const string Drill = "Drill"; 
         public const string DrillAssembler = "Drill Assembler"; 
@@ -568,6 +585,45 @@ namespace TrainGame.Constants
 
     }
 
+    public static class VendorID {
+        public const string ArmorCraftsman = "Armor Craftsman"; 
+        public const string WeaponCraftsman = "Weapon Craftsman"; 
+
+        public static Dictionary<string, Dictionary<string, (Dictionary<string, int>, int)>> ProductMap = new() {
+            [ArmorCraftsman] = new () {
+                [ItemID.Armor1] = (new () {
+                    [ItemID.TimeCrystal] = 50, 
+                    [ItemID.Iron] = 50
+                }, 1), 
+                [ItemID.Armor2] = (new () {
+                    [ItemID.TimeCrystal] = 150, 
+                    [ItemID.Iron] = 200, 
+                    [ItemID.Fuel] = 100
+                }, 1), 
+                [ItemID.Armor3] = (new () {
+                    [ItemID.TimeCrystal] = 1000,
+                    [ItemID.Iron] = 2000, 
+                    [ItemID.Fuel] = 3000,
+                    [ItemID.Glass] = 500
+                }, 1)
+            },
+            [WeaponCraftsman] = new () {
+                [ItemID.Gun2] = (new () {
+                    [ItemID.TimeCrystal] = 100, 
+                    [ItemID.Fuel] = 300, 
+                    [ItemID.Iron] = 500, 
+                    [ItemID.Water] = 1000
+                }, 1),
+                [ItemID.Gun3] = (new () {
+                    [ItemID.TimeCrystal] = 2000, 
+                    [ItemID.Iron] = 3000, 
+                    [ItemID.Fuel] = 4000, 
+                    [ItemID.Glass] = 5000
+                }, 1)
+            }
+        };
+    }
+
     public static class Bootstrap {
         public static void InitWorld(World w) {
             Dictionary<string, (int, City)> cities = new(); 
@@ -635,17 +691,6 @@ namespace TrainGame.Constants
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
-            factory.Inv.Add(ItemID.Drill, 1); 
-            factory.Inv.Add(ItemID.Pump, 1); 
-            factory.Inv.Add(ItemID.Greenhouse, 1); 
-            factory.Inv.Add(ItemID.Assembler, 10); 
-            factory.Inv.Add(ItemID.Gasifier, 1);
-            factory.Inv.Add(ItemID.Kiln, 1); 
-            factory.Inv.Add(ItemID.Excavator, 1); 
-            factory.Inv.Add(ItemID.Motherboard, 5); 
-            factory.Inv.Add(ItemID.Iron, 50); 
-            factory.Inv.Add(ItemID.Glass, 20); 
-            factory.AddCart(new Cart(CartType.Liquid)); 
 
             //set assembler components
             (int locomotiveAssemblerEnt, Machine locomotiveAssembler) = machines[MachineID.LocomotiveAssembler]; 

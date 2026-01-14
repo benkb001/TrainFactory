@@ -4,7 +4,7 @@
 
 * Chest system, possibly relative to zero-zero being an error, not pausing scene definitely
 * randomly zooming in ? 
-* Shooting bullets into ui screen, prob can handle by just decreasing bullet lifetime
+* Not drawing traveling interface when exiting map if player is in train
 
 **** NEED TO TEST **** 
 
@@ -18,6 +18,7 @@
 * Frame.IntersectsWith
 * Combat systems 
   * Shoot, death, bullet decay, damage
+* Purchase button
 
 **** CLEAN UP **** 
 
@@ -29,12 +30,19 @@
 
 **** NEXT FEATURES **** 
 
-* Add place to fight 
-  * Need a way to enter and code that progressively makes fights harder 
 * Don't draw player inv in city interface if player not at inv
+* Draw player health somewhere in RPG mode
+* Add roguelike-rewards on completing a round 
+  * More health, more damage, armor, more time crystals 
+    per enemy, player chooses from a random set of 2 or 3 options
+* Add player equip ui 
+  * Probably doing item in inventory works only for weapon
+* Add some sort of dash or movement ability 
 
 **** FUTURE FEATURES **** 
 
+* Add a way to 'unlock' new cities by spending rails/other resources
+* Add a system to highlight entities if player is in interacting range
 * Add warning if player is going to send a train with an empty inv
 * Add some default toasts
 * Make it so trains need fuel
@@ -44,6 +52,9 @@
   * Player data ent
 * Add tutorials 
   * Syntax for TAL will def be needed 
+* Add a way to pause/resume trains running on a program
+  * Will need an interface that displays all trains, but 
+    doesn't allow you to go into train interface
 
 **** FAR FUTURE FEATURES **** 
 
