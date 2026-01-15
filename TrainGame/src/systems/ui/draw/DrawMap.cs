@@ -134,14 +134,26 @@ public static class DrawMapSystem {
             w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
             w.SetComponent<TextBox>(es[2], new TextBox("Fast Time"));
 
-            //add save button to HUD 
+            //add save button and equipment button to HUD 
 
-            float saveWidth = clockWidth; 
-            float saveHeight = clockHeight; 
-            int saveEnt = EntityFactory.AddUI(w, Vector2.Zero, saveWidth, saveHeight, setButton: true, 
+            float saveRowWidth = clockWidth; 
+            float saveRowHeight = clockHeight; 
+            LinearLayoutContainer saveRow = LinearLayoutWrap.Add(w, Vector2.Zero, saveRowWidth, saveRowHeight, 
+                direction: "horizontal", outline: true);
+
+            int equipEnt = EntityFactory.AddUI(w, Vector2.Zero, 0f, 0f, setButton: true, 
+                setOutline: true, text: "Equip");
+            w.SetComponent<EnterInterfaceButton<EquipmentInterfaceData>>(equipEnt,
+                new EnterInterfaceButton<EquipmentInterfaceData>(new EquipmentInterfaceData()));
+            saveRow.AddChild(equipEnt, w);
+
+            int saveEnt = EntityFactory.AddUI(w, Vector2.Zero, 0f, 0f, setButton: true, 
                 text: "Save", setOutline: true);
             w.SetComponent<SaveButton>(saveEnt, new SaveButton());
-            hud.AddChild(saveEnt, w); 
+            saveRow.AddChild(saveEnt, w); 
+            saveRow.ResizeChildren(w);
+            
+            hud.AddChild(saveRow.GetParentEntity(), w); 
 
             //add item summary to HUD 
             float itemSumWidth = hudWidth;

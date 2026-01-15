@@ -79,10 +79,12 @@ public static class RegisterSystems {
         SaveClickSystem.Register(w); 
         LoadClickSystem.Register(w); 
         UpgradeMachineClickSystem.Register(w); 
+        EnterInterfaceClickSystem.Register<EquipmentInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
         VendorInteractSystem.Register(w);
+
         ShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
         RemoveBulletSystem.Register(w); 
@@ -116,6 +118,7 @@ public static class RegisterSystems {
         DrawWriteProgramInterfaceSystem.Register(w); 
         DrawViewProgramInterfaceSystem.Register(w); 
         DrawVendorInterfaceSystem.Register(w); 
+        DrawEquipmentInterfaceSystem.Register(w); 
         SetMachineHeaderSystem.Register(w); 
         //CameraReturnSystem.Register(w); 
 
@@ -141,6 +144,8 @@ public static class RegisterSystems {
         InventoryControlSystem.RegisterOrganize(w); 
         InventorySplitSystem.Register(w); 
         InventoryFastTransferSystem.Register(w); 
+
+        EquipSystem.Register<Armor>(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
         ManualCraftUpdateSystem.Register(w); 

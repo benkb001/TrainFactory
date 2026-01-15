@@ -66,6 +66,9 @@ public static class CloseMenuSystem {
             case SceneType.VendorInterface: 
                 SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
                 break;
+            case SceneType.EquipmentInterface: 
+                MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get());
+                break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
         }

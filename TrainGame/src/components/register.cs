@@ -22,6 +22,7 @@ public static class RegisterComponents {
         r<Active>(); 
         r<AddCartButton>(); 
         r<AddCartInterfaceButton>(); 
+        r<Armor>();
         r<Background>(); 
         r<Backgrounds>(); 
         r<Body>();
@@ -47,6 +48,7 @@ public static class RegisterComponents {
         r<DrawCityInterfaceMessage>();
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
+        r<DrawInterfaceMessage<EquipmentInterfaceData>>(); 
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
@@ -62,9 +64,12 @@ public static class RegisterComponents {
         r<EmbarkButton>(); 
         r<Enemy>(); 
         r<EnemySpawner>(); 
+        r<EnterInterfaceButton<EquipmentInterfaceData>>(); 
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
+        r<EquipmentSlot<Armor>>();
+        r<EquipmentUI>(); 
         r<Frame>(); 
         r<GameClockView>();
         r<Health>(); 

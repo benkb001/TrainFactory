@@ -295,6 +295,13 @@ public class Inventory : IID {
         whitelist.Add(itemId); 
     }
 
+    public void SetArmor() {
+        filter = CartType.Armor; 
+        foreach (string s in EquipmentID.Armor) {
+            Whitelist(s); 
+        }
+    }
+
     public void SetSolid() {
         filter = CartType.Freight; 
         foreach (string s in ItemID.Solids) {
@@ -395,6 +402,13 @@ public class Inventory : IID {
 }
 
 public static class InventoryWrap {
+    public static (int, Inventory) Add(World w, string id, int rows, int cols) {
+        Inventory inv = new Inventory(id, rows, cols);
+        int e = EntityFactory.Add(w, setData: true); 
+        w.SetComponent<Inventory>(e, inv); 
+        return (e, inv); 
+    }
+
     public static Inventory GetyByEntityOrId(World w, int entity = -1, string inventoryId = "") {
         if (w.ComponentContainsEntity<Inventory>(entity)) {
             return w.GetComponent<Inventory>(entity); 

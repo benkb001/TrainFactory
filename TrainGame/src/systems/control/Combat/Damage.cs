@@ -17,9 +17,10 @@ using TrainGame.Constants;
 
 public static class DamageSystem {
     public static void Register<T, U>(World w) {
-        w.AddSystem([typeof(T), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(T), typeof(Health), typeof(Armor), typeof(Frame), typeof(Active)], (w, e) => {
             Frame f = w.GetComponent<Frame>(e); 
             Health health = w.GetComponent<Health>(e); 
+            Armor armor = w.GetComponent<Armor>(e); 
 
             List<int> collidingBulletEnts = 
                 w.GetMatchingEntities([typeof(U), typeof(Bullet), typeof(Frame), typeof(Active)]).Where(
@@ -27,7 +28,7 @@ public static class DamageSystem {
             
             foreach (int bulletEnt in collidingBulletEnts) {
                 Bullet bullet = w.GetComponent<Bullet>(bulletEnt); 
-                health.ReceiveDamage(bullet.Damage); 
+                health.ReceiveDamage(bullet.Damage - armor.Defense); 
                 w.RemoveEntity(bulletEnt); 
             }
         });

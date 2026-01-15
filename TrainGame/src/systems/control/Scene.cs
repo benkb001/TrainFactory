@@ -19,6 +19,7 @@ using System.ComponentModel.DataAnnotations;
 public enum SceneType {
     CartInterface,
     CityInterface,
+    EquipmentInterface,
     MachineInterface,
     Map,
     OffScreen,
@@ -56,7 +57,8 @@ public static class SceneSystem {
         [SceneType.TrainInterface] = new Vector2(7000, 7000),
         [SceneType.WriteProgramInterface] = new Vector2(8000, 8000),
         [SceneType.ViewProgramInterface] = new Vector2(9000, 9000),
-        [SceneType.VendorInterface] = new Vector2(10000, 10000)
+        [SceneType.VendorInterface] = new Vector2(10000, 10000),
+        [SceneType.EquipmentInterface] = new Vector2(11000, 11000)
     };
 
     public static void EnterScene(World w, SceneType type, bool useOldScene = false) {

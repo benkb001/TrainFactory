@@ -33,6 +33,7 @@ public class CartAssembler : IAssembler<Cart> {
 }
 
 public enum CartType {
+    Armor,
     Liquid,
     Freight,
     General

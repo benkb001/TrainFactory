@@ -31,18 +31,9 @@
 
 * Don't draw player inv in city interface if player not at inv
 * Draw player health somewhere in RPG mode
-* Add equipment logic 
-  * Armor should decrease damage taken
-  * Add components for temporary buffs that are lost when player 
-    exits the city 
 * Add roguelike-rewards on completing a round 
   * More health, more damage, armor, more time crystals 
     per enemy, player chooses from a random set of 2 or 3 options
-* Add player equip ui 
-  * We should probably have an inventory entity for armor, for now 
-    it can be 1x1, and a different component that just transfers that 
-    itemID to another component, like PlayerArmor. Then whenever it sets 
-    it to something it wasnt, set a flag that armor needs updating.
 * Add delay between killing enemies and next round spawn
 
 **** FUTURE FEATURES **** 

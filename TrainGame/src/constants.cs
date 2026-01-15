@@ -279,6 +279,18 @@ namespace TrainGame.Constants
         };
     }
 
+    public static class EquipmentID {
+        public static List<string> Armor = new() {
+            ItemID.Armor1, ItemID.Armor2, ItemID.Armor3
+        };
+
+        public static void InitMaps() {
+            EquipmentSlot<Armor>.EquipmentMap = new() {
+                [ItemID.Armor1] = new Armor(1)
+            };
+        }
+    }
+
     public static class ItemID {
         public const string Armor1 = "Armor1"; 
         public const string Armor2 = "Armor2"; 
@@ -626,6 +638,8 @@ namespace TrainGame.Constants
 
     public static class Bootstrap {
         public static void InitWorld(World w) {
+            EquipmentID.InitMaps(); 
+            
             Dictionary<string, (int, City)> cities = new(); 
             Dictionary<string, (int, Machine)> machines = new(); 
 
@@ -668,10 +682,16 @@ namespace TrainGame.Constants
             int playerInvDataEnt = EntityFactory.Add(w, setData: true); 
             Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
+            playerInv.Add(ItemID.Armor1, 1); 
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
             w.SetComponent<Player>(playerInvDataEnt, new Player()); 
             w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
             w.SetComponent<RespawnLocation>(playerInvDataEnt, new RespawnLocation(cities[CityID.Coast].Item2));
+            w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
+
+            (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
+            armorInv.SetArmor();
+            w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
 
             playerInv.Add(ItemID.Gun, 1); 
             //Player.SetInventory(playerInv);

@@ -58,6 +58,7 @@ public static class EnemySpawnSystem {
                     w.SetComponent<Movement>(enemyEnt, new Movement()); 
                     w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
                     w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, spawner.Round, InventoryWrap.GetPlayerInv(w)));
+                    w.SetComponent<Armor>(enemyEnt, new Armor()); 
                 }
             }
         });
