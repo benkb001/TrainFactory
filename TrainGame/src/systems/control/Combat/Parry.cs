@@ -35,7 +35,7 @@ public class Parrier {
         startedParry = new WorldTime(); 
         cooldown = new WorldTime(minutes: 3); 
         duration = new WorldTime(ticks: 30); 
-        parryDecrease = new WorldTime(ticks: 30); 
+        parryDecrease = new WorldTime(ticks: 60); 
     }
 
     public bool CanParry(WorldTime now) {
@@ -62,7 +62,8 @@ public class Parrier {
     }
 
     public float PercentCooldownComplete(WorldTime now) {
-        return ((now - startedParry) / cooldown); 
+        WorldTime waitTime = canParry - startedParry;
+        return ((now - startedParry) / waitTime); 
     }
 }
 

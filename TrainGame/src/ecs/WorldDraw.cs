@@ -123,6 +123,22 @@ public partial class World {
         cameraLocked = false;
     }
 
+    public void SetCameraBounds(float top, float right, float bottom, float left) {
+        // top += ScreenHeight / 2; 
+        // right += ScreenWidth / 2; 
+        // bottom += ScreenHeight / 2; 
+        // left += ScreenWidth / 2; 
+        if (!isTest) {
+            camera.SetBounds(top, right, bottom, left); 
+        }
+    }
+
+    public void ReleaseCameraBounds() {
+        if (!isTest) {
+            camera.ReleaseBounds(); 
+        }
+    }
+
     public Vector2 GetCameraPosition() {
         if (!isTest) {
             return camera.Position; 

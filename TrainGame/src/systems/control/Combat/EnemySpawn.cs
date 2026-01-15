@@ -127,7 +127,7 @@ public static class EnemySpawnSystem {
                 setOutline: true, setInteractable: true);
                 CombatReward reward = new CombatReward(); 
                 w.SetComponent<CombatReward>(rewardEnt, reward); 
-                w.SetComponent<TempArmor>(rewardEnt, new TempArmor(1)); 
+                w.SetComponent<TempArmor>(rewardEnt, new TempArmor(0)); 
                 spawner.AddReward(reward); 
             }
         });

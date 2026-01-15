@@ -78,6 +78,7 @@ public static class SceneSystem {
                 w.RemoveComponent<Active>(e); 
             }
 
+        w.ReleaseCameraBounds();
         w.SetCameraPosition(CameraPositions[type]);
         w.LockCamera(); 
     }

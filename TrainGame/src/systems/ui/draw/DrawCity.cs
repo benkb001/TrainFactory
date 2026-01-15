@@ -190,6 +190,7 @@ public static class DrawCitySystem {
 
                 break; 
             case CityID.HauntedPowerPlant: 
+                w.SetCameraBounds(topleft.Y - 300f, topleft.X + 100f, topleft.Y - 150f, topleft.X - 100f); 
                 DrawPlayer(topleft, topleft - new Vector2(50, 50), city, w); 
                 DrawTrainYard(topleft - new Vector2(50, 50), 50, 50, w); 
 

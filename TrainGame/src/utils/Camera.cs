@@ -28,6 +28,11 @@ public class Camera {
     public Matrix Transform { get; protected set; }
     private bool zoomLocked; 
     private bool panLocked; 
+    private float topBound; 
+    private float leftBound; 
+    private float rightBound; 
+    private float bottomBound; 
+    private bool useBounds = false; 
 
     private float currentMouseWheelValue, previousMouseWheelValue, zoom, previousZoom;
 
@@ -40,6 +45,23 @@ public class Camera {
     }
 
     public void SetPosition(Vector2 Position) {
+        if (useBounds) {
+            float x = Position.X; 
+            if (x > rightBound) {
+                x = rightBound; 
+            } else if (x < leftBound) {
+                x = leftBound; 
+            }
+
+            float y = Position.Y; 
+            if (y > bottomBound) {
+                y = bottomBound;
+            } else if (y < topBound) {
+                y = topBound; 
+            }
+            
+            Position = new Vector2(x, y); 
+        }
         this.Position = Position; 
     }
 
@@ -88,8 +110,9 @@ public class Camera {
 
     public void MoveCamera(Vector2 movePosition)
     {
+        
         Vector2 newPosition = Position + movePosition;
-        Position = newPosition;
+        SetPosition(newPosition); 
     }
 
     public void AdjustZoom(float zoomAmount)
@@ -129,6 +152,18 @@ public class Camera {
 
     public void UnlockZoom() {
         zoomLocked = false; 
+    }
+
+    public void SetBounds(float top, float right, float bot, float left) {
+        this.topBound = top; 
+        this.rightBound = right; 
+        this.bottomBound = bot; 
+        this.leftBound = left; 
+        useBounds = true; 
+    }
+
+    public void ReleaseBounds() {
+        useBounds = false; 
     }
 
     public void UpdateCamera(Viewport bounds, bool force = false) {
