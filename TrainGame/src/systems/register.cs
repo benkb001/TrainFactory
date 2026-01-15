@@ -142,6 +142,8 @@ public static class RegisterSystems {
         LinearLayoutSystem.Register(w);
         LabelPositionSystem.Register(w); 
 
+        ProgressBarUpdateSystem.RegisterPosition(w); 
+
         DragSystem.Register(w); 
         InventoryPickUpUISystem.Register(w); 
         InventoryDropUISystem.Register(w); 
@@ -153,6 +155,7 @@ public static class RegisterSystems {
         EquipSystem.Register<Armor>(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
+        ParryCooldownBarSystem.Register(w); 
         ManualCraftUpdateSystem.Register(w); 
         ProgressBarUpdateSystem.Register(w); 
         

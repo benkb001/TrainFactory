@@ -26,4 +26,13 @@ public class ProgressBarUpdateSystem() {
     public static void Register(World w) {
         w.AddSystem(ts, tf); 
     }
+
+    public static void RegisterPosition(World w) {
+        w.AddSystem([typeof(ProgressBar), typeof(Frame), typeof(Backgrounds), typeof(Active)], (w, e) => {
+            Frame f = w.GetComponent<Frame>(e); 
+            foreach ((Background _, Frame bgFrame) in w.GetComponent<Backgrounds>(e).Ls) {
+                bgFrame.SetCoordinates(f.Position); 
+            }
+        });
+    }
 }

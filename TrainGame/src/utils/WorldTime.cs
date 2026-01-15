@@ -126,10 +126,10 @@ public class WorldTime {
         return new WorldTime(days, hours, minutes, ticks); 
     }
 
-    public static int operator /(WorldTime a, WorldTime b) {
+    public static float operator /(WorldTime a, WorldTime b) {
         int aTicks = a.InTicks(); 
         int bTicks = b.InTicks(); 
-        return a / b; 
+        return (float)aTicks / bTicks; 
     }
 
     public WorldTime Clone() {
