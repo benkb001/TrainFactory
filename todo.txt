@@ -4,6 +4,8 @@
 
 * randomly zooming in ? 
 * Not drawing traveling interface when exiting map if player is in train
+* Camera lag when teleporting, exiting interfaces, basically entity tracking is
+  a bit wonky
 
 **** NEED TO TEST **** 
 
@@ -16,8 +18,9 @@
 * Player walk over inv system
 * Frame.IntersectsWith
 * Combat systems 
-  * Shoot, death, bullet decay, damage
+  * Shoot, death, bullet decay, damage, armor, equipment
 * Purchase button
+* PlayerWrap.GetPlayer
 
 **** CLEAN UP **** 
 
@@ -31,14 +34,22 @@
 
 * Don't draw player inv in city interface if player not at inv
 * Draw player health somewhere in RPG mode
-* Add roguelike-rewards on completing a round 
-  * More health, more damage, armor, more time crystals 
-    per enemy, player chooses from a random set of 2 or 3 options
-* Add delay between killing enemies and next round spawn
+* Expand roguelike reward options
+  * Hp, damage, time crystals
+  * Ensure temp buffs are removed either when entering or exiting a city, 
+    right now only happens when player dies
+* Add camera bounding
+  * Probably we only need it for rpg scene and map scene, so we 
+    can just manually put it in these places
+* Change utility  
+  * TP feels jank probably because it requires moving the mouse and 
+    then you cant reposition to aim again easily, might try something 
+    like shield next. 
 
 **** FUTURE FEATURES **** 
 
 * Add a way to 'unlock' new cities by spending rails/other resources
+* Add a way to skip to harder rounds in hpp
 * Add a system to highlight entities if player is in interacting range
 * Add warning if player is going to send a train with an empty inv
 * Add some default toasts
@@ -47,6 +58,7 @@
   * Player written programs 
   * machine.lifetimeProductsCrafted
   * Player data ent
+  * Armor
 * Add tutorials 
   * Syntax for TAL will def be needed 
 * Add a way to pause/resume trains running on a program
@@ -64,6 +76,7 @@
 * Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
   if completed give high rewards 
 * Add random fights at each city that also give high-rewards if defeated
+* Use OpenFileDialog class to let players submit a program file from their cpu
 
 **** NICE TO HAVE LOW PRIORITY **** 
 

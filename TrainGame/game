@@ -2,8 +2,8 @@
   "time": {
     "days": 0,
     "hours": 0,
-    "minutes": 12,
-    "ticks": 54
+    "minutes": 21,
+    "ticks": 19
   },
   "playerLocation": "Haunted Power Plant",
   "trains": {
@@ -28,7 +28,7 @@
   "inventories": {
     "Factory Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -62,7 +62,7 @@
     },
     "Greenhouse Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -96,7 +96,7 @@
     },
     "Coast Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -130,7 +130,7 @@
     },
     "Mine Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -164,7 +164,7 @@
     },
     "Haunted Power Plant Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -198,7 +198,7 @@
     },
     "Armory Depot": {
       "cols": 5,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -232,7 +232,7 @@
     },
     "PlayerInv": {
       "cols": 10,
-      "filter": 2,
+      "filter": 3,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -266,9 +266,9 @@
     },
     "Armor": {
       "cols": 1,
-      "filter": 2,
+      "filter": 0,
       "items": {
-        "Armor1": 0,
+        "Armor1": 1,
         "Armor2": 0,
         "Armor3": 0,
         "ArmorUpgrade": 0,
@@ -300,7 +300,7 @@
     },
     "T0": {
       "cols": 5,
-      "filter": 1,
+      "filter": 2,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -334,7 +334,7 @@
     },
     "T0 Freight Cart": {
       "cols": 5,
-      "filter": 1,
+      "filter": 2,
       "items": {
         "Armor1": 0,
         "Armor2": 0,
@@ -368,7 +368,7 @@
     },
     "T0 Liquid Cart": {
       "cols": 5,
-      "filter": 0,
+      "filter": 1,
       "items": {
         "Armor1": 0,
         "Armor2": 0,

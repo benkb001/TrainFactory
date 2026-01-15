@@ -21,7 +21,9 @@ public static class RegisterSystems {
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); //***
 
-        TeleportSystem.Register(w); 
+        //TeleportSystem.Register(w); 
+        ParrySystem.RegisterStartParry(w); 
+        ParrySystem.RegisterEndParry(w); 
         DamageSystem.Register<Player, Enemy>(w); 
         DamageSystem.Register<Enemy, Player>(w); 
         LootSystem.Register(w); 
@@ -83,11 +85,14 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
+        TempArmorInteractSystem.Register(w); 
         VendorInteractSystem.Register(w);
 
         ShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
         RemoveBulletSystem.Register(w); 
+        
+        RewardInteractSystem.RegisterRemove(w); 
 
         CloseMenuSystem.Register(w); 
         

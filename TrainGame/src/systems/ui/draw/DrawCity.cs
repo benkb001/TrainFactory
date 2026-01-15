@@ -49,7 +49,8 @@ public static class DrawCitySystem {
         w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerInvDataEnt));
         w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerInvDataEnt));
         w.SetComponent<Inventory>(playerEntity, playerInv); 
-        w.SetComponent<Teleporter>(playerEntity, new Teleporter()); 
+        //w.SetComponent<Teleporter>(playerEntity, new Teleporter()); 
+        w.SetComponent<Parrier>(playerEntity, new Parrier());
         w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerInvDataEnt)); 
         w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerInvDataEnt)); 
 
@@ -209,7 +210,7 @@ public static class DrawCitySystem {
                 drawWall(topleft + new Vector2(450, -450), wallWidth, roomHeight, w);
 
                 float spawnWidth = roomWidth - 100f; 
-                float spawnHeight = 200f; 
+                float spawnHeight = 150f; 
 
                 int enemySpawnEnt = EntityFactory.AddUI(w, leftWallPos + new Vector2(60, 10), 
                     spawnWidth, spawnHeight, setOutline: true); 

@@ -32,7 +32,7 @@ public static class CollideBulletSystem {
 
             List<Frame> collidingFrames = w
             .GetMatchingEntities([typeof(Frame), typeof(Collidable), typeof(Active)])
-            .Where(ent => !w.ComponentContainsEntity<Shooter>(ent))
+            .Where(ent => !w.ComponentContainsEntity<Shooter>(ent) && !w.ComponentContainsEntity<Player>(ent))
             .Select(collidableEnt => w.GetComponent<Frame>(collidableEnt))
             .Where(f => bulletFrame.IntersectsWith(f))
             .ToList();

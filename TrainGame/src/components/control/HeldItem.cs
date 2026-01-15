@@ -9,8 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-using MonoGame.Extended.Shapes; 
-
 public class HeldItem {
     private Inventory inv; 
     private Inventory.Item item; 

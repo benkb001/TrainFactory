@@ -69,7 +69,7 @@ namespace TrainGame.Constants
         public const int CityInvRows = 3; 
         public const int CityInvCols = 5; 
         public const int PlayerInvRows = 1; 
-        public const int PlayerInvCols = 10; 
+        public const int PlayerInvCols = 5; 
 
         public const string TrainStr = "Train"; 
         public const string PlayerInvID = "PlayerInv"; 
@@ -93,6 +93,7 @@ namespace TrainGame.Constants
                 ItemID.Oil => 1000, 
                 ItemID.Rail => 100, 
                 ItemID.Sand => 1000,
+                ItemID.TimeCrystal => 1000,
                 ItemID.Water => 1000, 
                 ItemID.Wood => 100,
                 "StackSize1" => 1,

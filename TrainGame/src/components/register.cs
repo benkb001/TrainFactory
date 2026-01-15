@@ -37,6 +37,8 @@ public static class RegisterComponents {
         r<CityUI>(); 
         r<ClearLLMessage>(); 
         r<Collidable>(); 
+        r<CombatReward>(); 
+        r<CombatRewardCollectedMessage>(); 
         r<Data>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
@@ -102,6 +104,7 @@ public static class RegisterComponents {
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 
+        r<Parrier>();
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
         r<Player>(); 
@@ -124,6 +127,7 @@ public static class RegisterComponents {
         r<StepperMessage>(); 
         r<TALBody>();
         r<Teleporter>(); 
+        r<TempArmor>(); 
         r<TextBox>(); 
         r<TextInput>(); 
         r<Toast>(); 

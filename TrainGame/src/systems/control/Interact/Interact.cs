@@ -36,7 +36,7 @@ public class InteractSystem {
                     Frame interactorFrame = w.GetComponent<Frame>(interactorEntity); 
                     bool interact = false; 
 
-                    if (interactableFrame.IsTouching(interactorFrame)) {
+                    if (interactableFrame.IsTouching(interactorFrame) || interactableFrame.IntersectsWith(interactorFrame)) {
                         if (interactable.ItemId == "") {
                             interact = true; 
                         } else if (w.ComponentContainsEntity<HeldItem>(interactorEntity)) {

@@ -21,6 +21,8 @@ public static class DamageSystem {
             Frame f = w.GetComponent<Frame>(e); 
             Health health = w.GetComponent<Health>(e); 
             Armor armor = w.GetComponent<Armor>(e); 
+            (Parrier parrier, bool success) = w.GetComponentSafe<Parrier>(e); 
+            bool parrying = success ? parrier.Parrying : false; 
 
             List<int> collidingBulletEnts = 
                 w.GetMatchingEntities([typeof(U), typeof(Bullet), typeof(Frame), typeof(Active)]).Where(
@@ -28,7 +30,13 @@ public static class DamageSystem {
             
             foreach (int bulletEnt in collidingBulletEnts) {
                 Bullet bullet = w.GetComponent<Bullet>(bulletEnt); 
-                health.ReceiveDamage(bullet.Damage - armor.Defense); 
+                
+                if (!parrying) {
+                    health.ReceiveDamage(bullet.Damage - armor.Defense - armor.TempDefense); 
+                } else {
+                    parrier.Parry(); 
+                }
+                
                 w.RemoveEntity(bulletEnt); 
             }
         });
