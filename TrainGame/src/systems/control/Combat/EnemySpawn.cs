@@ -82,15 +82,21 @@ public class EnemySpawner {
 }
 
 public static class EnemySpawnSystem {
+    private const float armorThresh = 0.05f; 
+    private const float damageThresh = 0.01f; 
+    private const float healthThresh = 0.5f; 
+    private const float timeCrystalThresh = 1f;
+    private const int numRewards = 2;
+
     public static void Register(World w) {
         w.AddSystem([typeof(EnemySpawner), typeof(Frame), typeof(Active)], (w, e) => {
             EnemySpawner spawner = w.GetComponent<EnemySpawner>(e); 
             Frame f = w.GetComponent<Frame>(e); 
             spawner.Update(w.Time); 
+            int round = spawner.Round; 
 
             if (spawner.CanSpawn(w.Time)) {
                 spawner.FinishRound(); 
-                int round = spawner.Round; 
             
                 for (int i = 0; i < Math.Min(5, spawner.Round); i++) {
                     float xRand = w.NextFloat(); 
@@ -123,12 +129,40 @@ public static class EnemySpawnSystem {
                     w.SetComponent<Armor>(enemyEnt, new Armor()); 
                 }
             } else if (spawner.CanReward()) {
-                int rewardEnt = EntityFactory.AddUI(w, f.Position, 50f, 50f, text: "Defense +1", 
-                setOutline: true, setInteractable: true);
-                CombatReward reward = new CombatReward(); 
-                w.SetComponent<CombatReward>(rewardEnt, reward); 
-                w.SetComponent<TempArmor>(rewardEnt, new TempArmor(0)); 
-                spawner.AddReward(reward); 
+                
+                for (int i = 0; i < numRewards; i++) {
+                    Vector2 pos = f.Position + new Vector2((i * 110f) + 10f, 10f); 
+
+                    int rewardEnt = EntityFactory.AddUI(w, pos, 50f, 
+                        50f, setOutline: true, setInteractable: true);
+
+                    CombatReward reward = new CombatReward(); 
+                    w.SetComponent<CombatReward>(rewardEnt, reward); 
+                    spawner.AddReward(reward); 
+
+                    string rewardStr = ""; 
+                    float rand = w.NextFloat(); 
+
+                    if (rand < armorThresh) {
+                        rewardStr = "Armor +1"; 
+                        w.SetComponent<TempArmor>(rewardEnt, new TempArmor(1)); 
+                    } else if (rand < damageThresh) {
+                        rewardStr = "Damage +1"; 
+                        w.SetComponent<DamagePotion>(rewardEnt, new DamagePotion(1)); 
+                    } else if (rand < healthThresh) {
+                        int hp = round; 
+                        hp = 1 + (int)(w.NextFloat() * w.NextFloat() * hp); 
+                        rewardStr = $"HP +{hp}";
+                        w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(round)); 
+                    } else if (rand < timeCrystalThresh) {
+                        int timeCrystals = 10 * round; 
+                        timeCrystals = 1 + (int)(w.NextFloat() * 2 * timeCrystals); 
+                        rewardStr = $"{timeCrystals} Time Crystals";
+                        w.SetComponent<TimeCrystal>(rewardEnt, new TimeCrystal(timeCrystals)); 
+                    }
+
+                    w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
+                }
             }
         });
     }

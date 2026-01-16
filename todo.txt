@@ -18,7 +18,7 @@
 * Player walk over inv system
 * Frame.IntersectsWith
 * Combat systems 
-  * Shoot, death, bullet decay, damage, armor, equipment
+  * Shoot, death, bullet decay, damage, armor, equipment, parry
 * Purchase button
 * PlayerWrap.GetPlayer
 
@@ -32,19 +32,10 @@
 
 **** NEXT FEATURES **** 
 
-* Don't draw player inv in city interface if player not at inv
-* Draw player health somewhere in RPG mode
-* Expand roguelike reward options
-  * Hp, damage, time crystals
-  * Ensure temp buffs are removed either when entering or exiting a city, 
-    right now only happens when player dies
-* Add camera bounding
-  * Probably we only need it for rpg scene and map scene, so we 
-    can just manually put it in these places
-* Change utility  
-  * TP feels jank probably because it requires moving the mouse and 
-    then you cant reposition to aim again easily, might try something 
-    like shield next. 
+* Don't draw player inv in city interface if player not at city
+* Catch up on persistent state
+* Ensure temp buffs are removed either when entering or exiting a city, 
+  right now only happens when player dies
 
 **** FUTURE FEATURES **** 
 
@@ -56,9 +47,6 @@
 * Make it so trains need fuel
 * Catch up on PersistentState 
   * Player written programs 
-  * machine.lifetimeProductsCrafted
-  * Player data ent
-  * Armor
 * Add tutorials 
   * Syntax for TAL will def be needed 
 * Add a way to pause/resume trains running on a program

@@ -15,6 +15,25 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+class Damage {
+    private int dmg; 
+    private int tempDMG; 
+    public int DMG => dmg + tempDMG; 
+
+    public Damage(int dmg) {
+        this.dmg = dmg; 
+        tempDMG = 0; 
+    }
+
+    public void AddTempDamage(int tempDMG) {
+        this.tempDMG += tempDMG;
+    }
+
+    public void ResetDMG() {
+        tempDMG = 0; 
+    }
+}
+
 public static class ShootSystem {
 
     private static WorldTime lastShot = new WorldTime(); 
@@ -25,15 +44,17 @@ public static class ShootSystem {
                 if (w.Time.IsAfterOrAt(lastShot + new WorldTime(ticks: 24))) {
 
                     lastShot = w.Time.Clone(); 
-                    
-                    List<HeldItem> ls = w.GetMatchingEntities([typeof(HeldItem), typeof(Active)]).Select(
-                        e => w.GetComponent<HeldItem>(e)).Where(h => Weapons.GunMap.ContainsKey(h.ItemId)).ToList(); 
+                    List<int> es = w.GetMatchingEntities([typeof(HeldItem), typeof(Active), typeof(Damage)])
+                    .Where(e => Weapons.GunMap.ContainsKey(w.GetComponent<HeldItem>(e).ItemId))
+                    .ToList(); 
 
-                    if (ls.Count > 0) {
-                        HeldItem gun = ls[0];
-                        int damage = Weapons.GunMap[gun.ItemId]; 
+                    if (es.Count > 0) {
+                        int e = es[0]; 
+                        HeldItem gun = w.GetComponent<HeldItem>(e); 
+                        int damage = Weapons.GunMap[gun.ItemId] + w.GetComponent<Damage>(e).DMG; 
+ 
                         (Frame f, bool success) = w.GetComponentSafe<Frame>(gun.LabelEntity);
-                        Vector2 pos = f.Position; 
+                        Vector2 pos = success ? f.Position : Vector2.Zero; 
 
                         Vector2 mousePos = w.GetWorldMouseCoordinates(); 
                         Velocity bulletVelocity = new Velocity(Vector2.Normalize(mousePos - pos) * Constants.BulletSpeed);

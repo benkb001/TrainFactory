@@ -2,8 +2,8 @@
   "time": {
     "days": 0,
     "hours": 0,
-    "minutes": 21,
-    "ticks": 19
+    "minutes": 17,
+    "ticks": 53
   },
   "playerLocation": "Haunted Power Plant",
   "trains": {
@@ -231,10 +231,10 @@
       "rows": 3
     },
     "PlayerInv": {
-      "cols": 10,
+      "cols": 5,
       "filter": 3,
       "items": {
-        "Armor1": 0,
+        "Armor1": 1,
         "Armor2": 0,
         "Armor3": 0,
         "ArmorUpgrade": 0,
@@ -268,7 +268,7 @@
       "cols": 1,
       "filter": 0,
       "items": {
-        "Armor1": 1,
+        "Armor1": 0,
         "Armor2": 0,
         "Armor3": 0,
         "ArmorUpgrade": 0,
@@ -406,6 +406,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -413,6 +414,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -420,6 +422,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": 0,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -427,6 +430,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -434,6 +438,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": 0,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -441,6 +446,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -448,6 +454,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -455,6 +462,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -462,6 +470,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -469,6 +478,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -476,6 +486,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -483,6 +494,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -490,6 +502,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -497,6 +510,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -504,6 +518,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -511,6 +526,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -518,6 +534,7 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -525,8 +542,15 @@
       "state": 0,
       "curCraftTicks": 0,
       "level": -1,
+      "lifetimeProductsCrafted": 0,
       "numRecipeToStore": 0,
       "priority": 0
     }
+  },
+  "player": {
+    "armor": 0,
+    "armorInventoryID": "Armor",
+    "inventoryID": "PlayerInv",
+    "maxHP": 6
   }
 }

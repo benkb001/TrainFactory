@@ -213,6 +213,10 @@ public class Machine : IID {
         return true; 
     }
 
+    public void SetLifetimeProductsCrafted(int p) {
+        this.lifetimeProductsCrafted = p; 
+    }
+
     public void SetStorageSize(int size) {
         this.numRecipeToStore = size; 
     }

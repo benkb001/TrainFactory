@@ -35,7 +35,7 @@ public class Parrier {
         startedParry = new WorldTime(); 
         cooldown = new WorldTime(minutes: 3); 
         duration = new WorldTime(ticks: 30); 
-        parryDecrease = new WorldTime(ticks: 60); 
+        parryDecrease = new WorldTime(ticks: 30); 
     }
 
     public bool CanParry(WorldTime now) {
@@ -118,7 +118,7 @@ public static class ParrySystem {
     }
 
     public static void RegisterEndParry(World w) {
-        w.AddSystem([typeof(Parrier), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Parrier), typeof(Background), typeof(Active)], (w, e) => {
             Parrier p = w.GetComponent<Parrier>(e); 
             if (p.ParryEnded(w.Time)) {
                 w.GetComponent<Background>(e).BackgroundColor = Color.White;

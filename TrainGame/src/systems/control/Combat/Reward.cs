@@ -45,3 +45,60 @@ public static class TempArmorInteractSystem {
         });
     }
 }
+
+public class HealthPotion {
+    private int hp; 
+    public int HP => hp; 
+
+    public HealthPotion(int hp) {
+        this.hp = hp; 
+    }
+}
+
+public class TimeCrystal {
+    private int count; 
+    public int Count => count; 
+
+    public TimeCrystal(int count) {
+        this.count = count; 
+    }
+}
+
+public class DamagePotion {
+    private int dmg; 
+    public int DMG => dmg; 
+
+    public DamagePotion(int dmg) {
+        this.dmg = dmg; 
+    }
+}
+
+public static class HealthPotionInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<HealthPotion>(w, (w, e, interactorEntity) => {
+            Health playerHealth = w.GetComponent<Health>(interactorEntity); 
+            HealthPotion potion = w.GetComponent<HealthPotion>(e);
+            playerHealth.AddHP(potion.HP); 
+        });
+    }
+}
+
+public static class TimeCrystalInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<TimeCrystal>(w, (w, e, interactorEntity) => {
+            Inventory playerInv = w.GetComponent<Inventory>(interactorEntity); 
+            TimeCrystal tc = w.GetComponent<TimeCrystal>(e); 
+            playerInv.Add(ItemID.TimeCrystal, tc.Count); 
+        });
+    }
+}
+
+public static class DamagePotionInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<DamagePotion>(w, (w, e, interactorEntity) => {
+            Damage playerDMG = w.GetComponent<Damage>(interactorEntity); 
+            DamagePotion dmgPot = w.GetComponent<DamagePotion>(e); 
+            playerDMG.AddTempDamage(dmgPot.DMG); 
+        });
+    }
+}

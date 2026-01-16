@@ -478,10 +478,8 @@ public static class NextDrawTestUISystem {
         }, 
         [22] = (w) => {
             Bootstrap.InitWorld(w); 
-            City hpp = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.HauntedPowerPlant).FirstOrDefault().Value;
-            hpp.Inv.Add(ItemID.TimeCrystal, 100);
-            hpp.Inv.Add(ItemID.Iron, 100); 
-            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(hpp));
+            City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
         }, 
         [23] = (w) => {
             w.LockCamera(); 

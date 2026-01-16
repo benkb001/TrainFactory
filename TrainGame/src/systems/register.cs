@@ -85,7 +85,12 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
+
         TempArmorInteractSystem.Register(w); 
+        HealthPotionInteractSystem.Register(w); 
+        TimeCrystalInteractSystem.Register(w); 
+        DamagePotionInteractSystem.Register(w); 
+        
         VendorInteractSystem.Register(w);
 
         ShootSystem.Register(w);
@@ -101,6 +106,7 @@ public static class RegisterSystems {
         RedrawMapSystem.Register(w);
 
         DrawBackgroundSystem.Register(w); 
+        DrawHPSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 
         DrawEmbarkSystem.Register(w); 
         DrawMapSystem.Register(w); 
@@ -136,7 +142,7 @@ public static class RegisterSystems {
 
         InventoryControlSystem.RegisterUpdate(w); 
         
-        PlayerInventoryPositionSystem.Register(w); 
+        PlayerHUDPositionSystem.Register(w); 
         
         ScreenAnchorSystem.Register(w); //***
         LinearLayoutSystem.Register(w);

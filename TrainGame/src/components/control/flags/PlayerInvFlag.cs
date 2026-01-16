@@ -1,3 +1,3 @@
 namespace TrainGame.Components; 
 
-public class PlayerInvFlag {}
+public class PlayerHUD {}

@@ -30,6 +30,10 @@ public class Health {
         hp = Math.Max(0, hp - damage); 
     }
 
+    public void AddHP(int increase) {
+        hp += increase; 
+    }
+
     public void ResetHP() {
         hp = maxHP; 
     }

@@ -18,6 +18,17 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Systems;
 
+public static class DrawHPSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Health), typeof(TextBox), typeof(Active)], (w, e) => {
+            Health h = w.GetComponent<Health>(e); 
+            TextBox tb = w.GetComponent<TextBox>(e); 
+            
+            tb.Text = $"HP: {h.HP}";
+        });
+    }
+}
+
 public static class DrawCitySystem {
     private static float machineWidth = 50f; 
     private static float machineHeight = 50f; 
@@ -25,16 +36,29 @@ public static class DrawCitySystem {
     private static int DrawPlayer(Vector2 topleft, Vector2 position, City c, World w) {
         int playerEntity = EntityFactory.Add(w); 
         int playerDataEnt = PlayerWrap.GetEntity(w); 
-        int playerInvDataEnt = InventoryWrap.GetEntity(Constants.PlayerInvID, w); 
-        Inventory playerInv = w.GetComponent<Inventory>(playerInvDataEnt); 
+
+        Inventory playerInv = w.GetComponent<Inventory>(playerDataEnt); 
 
         (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv); 
 
+        LinearLayoutContainer playerHUD = LinearLayoutWrap.Add(
+            w, 
+            Vector2.Zero, 
+            playerInvWidth + 100f, 
+            playerInvHeight,
+            outline: false, 
+            screenAnchor: true
+        );
+        w.SetComponent<PlayerHUD>(playerHUD.GetParentEntity(), new PlayerHUD());
+
         InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
             playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
-        w.SetComponent<ScreenAnchor>(playerInvView.GetParentEntity(), 
-            new ScreenAnchor(new Vector2((w.ScreenWidth - playerInvWidth) / 2f, w.ScreenHeight - playerInvHeight - 10)));
-        w.SetComponent<PlayerInvFlag>(playerInvView.GetParentEntity(), new PlayerInvFlag());
+        
+        playerHUD.AddChild(playerInvView.GetParentEntity(), w); 
+
+        int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
+        w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
+        playerHUD.AddChild(hpEnt, w); 
         
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
@@ -46,13 +70,14 @@ public static class DrawCitySystem {
             new Outline(Colors.PlayerOutline, Constants.PlayerOutlineThickness, Depth.PlayerOutline)); 
         w.SetComponent<Background>(playerEntity, new Background(Colors.PlayerBackground, Depth.PlayerBackground));
         w.SetComponent<Player>(playerEntity, new Player()); 
-        w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerInvDataEnt));
-        w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerInvDataEnt));
+        w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerDataEnt));
+        w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerDataEnt));
         w.SetComponent<Inventory>(playerEntity, playerInv); 
         //w.SetComponent<Teleporter>(playerEntity, new Teleporter()); 
         w.SetComponent<Parrier>(playerEntity, new Parrier());
-        w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerInvDataEnt)); 
-        w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerInvDataEnt)); 
+        w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerDataEnt)); 
+        w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt)); 
+        w.SetComponent<Damage>(playerEntity, new Damage(0)); 
 
         w.UnlockCameraPan(); 
         w.TrackEntity(playerEntity); 

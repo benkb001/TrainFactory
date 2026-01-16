@@ -678,7 +678,7 @@ namespace TrainGame.Constants
                 }
             }
 
-            //add player inventory
+            //add player data
 
             int playerInvDataEnt = EntityFactory.Add(w, setData: true); 
             Inventory playerInv = new Inventory(Constants.PlayerInvID, 
@@ -687,7 +687,7 @@ namespace TrainGame.Constants
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
             w.SetComponent<Player>(playerInvDataEnt, new Player()); 
             w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
-            w.SetComponent<RespawnLocation>(playerInvDataEnt, new RespawnLocation(cities[CityID.Coast].Item2));
+            w.SetComponent<RespawnLocation>(playerInvDataEnt, new RespawnLocation(cities[CityID.Factory].Item2));
             w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
 
             (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);

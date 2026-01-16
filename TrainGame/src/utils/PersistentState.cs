@@ -67,14 +67,11 @@ public static class PersistentState {
 
         dom.Add("playerLocation", playerLocation);
 
-        //TODO: Catch-Up, once we change how carts
-        //are implemented, that info should be saved here
-
         dom.Add("trains", new JsonObject(trains.Select(kvp => {
             Train t = kvp.Value; 
             string id = kvp.Key; 
             int nextInstruction = (t.Executable == null) ? 0 : t.Executable.NextInstruction; 
-            return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
+            JsonObject trainJSON = new JsonObject() {
                 ["comingFromID"] = t.ComingFrom.GetID(),
                 ["goingToID"] = t.GoingTo.GetID(),
                 ["inventoryID"] = t.Inv.GetID(),
@@ -85,10 +82,11 @@ public static class PersistentState {
                 ["nextInstruction"] = nextInstruction,
                 ["power"] = t.Power,
                 ["program"] = t.Program
-            });
+            };
+
+            return new KeyValuePair<string, JsonNode>(id, trainJSON);
         })));
 
-        //TODO: Add whitelist info 
         dom.Add("inventories", new JsonObject(invs.Select(kvp => {
             Inventory inv = kvp.Value; 
             string id = kvp.Key; 
@@ -112,10 +110,24 @@ public static class PersistentState {
                 ["state"] = Convert.ToInt32(machine.State),
                 ["curCraftTicks"] = machine.CurCraftTicks,
                 ["level"] = machine.Level,
+                ["lifetimeProductsCrafted"] = machine.LifetimeProductsCrafted,
                 ["numRecipeToStore"] = machine.NumRecipeToStore,
                 ["priority"] = machine.Priority
             });
         })));
+
+        int playerEnt = PlayerWrap.GetEntity(w); 
+        Inventory playerInv = w.GetComponent<Inventory>(playerEnt); 
+        Inventory armorInv = w.GetComponent<EquipmentSlot<Armor>>(playerEnt).GetInventory();
+        int maxHP = w.GetComponent<Health>(playerEnt).MaxHP; 
+        int armor = w.GetComponent<Armor>(playerEnt).Defense; 
+
+        dom.Add("player", new JsonObject() {
+            ["armor"] = armor,
+            ["armorInventoryID"] = armorInv.Id,
+            ["inventoryID"] = playerInv.Id, 
+            ["maxHP"] = maxHP
+        });
 
         File.WriteAllText(filepath, dom.ToString());
     }
@@ -172,6 +184,7 @@ public static class PersistentState {
                 int priority = (int)machineData["priority"]; 
                 int level = (int)machineData["level"];
                 int numRecipeToStore = (int)machineData["numRecipeToStore"];
+                int lifetimeProductsCrafted = (int)machineData["lifetimeProductsCrafted"];
 
                 Machine m = Machines.Get(
                     inv, 
@@ -182,6 +195,8 @@ public static class PersistentState {
                     level: level,
                     numRecipeToStore: numRecipeToStore
                 ); 
+
+                m.SetLifetimeProductsCrafted(lifetimeProductsCrafted); 
 
                 int machineEnt = EntityFactory.Add(w, setData: true); 
                 w.SetComponent<Machine>(machineEnt, m); 
@@ -233,11 +248,34 @@ public static class PersistentState {
             }
         }
 
+        int playerDataEnt = EntityFactory.Add(w, setData: true); 
+
+        w.SetComponent<Player>(playerDataEnt, new Player()); 
+        JsonObject playerJSON = dom["player"].AsObject(); 
+
+        Inventory playerInv = inventories[(string)playerJSON["inventoryID"]];
+        Inventory armorInv = inventories[(string)playerJSON["armorInventoryID"]];
+        int armor = (int)playerJSON["armor"];
+        int maxHP = (int)playerJSON["maxHP"];
+
+        Armor playerArmor = new Armor(armor); 
+        Health playerHealth = new Health(maxHP); 
+        EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
+
+        w.SetComponent<Inventory>(playerDataEnt, playerInv); 
+        w.SetComponent<Armor>(playerDataEnt, playerArmor); 
+        w.SetComponent<Health>(playerDataEnt, playerHealth); 
+        w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, armorSlot); 
+        w.SetComponent<RespawnLocation>(playerDataEnt, new RespawnLocation(cities[CityID.Factory]));
+
         string playerLocation = (string)dom["playerLocation"];
+
         if (cities.ContainsKey(playerLocation)) {
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(cities[playerLocation]));
         } else if (trains.ContainsKey(playerLocation)) {
             MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(trains[playerLocation]));
+        } else {
+            throw new InvalidOperationException("Couldn't find player"); 
         }
     }
 }

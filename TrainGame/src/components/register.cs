@@ -39,6 +39,8 @@ public static class RegisterComponents {
         r<Collidable>(); 
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
+        r<Damage>(); 
+        r<DamagePotion>(); 
         r<Data>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
@@ -76,6 +78,7 @@ public static class RegisterComponents {
         r<GameClockView>();
         r<Health>(); 
         r<HeldItem>(); 
+        r<HealthPotion>(); 
         r<Interactable>(); 
         r<Interactor>();  
         r<Inventory>(); 
@@ -109,7 +112,7 @@ public static class RegisterComponents {
         r<PauseButton>(); 
         r<PlayerAccessTrainButton>(); 
         r<Player>(); 
-        r<PlayerInvFlag>(); 
+        r<PlayerHUD>(); 
         r<ProgressBar>(); 
         r<PurchaseButton>();
         r<RespawnLocation>(); 
@@ -131,6 +134,7 @@ public static class RegisterComponents {
         r<TempArmor>(); 
         r<TextBox>(); 
         r<TextInput>(); 
+        r<TimeCrystal>();
         r<Toast>(); 
         r<Train>(); 
         r<TrainAssembler>(); 
