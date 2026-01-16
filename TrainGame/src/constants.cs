@@ -650,17 +650,16 @@ namespace TrainGame.Constants
                 CityArg args = kvp.Value; 
 
                 Inventory inv = new Inventory($"{cityId} Depot", Constants.CityInvRows, Constants.CityInvCols); 
-                int invEnt = EntityFactory.Add(w, setData: true); 
+                int invEnt = EntityFactory.AddData<Inventory>(w, inv); 
                 w.SetComponent<Inventory>(invEnt, inv); 
 
-                int cityEnt = EntityFactory.Add(w, setData: true); 
                 City c = new City(cityId, inv, args.UiX, args.UiY, args.RealX, args.RealY); 
-                w.SetComponent<City>(cityEnt, c); 
+                int cityEnt = EntityFactory.AddData<City>(w, c); 
                 cities[cityId] = (cityEnt, c); 
 
                 foreach (string machineID in args.Machines) {
-                    int machineEnt = EntityFactory.Add(w, setData: true); 
                     Machine m = Machines.Get(inv, machineID); 
+                    int machineEnt = EntityFactory.AddData<Machine>(w, m); 
                     machines[machineID] = (machineEnt, m); 
                     w.SetComponent<Machine>(machineEnt, m); 
                     c.AddMachine(m); 
@@ -680,10 +679,10 @@ namespace TrainGame.Constants
 
             //add player data
 
-            int playerInvDataEnt = EntityFactory.Add(w, setData: true); 
             Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
-            playerInv.Add(ItemID.Armor1, 1); 
+            int playerInvDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
+
             w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
             w.SetComponent<Player>(playerInvDataEnt, new Player()); 
             w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
@@ -695,14 +694,12 @@ namespace TrainGame.Constants
             w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
 
             playerInv.Add(ItemID.Gun, 1); 
-            //Player.SetInventory(playerInv);
 
             //add one train to factory
 
-            int trainInvDataEnt = EntityFactory.Add(w, setData: true); 
             Inventory trainInv = new Inventory("T0", Constants.TrainRows, Constants.TrainCols); 
             trainInv.SetSolid(); 
-            w.SetComponent<Inventory>(trainInvDataEnt, trainInv); 
+            int trainInvDataEnt = EntityFactory.AddData<Inventory>(w, trainInv); 
 
             (int _, City factory) = cities[CityID.Factory];
             

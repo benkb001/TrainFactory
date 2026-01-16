@@ -21,6 +21,7 @@
   * Shoot, death, bullet decay, damage, armor, equipment, parry
 * Purchase button
 * PlayerWrap.GetPlayer
+* EntityFactory.AddData<T>
 
 **** CLEAN UP **** 
 
@@ -33,7 +34,7 @@
 **** NEXT FEATURES **** 
 
 * Don't draw player inv in city interface if player not at city
-* Catch up on persistent state
+* Make it so assemblers can assemble multiple at once
 * Ensure temp buffs are removed either when entering or exiting a city, 
   right now only happens when player dies
 

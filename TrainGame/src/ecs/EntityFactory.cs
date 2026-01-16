@@ -21,6 +21,36 @@ using TrainGame.Utils;
 using TrainGame.Systems;
 
 public static class EntityFactory {
+
+    public static int AddData<T>(World w, T component) {
+        List<int> dataEnts = w.GetMatchingEntities([typeof(Data), typeof(T)]);
+
+        foreach (int e in dataEnts) {
+            T existing = w.GetComponent<T>(e); 
+            if (existing.Equals(component)) {
+                Console.WriteLine("Found existing data entity"); 
+                return e;
+            }
+        }
+
+        int dataEnt = Add(w, setData: true);
+        w.SetComponent<T>(dataEnt, component); 
+        return dataEnt; 
+    }
+
+    public static int AddData<T>(World w, T component, int e) {
+        List<int> dataEnts = w.GetMatchingEntities([typeof(Data), typeof(T)]);
+
+        bool exists = dataEnts.Any(ent => w.GetComponent<T>(ent).Equals(component));
+
+        if (exists) {
+            return -1;
+        } else {
+            w.SetComponent<T>(e, component); 
+            return e; 
+        }
+    }
+
     public static int Add(World w, bool setScene = true, bool setActive = true, bool setData = false, 
         SceneType type = SceneType.None) {
         int e = w.AddEntity(); 

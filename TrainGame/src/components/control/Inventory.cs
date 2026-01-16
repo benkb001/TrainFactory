@@ -404,9 +404,12 @@ public class Inventory : IID {
 public static class InventoryWrap {
     public static (int, Inventory) Add(World w, string id, int rows, int cols) {
         Inventory inv = new Inventory(id, rows, cols);
-        int e = EntityFactory.Add(w, setData: true); 
-        w.SetComponent<Inventory>(e, inv); 
+        int e = EntityFactory.AddData<Inventory>(w, inv); 
         return (e, inv); 
+    }
+
+    public static void Add(World w, Inventory inv) {
+        EntityFactory.AddData<Inventory>(w, inv); 
     }
 
     public static Inventory GetyByEntityOrId(World w, int entity = -1, string inventoryId = "") {

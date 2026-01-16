@@ -21,18 +21,15 @@ public static class TrainWrap {
 
     public static int Add(World w, Train t) {
         if (EntityFactory.GetDataEntity<Inventory>(w, t.Inv) == -1) {
-            int invEnt = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Inventory>(invEnt, t.Inv); 
+            InventoryWrap.Add(w, t.Inv); 
         }
         
-        int tEnt = EntityFactory.Add(w, setData: true); 
-        w.SetComponent<Train>(tEnt, t); 
+        int tEnt = EntityFactory.AddData<Train>(w, t); 
 
         foreach (KeyValuePair<CartType, Inventory> kvp in t.Carts) {
             Inventory cur = kvp.Value; 
             if (EntityFactory.GetDataEntity<Inventory>(w, cur) == -1) {
-                int curEnt = EntityFactory.Add(w, setData: true); 
-                w.SetComponent<Inventory>(curEnt, cur); 
+                InventoryWrap.Add(w, cur); 
             }
         }
 

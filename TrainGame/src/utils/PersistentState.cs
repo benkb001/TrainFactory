@@ -36,7 +36,7 @@ public static class PersistentState {
 
         List<List<int>> ents = ts.Select(
             t => {
-                List<int> es = w.GetMatchingEntities([t, typeof(Data)]); 
+                List<int> es = w.GetMatchingEntities([t, typeof(Data)]);
                 return es; 
             }).ToList(); 
 
@@ -162,8 +162,7 @@ public static class PersistentState {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
             inventories.Add(invID, inv); 
-            int e = EntityFactory.Add(w, setData: true); 
-            w.SetComponent<Inventory>(e, inv); 
+            EntityFactory.AddData<Inventory>(w, inv); 
         }
 
         foreach (KeyValuePair<string, CityArg> kvp in CityID.CityMap) {
@@ -172,9 +171,8 @@ public static class PersistentState {
 
             Inventory inv = inventories[City.GetInvID(cityId)];
 
-            int cityEnt = EntityFactory.Add(w, setData: true); 
             City c = new City(cityId, inv, args.UiX, args.UiY, args.RealX, args.RealY); 
-            w.SetComponent<City>(cityEnt, c); 
+            int cityEnt = EntityFactory.AddData<City>(w, c); 
             cities[cityId] = c;
 
             foreach (string machineID in args.Machines) {
@@ -198,8 +196,7 @@ public static class PersistentState {
 
                 m.SetLifetimeProductsCrafted(lifetimeProductsCrafted); 
 
-                int machineEnt = EntityFactory.Add(w, setData: true); 
-                w.SetComponent<Machine>(machineEnt, m); 
+                EntityFactory.AddData<Machine>(w, m); 
                 c.AddMachine(m); 
             }
         }
@@ -248,9 +245,6 @@ public static class PersistentState {
             }
         }
 
-        int playerDataEnt = EntityFactory.Add(w, setData: true); 
-
-        w.SetComponent<Player>(playerDataEnt, new Player()); 
         JsonObject playerJSON = dom["player"].AsObject(); 
 
         Inventory playerInv = inventories[(string)playerJSON["inventoryID"]];
@@ -262,6 +256,9 @@ public static class PersistentState {
         Health playerHealth = new Health(maxHP); 
         EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
 
+        int playerDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
+
+        w.SetComponent<Player>(playerDataEnt, new Player()); 
         w.SetComponent<Inventory>(playerDataEnt, playerInv); 
         w.SetComponent<Armor>(playerDataEnt, playerArmor); 
         w.SetComponent<Health>(playerDataEnt, playerHealth); 
