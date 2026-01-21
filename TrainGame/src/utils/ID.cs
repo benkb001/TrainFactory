@@ -33,6 +33,13 @@ public static class ID {
         return usedIDs.Contains(s); 
     }
 
+    //returns true if not already used
+    public static bool Use(string s) {
+        bool contains = Used(s); 
+        usedIDs.Add(s); 
+        return !contains; 
+    }
+
     public static T GetComponent<T>(string id, World w) where T : IID {
         T component = w.GetMatchingEntities([typeof(T), typeof(Data)]).Select(e => w.GetComponent<T>(e)).Where(
             c => c.GetID() == id).FirstOrDefault(); 

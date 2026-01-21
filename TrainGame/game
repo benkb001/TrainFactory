@@ -1,15 +1,15 @@
 {
   "time": {
-    "days": 0,
-    "hours": 0,
-    "minutes": 58,
-    "ticks": 42
+    "days": 2,
+    "hours": 4,
+    "minutes": 43,
+    "ticks": 22
   },
-  "playerLocation": "Factory",
+  "playerLocation": "Haunted Power Plant",
   "trains": {
     "T0": {
-      "comingFromID": "Factory",
-      "goingToID": "Factory",
+      "comingFromID": "Haunted Power Plant",
+      "goingToID": "Haunted Power Plant",
       "inventoryID": "T0",
       "isTraveling": false,
       "left": {
@@ -26,25 +26,25 @@
     },
     "Train1": {
       "comingFromID": "Factory",
-      "goingToID": "Factory",
+      "goingToID": "Coast",
       "inventoryID": "Train0_inv",
-      "isTraveling": false,
+      "isTraveling": true,
       "left": {
-        "days": 0,
-        "hours": 0,
-        "minutes": 0,
-        "ticks": 0
+        "days": 2,
+        "hours": 4,
+        "minutes": 38,
+        "ticks": 15
       },
-      "mass": 1000,
-      "milesPerHour": 25,
-      "nextInstruction": 0,
+      "mass": 1750,
+      "milesPerHour": 14.285714,
+      "nextInstruction": 2,
       "power": 25000,
-      "program": null
+      "program": "\n            LOAD Factory.Fuel / 2 Fuel; \n            GO TO Coast; \n            UNLOAD SELF.Fuel Fuel; \n            WHILE Coast.Fuel \u003E 0 {\n                WAIT;\n            }\n            LOAD Coast.Water Water; \n            GO TO Factory; \n            GO TO Greenhouse; \n            UNLOAD SELF.Water Water; \n            WHILE Greenhouse.Water \u003E 0 {\n                WAIT;\n            }\n            LOAD Greenhouse.Wood Wood; \n            GO TO Factory; \n            UNLOAD SELF.Wood Wood; \n        "
     },
     "Train3": {
       "comingFromID": "Factory",
       "goingToID": "Factory",
-      "inventoryID": "Train2_inv",
+      "inventoryID": "Loc2",
       "isTraveling": false,
       "left": {
         "days": 0,
@@ -60,41 +60,7 @@
     }
   },
   "inventories": {
-    "Factory Depot": {
-      "cols": 5,
-      "filter": 3,
-      "items": {
-        "Armor1": 0,
-        "Armor2": 0,
-        "Armor3": 0,
-        "ArmorUpgrade": 0,
-        "Assembler": 0,
-        "Drill": 0,
-        "Excavator": 0,
-        "Fuel": 50,
-        "Gasifier": 0,
-        "Greenhouse": 0,
-        "Glass": 0,
-        "Gun": 0,
-        "Gun2": 0,
-        "Gun3": 0,
-        "GunUpgrade": 0,
-        "Iron": 0,
-        "Kiln": 0,
-        "MachineUpgrade": 0,
-        "Motherboard": 0,
-        "Oil": 0,
-        "Pump": 0,
-        "Rail": 0,
-        "Sand": 0,
-        "Time Crystal": 0,
-        "Water": 0,
-        "Wood": 0
-      },
-      "level": 1,
-      "rows": 3
-    },
-    "Greenhouse Depot": {
+    "Mine Depot": {
       "cols": 5,
       "filter": 3,
       "items": {
@@ -156,13 +122,13 @@
         "Rail": 0,
         "Sand": 0,
         "Time Crystal": 0,
-        "Water": 0,
+        "Water": 20,
         "Wood": 0
       },
       "level": 1,
       "rows": 3
     },
-    "Mine Depot": {
+    "Greenhouse Depot": {
       "cols": 5,
       "filter": 3,
       "items": {
@@ -191,7 +157,41 @@
         "Sand": 0,
         "Time Crystal": 0,
         "Water": 0,
-        "Wood": 0
+        "Wood": 10
+      },
+      "level": 1,
+      "rows": 3
+    },
+    "Factory Depot": {
+      "cols": 5,
+      "filter": 3,
+      "items": {
+        "Armor1": 0,
+        "Armor2": 0,
+        "Armor3": 0,
+        "ArmorUpgrade": 0,
+        "Assembler": 0,
+        "Drill": 0,
+        "Excavator": 0,
+        "Fuel": 59,
+        "Gasifier": 0,
+        "Greenhouse": 0,
+        "Glass": 6,
+        "Gun": 0,
+        "Gun2": 0,
+        "Gun3": 0,
+        "GunUpgrade": 0,
+        "Iron": 33,
+        "Kiln": 0,
+        "MachineUpgrade": 0,
+        "Motherboard": 0,
+        "Oil": 0,
+        "Pump": 0,
+        "Rail": 0,
+        "Sand": 0,
+        "Time Crystal": 0,
+        "Water": 0,
+        "Wood": 609
       },
       "level": 1,
       "rows": 3
@@ -359,7 +359,7 @@
         "Pump": 0,
         "Rail": 0,
         "Sand": 0,
-        "Time Crystal": 0,
+        "Time Crystal": 41,
         "Water": 0,
         "Wood": 0
       },
@@ -445,7 +445,7 @@
         "Assembler": 0,
         "Drill": 0,
         "Excavator": 0,
-        "Fuel": 0,
+        "Fuel": 53,
         "Gasifier": 0,
         "Greenhouse": 0,
         "Glass": 0,
@@ -461,7 +461,7 @@
         "Pump": 0,
         "Rail": 0,
         "Sand": 0,
-        "Time Crystal": 0,
+        "Time Crystal": 8,
         "Water": 0,
         "Wood": 0
       },
@@ -533,10 +533,10 @@
         "Water": 0,
         "Wood": 0
       },
-      "level": 0,
+      "level": 1,
       "rows": 3
     },
-    "Train2_inv": {
+    "Loc2": {
       "cols": 5,
       "filter": 2,
       "items": {
@@ -640,11 +640,11 @@
     }
   },
   "machines": {
-    "Drill Assembler": {
+    "Assembler Factory": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 1,
+      "lifetimeProductsCrafted": 9,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -656,11 +656,11 @@
       "numRecipeToStore": 0,
       "priority": 0
     },
-    "Assembler Factory": {
+    "Drill Assembler": {
       "state": 0,
       "curCraftTicks": 0,
       "level": 0,
-      "lifetimeProductsCrafted": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -673,6 +673,14 @@
       "priority": 0
     },
     "Gasifier": {
+      "state": 1,
+      "curCraftTicks": 50,
+      "level": 0,
+      "lifetimeProductsCrafted": 196,
+      "numRecipeToStore": 1,
+      "priority": 0
+    },
+    "GasifierAssembler": {
       "state": 0,
       "curCraftTicks": 0,
       "level": 0,
@@ -680,67 +688,59 @@
       "numRecipeToStore": 0,
       "priority": 0
     },
-    "GasifierAssembler": {
-      "state": 0,
-      "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
-      "numRecipeToStore": 0,
-      "priority": 0
-    },
     "Greenhouse Assembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
     "Kiln": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
-      "numRecipeToStore": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 20,
+      "numRecipeToStore": 1,
       "priority": 0
     },
     "KilnAssembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
     "Locomotive Assembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": 9,
-      "lifetimeProductsCrafted": 10,
-      "numRecipeToStore": 9,
+      "level": 0,
+      "lifetimeProductsCrafted": 2,
+      "numRecipeToStore": 0,
       "priority": 0
     },
     "Liquid Wagon Assembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
     "Motherboard Assembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
     "Pump Assembler": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1,
       "numRecipeToStore": 0,
       "priority": 0
     },
@@ -755,9 +755,9 @@
     "Greenhouse": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
-      "numRecipeToStore": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 778,
+      "numRecipeToStore": 10,
       "priority": 0
     },
     "Excavator": {
@@ -771,17 +771,17 @@
     "Pump": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
-      "lifetimeProductsCrafted": 0,
-      "numRecipeToStore": 0,
+      "level": 0,
+      "lifetimeProductsCrafted": 1900,
+      "numRecipeToStore": 1,
       "priority": 0
     },
     "Drill": {
       "state": 0,
       "curCraftTicks": 0,
-      "level": -1,
+      "level": 0,
       "lifetimeProductsCrafted": 0,
-      "numRecipeToStore": 0,
+      "numRecipeToStore": 1,
       "priority": 0
     }
   },

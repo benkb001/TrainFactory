@@ -28,7 +28,6 @@ public static class EntityFactory {
         foreach (int e in dataEnts) {
             T existing = w.GetComponent<T>(e); 
             if (existing.Equals(component)) {
-                Console.WriteLine("Found existing data entity"); 
                 return e;
             }
         }

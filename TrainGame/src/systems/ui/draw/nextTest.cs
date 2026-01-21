@@ -479,8 +479,6 @@ public static class NextDrawTestUISystem {
         [22] = (w) => {
             Bootstrap.InitWorld(w); 
             City factory = w.GetComponentArray<City>().Where(kvp => kvp.Value.Id == CityID.Factory).FirstOrDefault().Value;
-            factory.Inv.Add(ItemID.Iron, 100); 
-            factory.Inv.Add(ItemID.Assembler, 10); 
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(factory));
         }, 
         [23] = (w) => {

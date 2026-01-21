@@ -54,11 +54,13 @@ public class MachineUpdateSystem {
                 int numTimeCrystalsToTake = 1; 
 
                 if (productPerTimeCrystal < 1f) {
-                    numTimeCrystalsToTake = (int)(1f / productPerTimeCrystal); 
+                    numTimeCrystalsToTake = (int)Math.Ceiling((double)(1f / productPerTimeCrystal)); 
                 }
 
                 Inventory.Item i = m.Inv.Take(ItemID.TimeCrystal, numTimeCrystalsToTake); 
-                m.Inv.Add(m.ProductItemId, (int)(i.Count * productPerTimeCrystal)); 
+                float numProductsToAdd = i.Count * productPerTimeCrystal; 
+
+                m.Inv.Add(m.ProductItemId, (int)numProductsToAdd); 
             }
         });
     }

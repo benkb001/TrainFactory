@@ -95,10 +95,11 @@ public static class ParryCooldownBarSystem {
 public static class ParrySystem {
     public static void RegisterStartParry(World w) {
         w.AddSystem((w) => {
-            if (VirtualMouse.RightPushed()) {
-                foreach(KeyValuePair<int, Parrier> kvp in w.GetComponentArray<Parrier>()) {
-                    int e = kvp.Key; 
-                    Parrier p = kvp.Value; 
+            if (VirtualMouse.RightPressed()) {
+
+                foreach(int e in w.GetMatchingEntities([typeof(Parrier), typeof(Active)])) {
+
+                    Parrier p = w.GetComponent<Parrier>(e); 
                     if (p.CanParry(w.Time)) {
                         p.StartParry(w.Time); 
 

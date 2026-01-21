@@ -20,7 +20,7 @@ public class AssemblerSystem {
 
             if (asm.GetMachine().CraftComplete) {
                 U assembled = asm.Assemble(); 
-                EntityFactory.AddData<U>(w, assembled); 
+                int assembledEnt = EntityFactory.AddData<U>(w, assembled); 
 
                 //dont love it but dont want to remove generics for assembly registering
                 if (assembled is Train t) {

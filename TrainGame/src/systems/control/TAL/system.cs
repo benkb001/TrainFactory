@@ -31,6 +31,7 @@ public class TAL {
     public const string SandFactoryLoop = "SandFactoryLoop"; 
     public const string WoodFactoryLoop = "WoodFactoryLoop"; 
     public const string WaterFactoryLoop = "WaterFactoryLoop"; 
+    public const string FuelLoop = "Fuel Loop"; 
 
     public static Dictionary<string, string> Scripts = new() {
         [IronFactoryLoop] = @"
@@ -77,6 +78,25 @@ public class TAL {
             GO TO Factory; 
             UNLOAD SELF.Wood Wood;
         ",
+        [FuelLoop] = @"
+            LOAD Factory.Fuel / 2 Fuel; 
+            GO TO Coast; 
+            UNLOAD SELF.Fuel Fuel; 
+            WHILE Coast.Fuel > 0 {
+                WAIT;
+            }
+            LOAD Coast.Water Water; 
+            GO TO Factory; 
+            GO TO Greenhouse; 
+            UNLOAD SELF.Water Water; 
+            WHILE Greenhouse.Water > 0 {
+                WAIT;
+            }
+            LOAD Greenhouse.Wood Wood; 
+            GO TO Factory; 
+            UNLOAD SELF.Wood Wood; 
+        ",
+
     };
 
     private static string loopExplanation(string productID, string cityID) {
@@ -94,7 +114,14 @@ public class TAL {
         [IronFactoryLoop] = loopExplanation(ItemID.Iron, CityID.Mine),
         [SandFactoryLoop] = loopExplanation(ItemID.Sand, CityID.Coast),
         [WaterFactoryLoop] = loopExplanation(ItemID.Water, CityID.Coast),
-        [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse)
+        [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse),
+        [FuelLoop] = @"
+            Begins at factory. Brings half the factory's fuel to the coast.
+            Waits until there is no more fuel at the coast and brings all the 
+            water at the coast to the greenhouse. Waits until 
+            there is no more water at the greenhouse, and brings all the 
+            wood to the factory. 
+        ".Replace("\n", "")
     };
 
     public static void BuyTrainProgram(string program, Train t, World w, string programName = "") {

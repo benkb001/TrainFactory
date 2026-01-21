@@ -153,7 +153,7 @@ public static class EnemySpawnSystem {
                         int hp = round; 
                         hp = 1 + (int)(w.NextFloat() * w.NextFloat() * hp); 
                         rewardStr = $"HP +{hp}";
-                        w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(round)); 
+                        w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(hp)); 
                     } else if (rand < timeCrystalThresh) {
                         int timeCrystals = 10 * round; 
                         timeCrystals = 1 + (int)(w.NextFloat() * 2 * timeCrystals); 

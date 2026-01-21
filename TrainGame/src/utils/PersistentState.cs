@@ -54,7 +54,7 @@ public static class PersistentState {
 
         City cityWithPlayer = cities.Where(kvp => kvp.Value.HasPlayer).FirstOrDefault().Value; 
         string playerLocation = ""; 
-        if (cityWithPlayer.Equals(default(City))) {
+        if (cityWithPlayer == null) {
             Train trainWithPlayer = trains.Where(kvp => kvp.Value.HasPlayer).FirstOrDefault().Value; 
             if (trainWithPlayer.Equals(default(Train))) {
                 throw new InvalidOperationException("Cannot save, was unable to find player"); 
@@ -151,6 +151,7 @@ public static class PersistentState {
         Dictionary<string, Inventory> inventories = new(); 
         Dictionary<string, City> cities = new(); 
         Dictionary<string, Train> trains = new(); 
+        Dictionary<string, (int, Machine)> machines = new(); 
 
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
             string invID = kvp.Key; 
@@ -196,7 +197,8 @@ public static class PersistentState {
 
                 m.SetLifetimeProductsCrafted(lifetimeProductsCrafted); 
 
-                EntityFactory.AddData<Machine>(w, m); 
+                int e = EntityFactory.AddData<Machine>(w, m); 
+                machines[machineID] = (e, m); 
                 c.AddMachine(m); 
             }
         }
@@ -267,10 +269,25 @@ public static class PersistentState {
 
         string playerLocation = (string)dom["playerLocation"];
 
+        City factory = cities[CityID.Factory];
+        //set assembler components
+        (int locomotiveAssemblerEnt, Machine locomotiveAssembler) = machines[MachineID.LocomotiveAssembler]; 
+        w.SetComponent<TrainAssembler>(locomotiveAssemblerEnt, new TrainAssembler(factory, locomotiveAssembler)); 
+
+        (int cargoWagonAssemblerEnt, Machine cargoAssembler) = machines[MachineID.CargoWagonAssembler]; 
+        w.SetComponent<CartAssembler>(cargoWagonAssemblerEnt, 
+            new CartAssembler(factory, cargoAssembler, CartType.Freight));
+
+        (int liquidAssemblerEnt, Machine liquidAssembler) = machines[MachineID.LiquidWagonAssembler]; 
+        w.SetComponent<CartAssembler>(cargoWagonAssemblerEnt, 
+            new CartAssembler(factory, liquidAssembler, CartType.Liquid));
+
         if (cities.ContainsKey(playerLocation)) {
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(cities[playerLocation]));
         } else if (trains.ContainsKey(playerLocation)) {
-            MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(trains[playerLocation]));
+            Train t = trains[playerLocation];
+            t.HasPlayer = true; 
+            MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
         } else {
             throw new InvalidOperationException("Couldn't find player"); 
         }

@@ -230,7 +230,7 @@ public class Machine : IID {
         float productsPerMinute = ((float)lifetimeProductsCrafted) / minutes; 
         float craftTimeMinutes = (float)craftTicks / 60f; 
         float maxProductsPerMinute = (float)(productCount * (level + 1)) / craftTimeMinutes; 
-        return (maxProductsPerMinute + productsPerMinute) / 2; 
+        return (maxProductsPerMinute + (4 * productsPerMinute)) / 5f; 
     }
 
     public static Machine GetDefault() {

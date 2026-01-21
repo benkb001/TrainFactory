@@ -51,12 +51,13 @@ public class Train : IInventorySource, IID {
     public Train(Inventory Inv, City origin, string Id = DefaultID, float milesPerHour = 0f, float power = 0f, float mass = 1f,
         Dictionary<CartType, Inventory> Carts = null) {
         
-        if (ID.Used(Id) || Id.Equals("")) {
+        if (Id.Equals("")) {
             Id = ID.GetNext(Constants.TrainStr); 
+        } else {
+            ID.Use(Id); 
         }
         
         this.Id = Id; 
-        usedIDs.Add(Id); 
 
         this.Inv = Inv; 
         this.comingFrom = origin;
