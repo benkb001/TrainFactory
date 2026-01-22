@@ -287,7 +287,9 @@ namespace TrainGame.Constants
 
         public static void InitMaps() {
             EquipmentSlot<Armor>.EquipmentMap = new() {
-                [ItemID.Armor1] = new Armor(1)
+                [ItemID.Armor1] = new Armor(1),
+                [ItemID.Armor2] = new Armor(2),
+                [ItemID.Armor3] = new Armor(3)
             };
         }
     }

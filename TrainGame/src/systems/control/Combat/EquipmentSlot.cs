@@ -23,9 +23,11 @@ public static class EquipSystem {
         w.AddSystem([typeof(Inventory), typeof(EquipmentSlot<T>), typeof(EquipmentUI), typeof(Active)], (w, e) => {
             Inventory inv = w.GetComponent<Inventory>(e); 
             EquipmentSlot<T> slot = w.GetComponent<EquipmentSlot<T>>(e); 
-            string itemID = inv.GetItemId(0); 
+            Inventory.Item item = inv.Get(0); 
+            string itemID = item.ID; 
+            int itemCount = item.Count; 
 
-            if (itemID != "" && itemID != slot.ItemID) {
+            if (itemID != "" && itemID != slot.ItemID && itemCount > 0) {
                 slot.SetEquipped(itemID); 
                 T equip = slot.GetEquipment();
                 w.GetMatchingEntities([typeof(EquipmentSlot<T>)])

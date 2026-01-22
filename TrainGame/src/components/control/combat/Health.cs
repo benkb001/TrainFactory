@@ -27,6 +27,7 @@ public class Health {
     }
 
     public void ReceiveDamage(int damage) {
+        damage = Math.Max(0, damage); 
         hp = Math.Max(0, hp - damage); 
     }
 

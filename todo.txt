@@ -38,6 +38,10 @@
 * City interface should be redrawn if a train leaves that city 
 * Fix bug with trains having the same ID, i think it has to do with 
   loading
+* Add cart info to persistent state 
+* Fix add cart button not being drawn after cart is assembled
+* Get rid of Bootstrap.InitWorld and just have it load from a 
+  default json
 
 **** NEXT FEATURES **** 
 

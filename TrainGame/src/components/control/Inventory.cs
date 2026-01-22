@@ -374,6 +374,7 @@ public class Inventory : IID {
     public class Item {
         //TODO: Make private idk 
         public string Id => ItemId; 
+        public string ID => ItemId; 
         public string ItemId; 
         public int Count; 
         public int Row; 

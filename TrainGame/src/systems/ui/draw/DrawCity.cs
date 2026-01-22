@@ -247,8 +247,8 @@ public static class DrawCitySystem {
                 break;
             case CityID.Armory: 
                 drawDefault(topleft, null, city, w); 
-                drawVendor(w, topleft + new Vector2(50, 50), city, VendorID.ArmorCraftsman); 
-                drawVendor(w, topleft + new Vector2(110, 50), city, VendorID.WeaponCraftsman); 
+                drawVendor(w, topleft + new Vector2(50, 150), city, VendorID.ArmorCraftsman); 
+                drawVendor(w, topleft + new Vector2(110, 150), city, VendorID.WeaponCraftsman); 
                 break;
             case CityID.Reservoir: 
                 break;

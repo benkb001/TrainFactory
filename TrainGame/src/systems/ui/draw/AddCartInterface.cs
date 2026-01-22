@@ -52,6 +52,7 @@ public static class DrawAddCartInterfaceSystem {
         w.SetComponent<Frame>(llEntity, new Frame(containerPosition, containerWidth, containerHeight)); 
 
         foreach (Cart cart in CartSource.Carts) {
+            Console.WriteLine($"Added cart"); 
             string type = cart.Type.ToString(); 
 
             int cEntity = EntityFactory.Add(w); 
