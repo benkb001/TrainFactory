@@ -17,30 +17,6 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public static class TextInputSystem {
-    private static List<string> format(string word) {
-        int i = 0; 
-        List<string> words = new(); 
-        string cur = ""; 
-        while (i < word.Length) {
-            char c = word[i]; 
-            if (c == '\n' || c == ' ') {
-                if (cur != "") {
-                    words.Add(cur); 
-                }
-                words.Add(c.ToString());
-                cur = ""; 
-            } else {
-                cur += word[i]; 
-            }
-            i++;
-        }
-
-        if (cur != "") {
-            words.Add(cur); 
-        }
-
-        return words;
-    }
 
     public static void RegisterActivate(World w) {
         ClickSystem.Register<TextInput>(w, (w, e) => {
@@ -147,38 +123,14 @@ public static class TextInputSystem {
             bool changed = tIn.Changed; 
             
             if (changed || tIn.MovedCursor) {
-                string text = tIn.Text; 
-                List<string> words = format(text); 
-                List<string> lines = new(); 
-
-                for (int j = 0; j < words.Count; j++) {
-                    words[j] = words[j].Substring(0, Math.Min(words[j].Length, tIn.CharsPerRow)); 
-                }
+                
+                tIn.SetLinesFromText(); 
+                List<string> lines = tIn.Lines; 
 
                 LinearLayout ll = w.GetComponent<LinearLayout>(e); 
                 Frame frame = w.GetComponent<Frame>(e); 
                 float lineWidth = frame.GetWidth(); 
                 float lineHeight = frame.GetHeight() / ll.ChildrenPerPage;
-                int i = 0; 
-
-                while (i < words.Count) {
-                    string line = ""; 
-                    if (words[i] == "\n") {
-                        i++;
-                        continue; 
-                    }
-
-                    while (i < words.Count && (line + words[i]).Length <= tIn.CharsPerRow && words[i] != "\n") {
-                        string word = words[i]; 
-                        line += word;
-                        i++;
-                    }
-                    
-                    lines.Add(line); 
-                }
-
-                tIn.Lines = lines; 
-                tIn.SynchronizeCursor(); 
 
                 while (ll.PagedChildren.Count < lines.Count + 1) {
                     int curLineEnt = EntityFactory.Add(w); 
@@ -238,16 +190,3 @@ public static class TextInputSystem {
         });
     }
 }
-
-/*
-while (ll.PagedChildren.Count <= lineIndex) {
-    int curLineEnt = EntityFactory.Add(w); 
-    w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
-    w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
-    LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
-}
-
-int lineEnt = ll.PagedChildren[lineIndex]; 
-w.GetComponent<TextBox>(lineEnt).Text = line; 
-lineIndex++; 
-*/

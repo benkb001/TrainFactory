@@ -41,17 +41,15 @@ public class TextInput {
         this.cursorEnt = cursorEnt; 
     }
 
+    public void AddToLines(string s) {
+        AddChar(s); 
+        SetLinesFromText(); 
+    }
+
     public void AddChar(string s) {
         text = text.Insert(cursorIndex, s); 
-        cursorIndex++; 
-        /*
-        if (cursorCoordinates.Item1 < Lines.Count) {
-
-            Lines[cursorCoordinates.Item1].Insert(cursorCoordinates.Item2, s); 
-        }
-        
-        setCursorCoordinatesFromIndex(); 
-        */
+        cursorIndex += s.Length; 
+        setCursorCoordinatesFromIndex();
     }
 
     public void DeleteChar() {
@@ -79,6 +77,42 @@ public class TextInput {
         cursorIndex = Math.Max(0, cursorIndex); 
         cursorIndex = Math.Min(cursorIndex, text.Length); 
         setCursorCoordinatesFromIndex(); 
+    }
+
+    public void SetLinesFromText() {
+        List<string> words = format(text); 
+        Lines.Clear(); 
+
+        for (int j = 0; j < words.Count; j++) {
+            words[j] = words[j].Substring(0, Math.Min(words[j].Length, CharsPerRow)); 
+        }
+
+        int i = 0; 
+        Lines.Add(""); 
+
+        while (i < words.Count) {
+            string line = ""; 
+
+            int num_newlines = 0; 
+            while (i < words.Count && words[i] == "\n") {
+                i++;
+                num_newlines++; 
+            }
+
+            for (int j = 0; j < num_newlines; j++) {
+                Lines.Add(""); 
+            }
+
+            while (i < words.Count && (line + words[i]).Length <= CharsPerRow && words[i] != "\n") {
+                string word = words[i]; 
+                line += word;
+                i++;
+            }
+            
+            Lines[Lines.Count - 1] = line; 
+        }
+
+        SynchronizeCursor();
     }
 
     public void CursorLeft() {
@@ -123,6 +157,31 @@ public class TextInput {
         }
         index += column; 
         cursorIndex = index; 
+    }
+
+    private static List<string> format(string word) {
+        int i = 0; 
+        List<string> words = new(); 
+        string cur = ""; 
+        while (i < word.Length) {
+            char c = word[i]; 
+            if (c == '\n' || c == ' ') {
+                if (cur != "") {
+                    words.Add(cur); 
+                }
+                words.Add(c.ToString());
+                cur = ""; 
+            } else {
+                cur += word[i]; 
+            }
+            i++;
+        }
+
+        if (cur != "") {
+            words.Add(cur); 
+        }
+
+        return words;
     }
 }
 

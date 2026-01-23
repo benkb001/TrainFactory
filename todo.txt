@@ -2,13 +2,9 @@
 
 *** BUGS **** 
 
-* randomly zooming in ? 
-* Camera lag when teleporting, exiting interfaces, basically entity tracking is
-  a bit wonky
-
 **** NEED TO TEST **** 
 
-* TextInput
+* TextInput System, Container
 * Persistent Data
 * UI for setting program, if any clear assertions
 * ScreenAnchor system 
@@ -42,9 +38,13 @@
 * Fix add cart button not being drawn after cart is assembled
 * Get rid of Bootstrap.InitWorld and just have it load from a 
   default json
+* randomly zooming in ? 
+* Camera lag when teleporting, exiting interfaces, basically entity tracking is
+  a bit wonky
 
 **** NEXT FEATURES **** 
 
+* Add a Depot stack size upgrade to factory
 * Add a way to 'unlock' new cities by spending rails/other resources
 * Make it so trains need fuel 
 * Make it so trains can't run each other over 
@@ -59,7 +59,6 @@
 * Add the reservoir, a city to get oil from fuel
 * Add the Refinery, a place to split oil and turn 
   it into fuel, better recipe than gasifier 
-* Add a Depot stack size upgrade to factory
 
 **** FUTURE FEATURES **** 
 
