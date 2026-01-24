@@ -66,4 +66,20 @@ public class FrameTest {
         Frame f4 = new Frame(0, 20, 10, 10); 
         Assert.False(f1.IsTouching(f4)); 
     }
+
+    [Fact]
+    public void Frame_IntersectsWithShouldReturnFalseIfFramesDoNotOverlap() {
+        Frame f1 = new Frame(0, 0, 10, 10); 
+        Frame f2 = new Frame(11, 11, 10, 10); 
+        Assert.False(f1.IntersectsWith(f2)); 
+        Assert.False(f2.IntersectsWith(f1)); 
+    }
+
+    [Fact]
+    public void Frame_IntersectsWIthShouldReturnTrueIfFramesOverlap() {
+        Frame f1 = new Frame(0, 0, 10, 10); 
+        Frame f2 = new Frame(9, 9, 10, 10); 
+        Assert.True(f1.IntersectsWith(f2)); 
+        Assert.True(f2.IntersectsWith(f1)); 
+    }
 }

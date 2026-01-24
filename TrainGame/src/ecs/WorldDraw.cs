@@ -208,7 +208,10 @@ public partial class World {
     }
 
     public Vector2 MeasureString(string s) {
-        return font.MeasureString(s);
+        if (!isTest) {
+            return font.MeasureString(s);
+        }
+        return Vector2.Zero; 
     }
 
     //unfortunately cannot just throw this in with a regular system because I don't want 

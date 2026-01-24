@@ -15,7 +15,7 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Bullet {
+public class Bullet {
     private int damage; 
     private WorldTime created; 
     public int Damage => damage; 

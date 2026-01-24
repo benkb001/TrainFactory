@@ -420,6 +420,10 @@ public static class InventoryWrap {
         return GetByID(w, inventoryId); 
     }
 
+    public static Inventory GetDefault() {
+        return new Inventory("Test", 1, 1); 
+    }
+
     public static Inventory GetPlayerInv(World w) {
         return GetByID(w, Constants.PlayerInvID); 
     }

@@ -36,25 +36,27 @@ class Damage {
 
 public static class ShootSystem {
 
-    private static WorldTime lastShot = new WorldTime(); 
+    private static WorldTime lastShot = new WorldTime(ticks: -24); 
 
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
                 if (w.Time.IsAfterOrAt(lastShot + new WorldTime(ticks: 24))) {
-
                     lastShot = w.Time.Clone(); 
-                    List<int> es = w.GetMatchingEntities([typeof(HeldItem), typeof(Active), typeof(Damage)])
+                    List<int> es = w.GetMatchingEntities([typeof(HeldItem), typeof(Active)])
                     .Where(e => Weapons.GunMap.ContainsKey(w.GetComponent<HeldItem>(e).ItemId))
                     .ToList(); 
 
                     if (es.Count > 0) {
                         int e = es[0]; 
+
+                        (Damage baseDamage, bool s1) = w.GetComponentSafe<Damage>(e);
+                        int baseDMG = s1 ? baseDamage.DMG : 0; 
                         HeldItem gun = w.GetComponent<HeldItem>(e); 
-                        int damage = Weapons.GunMap[gun.ItemId] + w.GetComponent<Damage>(e).DMG; 
+                        int damage = Weapons.GunMap[gun.ItemId] + baseDMG; 
  
-                        (Frame f, bool success) = w.GetComponentSafe<Frame>(gun.LabelEntity);
-                        Vector2 pos = success ? f.Position : Vector2.Zero; 
+                        (Frame f, bool s2) = w.GetComponentSafe<Frame>(gun.LabelEntity);
+                        Vector2 pos = s2 ? f.Position : Vector2.Zero; 
 
                         Vector2 mousePos = w.GetWorldMouseCoordinates(); 
                         Velocity bulletVelocity = new Velocity(Vector2.Normalize(mousePos - pos) * Constants.BulletSpeed);

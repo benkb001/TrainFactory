@@ -48,6 +48,10 @@ public static class VirtualMouse {
         return new Vector2(ms.X, ms.Y); 
     }
 
+    public static void SetCoordinates(Vector2 v) {
+        SetCoordinates((int)v.X, (int)v.Y); 
+    }
+
     public static void SetCoordinates(int x, int y) {
         UseVirtualMouse();
         vm = new MouseState(x, y, vm.ScrollWheelValue,

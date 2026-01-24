@@ -16,7 +16,7 @@ using TrainGame.Systems;
 using TrainGame.Constants;
 
 public class PersistentStateTest {
-    //TODO: Write (assertions)
+
     [Fact]
     public void PersistentState_SaveShouldWriteToSpecifiedFile() {
         World w = WorldFactory.Build(); 

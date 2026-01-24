@@ -17,6 +17,13 @@ public static class VirtualKeyboard {
         useVirtualKeyboard = true; 
     }
 
+    public static void Click(Keys k) {
+        keysPressed.Remove(k); 
+        ks_prev = new KeyboardState(keysPressed.ToArray()); 
+        keysPressed.Add(k); 
+        vks = new KeyboardState(keysPressed.ToArray()); 
+    }
+
     public static void Press(Keys k) {
         UseVirtualKeyboard(); 
         keysPressed.Add(k);

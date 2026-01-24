@@ -10,6 +10,7 @@ using TrainGame.Components;
 using TrainGame.Systems; 
 using TrainGame.Utils; 
 
+[Collection("Sequential")]
 public class LinearLayoutWrapTest {
     [Fact]
     public void LinearLayoutWrap_ClearShouldRemoveAllNestedEntitiesFromWorld() {
@@ -103,5 +104,38 @@ public class LinearLayoutWrapTest {
         Assert.Equal(42.5f, f2.GetWidth()); 
         Assert.Equal(f1.GetHeight(), f2.GetHeight()); 
         Assert.Equal(f1.GetWidth(), f2.GetWidth()); 
+    }
+
+    [Fact]
+    public void LinearLayoutWrap_ScrollingShouldPage() {
+        VirtualMouse.Reset(); 
+
+        World w = WorldFactory.Build(); 
+        LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f, usePaging: true, childrenPerPage: 1);
+        int e1 = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
+        int e2 = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
+        llc.AddChild(e1, w); 
+        llc.AddChild(e2, w); 
+        Assert.Equal(e1, llc.GetChildren()[0]);
+
+        Frame llFrame = w.GetComponent<Frame>(llc.LLEnt);
+        VirtualMouse.SetCoordinates(llFrame.Position + new Vector2(10, 10)); 
+        VirtualMouse.ScrollDown(); 
+        w.Update(); 
+
+        Assert.Equal(e2, llc.GetChildren()[0]);
+        VirtualMouse.Reset(); 
+    }
+
+    [Fact]
+    public void LinearLayoutWrap_AddChildShouldIncreaseTheDepthOfGrandChildren() {
+        World w = WorldFactory.Build(); 
+        LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f);
+        int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
+        llc.AddChild(e, w); 
+        int prevDepth = LinearLayoutWrap.GetDepth(e, w); 
+        LinearLayoutContainer outer = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f); 
+        outer.AddChild(llc.GetParentEntity(), w); 
+        Assert.Equal(prevDepth * 2, LinearLayoutWrap.GetDepth(e, w));
     }
 }

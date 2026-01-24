@@ -4,16 +4,8 @@
 
 **** NEED TO TEST **** 
 
-* TextInput System, Container
-* Persistent Data
-* UI for setting program, if any clear assertions
-* ScreenAnchor system 
-* LL scroll paging
-* LLwrap depth setting when adding a child with children
-* Player walk over inv system
-* Frame.IntersectsWith
 * Combat systems 
-  * Shoot, death, bullet decay, damage, armor, equipment, parry
+  * death, bullet decay, damage, armor, equipment, parry
 * Purchase button
 * PlayerWrap.GetPlayer
 * EntityFactory.AddData<T>
