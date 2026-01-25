@@ -115,6 +115,7 @@ public static class RegisterComponents {
         r<PlayerHUD>(); 
         r<ProgressBar>(); 
         r<PurchaseButton>();
+        r<ReceiveDamageMessage>(); 
         r<RespawnLocation>(); 
         r<SaveButton>(); 
         r<Scene>(); 

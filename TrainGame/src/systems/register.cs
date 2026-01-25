@@ -24,8 +24,11 @@ public static class RegisterSystems {
         //TeleportSystem.Register(w); 
         ParrySystem.RegisterStartParry(w); 
         ParrySystem.RegisterEndParry(w); 
-        DamageSystem.Register<Player, Enemy>(w); 
-        DamageSystem.Register<Enemy, Player>(w); 
+        DamageSystem.RegisterShoot<Player, Enemy>(w); 
+        DamageSystem.RegisterShoot<Enemy, Player>(w); 
+        DamageSystem.RegisterArmor(w); 
+        DamageSystem.RegisterParry(w); 
+        DamageSystem.RegisterReceive(w); 
         LootSystem.Register(w); 
         PlayerDeathSystem.Register(w); 
         DeathSystem.Register(w); 

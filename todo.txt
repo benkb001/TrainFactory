@@ -4,8 +4,6 @@
 
 **** NEED TO TEST **** 
 
-* Combat systems 
-  * damage, armor, parry
 * Purchase button
 * PlayerWrap.GetPlayer
 * EntityFactory.AddData<T>
