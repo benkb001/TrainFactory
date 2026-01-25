@@ -17,7 +17,7 @@ using TrainGame.Constants;
 
 public static class EnemyShootSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
             Shooter shooter = w.GetComponent<Shooter>(e);
             if (shooter.CanShoot(w.Time)) {
                 Vector2 enemyPos = w.GetComponent<Frame>(e).Position; 

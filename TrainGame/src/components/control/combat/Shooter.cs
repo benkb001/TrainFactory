@@ -15,7 +15,7 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Shooter {
+public class Shooter {
     private float bulletSpeed; 
     private int bulletDamage; 
     private WorldTime canShoot; 
@@ -44,7 +44,7 @@ class Shooter {
             canShoot = now + new WorldTime(ticks: ticksPerShot);
         }
 
-        return new Bullet(now, bulletDamage); 
+        return new Bullet(bulletDamage); 
     }
 
     public float GetBulletSpeed() => bulletSpeed; 

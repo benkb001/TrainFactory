@@ -62,7 +62,7 @@ public static class ShootSystem {
                         Velocity bulletVelocity = new Velocity(Vector2.Normalize(mousePos - pos) * Constants.BulletSpeed);
                         int bulletEnt = EntityFactory.AddUI(w, pos, Constants.BulletSize, Constants.BulletSize, setOutline: true);
                         w.SetComponent<Velocity>(bulletEnt, bulletVelocity);
-                        w.SetComponent<Bullet>(bulletEnt, new Bullet(w.Time, damage));
+                        w.SetComponent<Bullet>(bulletEnt, new Bullet(damage));
                         w.SetComponent<Player>(bulletEnt, new Player()); 
                     }
                 }

@@ -5,7 +5,7 @@
 **** NEED TO TEST **** 
 
 * Combat systems 
-  * death, bullet decay, damage, armor, equipment, parry
+  * damage, armor, parry
 * Purchase button
 * PlayerWrap.GetPlayer
 * EntityFactory.AddData<T>
@@ -24,8 +24,6 @@
 * Fix Not drawing traveling interface when exiting map if player is in train
 * Fix speed not being set to normal when entering rpg mode
 * City interface should be redrawn if a train leaves that city 
-* Fix bug with trains having the same ID, i think it has to do with 
-  loading
 * Add cart info to persistent state 
 * Fix add cart button not being drawn after cart is assembled
 * Get rid of Bootstrap.InitWorld and just have it load from a 

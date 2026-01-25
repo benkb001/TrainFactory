@@ -55,7 +55,7 @@ public class Movement {
 
 public static class EnemyMovementSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Movement), typeof(Enemy), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Movement), typeof(Enemy), typeof(Frame), typeof(Active)], (w, e) => {
 
             Movement move = w.GetComponent<Movement>(e); 
             if (move.CanMove(w.Time)) {
@@ -75,6 +75,5 @@ public static class EnemyMovementSystem {
 
             w.SetComponent<Velocity>(e, v); 
         });
-
     }
 }

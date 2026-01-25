@@ -16,15 +16,24 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class Bullet {
+    private static int maxFramesActive = 600; 
+    public int MaxFramesActive => maxFramesActive; 
+    
+    private int framesActive; 
     private int damage; 
-    private WorldTime created; 
     public int Damage => damage; 
-    public WorldTime TimeShot => created; 
+    public int FramesActive => framesActive; 
 
-    public Bullet(WorldTime created, int damage = 1) {
-        this.created = created.Clone();
+    public Bullet(int damage = 1) {
         this.damage = damage; 
+        this.framesActive = 0;
     }
+
+    public void Decay() {
+        framesActive++; 
+    }
+
+    public bool ShouldRemove => framesActive > maxFramesActive; 
 }
 
 public class EnemyBullet {}

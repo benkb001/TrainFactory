@@ -17,8 +17,10 @@ using TrainGame.Constants;
 
 public static class RemoveBulletSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Bullet)], (w, e) => {
-            if (w.Time.IsAfterOrAt(w.GetComponent<Bullet>(e).TimeShot + new WorldTime(minutes: 10))) {
+        w.AddSystem([typeof(Bullet), typeof(Active)], (w, e) => {
+            Bullet b = w.GetComponent<Bullet>(e); 
+            b.Decay(); 
+            if (b.ShouldRemove) {
                 w.RemoveEntity(e); 
             }
         });
@@ -27,7 +29,7 @@ public static class RemoveBulletSystem {
 
 public static class CollideBulletSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Bullet), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Bullet), typeof(Frame), typeof(Active)], (w, e) => {
             Frame bulletFrame = w.GetComponent<Frame>(e); 
 
             List<Frame> collidingFrames = w
