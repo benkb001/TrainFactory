@@ -183,7 +183,9 @@ public class Machine : IID {
     public void DeliverRecipe() {
         int productToDeliver = productCount * numCrafting; 
         int productLeft = productToDeliver - productDelivered; 
+        Console.WriteLine($"Product to deliver: {productToDeliver}");
         int curDelivered = Inv.Add(new Inventory.Item(ItemId: productItemId, Count: productLeft));
+        Console.WriteLine($"Cur delivered: {curDelivered}");
         lifetimeProductsCrafted += curDelivered; 
         productDelivered += curDelivered; 
         if (productDelivered >= productToDeliver) {
