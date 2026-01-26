@@ -36,6 +36,15 @@ public static class TrainWrap {
         return tEnt; 
     }
 
+    public static Train GetTrainWithPlayer(World w) {
+        List<Train> ts =  w.GetMatchingEntities([typeof(Train), typeof(Data)])
+            .Select(e => w.GetComponent<Train>(e))
+            .Where(t => t.HasPlayer)
+            .ToList(); 
+        
+        return ts.Count > 0 ? ts[0] : null; 
+    }
+
     public static void Embark(Train t, City dest, World w) {
         t.Embark(dest, w.Time); 
     }

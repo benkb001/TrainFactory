@@ -108,6 +108,8 @@ public static class RegisterSystems {
 
         RedrawMapSystem.Register(w);
 
+        ResetPlayerStatsSystem.RegisterLeftCity(w); 
+
         DrawBackgroundSystem.Register(w); 
         DrawHPSystem.Register(w); 
         DrawCityDetailsSystem.Register(w); 
@@ -116,8 +118,6 @@ public static class RegisterSystems {
         TrainMapPositionSystem.Register(w);
         DrawCitySystem.Register(w); 
         DrawMachineRequestSystem.Register(w);
-        DrawMachinesViewSystem.Register(w); 
-        DrawTrainsViewSystem.Register(w);  
         DrawCallbackSystem.Register(w); 
         HeldItemDrawSystem.Register(w); 
         DrawButtonSystem.Register<AddCartInterfaceButton>(w); 

@@ -15,15 +15,23 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public static class PlayerStats {
+    public static void Reset(World w) {
+        int e = PlayerWrap.GetEntity(w); 
+        Health h = w.GetComponent<Health>(e); 
+        h.ResetHP(); 
+        Armor armor = w.GetComponent<Armor>(e); 
+        armor.ResetTempDefense(); 
+    }
+}
+
 public static class PlayerDeathSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Player), typeof(Health), typeof(Armor), typeof(RespawnLocation), 
         typeof(Inventory), typeof(Active)], (w, e) => {
             Health h = w.GetComponent<Health>(e);
             if (h.HP <= 0) {
-                h.ResetHP(); 
-                Armor armor = w.GetComponent<Armor>(e); 
-                armor.ResetTempDefense(); 
+                PlayerStats.Reset(w); 
                 Inventory playerInv = w.GetComponent<Inventory>(e);
                 playerInv.Take(ItemID.TimeCrystal, playerInv.ItemCount(ItemID.TimeCrystal) / 2); 
                 City c = w.GetComponent<RespawnLocation>(e).GetCity(); 

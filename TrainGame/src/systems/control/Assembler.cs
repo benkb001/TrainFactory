@@ -17,14 +17,17 @@ public class AssemblerSystem {
     public static void Register<T, U>(World world) where T : IAssembler<U> {
         world.AddSystem([typeof(T), typeof(Data)], (w, e) => {
             T asm = w.GetComponent<T>(e); 
+            Machine m = asm.GetMachine(); 
 
-            if (asm.GetMachine().CraftComplete) {
-                U assembled = asm.Assemble(); 
-                int assembledEnt = EntityFactory.AddData<U>(w, assembled); 
+            if (m.CraftComplete) {
+                for (int i = 0; i < m.ProductDelivered; i++) {
+                    U assembled = asm.Assemble(); 
+                    int assembledEnt = EntityFactory.AddData<U>(w, assembled); 
 
-                //dont love it but dont want to remove generics for assembly registering
-                if (assembled is Train t) {
-                    TrainWrap.Add(w, t); 
+                    //TODO: change this to make a RegisterAssembledMessage<U> 
+                    if (assembled is Train t) {
+                        TrainWrap.Add(w, t); 
+                    }
                 }
             }
         }); 

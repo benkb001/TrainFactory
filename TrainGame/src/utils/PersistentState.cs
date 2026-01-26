@@ -280,7 +280,7 @@ public static class PersistentState {
             new CartAssembler(factory, cargoAssembler, CartType.Freight));
 
         (int liquidAssemblerEnt, Machine liquidAssembler) = machines[MachineID.LiquidWagonAssembler]; 
-        w.SetComponent<CartAssembler>(cargoWagonAssemblerEnt, 
+        w.SetComponent<CartAssembler>(liquidAssemblerEnt, 
             new CartAssembler(factory, liquidAssembler, CartType.Liquid));
 
         if (cities.ContainsKey(playerLocation)) {
@@ -288,7 +288,7 @@ public static class PersistentState {
         } else if (trains.ContainsKey(playerLocation)) {
             Train t = trains[playerLocation];
             t.HasPlayer = true; 
-            MakeMessage.Add<DrawTravelingInterfaceMessage>(w, new DrawTravelingInterfaceMessage(t));
+            DrawTravelingInterfaceSystem.AddMessage(w, t); 
         } else {
             throw new InvalidOperationException("Couldn't find player"); 
         }

@@ -93,16 +93,8 @@ public static class DrawCityInterfaceSystem {
 
             float invScale = 0.7f;
             (float invWidth, float invHeight) = InventoryWrap.GetUI(inv, invScale); 
-            float playerInvWidth = 0f; 
-            float playerInvHeight = 0f; 
-            InventoryView playerInvView = null; 
+            (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv, invScale); 
 
-            if (playerInv != null) {
-                (playerInvWidth, playerInvHeight) = InventoryWrap.GetUI(playerInv, invScale); 
-                playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
-                    playerInvHeight, DrawLabel: true);
-            }
-            
             InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
                 Padding: Constants.InventoryPadding, DrawLabel: true); 
 
@@ -120,7 +112,10 @@ public static class DrawCityInterfaceSystem {
 
             invRow.AddChild(invView.GetParentEntity(), w); 
 
-            if (playerInv != null) {
+            if (playerInv != null && city.HasPlayer) {
+                InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, 
+                    Vector2.Zero, playerInvWidth, playerInvHeight, DrawLabel: true);
+            
                 invRow.AddChild(playerInvView.GetParentEntity(), w); 
             }
 

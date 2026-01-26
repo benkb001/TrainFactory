@@ -16,6 +16,8 @@ using TrainGame.Callbacks;
 [Collection("Sequential")]
 public class InventoryDragSystemTest {
 
+    private static int mousePos = 10; 
+
     private void RegisterDependencies(World w) {
         ButtonSystem.RegisterClick(w);
         ButtonSystem.RegisterHold(w); 
@@ -61,7 +63,7 @@ public class InventoryDragSystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(10, 10); 
+        VirtualMouse.SetCoordinates(mousePos, mousePos); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -110,7 +112,7 @@ public class InventoryDragSystemTest {
         LinearLayout row2 = w.GetComponent<LinearLayout>(ll2.GetChildren()[targetRow]); 
         Vector2 targetVector = w.GetComponent<Frame>(row2.GetChildren()[targetCol]).Position; 
 
-        VirtualMouse.SetCoordinates(10, 10); 
+        VirtualMouse.SetCoordinates(mousePos, mousePos); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -138,7 +140,7 @@ public class InventoryDragSystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(10, 10); 
+        VirtualMouse.SetCoordinates(mousePos, mousePos); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 
@@ -156,7 +158,7 @@ public class InventoryDragSystemTest {
 
         w.Update(); 
 
-        VirtualMouse.SetCoordinates(10, 10); 
+        VirtualMouse.SetCoordinates(mousePos, mousePos); 
         VirtualMouse.LeftPress(); 
         w.Update(); 
 

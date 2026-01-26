@@ -2,33 +2,24 @@
 
 *** BUGS **** 
 
+* randomly zooming in ? 
+* Camera lag when teleporting, exiting interfaces, basically entity tracking is
+  a bit wonky
+  
 **** NEED TO TEST **** 
 
 * Purchase button
 * PlayerWrap.GetPlayer
 * EntityFactory.AddData<T>
+* Assembling multiple at once
+* Player stats reset when leaving city
 
 **** CLEAN UP **** 
 
-* Remove DrawTrainsViewSystem and DrawMachinesViewSystems
-* Theres a bunch of VirtualMouse.SetCoordinates(10, 10) lines
-  that cause tests to fail if we slightly change how drawing 
-  linear Layout or inventory works, at least we can unify them 
-  into one constant value or change how we are testing this 
-* Don't draw player inv in city interface if player not at city
-* Make it so assemblers can assemble multiple at once
-* Ensure temp buffs are removed either when entering or exiting a city, 
-  right now only happens when player dies
-* Fix Not drawing traveling interface when exiting map if player is in train
-* Fix speed not being set to normal when entering rpg mode
-* City interface should be redrawn if a train leaves that city 
-* Add cart info to persistent state 
+* Add cart info in City to persistent state 
 * Fix add cart button not being drawn after cart is assembled
 * Get rid of Bootstrap.InitWorld and just have it load from a 
   default json
-* randomly zooming in ? 
-* Camera lag when teleporting, exiting interfaces, basically entity tracking is
-  a bit wonky
 
 **** NEXT FEATURES **** 
 
@@ -50,6 +41,9 @@
 
 **** FUTURE FEATURES **** 
 
+* Make it so player has to refresh the city interface to see which trains 
+  have arrived, but when trains leave the button gets grayed out to 
+  show the train isn't there anymore, and if refreshed the button will disappear
 * Add a way to resize window 
 * Add a button to close menu
 * Add a way to skip to harder rounds in hpp

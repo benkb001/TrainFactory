@@ -15,12 +15,29 @@ using TrainGame.Constants;
 using TrainGame.Systems;
 using TrainGame.Callbacks; 
 
+public class TravelingInterfaceData : IInterfaceData {
+    private Train train; 
+
+    public Train GetTrain() => train; 
+
+    public TravelingInterfaceData(Train train) {
+        this.train = train; 
+    }
+
+    public Menu GetMenu() {
+        return new Menu(train: train); 
+    }
+
+    public SceneType GetSceneType() {
+        return SceneType.TravelingInterface; 
+    }
+}
+
 public class DrawTravelingInterfaceSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(DrawTravelingInterfaceMessage)], (w, e) => {
-            SceneSystem.EnterScene(w, SceneType.TravelingInterface); 
 
-            Train t = w.GetComponent<DrawTravelingInterfaceMessage>(e).GetTrain(); 
+        DrawInterfaceSystem.Register<TravelingInterfaceData>(w, (w, e, data) => {
+            Train t = data.GetTrain(); 
 
             Vector2 topleft = w.GetCameraTopLeft(); 
             Vector2 pos = topleft + new Vector2(10, 10); 
@@ -52,5 +69,10 @@ public class DrawTravelingInterfaceSystem {
             LinearLayoutWrap.AddChild(container.GetParentEntity(), travelingInterfaceLayoutEnt, travelingInterfaceLL, w); 
             w.RemoveEntity(e); 
         }); 
+    }
+
+    public static void AddMessage(World w, Train train) {
+        MakeMessage.Add<DrawInterfaceMessage<TravelingInterfaceData>>(
+            w, new DrawInterfaceMessage<TravelingInterfaceData>(new TravelingInterfaceData(train)));
     }
 }

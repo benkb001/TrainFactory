@@ -40,4 +40,12 @@ public static class DrawInterfaceSystem {
             tf(w, e); 
         });
     }
+
+    public static void Register<T>(World w, Action<World, int, T> tf) where T : IInterfaceData {
+        DrawSystem.Register<DrawInterfaceMessage<T>>(w, (w, e) => {
+            DrawUtils.DrawInterface<T>(w, e); 
+            T data = w.GetComponent<DrawInterfaceMessage<T>>(e).Data; 
+            tf(w, e, data);
+        });
+    }
 }

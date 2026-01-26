@@ -24,8 +24,13 @@ public static class CloseMenuSystem {
                 MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
                 break;
             case SceneType.Map: 
-                //TODO: this needs to be more dynamic, maybe we need to keep track of last scenes
-                SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
+                train = TrainWrap.GetTrainWithPlayer(w); 
+                if (train != null) {
+                    DrawTravelingInterfaceSystem.AddMessage(w, train); 
+                } else {
+                    SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
+                }
+                
                 WorldTimeWrap.SetTimePassSlow(w); 
                 break;
             case SceneType.TrainInterface: 
@@ -68,6 +73,9 @@ public static class CloseMenuSystem {
                 break;
             case SceneType.EquipmentInterface: 
                 MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get());
+                break;
+            case SceneType.TravelingInterface: 
+                MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get()); 
                 break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
