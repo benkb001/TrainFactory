@@ -82,7 +82,6 @@ public class City : IID {
 
     //todo: test
     public void AddCart(Cart c) {
-        Console.WriteLine($"Added cart"); 
         carts.Add(c); 
     }
 
