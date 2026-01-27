@@ -18,9 +18,9 @@ public static class AddCartClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<AddCartButton>(w, (w, e) => {
             AddCartButton btn = w.GetComponent<AddCartButton>(e); 
-            Cart cart = btn.CartToAdd; 
-            btn.CartDest.AddCart(cart); 
-            btn.CartSource.RemoveCart(cart); 
+            CartType type = btn.TypeToAdd; 
+            btn.CartDest.AddCart(type); 
+            btn.CartSource.RemoveCart(type); 
             MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(btn.CartDest)); 
         }); 
     }

@@ -13,11 +13,11 @@ using TrainGame.ECS;
 public class AddCartButton {
     public readonly Train CartDest; 
     public readonly City CartSource; 
-    public readonly Cart CartToAdd; 
+    public readonly CartType TypeToAdd; 
 
-    public AddCartButton(Train train, City source, Cart cart) {
+    public AddCartButton(Train train, City source, CartType type) {
         CartDest = train; 
         CartSource = source; 
-        CartToAdd = cart; 
+        TypeToAdd = type; 
     }
 }

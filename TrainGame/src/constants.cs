@@ -721,7 +721,7 @@ namespace TrainGame.Constants
                 new CartAssembler(factory, cargoAssembler, CartType.Freight));
 
             (int liquidAssemblerEnt, Machine liquidAssembler) = machines[MachineID.LiquidWagonAssembler]; 
-            w.SetComponent<CartAssembler>(cargoWagonAssemblerEnt, 
+            w.SetComponent<CartAssembler>(liquidAssemblerEnt, 
                 new CartAssembler(factory, liquidAssembler, CartType.Liquid));
 
             //add player to factory 

@@ -34,7 +34,6 @@ public class DrawTrainInterfaceSystem {
         //add train summary 
         string summary = $"{t.Id}\n"; 
         summary += $"MPH: {t.MilesPerHour}\n"; 
-        summary += $"Carts: {t.Carts.Count}\n"; 
         summary += $"Program: {t.ProgramName}\n"; 
 
         int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight * 2, setOutline: true, 

@@ -155,10 +155,16 @@ public class Train : IInventorySource, IID {
         return isTraveling; 
     }
 
-    //TODO: TEST 
+    //TODO: REMOVE, keep the one that just takes type
     public void AddCart(Cart cart) {
         mass += Constants.CartMass[cart.Type]; 
         Carts[cart.Type].Upgrade();
+        setMPH(); 
+    }
+
+    public void AddCart(CartType type) {
+        mass += Constants.CartMass[type]; 
+        Carts[type].Upgrade(); 
         setMPH(); 
     }
     

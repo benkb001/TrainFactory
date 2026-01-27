@@ -42,8 +42,7 @@ public class City : IID {
     private Dictionary<string, Machine> machines = new(); 
     public Dictionary<string, Machine> Machines => machines; 
 
-    private List<Cart> carts = new(); 
-    public List<Cart> Carts => carts; 
+    private Dictionary<CartType, int> carts = new(); 
     
     public static string GetInvID(string cityID) {
         return $"{cityID} Depot";
@@ -57,6 +56,10 @@ public class City : IID {
 
         this.mapPosition = new Vector2(uiX, uiY); 
         this.realPosition = new Vector2(realX, realY); 
+
+        foreach (CartType type in Cart.AllTypes) {
+            carts[type] = 0; 
+        }
     }
 
     public void AddConnection(City c) {
@@ -80,14 +83,22 @@ public class City : IID {
         trains[t.Id] = t; 
     }
 
-    //todo: test
+    //todo: REMOVE, keep the one with type
     public void AddCart(Cart c) {
-        carts.Add(c); 
+        carts[c.Type] += 1; 
     }
 
-    //todo: test
+    public void AddCart(CartType type) {
+        carts[type] += 1; 
+    }
+
+    //todo: REMOVE
     public void RemoveCart(Cart c) {
-        carts.Remove(c); 
+        carts[c.Type] -= 1; 
+    }
+
+    public void RemoveCart(CartType type) {
+        carts[type] -= 1; 
     }
 
     //todo: test
@@ -103,5 +114,9 @@ public class City : IID {
         foreach (City c in cities) {
             AdjacentCities.Add(c); 
         }
+    }
+
+    public int NumCarts(CartType type) {
+        return carts[type]; 
     }
 }
