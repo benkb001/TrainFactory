@@ -88,6 +88,7 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
+        UpgradeDepotClickSystem.Register(w); 
 
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 

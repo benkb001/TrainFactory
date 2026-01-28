@@ -42,6 +42,7 @@ public static class RegisterComponents {
         r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 
+        r<UpgradeDepotButton>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
         r<DrawButtonMessage<AddCartInterfaceButton>>(); 

@@ -112,6 +112,11 @@ public static class DrawCityInterfaceSystem {
 
             invRow.AddChild(invView.GetParentEntity(), w); 
 
+            int upgradeDepotBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, invWidth / 2, invWidth / 4, 
+                setButton: true, setOutline: true, text: $"Upgrade {city.Id} Depot? Requires 1 Depot Upgrade");
+            w.SetComponent<UpgradeDepotButton>(upgradeDepotBtnEnt, new UpgradeDepotButton(city)); 
+            invRow.AddChild(upgradeDepotBtnEnt, w); 
+
             if (playerInv != null && city.HasPlayer) {
                 InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, 
                     Vector2.Zero, playerInvWidth, playerInvHeight, DrawLabel: true);

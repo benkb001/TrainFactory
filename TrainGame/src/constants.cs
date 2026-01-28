@@ -251,8 +251,7 @@ namespace TrainGame.Constants
                     MachineID.LocomotiveAssembler, 
                     MachineID.LiquidWagonAssembler, 
                     MachineID.MotherboardAssembler,
-                    MachineID.PumpAssembler,
-                    MachineID.TrainUpgradeAssembler
+                    MachineID.PumpAssembler
                 ], 
                 550f, 210f, 0f, 0f, 
                 [CityID.Greenhouse, CityID.Coast, CityID.Mine, CityID.HauntedPowerPlant]
@@ -300,6 +299,7 @@ namespace TrainGame.Constants
         public const string Armor3 = "Armor3"; 
         public const string ArmorUpgrade = "ArmorUpgrade"; 
         public const string Assembler = "Assembler"; 
+        public const string DepotUpgrade = "Depot Upgrade"; 
         public const string Drill = "Drill"; 
         public const string Excavator = "Excavator"; 
         public const string Fuel = "Fuel"; 
@@ -324,8 +324,10 @@ namespace TrainGame.Constants
         public const string TrainUpgrade = "TrainUpgrade"; 
 
         public static readonly List<string> All = [
-            Armor1, Armor2, Armor3, ArmorUpgrade, Assembler, Drill, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, Gun, Gun2, Gun3, GunUpgrade, Iron, Kiln, MachineUpgrade, Motherboard, Oil, 
+            Armor1, Armor2, Armor3, ArmorUpgrade, Assembler, DepotUpgrade, 
+            Drill, Excavator, Fuel, Gasifier, Greenhouse,
+            Glass, Gun, Gun2, Gun3, GunUpgrade, Iron, 
+            Kiln, MachineUpgrade, Motherboard, Oil, 
             Pump, Rail, Sand, TimeCrystal, Water, Wood
         ]; 
 
@@ -346,6 +348,7 @@ namespace TrainGame.Constants
         public const string ArmorUpgradeAssembler = "Armor Upgrade Assembler"; 
         public const string AssemblerFactory = "Assembler Factory"; 
         public const string CargoWagonAssembler = "Cargo Wagon Assembler"; 
+        public const string DepotUpgradeAssembler = "Depot Upgrade Assembler"; 
         public const string Drill = "Drill"; 
         public const string DrillAssembler = "Drill Assembler"; 
         public const string Excavator = "Excavator"; 
@@ -404,6 +407,17 @@ namespace TrainGame.Constants
                 MinTicks: 600,
                 UpgradeItemID: ItemID.Assembler,
                 Level: 0
+            ),
+            [MachineID.DepotUpgradeAssembler] = new MachineArg(
+                ProductItemId: ItemID.DepotUpgrade, 
+                ProductCount: 1, 
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Wood] = 500, 
+                    [ItemID.Iron] = 200
+                }, 
+                MinTicks: 6000, 
+                UpgradeItemID: ItemID.Assembler, 
+                Level: -1
             ),
             [MachineID.Gasifier] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 

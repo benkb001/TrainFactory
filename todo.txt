@@ -12,7 +12,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add a Depot stack size upgrade to factory
 * Add a way to 'unlock' new cities by spending rails/other resources
 * Make it so trains can't run each other over 
 * Make it so trains need fuel 
