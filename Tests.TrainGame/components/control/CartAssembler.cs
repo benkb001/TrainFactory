@@ -23,8 +23,8 @@ public class CartAssemblerTest {
         Machine m = new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
         City c = new City("Test", inv); 
 
-        CartAssembler asm = new CartAssembler(c, m);
+        CartAssembler asm = new CartAssembler(c, m, CartType.Freight);
         asm.Assemble(); 
-        Assert.Single(c.Carts); 
+        Assert.Equal(1, c.NumCarts(CartType.Freight));
     }
 }

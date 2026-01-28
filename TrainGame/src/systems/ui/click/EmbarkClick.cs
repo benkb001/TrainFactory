@@ -12,7 +12,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-class EmbarkedMessage {
+public class EmbarkedMessage {
     private Train t; 
     public Train GetTrain() => t; 
 
@@ -36,16 +36,5 @@ public class EmbarkClickSystem() {
         }; 
 
         world.AddSystem(ts, tf); 
-    }
-}
-
-public static class ResetPlayerStatsSystem {
-    public static void RegisterLeftCity(World w) {
-        w.AddSystem([typeof(EmbarkedMessage)], (w, e) => {
-            if (w.GetComponent<EmbarkedMessage>(e).GetTrain().HasPlayer) {
-                PlayerStats.Reset(w);
-            }
-            w.RemoveEntity(e);  
-        });
     }
 }

@@ -23,4 +23,13 @@ public class EntityFactoryTest {
         Assert.False(w.ComponentContainsEntity<Scene>(e2)); 
         Assert.False(w.ComponentContainsEntity<Active>(e2)); 
     }   
+
+    [Fact]
+    public void EntityFactory_AddDataShouldNotAddANewEntityIfTheComponentAlreadyHasAnAssociatedEntity() {
+        World w = WorldFactory.Build(); 
+        Inventory inv = InventoryWrap.GetDefault();
+        int e1 = EntityFactory.AddData<Inventory>(w, inv); 
+        int e2 = EntityFactory.AddData<Inventory>(w, inv); 
+        Assert.Equal(e1, e2); 
+    }
 }

@@ -101,6 +101,17 @@ public class Inventory : IID {
         return Add(new Inventory.Item(ItemId: itemID, Count: count)); 
     }
 
+    public Dictionary<string, int> Add(Dictionary<string, int> items) {
+        Dictionary<string, int> added = new(); 
+        foreach (KeyValuePair<string, int> kvp in items) {
+            string itemID = kvp.Key; 
+            int count = kvp.Value; 
+            added[itemID] = Add(itemID, count); 
+        }
+
+        return added; 
+    }
+
     public int Add(Item i, int row, int col) {
         if (filtered && !whitelist.Contains(i.ItemId)) {
             return 0; 
@@ -421,7 +432,7 @@ public static class InventoryWrap {
     }
 
     public static Inventory GetDefault() {
-        return new Inventory("Test", 1, 1); 
+        return new Inventory("Test", 2, 2); 
     }
 
     public static Inventory GetPlayerInv(World w) {

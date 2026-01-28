@@ -4,14 +4,14 @@ using TrainGame.ECS;
 
 public class TestAssembler : IAssembler<Test> {
     private Machine m; 
-    public bool Assembled = false; 
+    public int Assembled = 0; 
 
     public TestAssembler(Machine m) {
         this.m = m; 
     }
 
     public Test Assemble() {
-        Assembled = true; 
+        Assembled++; 
         return new Test(); 
     }
 
@@ -32,7 +32,7 @@ public class AssemblerTest {
         AssemblerSystem.Register<TestAssembler, Test>(w); 
 
         Inventory inv = new Inventory("Test", 2, 2); 
-        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 1, minTicks: 1, level: 0, numRecipeToStore: 1); 
+        Machine m = new Machine(inv, new Dictionary<string, int>(), "", 1, minTicks: 1, level: 1, numRecipeToStore: 2); 
         TestAssembler asm = new TestAssembler(m);
         int e = EntityFactory.Add(w, setData: true); 
         w.SetComponent<TestAssembler>(e, asm);
@@ -40,6 +40,6 @@ public class AssemblerTest {
 
         w.Update(); 
 
-        Assert.True(asm.Assembled); 
+        Assert.Equal(2, asm.Assembled); 
     }
 }

@@ -6,29 +6,18 @@
 * Camera lag when teleporting, exiting interfaces, basically entity tracking is
   a bit wonky
   
-**** NEED TO TEST **** 
-
-* Purchase button
-* PlayerWrap.GetPlayer
-* EntityFactory.AddData<T>
-* Assembling multiple at once
-* Player stats reset when leaving city
+**** TEST **** 
 
 **** CLEAN UP **** 
-
-* Add cart info in City to persistent state 
-* Fix add cart button not being drawn after cart is assembled
-* Get rid of Bootstrap.InitWorld and just have it load from a 
-  default json
 
 **** NEXT FEATURES **** 
 
 * Add a Depot stack size upgrade to factory
 * Add a way to 'unlock' new cities by spending rails/other resources
-* Make it so trains need fuel 
 * Make it so trains can't run each other over 
+* Make it so trains need fuel 
 * Add a flow for new floors/levels in HPP 
-* Add a fow to specify different movement and shooting patterns 
+* Add a flow to specify different movement and shooting patterns 
 * Add new enemy types
 * Add Train Yard, a city to get flat upgrades for train speed and
   fuel consumption 
@@ -87,6 +76,7 @@
   * Add statements to set machine priority, storage size
   * Add expression to get time since arrival/time since departure
   * Add comments
+  * Add parentheses
 * Make a system to ensure collidables cannot overlap as this results in buggy behavior
 
 **** NOT SURE WE WANT BUT MAYBE **** 
