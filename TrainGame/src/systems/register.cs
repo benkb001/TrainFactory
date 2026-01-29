@@ -18,6 +18,8 @@ public static class RegisterSystems {
 
         CardinalMovementSystem.Register(w); 
         EnemyMovementSystem.Register(w); 
+        
+        MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); //***
 

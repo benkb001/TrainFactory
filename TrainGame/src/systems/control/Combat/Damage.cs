@@ -34,20 +34,34 @@ public class ReceiveDamageMessage {
 
 public static class DamageSystem {
     public static void RegisterShoot<T, U>(World w) {
-        w.AddSystem([typeof(T), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
-            Frame f = w.GetComponent<Frame>(e); 
-            Health health = w.GetComponent<Health>(e); 
+        w.AddSystem((w) => {
+            List<int> bulletEnts = w.GetMatchingEntities([typeof(U), typeof(Bullet), typeof(Frame), typeof(Active)]);
+            List<int> potentialReceivers = 
+                w.GetMatchingEntities([typeof(T), typeof(Health), typeof(Active), typeof(Frame)]);
+            
+            Dictionary<int, int> receivingDamage = potentialReceivers
+            .Select(e => new KeyValuePair<int, int>(e, 0))
+            .ToDictionary(); 
+            
+            bulletEnts.ForEach(e => {
+                int dmg = w.GetComponent<Bullet>(e).Damage;
 
-            int receivedDamage = w.GetMatchingEntities([typeof(U), typeof(Bullet), typeof(Frame), typeof(Active)])
-            .Where(ent => w.GetComponent<Frame>(ent).IntersectsWith(f))
-            .Select(ent => {
-                int dmg = w.GetComponent<Bullet>(ent).Damage;
-                w.RemoveEntity(ent); 
-                return dmg; 
-            })
-            .Aggregate(0, (acc, cur) => acc + cur); 
+                List<int> hitEnts =
+                MovementSystem.GetIntersectingEntities(w, e)
+                .Where(ent => potentialReceivers.Contains(ent))
+                .ToList();
 
-            w.SetComponent<ReceiveDamageMessage>(e, new ReceiveDamageMessage(receivedDamage)); 
+                if (hitEnts.Count > 0) {
+                    w.RemoveEntity(e);
+                }
+
+                hitEnts.ForEach(ent => receivingDamage[ent] += dmg);
+            });
+
+            potentialReceivers
+            .Where(e => receivingDamage[e] > 0)
+            .ToList()
+            .ForEach(e => w.SetComponent<ReceiveDamageMessage>(e, new ReceiveDamageMessage(receivingDamage[e])));
         });
     }
 

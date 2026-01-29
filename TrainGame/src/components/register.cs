@@ -97,6 +97,7 @@ public static class RegisterComponents {
         r<Menu>(); 
         r<Message>(); 
         r<Movement>(); 
+        r<MovementBounds>();
         r<Label>(); 
         r<LinearLayout>(); 
         r<Lines>(); 

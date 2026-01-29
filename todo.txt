@@ -8,13 +8,38 @@
   
 **** TEST **** 
 
+* Partitioning, especially GetIntersectingEntities
+
 **** CLEAN UP **** 
+
+* Fix movement system tests that aren't passing
 
 **** NEXT FEATURES **** 
 
 * Add a way to 'unlock' new cities by spending rails/other resources
+  * In CityArg, will need to track cityID that it can connect to, 
+    but initially doesn't, these we won't add to adjacent cities yet. 
+  * We'll also need to add a Dictionary<string, int> cost for 
+    each connection
+  * When Saving, we'll need to track which connections have been 
+    unlocked, and when loading we'll need to add these automatically 
 * Make it so trains can't run each other over 
+  * We will probably have the target city store a list of 
+    trains for each city its connected to, that are trains 
+    traveling towards it. Trains are added to the front of 
+    this list, but they cannot move past the train in front 
+    of them. Each frame we will update the trains position, 
+    instead of calculating it purely from time left, cur time, 
+    and speed. When it arrives, train is removed from the list
 * Make it so trains need fuel 
+  * Probably when updating train position, we check if it has 
+    fuel, if so it goes its full speed, otherwise it tries 
+    to take fuel from its inventories to fill back up. 
+    If this also fails, we can set a flag bc we know 
+    it will fail until it arrives at another city where 
+    it might load some fuel. And we make it update only 
+    a fraction of its max speed. 
+* Add invincibility frames
 * Add a flow for new floors/levels in HPP 
 * Add a flow to specify different movement and shooting patterns 
 * Add new enemy types

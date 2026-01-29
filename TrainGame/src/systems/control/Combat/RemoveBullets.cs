@@ -30,19 +30,13 @@ public static class RemoveBulletSystem {
 public static class CollideBulletSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Bullet), typeof(Frame), typeof(Active)], (w, e) => {
-            Frame bulletFrame = w.GetComponent<Frame>(e); 
+            if (MovementSystem.GetIntersectingEntities(w, e)
+                .Where(ent => !w.ComponentContainsEntity<Player>(ent) && !w.ComponentContainsEntity<Shooter>(ent))
+                .ToList()
+                .Count > 0) {
 
-            List<Frame> collidingFrames = w
-            .GetMatchingEntities([typeof(Frame), typeof(Collidable), typeof(Active)])
-            .Where(ent => !w.ComponentContainsEntity<Shooter>(ent) && !w.ComponentContainsEntity<Player>(ent))
-            .Select(collidableEnt => w.GetComponent<Frame>(collidableEnt))
-            .Where(f => bulletFrame.IntersectsWith(f))
-            .ToList();
-
-            if (collidingFrames.Count > 0) {
                 w.RemoveEntity(e); 
             }
-            
         });
     }
 }
