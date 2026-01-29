@@ -39,6 +39,7 @@ public static class RegisterComponents {
         r<Collidable>(); 
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
+        r<ConnectCitiesButton>();
         r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 

@@ -16,13 +16,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add a way to 'unlock' new cities by spending rails/other resources
-  * In CityArg, will need to track cityID that it can connect to, 
-    but initially doesn't, these we won't add to adjacent cities yet. 
-  * We'll also need to add a Dictionary<string, int> cost for 
-    each connection
-  * When Saving, we'll need to track which connections have been 
-    unlocked, and when loading we'll need to add these automatically 
 * Make it so trains can't run each other over 
   * We will probably have the target city store a list of 
     trains for each city its connected to, that are trains 

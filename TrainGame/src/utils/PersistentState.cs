@@ -138,8 +138,13 @@ public static class PersistentState {
                 carts.Add(Convert.ToInt32(type).ToString(), city.NumCarts(type));
             }
 
+            List<string> connections = city.AdjacentCities
+            .Select(c => c.Id)
+            .ToList();
+
             return new KeyValuePair<string, JsonNode>(cityID, new JsonObject() {
-                ["carts"] = carts
+                ["carts"] = carts,
+                ["connections"] = JsonNode.Parse(JsonSerializer.Serialize<List<string>>(connections)).AsArray()
             });
         })));
 
@@ -223,11 +228,6 @@ public static class PersistentState {
         foreach (KeyValuePair<string, City> kvp in cities) {
             string cityID = kvp.Key; 
             City city = kvp.Value; 
-            
-            foreach (string otherCityID in CityID.CityMap[cityID].AdjacentCities) {
-                City otherCity = cities[otherCityID]; 
-                city.AddConnection(otherCity);
-            }
 
             JsonObject cityJSON = citiesJSON[cityID].AsObject(); 
             JsonObject cartsJSON = cityJSON["carts"].AsObject(); 
@@ -237,6 +237,12 @@ public static class PersistentState {
                 for (int i = 0; i < (int)cartsJSON[cartAmount.Key]; i++) {
                     city.AddCart(type); 
                 }
+            }
+
+            JsonArray connectionsJSON = cityJSON["connections"].AsArray();
+            foreach (JsonNode otherJSON in connectionsJSON) {
+                string otherID = (string)otherJSON;
+                city.AddConnection(cities[otherID]);
             }
         }
 

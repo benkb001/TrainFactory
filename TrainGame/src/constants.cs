@@ -207,9 +207,11 @@ namespace TrainGame.Constants
         public float RealX; 
         public float RealY; 
         public string[] AdjacentCities; 
+        public Dictionary<string, Dictionary<string, int>> FutureConnections;
 
         public CityArg(string[] Machines, float UiX, float UiY, 
-            float RealX, float RealY, string[] AdjacentCities) {
+            float RealX, float RealY, string[] AdjacentCities, 
+            Dictionary<string, Dictionary<string, int>> FutureConnections) {
 
             this.Machines = Machines; 
             this.UiX = UiX; 
@@ -217,6 +219,7 @@ namespace TrainGame.Constants
             this.RealX = RealX; 
             this.RealY = RealY; 
             this.AdjacentCities = AdjacentCities; 
+            this.FutureConnections = FutureConnections;
         }
     }
 
@@ -236,6 +239,18 @@ namespace TrainGame.Constants
             Mine, Reservoir
         ];
 
+        private static Dictionary<string, int> armoryRailroadCost = new() {
+            [ItemID.Wood] = 1000, 
+            [ItemID.Iron] = 500
+        };
+
+        private static Dictionary<string, int> hppCost = new Dictionary<string, int>() {
+            [ItemID.Wood] = 100,
+            [ItemID.Iron] = 100
+        };
+
+        private static Dictionary<string, Dictionary<string, int>> noConnections = new(); 
+
         public static readonly Dictionary<string, CityArg> CityMap = new() {
             [CityID.Factory] = new CityArg(
                 [
@@ -254,27 +269,49 @@ namespace TrainGame.Constants
                     MachineID.PumpAssembler
                 ], 
                 550f, 210f, 0f, 0f, 
-                [CityID.Greenhouse, CityID.Coast, CityID.Mine, CityID.HauntedPowerPlant]
+                [CityID.Greenhouse, CityID.Coast, CityID.Mine],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.HauntedPowerPlant] = hppCost
+                }
             ),
             [CityID.Greenhouse] = new CityArg(
                 [MachineID.Greenhouse],
-                550f, 10f, 0f, -2.5f, [CityID.Factory]
+                550f, 10f, 0f, -2.5f, 
+                [CityID.Factory],
+                noConnections
             ),
             [CityID.Coast] = new CityArg(
                 [MachineID.Excavator, MachineID.Pump], 
-                350f, 210f, -2.5f, 0f, [CityID.Factory, CityID.Armory]
+                350f, 210f, -2.5f, 0f, 
+                [CityID.Factory],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.Armory] = armoryRailroadCost
+                }
             ),
             [CityID.Mine] = new CityArg(
                 [MachineID.Drill], 
-                550f, 410f, 0f, 2.5f, [CityID.Factory, CityID.Armory]
+                550f, 410f, 0f, 2.5f, 
+                [CityID.Factory],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.Armory] = armoryRailroadCost
+                }
             ),
             [CityID.HauntedPowerPlant] = new CityArg(
                 [], 
-                750f, 210f, 2.5f, 0f, [CityID.Factory]
+                750f, 210f, 2.5f, 0f, 
+                [],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.Factory] = hppCost
+                }
             ),
             [CityID.Armory] = new CityArg(
                 [],
-                350f, 410f, -2.5f, 2.5f, [CityID.Coast, CityID.Mine]
+                350f, 410f, -2.5f, 2.5f, 
+                [],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.Coast] = armoryRailroadCost,
+                    [CityID.Mine] = armoryRailroadCost
+                }
             )
         };
     }
