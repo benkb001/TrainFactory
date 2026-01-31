@@ -11,6 +11,7 @@
 * Partitioning, especially GetIntersectingEntities
 * ConnectCities
 * Train.Move()
+* Train fuel consumption
 
 **** CLEAN UP **** 
 
@@ -20,14 +21,6 @@
 
 **** NEXT FEATURES **** 
 
-* Make it so trains need fuel 
-  * Probably when updating train position, we check if it has 
-    fuel, if so it goes its full speed, otherwise it tries 
-    to take fuel from its inventories to fill back up. 
-    If this also fails, we can set a flag bc we know 
-    it will fail until it arrives at another city where 
-    it might load some fuel. And we make it update only 
-    a fraction of its max speed. 
 * Add invincibility frames
 * Add a flow for new floors/levels in HPP 
 * Add a flow to specify different movement and shooting patterns 

@@ -34,6 +34,7 @@ public class Train : IInventorySource, IID {
     private Vector2 journey;
     private Vector2 mapJourney;
     private Vector2 moved => position - comingFrom.Position;
+    private float milesOfFuel = 25f;
 
     public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
@@ -51,6 +52,7 @@ public class Train : IInventorySource, IID {
     public float Power => power; 
     public TALBody Executable => executable; 
     public Vector2 Position => position; 
+    public float MilesOfFuel => milesOfFuel;
 
     public const string DefaultID = ""; 
 
@@ -120,7 +122,15 @@ public class Train : IInventorySource, IID {
 
         journey = goingTo.RealPosition - comingFrom.RealPosition; 
         mapJourney = goingTo.MapPosition - comingFrom.MapPosition; 
-        float hours = journey.Length() / milesPerHour; 
+        float journeyMiles = journey.Length();
+        float hours = journeyMiles / milesPerHour; 
+        int fuelToTake = (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / Constants.MassMilesPerFuel);
+        
+        int taken = Inv.Take(ItemID.Fuel, fuelToTake).Count;
+        taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;
+        taken += comingFrom.Inv.Take(ItemID.Fuel, fuelToTake - taken).Count;
+        milesOfFuel += (Constants.MassMilesPerFuel * taken) / mass; 
+
         //TODO: this maybe should be recalculated each frame, 
         //because train might slow down if it runs into another
         //train
@@ -181,6 +191,12 @@ public class Train : IInventorySource, IID {
     public void Move(WorldTime now, Train inFront = null) {
         float hours = (now - lastMoved).InHours(); 
         float moved = milesPerHour * hours; 
+
+        if (milesOfFuel <= 0f) {
+            moved = Math.Min(moved, Math.Max(Constants.MinSpeed, (float)moved / 10f));
+        } else {
+            milesOfFuel -= moved;
+        }
 
         Vector2 newPosition = (Vector2.Normalize(journey) * moved) + position;
 

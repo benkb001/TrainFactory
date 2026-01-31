@@ -56,6 +56,8 @@ namespace TrainGame.Constants
         public const float TrainDefaultPower = 25000f; 
         public const float UpgradePowerStep = 1000f; 
         public const float TrainDefaultMass = 1000f; 
+        public const float MassMilesPerFuel = 25000f;
+        public const float MinSpeed = 0.0002f;
 
         public static readonly Dictionary<CartType, float> CartMass = new() {
             [CartType.Freight] = 1250f, 
