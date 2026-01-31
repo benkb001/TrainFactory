@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using _Rectangle = System.Drawing.Rectangle;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
@@ -37,6 +38,14 @@ public static class Util {
 
     public static string FormatMap(Dictionary<string, int> map) {
         return map.Aggregate("", (acc, cur) => $"{acc}{cur.Key}: {cur.Value}\n");
+    }
+
+    public static Vector2 Rotate(Vector2 v, float degrees) {
+        float radians = degrees * (MathF.PI / 180f); 
+
+        float x = v.X * MathF.Cos(radians) - v.Y * MathF.Sin(radians); 
+        float y = v.X * MathF.Sin(radians) + v.Y * MathF.Cos(radians);
+        return new Vector2(x, y); 
     }
 
     private static T[] GetEnumList<T>() {

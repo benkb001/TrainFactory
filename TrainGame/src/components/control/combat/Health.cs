@@ -18,6 +18,7 @@ using TrainGame.Constants;
 public class Health {
     private int hp; 
     private int maxHP; 
+    public int InvincibleFrames = 0;
     public int HP => hp; 
     public int MaxHP => maxHP; 
 
@@ -27,7 +28,7 @@ public class Health {
     }
 
     public void ReceiveDamage(int damage) {
-        damage = Math.Max(0, damage); 
+        damage = InvincibleFrames > 0 ? 0 : Math.Max(0, damage); 
         hp = Math.Max(0, hp - damage); 
     }
 

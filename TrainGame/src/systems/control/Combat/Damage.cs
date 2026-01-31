@@ -15,20 +15,24 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public class SetInvincibleMessage {}
 public class ReceiveDamageMessage {
-    private int dmg = 0; 
-    public int DMG => dmg; 
+    private List<int> damageSources = new();
+
+    public int DMG => damageSources.Aggregate(0, (acc, cur) => acc + cur); 
+    public int FirstSourceDMG => damageSources[0]; 
 
     public ReceiveDamageMessage(int dmg) {
-        this.dmg = dmg; 
+        damageSources.Add(dmg);
     }
 
     public void AddDamage(int dmg) {
-        this.dmg = Math.Max(0, this.dmg + dmg);
+        damageSources.Add(Math.Max(0, dmg));
     }
 
     public void SetDamage(int dmg) {
-        this.dmg = Math.Max(0, dmg); 
+        damageSources.Clear();
+        AddDamage(dmg);
     }
 }
 
@@ -80,10 +84,33 @@ public static class DamageSystem {
         });
     }
 
+    public static void RegisterAddInvincibleMessage(World w) {
+        w.AddSystem([typeof(Health), typeof(Player), typeof(ReceiveDamageMessage), typeof(Active)], (w, e) => {
+            ReceiveDamageMessage rm = w.GetComponent<ReceiveDamageMessage>(e);
+            if (rm.DMG > 0) {
+                rm.SetDamage(rm.FirstSourceDMG);
+                w.SetComponent<SetInvincibleMessage>(e, new SetInvincibleMessage());
+            }
+        }); 
+    }
+
+    public static void RegisterSetInvincible(World w) {
+        w.AddSystem([typeof(Health), typeof(SetInvincibleMessage)], (w, e) => {
+            w.GetComponent<Health>(e).InvincibleFrames = Constants.InvincibilityFrames;
+            w.RemoveComponent<SetInvincibleMessage>(e);
+        });
+    }
+
     public static void RegisterReceive(World w) {
         w.AddSystem([typeof(ReceiveDamageMessage), typeof(Health), typeof(Active)], (w, e) => {
             w.GetComponent<Health>(e).ReceiveDamage(w.GetComponent<ReceiveDamageMessage>(e).DMG); 
             w.RemoveComponent<ReceiveDamageMessage>(e); 
+        });
+    }
+
+    public static void RegisterDecayInvincibility(World w) {
+        w.AddSystem([typeof(Health), typeof(Active)], (w, e) => {
+            w.GetComponent<Health>(e).InvincibleFrames--;
         });
     }
 }

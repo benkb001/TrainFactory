@@ -122,6 +122,7 @@ public static class RegisterComponents {
         r<SaveButton>(); 
         r<Scene>(); 
         r<ScreenAnchor>(); 
+        r<SetInvincibleMessage>();
         r<SetPlayerProgramButton>();
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 

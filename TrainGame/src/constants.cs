@@ -83,6 +83,7 @@ namespace TrainGame.Constants
         public const int BulletSize = 5; 
 
         public const float EnemySize = 50f;
+        public const int InvincibilityFrames = 60;
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {

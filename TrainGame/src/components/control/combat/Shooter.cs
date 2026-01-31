@@ -15,6 +15,21 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public enum ShootPattern {
+    Default,
+    Multi
+}
+
+public enum BulletType {
+    Default, 
+    Piercing
+}
+
+public enum OnExpireEffect {
+    Default, 
+    Explosion
+}
+
 public class Shooter {
     private float bulletSpeed; 
     private int bulletDamage; 
@@ -23,9 +38,24 @@ public class Shooter {
     private int skill; 
     private int ammo; 
     private int maxAmmo; 
+    private int bulletsPerShot; 
+    private int bulletSize; 
+    private float spreadDegrees = 10f;
+    private ShootPattern shootPattern;
+    private BulletType bulletType; 
+    private OnExpireEffect onExpireEffect;
+
+    public ShootPattern GetShootPattern() => shootPattern; 
+    public BulletType GetBulletType() => bulletType; 
+    public OnExpireEffect GetOnExpireEffect() => onExpireEffect;
+    public int BulletsPerShot => bulletsPerShot; 
+    public int BulletSize => bulletSize; 
+    public float SpreadDegrees => spreadDegrees;
 
     public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3, 
-        int ammo = 10, int skill = 1) {
+        int ammo = 10, int skill = 1, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
+        BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
+        int bulletSize = Constants.BulletSize) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -33,6 +63,11 @@ public class Shooter {
         this.ammo = ammo; 
         this.maxAmmo = ammo; 
         canShoot = new WorldTime(); 
+        this.shootPattern = shootPattern; 
+        this.bulletType = bulletType; 
+        this.onExpireEffect = onExpireEffect; 
+        this.bulletsPerShot = bulletsPerShot; 
+        this.bulletSize = bulletSize; 
     }
 
     public Bullet Shoot(WorldTime now) {

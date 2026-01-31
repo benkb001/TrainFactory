@@ -21,11 +21,19 @@ public class Bullet {
     
     private int framesActive; 
     private int damage; 
+    private BulletType bulletType; 
+    private OnExpireEffect onExpireEffect; 
+
     public int Damage => damage; 
     public int FramesActive => framesActive; 
+    public BulletType GetBulletType() => bulletType; 
+    public OnExpireEffect GetOnExpireEffect() => onExpireEffect;
 
-    public Bullet(int damage = 1) {
+    public Bullet(int damage = 1, BulletType bulletType = BulletType.Default, 
+        OnExpireEffect onExpireEffect = OnExpireEffect.Default) {
         this.damage = damage; 
+        this.bulletType = bulletType; 
+        this.onExpireEffect = onExpireEffect;
         this.framesActive = 0;
     }
 

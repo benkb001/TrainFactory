@@ -5,6 +5,7 @@
 * randomly zooming in ? 
 * Camera lag when teleporting, exiting interfaces, basically entity tracking is
   a bit wonky
+* Not decreasing received damage after picking up +1 armor
   
 **** TEST **** 
 
@@ -21,7 +22,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add invincibility frames
 * Add a flow for new floors/levels in HPP 
 * Add a flow to specify different movement and shooting patterns 
 * Add new enemy types

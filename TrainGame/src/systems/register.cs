@@ -30,7 +30,10 @@ public static class RegisterSystems {
         DamageSystem.RegisterShoot<Enemy, Player>(w); 
         DamageSystem.RegisterArmor(w); 
         DamageSystem.RegisterParry(w); 
+        DamageSystem.RegisterAddInvincibleMessage(w);
         DamageSystem.RegisterReceive(w); 
+        DamageSystem.RegisterSetInvincible(w);
+        DamageSystem.RegisterDecayInvincibility(w);
         LootSystem.Register(w); 
         PlayerDeathSystem.Register(w); 
         DeathSystem.Register(w); 

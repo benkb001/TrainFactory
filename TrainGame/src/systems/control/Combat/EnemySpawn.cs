@@ -116,7 +116,9 @@ public static class EnemySpawnSystem {
                         ticksPerShot: Math.Max(10, 30 - round), 
                         bulletSpeed: Math.Min(3, 2 + (round / 10)),
                         ammo: Math.Min(8, 3 + round), 
-                        skill: 1 + round
+                        skill: 1 + round,
+                        shootPattern: ShootPattern.Multi, 
+                        bulletsPerShot: 3
                     )); 
 
                     w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
