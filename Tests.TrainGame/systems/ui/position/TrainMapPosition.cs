@@ -19,6 +19,7 @@ public class TrainMapPositionSystemTest {
         Inventory inv = new Inventory("Test", 1, 1); 
         City c_start = new City("C_START", inv, uiX: 0f, uiY: 0f, realX: 0f, realY: 0f); 
         City c_end = new City("C_END", inv, uiX: 10f, uiY: 0f, realX: 100f, realY: 0f); 
+        c_start.AddConnection(c_end);
 
         Train train = new Train(inv, c_start, milesPerHour: 10f); 
         train.Embark(c_end, new WorldTime()); 
@@ -34,7 +35,6 @@ public class TrainMapPositionSystemTest {
         w.PassTime(new WorldTime(hours: 1)); 
         w.Update(); 
 
-        Assert.Single(w.GetMatchingEntities([typeof(TrainUI), typeof(Frame)]), 
-            e => w.GetComponent<Frame>(e).Position == train.GetMapPosition(new WorldTime(hours: 1))); 
+        Assert.True(w.GetComponent<Frame>(trainUIEntity).Position == train.GetMapPosition());
     }
 }

@@ -21,7 +21,7 @@ public class EmbarkedMessage {
     }
 }
 
-public class EmbarkClickSystem() {
+public static class EmbarkClickSystem {
     public static void Register(World world) {
         Type[] ts = [typeof(EmbarkButton), typeof(Button), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {

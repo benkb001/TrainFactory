@@ -15,6 +15,7 @@ public class RedrawMapSystemTest {
         w.SetComponent<TrainUI>(tuiEnt, new TrainUI(t)); 
         w.SetComponent<MapUIFlag>(tuiEnt, MapUIFlag.Get());
         City dest = CityWrap.GetTest(); 
+        t.ComingFrom.AddConnection(dest);
         return (w, t, dest, tuiEnt); 
     }
 

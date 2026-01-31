@@ -12,10 +12,12 @@ public class TrainTravelSystemTest() {
         Inventory inv = new Inventory("Test", 1, 1); 
         City c_start = new City("Start", inv, realX: 0f); 
         City c_end = new City("End", inv, realX: 100f); 
+        c_start.AddConnection(c_end);
         Train t = new Train(inv, c_start, Id: "Bug", milesPerHour: 10f);
         t.Embark(c_end, w.Time); 
         w.SetComponent<Train>(trainEntity, t); 
         w.SetComponent<Data>(trainEntity, Data.Get()); 
+        EntityFactory.AddData<City>(w, c_end);
         w.PassTime(new WorldTime(hours: 9, minutes: 59)); 
         w.Update(); 
         Assert.True(t.IsTraveling());

@@ -38,6 +38,7 @@ public static class RegisterSystems {
         CollideBulletSystem.Register(w); 
         
         TALExecutionSystem.Register(w);
+        TrainTravelSystem.RegisterMove(w);
         TrainTravelSystem.Register(w); 
         MachineUpdateSystem.Register(w); 
         MachineUpdateSystem.RegisterConsumeTimeCrystals(w); 

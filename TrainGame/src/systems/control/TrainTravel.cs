@@ -17,7 +17,7 @@ public class TrainTravelSystem() {
     private static Type[] ts = [typeof(Train), typeof(Data)]; 
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
-        if (t.IsArriving(w.Time)) {
+        if (t.IsArriving()) {
             if (t.HasPlayer) {
                 //if train is arriving and it has the player, draw the city the player just chose to go to
                 MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(t.GoingTo)); 
@@ -30,10 +30,33 @@ public class TrainTravelSystem() {
                 MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(t.GoingTo)); 
             }
         }
-        t.Update(w.Time); 
+        t.Update(); 
     }; 
 
     public static void Register(World world) {
         world.AddSystem(ts, tf); 
+    }
+
+    public static void RegisterMove(World w) {
+        w.AddSystem([typeof(City), typeof(Data)], (w, e) => {
+            City c = w.GetComponent<City>(e); 
+            Dictionary<City, List<Train>> tsDict = c.TrainsEnRoute; 
+            
+            foreach(KeyValuePair<City, List<Train>> kvp in tsDict) {
+                List<Train> ts = kvp.Value;
+
+                for (int i = ts.Count - 1; i > 0; i--) {
+                    Train cur = ts[i]; 
+                    Train inFront = ts[i - 1]; 
+
+                    cur.Move(w.Time, inFront);
+                }
+
+                if (ts.Count > 0) {
+                    Train t = ts[0];
+                    t.Move(w.Time);
+                }
+            }
+        });
     }
 }

@@ -23,12 +23,17 @@ public class Train : IInventorySource, IID {
     private float mass; 
     private WorldTime left; 
     private WorldTime arrivalTime; 
+    private WorldTime lastMoved = new WorldTime();
     private bool isTraveling; 
     private bool isEmbarking; 
     private static HashSet<string> usedIDs = new(); 
     private string program; 
     private string programName = "None"; 
     private TALBody executable; 
+    private Vector2 position; 
+    private Vector2 journey;
+    private Vector2 mapJourney;
+    private Vector2 moved => position - comingFrom.Position;
 
     public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
@@ -45,6 +50,7 @@ public class Train : IInventorySource, IID {
     public string ProgramName => programName; 
     public float Power => power; 
     public TALBody Executable => executable; 
+    public Vector2 Position => position; 
 
     public const string DefaultID = ""; 
 
@@ -91,6 +97,8 @@ public class Train : IInventorySource, IID {
 
         this.left = new WorldTime(); 
         this.arrivalTime = new WorldTime(); 
+
+        position = origin.Position;
     }
 
     public void Embark(City destination, WorldTime now) {
@@ -106,39 +114,40 @@ public class Train : IInventorySource, IID {
         
         this.goingTo = destination; 
         this.left = now.Clone(); 
+        this.lastMoved = now.Clone();
         this.isTraveling = true;
         this.comingFrom.RemoveTrain(this); 
 
-        Vector2 journey = comingFrom.RealPosition - goingTo.RealPosition; 
+        journey = goingTo.RealPosition - comingFrom.RealPosition; 
+        mapJourney = goingTo.MapPosition - comingFrom.MapPosition; 
         float hours = journey.Length() / milesPerHour; 
+        //TODO: this maybe should be recalculated each frame, 
+        //because train might slow down if it runs into another
+        //train
         this.arrivalTime = now + new WorldTime(hours: hours); 
+        destination.SendTrain(this);
     }
     
-    public Vector2 GetMapPosition(WorldTime cur) {
+    public Vector2 GetMapPosition() {
         if (!isTraveling) {
             return comingFrom.MapPosition; 
         }
 
-        Vector2 journey = goingTo.RealPosition - comingFrom.RealPosition; 
-
-        float hours = (cur - left).InHours(); 
-        float moved = milesPerHour * hours; 
-        float proportion_moved = moved / journey.Length(); 
-    
-        Vector2 map_journey = goingTo.MapPosition - comingFrom.MapPosition; 
-
-        float map_moved = map_journey.Length() * proportion_moved; 
-        return (Vector2.Normalize(map_journey) * map_moved) + comingFrom.MapPosition; 
+        float proportion_moved = moved.Length() / journey.Length();
+        float map_moved = mapJourney.Length() * proportion_moved; 
+        return (Vector2.Normalize(mapJourney) * map_moved) + comingFrom.MapPosition; 
     }
     
-    public void Update(WorldTime cur) {
-        if (!isTraveling || !IsArriving(cur)) {
+    public void Update() {
+        if (!isTraveling || !IsArriving()) {
             return; 
         }
         
+        this.goingTo.ReceiveTrain(this);
         this.comingFrom = this.goingTo; 
         this.isTraveling = false; 
-        this.goingTo.AddTrain(this);
+        position = goingTo.Position;
+
         //TODO: Test
         if (HasPlayer) {
             this.goingTo.HasPlayer = true; 
@@ -147,8 +156,9 @@ public class Train : IInventorySource, IID {
     }
 
     //IsArriving MUST be called before Update or it will never be true
-    public bool IsArriving(WorldTime cur) {
-        return isTraveling && cur.IsAfterOrAt(arrivalTime); 
+    public bool IsArriving() {
+        bool arriving = isTraveling && moved.Length() >= journey.Length();
+        return arriving; 
     }
 
     public bool IsTraveling() {
@@ -166,6 +176,29 @@ public class Train : IInventorySource, IID {
         mass += Constants.CartMass[type]; 
         Carts[type].Upgrade(); 
         setMPH(); 
+    }
+
+    public void Move(WorldTime now, Train inFront = null) {
+        float hours = (now - lastMoved).InHours(); 
+        float moved = milesPerHour * hours; 
+
+        Vector2 newPosition = (Vector2.Normalize(journey) * moved) + position;
+
+        if (float.IsNaN(newPosition.X)) {
+            newPosition = Vector2.Zero;
+        }
+
+        if (inFront != null) {
+            float inFrontLen = (journey - inFront.Position).Length();
+            float curLen = (journey - newPosition).Length();
+
+            if (inFrontLen > curLen) {
+                newPosition = inFront.Position;
+            }
+        }
+
+        position = newPosition; 
+        lastMoved = now.Clone();
     }
     
     //TODO; TEST

@@ -314,8 +314,6 @@ public class MovementTest {
         int e2 = EntityFactory.AddUI(w, new Vector2(-10, 10), 10, 10, setCollidable: true); 
         w.SetComponent<Velocity>(e2, new Velocity(11, 0)); 
         w.Update(); 
-        MovementSystem.Partitions.ForEach(p => Console.WriteLine($"{p.Bounds} [{string.Join(", ", p.Ents)}]"));
         Assert.Contains(MovementSystem.Partitions, p => p.Ents.Contains(e1) && p.Ents.Contains(e2));
-       
     }
 }

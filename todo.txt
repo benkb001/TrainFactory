@@ -9,21 +9,17 @@
 **** TEST **** 
 
 * Partitioning, especially GetIntersectingEntities
+* ConnectCities
+* Train.Move()
 
 **** CLEAN UP **** 
 
 * Fix movement system tests that aren't passing
+* Make code for constants => json, and load 
+  this instead of using bootstrap.initWorld
 
 **** NEXT FEATURES **** 
 
-* Make it so trains can't run each other over 
-  * We will probably have the target city store a list of 
-    trains for each city its connected to, that are trains 
-    traveling towards it. Trains are added to the front of 
-    this list, but they cannot move past the train in front 
-    of them. Each frame we will update the trains position, 
-    instead of calculating it purely from time left, cur time, 
-    and speed. When it arrives, train is removed from the list
 * Make it so trains need fuel 
   * Probably when updating train position, we check if it has 
     fuel, if so it goes its full speed, otherwise it tries 

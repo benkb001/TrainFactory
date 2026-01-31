@@ -18,6 +18,7 @@ public class EmbarkClickSystemTest {
         Inventory inv = new Inventory("Test", 1, 1); 
         City cStart = new City("start", inv, 100f, 100f);
         City cEnd = new City("end", inv, 100f, 100f);
+        cStart.AddConnection(cEnd);
         Train t = new Train(inv, cStart);
         Assert.Equal(cStart, t.GoingTo);
         Assert.False(t.IsTraveling()); 

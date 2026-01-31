@@ -16,7 +16,7 @@ public class TrainMapPositionSystem() {
         Type[] ts = [typeof(TrainUI), typeof(MapUIFlag), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
-            Vector2 pos = t.GetMapPosition(w.Time);
+            Vector2 pos = t.GetMapPosition(); //getMapMposition should be on TrainUI class?
             w.GetComponent<Frame>(e).SetCoordinates(w.GetCameraTopLeft() + pos); 
             if (!t.IsTraveling()) {
                 w.RemoveEntity(e); 

@@ -21,7 +21,7 @@ public class RedrawMapSystem() {
             List<int> tuiEnts = w.GetMatchingEntities([typeof(TrainUI), typeof(MapUIFlag), typeof(Active)]);
             if (tuiEnts.Any(e => {
                 Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
-                return t.HasPlayer && t.IsArriving(w.Time); 
+                return t.HasPlayer && t.IsArriving(); 
             })) {
                 should_redraw = true; 
             }

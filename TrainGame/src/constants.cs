@@ -283,7 +283,7 @@ namespace TrainGame.Constants
             [CityID.Coast] = new CityArg(
                 [MachineID.Excavator, MachineID.Pump], 
                 350f, 210f, -2.5f, 0f, 
-                [CityID.Factory],
+                [CityID.Factory, CityID.Armory],
                 new Dictionary<string, Dictionary<string, int>>() {
                     [CityID.Armory] = armoryRailroadCost
                 }
@@ -759,6 +759,10 @@ namespace TrainGame.Constants
             Train t = new Train(trainInv, factory, "T0", 
                 power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
             int trainDataEnt = TrainWrap.Add(w, t);
+
+            Train t2 = new Train(trainInv, factory, "T2", 
+                power: Constants.TrainDefaultPower * 2f, mass: Constants.TrainDefaultMass);
+            TrainWrap.Add(w, t2);
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
