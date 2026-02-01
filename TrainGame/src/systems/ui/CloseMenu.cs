@@ -77,6 +77,9 @@ public static class CloseMenuSystem {
             case SceneType.TravelingInterface: 
                 MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get()); 
                 break;
+            case SceneType.UpgradeTrainInterface: 
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
+                break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
         }

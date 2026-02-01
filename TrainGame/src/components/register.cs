@@ -56,6 +56,7 @@ public static class RegisterComponents {
         r<DrawEmbarkMessage>();  
         r<DrawInterfaceMessage<EquipmentInterfaceData>>(); 
         r<DrawInterfaceMessage<TravelingInterfaceData>>(); 
+        r<DrawInterfaceMessage<UpgradeTrainInterfaceData>>();
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
@@ -70,6 +71,7 @@ public static class RegisterComponents {
         r<Enemy>(); 
         r<EnemySpawner>(); 
         r<EnterInterfaceButton<EquipmentInterfaceData>>(); 
+        r<EnterInterfaceButton<UpgradeTrainInterfaceData>>();
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
@@ -145,8 +147,10 @@ public static class RegisterComponents {
         r<TrainUI>(); 
         r<TrainYard>(); 
         r<UnpauseButton>(); 
+        r<UpgradeFuelConsumptionButton>();
         r<UpgradeMachineButton>(); 
         r<UpgradeTrainButton>(); 
+        r<UpgradeTrainPowerButton>();
         r<Velocity>(); 
     }
 }

@@ -32,10 +32,7 @@ public class DrawTrainInterfaceSystem {
         float buttonHeight = buttonsContainerHeight / 6f; 
 
         //add train summary 
-        string summary = $"{t.Id}\n"; 
-        summary += $"MPH: {t.MilesPerHour}\n"; 
-        summary += $"Program: {t.ProgramName}\n"; 
-        summary += $"Miles Left: {t.MilesOfFuel}\n";
+        string summary = t.GetSummary();
 
         int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight * 2, setOutline: true, 
             text: summary);
@@ -59,24 +56,19 @@ public class DrawTrainInterfaceSystem {
         //draw Add Cart button 
         //TODO: this should only be clickable if there is a cart to add at the city
 
-        AddCartInterfaceButton cartBtn = new AddCartInterfaceButton(CartDest: t, CartSource: t.ComingFrom); 
+        int upgradeTrainButtonEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight, 
+            setButton: true, setOutline: true, text: "Upgrade Train"); 
+        w.SetComponent<EnterInterfaceButton<UpgradeTrainInterfaceData>>(upgradeTrainButtonEnt, 
+            new EnterInterfaceButton<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t)));
 
-        DrawButtonMessage<AddCartInterfaceButton> addCartMsg = new DrawButtonMessage<AddCartInterfaceButton>(
-            Button: cartBtn,
-            Position: Vector2.Zero, 
-            Width: buttonWidth, 
-            Height: buttonHeight
-        ); 
-
-        int addCartInterfaceEnt = DrawButtonSystem.Draw<AddCartInterfaceButton>(addCartMsg, w); 
-        LinearLayoutWrap.AddChild(addCartInterfaceEnt, buttonsContainerEnt, buttonsContainer, w);
+        LinearLayoutWrap.AddChild(upgradeTrainButtonEnt, buttonsContainerEnt, buttonsContainer, w);
 
         //draw button to go to Set Train Program Interface
         int programBtn = EntityFactory.Add(w);
         LinearLayoutWrap.AddChild(programBtn, buttonsContainerEnt, buttonsContainer, w); 
         w.SetComponent<Frame>(programBtn, new Frame(0, 0, buttonWidth, buttonHeight)); 
         w.SetComponent<Outline>(programBtn, new Outline()); 
-        w.SetComponent<TextBox>(programBtn, new TextBox("Program train?")); 
+        w.SetComponent<TextBox>(programBtn, new TextBox("Program train")); 
         w.SetComponent<Button>(programBtn, new Button()); 
         w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t));
     }

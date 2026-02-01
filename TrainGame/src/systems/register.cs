@@ -93,9 +93,12 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<EquipmentInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
+        EnterInterfaceClickSystem.Register<UpgradeTrainInterfaceData>(w);
         PurchaseClickSystem.Register(w); 
         UpgradeDepotClickSystem.Register(w); 
         ConnectCitiesClickSystem.Register(w);
+        UpgradeTrainPowerClickSystem.Register(w);
+        UpgradeFuelConsumptionClickSystem.Register(w);
 
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -141,6 +144,7 @@ public static class RegisterSystems {
         DrawViewProgramInterfaceSystem.Register(w); 
         DrawVendorInterfaceSystem.Register(w); 
         DrawEquipmentInterfaceSystem.Register(w); 
+        DrawUpgradeTrainInterfaceSystem.Register(w);
         SetMachineHeaderSystem.Register(w); 
         //CameraReturnSystem.Register(w); 
 

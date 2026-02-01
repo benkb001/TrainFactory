@@ -13,33 +13,50 @@
 * ConnectCities
 * Train.Move()
 * Train fuel consumption
+* Upgrade train fuel consumption/power
 
 **** CLEAN UP **** 
 
 * Fix movement system tests that aren't passing
 * Make code for constants => json, and load 
   this instead of using bootstrap.initWorld
+* Add train position to save/load
+* Make carts items
 
 **** NEXT FEATURES **** 
 
 * Add a flow for new floors/levels in HPP 
-* Add a flow to specify different movement and shooting patterns 
+* Add a flow for different movement patterns 
+* Add new movement, bullet, shoot patterns, and onExpireEffects
+  * Dash
+  * Move up/down/left/right, ignoring player position
+  * Bouncy bullets 
+  * Exploding bullets 
+  * Homing bullets 
+  * Square/Circle patterns 
+  * Left/right/diagonal/up/down patterns
 * Add new enemy types
-* Add Train Yard, a city to get flat upgrades for train speed and
-  fuel consumption 
+  * Just need to try various combinations of movement, 
+    onExpire, pattern, and bulletType to see what works 
 * Add Laboratory, a place to get percent upgrades to  
-  craft time, product per resources, train speed, train fuel, and 
-  train stack size. 
-* Add the reservoir, a city to get oil from fuel
-* Add the Refinery, a place to split oil and turn 
-  it into fuel, better recipe than gasifier 
+  product per resources, train speed, train fuel, and 
+  train stack size. And logarithmic upgrades to machine
+  crafting speed
+  * Add crafting speed upgrade functions in constants 
+    * Currently they all start at their fastest, 
+      I'd like where they currently are to be a base speed, 
+      and have them approach much faster speeds. Like iron
+      and sand should bottom at 3 ticks per craft, everything
+      else can be somewhat proportional to this minimum
+  * Add logic/functions for each of these 
+  * Add UI
+* Add a way to resize window 
 
 **** FUTURE FEATURES **** 
 
 * Make it so player has to refresh the city interface to see which trains 
   have arrived, but when trains leave the button gets grayed out to 
   show the train isn't there anymore, and if refreshed the button will disappear
-* Add a way to resize window 
 * Add a button to close menu
 * Add a way to skip to harder rounds in hpp
 * Add a system to highlight entities if player is in interacting range

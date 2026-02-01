@@ -35,6 +35,7 @@ public class Train : IInventorySource, IID {
     private Vector2 mapJourney;
     private Vector2 moved => position - comingFrom.Position;
     private float milesOfFuel = 25f;
+    private float massMilesPerFuel = Constants.MassMilesPerFuel;
 
     public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
@@ -124,12 +125,12 @@ public class Train : IInventorySource, IID {
         mapJourney = goingTo.MapPosition - comingFrom.MapPosition; 
         float journeyMiles = journey.Length();
         float hours = journeyMiles / milesPerHour; 
-        int fuelToTake = (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / Constants.MassMilesPerFuel);
+        int fuelToTake = (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / massMilesPerFuel);
         
         int taken = Inv.Take(ItemID.Fuel, fuelToTake).Count;
         taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;
         taken += comingFrom.Inv.Take(ItemID.Fuel, fuelToTake - taken).Count;
-        milesOfFuel += (Constants.MassMilesPerFuel * taken) / mass; 
+        milesOfFuel += (massMilesPerFuel * taken) / mass; 
 
         //TODO: this maybe should be recalculated each frame, 
         //because train might slow down if it runs into another
@@ -229,6 +230,12 @@ public class Train : IInventorySource, IID {
         setMPH(); 
     }
 
+    public void UpgradeMassMilesPerFuel(float m) {
+        float prev = massMilesPerFuel;
+        massMilesPerFuel += m;
+        milesOfFuel *= (massMilesPerFuel / prev);
+    }
+
     public List<Inventory> GetInventories() {
         List<Inventory> invs = new(); 
         invs.Add(Inv); 
@@ -255,6 +262,15 @@ public class Train : IInventorySource, IID {
 
     public void SetExecutable(TALBody executable) {
         this.executable = executable; 
+    }
+
+    public string GetSummary() {
+        string summary = $"{Id}\n"; 
+        summary += $"MPH: {MilesPerHour}\n"; 
+        summary += $"Program: {ProgramName}\n"; 
+        summary += $"Miles Per Fuel: {massMilesPerFuel / mass}\n";
+        summary += $"Miles Left: {MilesOfFuel}\n";
+        return summary;
     }
 
     public static string GetCartID(CartType type, string trainID) {

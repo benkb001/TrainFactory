@@ -251,9 +251,14 @@ public static class DrawCitySystem {
                 drawVendor(w, topleft + new Vector2(110, 150), city, VendorID.WeaponCraftsman); 
                 break;
             case CityID.Reservoir: 
+                //TODO: Write
                 break;
-            case CityID.Collisseum: 
+            case CityID.Refinery: 
+                //TODO: Write
                 break; 
+            case CityID.TrainYard: 
+                //todo: Write
+                break;
             default: 
                 int e = EntityFactory.Add(w); 
                 w.SetComponent<Frame>(e, new Frame(topleft, 100, 100));
