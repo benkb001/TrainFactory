@@ -28,7 +28,6 @@
 * Add a flow for new floors/levels in HPP 
 * Add new bullet, shoot patterns, and onExpireEffects
   * Exploding bullets 
-  * Homing bullets 
   * Square/Circle/Line patterns 
   * Left/right/diagonal/up/down patterns
 * Add new enemy types

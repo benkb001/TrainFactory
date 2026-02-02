@@ -68,10 +68,21 @@ public static class EnemyShootSystem {
                         default: 
                             throw new InvalidOperationException("Undefined shoot pattern type");
                     }
+
                     
                     bulletEnts.ForEach(ent => {
                         w.SetComponent<Enemy>(ent, new Enemy()); 
                         w.SetComponent<Bullet>(ent, shooter.Shoot(w.Time)); 
+
+                        switch (shooter.GetBulletType()) {
+                            case BulletType.Default: 
+                                break; 
+                            case BulletType.Homing: 
+                                w.SetComponent<Homing>(ent, new Homing(playerEnts[0]));
+                                break;
+                            default: 
+                                throw new InvalidOperationException("Undefined bullet type");
+                        }
                     });
                 }
             }

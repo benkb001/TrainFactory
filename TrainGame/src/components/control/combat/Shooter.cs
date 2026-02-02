@@ -22,7 +22,7 @@ public enum ShootPattern {
 
 public enum BulletType {
     Default, 
-    Piercing
+    Homing
 }
 
 public enum OnExpireEffect {

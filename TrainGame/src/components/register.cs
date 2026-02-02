@@ -82,6 +82,7 @@ public static class RegisterComponents {
         r<Health>(); 
         r<HeldItem>(); 
         r<HealthPotion>(); 
+        r<Homing>();
         r<Interactable>(); 
         r<Interactor>();  
         r<Inventory>(); 
