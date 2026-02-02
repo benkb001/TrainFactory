@@ -29,7 +29,6 @@
 * Add new bullet, shoot patterns, and onExpireEffects
   * Exploding bullets 
   * Square/Circle/Line patterns 
-  * Left/right/diagonal/up/down patterns
 * Add new enemy types
   * Just need to try various combinations of movement, 
     onExpire, pattern, and bulletType to see what works 

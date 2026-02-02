@@ -16,8 +16,12 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public enum ShootPattern {
+    Circle,
     Default,
-    Multi
+    HorizontalLine,
+    Multi,
+    Square,
+    VerticalLine
 }
 
 public enum BulletType {
@@ -41,6 +45,10 @@ public class Shooter {
     private int bulletsPerShot; 
     private int bulletSize; 
     private float spreadDegrees = 10f;
+    private int patternIndex = 0; 
+    private int patternLength;
+    private float patternSize;
+
     private ShootPattern shootPattern;
     private BulletType bulletType; 
     private OnExpireEffect onExpireEffect;
@@ -51,11 +59,12 @@ public class Shooter {
     public int BulletsPerShot => bulletsPerShot; 
     public int BulletSize => bulletSize; 
     public float SpreadDegrees => spreadDegrees;
+    public float PatternSize => patternSize; 
 
     public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3, 
         int ammo = 10, int skill = 1, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
         BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
-        int bulletSize = Constants.BulletSize) {
+        int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -68,6 +77,8 @@ public class Shooter {
         this.onExpireEffect = onExpireEffect; 
         this.bulletsPerShot = bulletsPerShot; 
         this.bulletSize = bulletSize; 
+        this.patternLength = patternLength; 
+        this.patternSize = patternSize;
     }
 
     public Bullet Shoot(WorldTime now) {

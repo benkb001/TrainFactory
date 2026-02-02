@@ -22,18 +22,27 @@ public static class EnemyShootSystem {
             if (shooter.CanShoot(w.Time)) {
                 Vector2 enemyPos = w.GetComponent<Frame>(e).Position; 
                 List<int> playerEnts = w.GetMatchingEntities([typeof(Player), typeof(Health), typeof(Frame), typeof(Active)]); 
+                Frame enemyFrame = w.GetComponent<Frame>(e);
+
                 foreach (int ent in playerEnts) {
                     Vector2 playerPos = w.GetComponent<Frame>(ent).Position; 
                     List<int> bulletEnts = new();
                     float speed = shooter.GetBulletSpeed(); 
                     int inaccuracy = shooter.Inaccuracy; 
+                    int bullets = shooter.BulletsPerShot; 
+                    Velocity bulletVelocity = new Velocity(Vector2.Zero);
+                    Frame playerFrame = w.GetComponent<Frame>(ent);
+
                     float offset;
                     int bulletEnt; 
-                    Velocity bulletVelocity = new Velocity(Vector2.Zero);
+                    float direction; 
+                    float spacePerBullet;
 
                     int addBulletEnt() {
-                        return EntityFactory.AddUI(w, enemyPos, shooter.BulletSize, 
+                        int bEnt = EntityFactory.AddUI(w, enemyPos, shooter.BulletSize, 
                             shooter.BulletSize, setOutline: true);
+                        bulletEnts.Add(bEnt);
+                        return bEnt;
                     }
 
                     switch (shooter.GetShootPattern()) {
@@ -45,12 +54,10 @@ public static class EnemyShootSystem {
 
                             bulletVelocity = new Velocity(Vector2.Normalize(playerPos - enemyPos) * speed);
                             w.SetComponent<Velocity>(bulletEnt, bulletVelocity); 
-                            bulletEnts.Add(bulletEnt);
                             break;
                         case ShootPattern.Multi: 
                             offset = (float)(inaccuracy * w.NextDouble()); 
                             playerPos += new Vector2(offset, offset); 
-                            int bullets = shooter.BulletsPerShot; 
                             float spread = shooter.SpreadDegrees;
                             float degreesPerShot = spread / (float)(bullets - (bullets % 2));
                             float startDegree = -1 * degreesPerShot * (bullets / 2);
@@ -61,9 +68,36 @@ public static class EnemyShootSystem {
                                 Vector2 v = Vector2.Normalize(playerPos - enemyPos) * speed; 
                                 v = Util.Rotate(v, startDegree + (degreesPerShot * i));
                                 w.SetComponent<Velocity>(bulletEnt, new Velocity(v)); 
-                                bulletEnts.Add(bulletEnt);
                             }
 
+                            break;
+                        case ShootPattern.HorizontalLine: 
+                            direction = playerFrame.Position.X > enemyFrame.Position.X ? 1f : -1f; 
+                            float topBulletPos = enemyFrame.Position.Y - (shooter.PatternSize / 2f);
+                            spacePerBullet = shooter.PatternSize / (float)(bullets - 1);
+
+                            for (int i = 0; i < bullets; i++) {
+                                bulletEnt = addBulletEnt(); 
+                                Vector2 v = new Vector2(direction * speed, 0f);
+                                w.SetComponent<Velocity>(bulletEnt, new Velocity(v));
+                                Frame f = w.GetComponent<Frame>(bulletEnt);
+                                f.SetCoordinates(f.Position.X, topBulletPos + (spacePerBullet * i));
+                            }
+
+                            break;
+                        case ShootPattern.VerticalLine: 
+                            direction = playerFrame.Position.Y > enemyFrame.Position.Y ? 1f : -1f; 
+                            float leftBulletPos = enemyFrame.Position.X - (shooter.PatternSize / 2f);
+                            spacePerBullet = shooter.PatternSize / (float)(bullets - 1);
+
+                            for (int i = 0; i < bullets; i++) {
+                                bulletEnt = addBulletEnt(); 
+                                Vector2 v = new Vector2(0f, direction * speed);
+                                w.SetComponent<Velocity>(bulletEnt, new Velocity(v));
+                                Frame f = w.GetComponent<Frame>(bulletEnt);
+                                f.SetCoordinates(leftBulletPos + (spacePerBullet * i), f.Position.Y);
+                            }
+                            
                             break;
                         default: 
                             throw new InvalidOperationException("Undefined shoot pattern type");

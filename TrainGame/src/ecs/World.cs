@@ -168,7 +168,6 @@ public partial class World {
 
     public float NextFloat() {
         float f = (float)random.NextDouble(); 
-        Console.WriteLine(f);
         if (f < 0f) {
             throw new InvalidOperationException("bug");
         }

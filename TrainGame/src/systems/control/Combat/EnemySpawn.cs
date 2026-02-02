@@ -117,9 +117,9 @@ public static class EnemySpawnSystem {
                         bulletSpeed: Math.Min(3, 2 + (round / 10)),
                         ammo: Math.Min(8, 3 + round), 
                         skill: 1 + round,
-                        shootPattern: ShootPattern.Multi, 
+                        shootPattern: ShootPattern.VerticalLine, 
                         bulletsPerShot: 3,
-                        bulletType: BulletType.Homing
+                        patternSize: 100f
                     )); 
 
                     w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
