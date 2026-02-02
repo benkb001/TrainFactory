@@ -124,7 +124,9 @@ public static class EnemySpawnSystem {
                     w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
                     w.SetComponent<Movement>(enemyEnt, new Movement(
                         speed: Math.Min(6f, 2f + (round / 3f)),
-                        ticksBetweenMovement: Math.Max(0, 300 - (5 * round))
+                        ticksBetweenMovement: Math.Max(0, 300 - (5 * round)),
+                        Type: MoveType.Chase,
+                        patternLength: 2
                     )); 
                     w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
                     w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, spawner.Round, InventoryWrap.GetPlayerInv(w)));

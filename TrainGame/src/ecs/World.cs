@@ -163,17 +163,22 @@ public partial class World {
     }
 
     public double NextDouble() {
-        return (random.NextDouble() * 2) - 1; 
+        return (random.NextDouble() * 2) - 1;
     }
 
     public float NextFloat() {
         float f = (float)random.NextDouble(); 
+        Console.WriteLine(f);
         if (f < 0f) {
             throw new InvalidOperationException("bug");
         }
         return f;
     }
 
+    public float NextNeg1To1() {
+        return (NextFloat() * 2) - 1f;
+    }
+    
     public void PassTime(double seconds = 0, double milliseconds = 0) {
         gameClock.PassTime(seconds, milliseconds); 
     }

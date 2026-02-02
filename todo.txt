@@ -26,14 +26,10 @@
 **** NEXT FEATURES **** 
 
 * Add a flow for new floors/levels in HPP 
-* Add a flow for different movement patterns 
-* Add new movement, bullet, shoot patterns, and onExpireEffects
-  * Dash
-  * Move up/down/left/right, ignoring player position
-  * Bouncy bullets 
+* Add new bullet, shoot patterns, and onExpireEffects
   * Exploding bullets 
   * Homing bullets 
-  * Square/Circle patterns 
+  * Square/Circle/Line patterns 
   * Left/right/diagonal/up/down patterns
 * Add new enemy types
   * Just need to try various combinations of movement, 

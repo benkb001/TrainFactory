@@ -15,24 +15,38 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public enum MoveType {
+    Default,
+    Horizontal,
+    Vertical,
+    Chase
+}
+
 public class Movement {
 
+    private int patternLength; 
+    private int patternIndex = 0;
     private float speed; 
     private int ticksToMove; 
     private int ticksBetweenMovement; 
-    private float direction; 
+    private Vector2 direction; 
     private WorldTime canMove; 
     private WorldTime stopMove;
+    public readonly MoveType Type;
 
     public float Speed => speed; 
-    public float Direction => direction; 
+    public Vector2 Direction => direction; 
+    public int PatternIndex => patternIndex;
 
-    public Movement(float speed = 2f, int ticksToMove = 120, int ticksBetweenMovement = 300) {
+    public Movement(float speed = 2f, int ticksToMove = 120, int ticksBetweenMovement = 300,
+        int patternLength = 1, MoveType Type = MoveType.Default) {
         canMove = new WorldTime(); 
 
+        this.patternLength = patternLength;
         this.speed = speed; 
         this.ticksToMove = ticksToMove; 
         this.ticksBetweenMovement = ticksBetweenMovement; 
+        this.Type = Type;
     }
 
     public bool CanMove(WorldTime t) {
@@ -43,8 +57,9 @@ public class Movement {
         return !t.IsAfterOrAt(stopMove); 
     }
 
-    public void SetDirection(float d) {
+    public void SetDirection(Vector2 d) {
         direction = d; 
+        patternIndex = (patternIndex + 1) % patternLength;
     }
 
     public void Move(WorldTime t) {
@@ -60,20 +75,23 @@ public static class EnemyMovementSystem {
             Movement move = w.GetComponent<Movement>(e); 
             if (move.CanMove(w.Time)) {
                 move.Move(w.Time); 
-                float direction = (float)(move.Speed * w.NextDouble()); 
+                Frame f = w.GetComponent<Frame>(e); 
+                Frame playerFrame = w.GetComponent<Frame>(PlayerWrap.GetRPGEntity(w)); 
+                Vector2 direction = move.Type switch {
+                    MoveType.Default => new Vector2(move.Speed * w.NextNeg1To1(), move.Speed * w.NextNeg1To1()),
+                    MoveType.Horizontal => new Vector2(move.Speed * (move.PatternIndex == 0 ? -1 : 1), 0f),
+                    MoveType.Vertical => new Vector2(0f, move.Speed * (move.PatternIndex == 0 ? -1 : 1)),
+                    MoveType.Chase => Vector2.Normalize(playerFrame.Position - f.Position) * move.Speed,
+                    _ => throw new InvalidOperationException("Unknown movement type")
+                };
+
                 move.SetDirection(direction);
+                w.SetComponent<Velocity>(e, new Velocity(direction));
             }
 
-            Velocity v; 
-
-            if (move.IsMoving(w.Time)) {
-                float direction = move.Direction; 
-                v = new Velocity(Vector2.Normalize(new Vector2(direction, direction)));
-            } else {
-                v = new Velocity(Vector2.Zero); 
+            if (!move.IsMoving(w.Time)) {
+                w.SetComponent<Velocity>(e, new Velocity(Vector2.Zero));
             }
-
-            w.SetComponent<Velocity>(e, v); 
         });
     }
 }

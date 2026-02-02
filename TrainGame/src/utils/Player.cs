@@ -17,4 +17,8 @@ public static class PlayerWrap {
     public static int GetEntity(World w) {
         return w.GetMatchingEntities([typeof(Player), typeof(Data)])[0];
     }
+
+    public static int GetRPGEntity(World w) {
+        return w.GetMatchingEntities([typeof(Player), typeof(Frame), typeof(Health), typeof(Active)])[0];
+    }
 }
