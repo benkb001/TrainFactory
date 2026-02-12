@@ -28,14 +28,14 @@ class SystemManager {
 
         foreach (_System s in systems) {
             bool removed = false; 
-            int i = 0; 
-
-            while (!removed && i < Constants.MaxComponents) {
-                if (s.ActsOnComponentType(i) && !signature[i]) {
+            IEnumerable<int> typesActedOn = s.TypesActedOn; 
+            
+            foreach (int i in typesActedOn) {
+                if (!signature[i]) {
                     s.RemoveEntity(entity); 
-                    removed = true; 
+                    removed = true;
+                    break;
                 }
-                i++; 
             }
 
             if (!removed) {

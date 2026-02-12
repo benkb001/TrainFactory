@@ -46,19 +46,24 @@ public static class DamageSystem {
             Dictionary<int, int> receivingDamage = potentialReceivers
             .Select(e => new KeyValuePair<int, int>(e, 0))
             .ToDictionary(); 
+
+            List<int> intersectingEnts = new(); 
             
             bulletEnts.ForEach(e => {
                 int dmg = w.GetComponent<Bullet>(e).Damage;
 
-                List<int> intersectingEnts = MovementSystem.GetIntersectingEntities(w, e);
-                List<int> hitEnts = intersectingEnts.Where(ent => potentialReceivers.Contains(ent))
-                .ToList();
-
-                if (hitEnts.Count > 0) {
+                MovementSystem.FillIntersectingEnts(w, e, intersectingEnts);
+                bool hit = false; 
+                intersectingEnts.ForEach(iEnt => {
+                    if (potentialReceivers.Contains(iEnt)) {
+                        hit = true; 
+                        receivingDamage[iEnt] += dmg;
+                    }
+                });
+                
+                if (hit) {
                     w.RemoveEntity(e);
                 }
-
-                hitEnts.ForEach(ent => receivingDamage[ent] += dmg);
             });
 
             potentialReceivers

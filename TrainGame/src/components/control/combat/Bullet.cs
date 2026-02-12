@@ -16,7 +16,7 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class Bullet {
-    private static int maxFramesActive = 600; 
+    private static int maxFramesActive = 120; 
     public int MaxFramesActive => maxFramesActive; 
     
     private int framesActive; 

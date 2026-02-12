@@ -8,22 +8,35 @@ public class _System {
     private HashSet<int> es {get;}
 
     private bool[] signature;
+    private HashSet<int> typesActedOn = new(); 
 
     private Action<World, int> transformer;
     private Action<World> update; 
     private Func<int, int> orderer; 
+    public HashSet<int> TypesActedOn => typesActedOn;
 
     public _System(bool[] s, Action<World, int> t, Func<int, int> orderer = null) {
         es = new HashSet<int>(); 
         transformer = t; 
-        signature = s; 
+        signature = s;
+        setTypesActedOn(s);
+
         this.orderer = orderer; 
     }
 
     public _System(bool[] s, Action<World> u) {
         es = new HashSet<int>(); 
         update = u; 
-        signature = s; 
+        signature = s;
+        setTypesActedOn(s);
+    }
+
+    private void setTypesActedOn(bool[] s) {
+        for (int i = 0; i < s.Length; i++) {
+            if (s[i]) {
+                typesActedOn.Add(i);
+            }
+        }
     }
 
     public void AddEntity(int entity) {

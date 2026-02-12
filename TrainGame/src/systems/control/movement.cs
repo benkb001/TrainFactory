@@ -44,32 +44,152 @@ public class MovementBounds {
     }
 }
 
+public class SpatialHash {
+    //Think of inner arrays as vertical
+    private List<List<HashSet<int>>> partitions; 
+    private List<HashSet<int>> psFlat;
+    private List<HashSet<int>> psCur; 
+
+    private RectangleF bounds;
+    private float cellWidth; 
+    private int cellsPerRow; 
+
+    public SpatialHash(RectangleF bounds, int cellsPerRow) {
+        partitions = new List<List<HashSet<int>>>(); 
+        psCur = new();
+        psFlat = new(); 
+        cellWidth = bounds.Width / (float)cellsPerRow;
+        this.bounds = bounds;
+        this.cellsPerRow = cellsPerRow; 
+        
+        for (int i = 0; i < cellsPerRow; i++) {
+            List<HashSet<int>> ps = new(); 
+            partitions.Add(ps);
+            for (int j = 0; j < cellsPerRow; j++) {
+                HashSet<int> p = new();
+                ps.Add(p);
+                psFlat.Add(p);
+            }
+        }
+    }
+
+    private (float, float) getCoords(int x, int y) {
+        return (bounds.X + (x * cellWidth), bounds.Y + (y * cellWidth));
+    }
+
+    private bool intersectsWith(int x, int y, RectangleF f) {
+        (float cX, float cY) = getCoords(x, y); 
+        float cRight = cX + cellWidth; 
+        float cBot = cY + cellWidth; 
+        return f.Left < cRight && f.Right > cX && f.Top > cBot && f.Bottom < cY;
+    }
+
+    private (int, int) getCell(RectangleF rect) {
+        int x = Math.Clamp((int)((rect.X - bounds.X) / cellWidth), 0, cellsPerRow - 1);
+        int y = Math.Clamp((int)((rect.Y - bounds.Y) / cellWidth), 0, cellsPerRow - 1); 
+
+        return (x, y);
+    }
+
+    private List<HashSet<int>> getIntersectingPartitions(RectangleF rect) {
+        (int x, int y) = getCell(rect);
+        int maxX = x; 
+        int maxY = y; 
+        List<HashSet<int>> ps = psCur;
+        ps.Clear();
+        
+        bool found = false; 
+        while (partitions.Count > (maxX + 1) && !found) {
+            if (intersectsWith(maxX, y, rect)) {
+                maxX++;
+            } else {
+                found = true; 
+            }
+        }
+
+        found = false; 
+        while (partitions[x].Count > (maxY + 1) && !found) {
+            if (intersectsWith(x, maxY, rect)) {
+                maxY++; 
+            } else {
+                found = true; 
+            }
+        }
+
+        for (int i = x; i <= maxX; i++) {
+            for (int j = y; j <= maxY; j++) {
+                ps.Add(partitions[i][j]);
+            }
+        }
+
+        return ps; 
+    }
+    
+    public void AddEnt(RectangleF rect, int e) {
+        List<HashSet<int>> ps = getIntersectingPartitions(rect);
+        foreach (HashSet<int> p in ps) {
+            p.Add(e);
+        }
+    }
+
+    public void RemoveEnt(int e) {
+        partitions.ForEach(ps => ps.ForEach(p => p.Remove(e)));
+    }
+
+    public List<int> GetIntersectingEntities(World w, Frame f) {
+        List<int> es = new(); 
+
+        FillIntersectingEnts(w, f, es);
+        return es; 
+    }
+
+    public void FillIntersectingEnts(World w, Frame f, List<int> es) {
+        es.Clear();
+        foreach (HashSet<int> p in getIntersectingPartitions(f.GetRectangle())) {
+            foreach (int e in p) {
+                if (w.GetComponent<Frame>(e).IntersectsWith(f)) {
+                    es.Add(e);
+                }
+            }
+        }
+    }
+
+    public List<HashSet<int>> GetAll() {
+        return psFlat;
+    }
+
+    public List<RectangleF> GetAllRects() {
+        List<RectangleF> rs = new(); 
+
+        for (int i = 0; i < cellsPerRow; i++) {
+            for (int j = 0; j < cellsPerRow; j++) {
+                (float x, float y) = getCoords(i, j);
+                rs.Add(new RectangleF(x, y, cellWidth, cellWidth));
+            }
+        }
+        return rs; 
+    }
+}
+
 public static class MovementSystem {
     private static Type[] types = [typeof(Collidable), typeof(Frame), typeof(Velocity), typeof(Active)]; 
-    private static float baseLen = 500f; 
-    private static float minSize = 50f; 
-    private static QuadTree<Partition> setPartition(Vector2 center) {
+    private static float baseLen = 400f; 
+    private static int cellsPerRow = 4; 
+    private static SpatialHash setPartition(Vector2 center) {
         
         RectangleF bounds = new RectangleF(
             center.X - baseLen, center.Y - baseLen, baseLen * 2, baseLen * 2); 
-        Partition p = new Partition(bounds, new HashSet<int>()); 
-        partitions = new() { p };
-
-        return new QuadTree<Partition>(p);
+        return new SpatialHash(bounds, cellsPerRow);
     }
 
-    private static HashSet<Partition> partitions;
-    private static QuadTree<Partition> partition = setPartition(Vector2.Zero);
+    private static SpatialHash partition = setPartition(Vector2.Zero);
 
-    public static RectangleF Bounds => partition.Data.Bounds;
     private static List<int> drawnBoundEnts = new();
 
     public static void DrawBounds(World w) {
         drawnBoundEnts.ForEach(e => w.RemoveEntity(e));
         partition
-        .GetAll()
-        .Select(p => p.Bounds)
-        .ToList()
+        .GetAllRects()
         .ForEach(b => {
             int e = EntityFactory.AddUI(w, new Vector2(b.X, b.Y), b.Width, b.Height, setOutline: true);
             drawnBoundEnts.Add(e);
@@ -80,132 +200,15 @@ public static class MovementSystem {
         partition = setPartition(center);
     }
 
-    public static HashSet<Partition> Partitions => partitions;
 
-    private static List<Partition> getIntersectingPartitions(RectangleF rect) {
-        List<QuadTree<Partition>> toProcess = new() { partition };
-        List<Partition> ps = new(); 
 
-        while (toProcess.Count > 0) {
-
-            QuadTree<Partition> curTree = toProcess[0]; 
-            Partition curPartition = curTree.Data; 
-
-            if (rect.IntersectsWith(curPartition.Bounds)) {
-                if (!curTree.HasChildren) {
-                    ps.Add(curPartition);
-                } else {
-                    toProcess.Add(curTree.C1);
-                    toProcess.Add(curTree.C2);
-                    toProcess.Add(curTree.C3);
-                    toProcess.Add(curTree.C4);
-                }
-            }
-
-            toProcess.RemoveAt(0);
-        }
-        
-        return ps; 
+    private static void addToPartition(World w, MovementBounds mb, int e) {
+        partition.AddEnt(mb.Bounds, e);
     }
 
-
-    private static void addToPartition(World w, MovementBounds mb, int e, int maxEnts) {
-        maxEnts = Math.Max(2, maxEnts);
-
-        List<QuadTree<Partition>> toProcess = new() { partition };
-
-        while (toProcess.Count > 0) {
-
-            QuadTree<Partition> curTree = toProcess[0]; 
-            Partition curPartition = curTree.Data; 
-
-            if (mb.Bounds.IntersectsWith(curPartition.Bounds)) {
-                if (curPartition.Ents.Count < maxEnts) {
-                    curPartition.Ents.Add(e);
-                    mb.AddPartition(curPartition);
-                } else {
-
-                    if (!curTree.HasChildren) {
-                        RectangleF bounds = curPartition.Bounds;
-
-                        float halfWidth = bounds.Width / 2f;
-                        float halfHeight = bounds.Height / 2f;
-                        float centerX = bounds.X + halfWidth; 
-                        float centerY = bounds.Y + halfHeight; 
-                        float rightX = bounds.X + bounds.Width; 
-                        float bottomY = bounds.Y + bounds.Height; 
-
-                        List<RectangleF> rs = new(){
-                            new RectangleF(bounds.X, bounds.Y, halfWidth, halfHeight),
-                            new RectangleF(centerX, bounds.Y, halfWidth, halfHeight),
-                            new RectangleF(bounds.X, centerY, halfWidth, halfHeight),
-                            new RectangleF(centerX, centerY, halfWidth, halfHeight)
-                        };
-
-                        curTree.SetChildren(
-                            new Partition(rs[0], new()),
-                            new Partition(rs[1], new()), 
-                            new Partition(rs[2], new()), 
-                            new Partition(rs[3], new())
-                        );
-
-                        partitions.Add(curTree.C1.Data);
-                        partitions.Add(curTree.C2.Data);
-                        partitions.Add(curTree.C3.Data);
-                        partitions.Add(curTree.C4.Data);
-                    }
-
-                    toProcess.Add(curTree.C1);
-                    toProcess.Add(curTree.C2);
-                    toProcess.Add(curTree.C3);
-                    toProcess.Add(curTree.C4);
-                }
-            }
-
-            toProcess.RemoveAt(0);
-        }
-    }
-
-    private static void updatePartition(World w, MovementBounds mb, int e, int maxEnts) {
-        foreach (Partition p in mb.Partitions) {
-            p.Ents.Remove(e);
-        }
-
-        addToPartition(w, mb, e, maxEnts);
-    }
-
-    private static void snipPartition(int maxEnts) {
-
-        List<QuadTree<Partition>> toProcess = new() { partition };
-        while (toProcess.Count > 0) {
-            
-            QuadTree<Partition> curTree = toProcess[0]; 
-
-            if (curTree.HasChildren) {
-                HashSet<int> e1 = curTree.C1.Data.Ents; 
-                HashSet<int> e2 = curTree.C2.Data.Ents;
-                HashSet<int> e3 = curTree.C3.Data.Ents; 
-                HashSet<int> e4 = curTree.C4.Data.Ents; 
-                HashSet<int> es = curTree.Data.Ents;
-
-                if ((e1.Count + e2.Count + e3.Count + e4.Count + es.Count) < maxEnts) {
-                    es.UnionWith(e1);
-                    es.UnionWith(e2);
-                    es.UnionWith(e3);
-                    es.UnionWith(e4);
-
-                    curTree.RemoveChildren();
-                } else {
-                    toProcess.Add(curTree.C1);
-                    toProcess.Add(curTree.C2);
-                    toProcess.Add(curTree.C3);
-                    toProcess.Add(curTree.C4);
-                }
-
-            }
-
-            toProcess.RemoveAt(0);
-        }
+    private static void updatePartition(World w, MovementBounds mb, int e) {
+        partition.RemoveEnt(e);
+        addToPartition(w, mb, e);
     }
 
     public static void RegisterPartition(World w) {
@@ -214,8 +217,6 @@ public static class MovementSystem {
             if (es.Count == 0) {
                 return;
             }
-
-            int maxEnts = (int)Math.Sqrt((double)es.Count); 
 
             es.ForEach(e => {
                 (Velocity vel, bool s1) = w.GetComponentSafe<Velocity>(e); 
@@ -255,7 +256,7 @@ public static class MovementSystem {
                 }
 
                 if (!s2 || v.Length() > 0) {
-                    updatePartition(w, mb, e, maxEnts);
+                    updatePartition(w, mb, e);
                 }
 
             });
@@ -269,8 +270,7 @@ public static class MovementSystem {
     public static void RegisterCollision(World world) {
         Action<World> tf = (w) => {
 
-            foreach (Partition p in partitions) {
-                HashSet<int> es = p.Ents; 
+            foreach (HashSet<int> es in partition.GetAll()) {
                 List<int> esToRemove = new(); 
 
                 foreach (int e in es) {
@@ -348,18 +348,15 @@ public static class MovementSystem {
         });
     }
 
-    public static List<int> FillIntersectingEntities(World w, int e, List<int> es) {
-        Frame f = w.GetComponent<Frame>(e);
+    public static void FillIntersectingEnts(World w, int e, List<int> es) {
+        partition.FillIntersectingEnts(w, w.GetComponent<Frame>(e), es);
+    }
 
-        foreach (Partition p in getIntersectingPartitions(f.GetRectangle())) {
-            foreach (int otherEnt in p.Ents) {
-                (Frame fOther, bool success) = w.GetComponentSafe<Frame>(otherEnt);
-                if (success && f.IntersectsWith(fOther)) {
-                    es.Add(otherEnt);
-                }
-            }
-        }
-        
-        return es; 
+    public static List<int> GetIntersectingEntities(World w, int e) {
+        return GetIntersectingEntities(w, w.GetComponent<Frame>(e));
+    }
+
+    public static List<int> GetIntersectingEntities(World w, Frame f) {
+        return partition.GetIntersectingEntities(w, f);
     }
 }

@@ -26,6 +26,7 @@
 **** NEXT FEATURES **** 
 
 * Get movement system to actually run quickly
+  * Try spatial hashing
 * Add a flow for new floors/levels in HPP 
   * First need to make it so hpp has a place to actually enter the combat 
   * Next need to update spawn system so it can work with layouts

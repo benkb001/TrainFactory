@@ -46,14 +46,14 @@ public static class Layout {
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, p, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, dE, g, dE, g, dE, g, dE, w},
+        new() {w, p, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, dE, g, dE, g, dE, g, dE, g},
+        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, dE, g, dE, g, dE, g, dE, g},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 
