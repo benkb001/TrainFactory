@@ -34,54 +34,7 @@ public static class DrawCitySystem {
     private static float machineHeight = 50f; 
     
     private static int DrawPlayer(Vector2 topleft, Vector2 position, City c, World w) {
-        int playerEntity = EntityFactory.Add(w); 
-        int playerDataEnt = PlayerWrap.GetEntity(w); 
-
-        Inventory playerInv = w.GetComponent<Inventory>(playerDataEnt); 
-
-        (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv); 
-
-        LinearLayoutContainer playerHUD = LinearLayoutWrap.Add(
-            w, 
-            Vector2.Zero, 
-            playerInvWidth + 100f, 
-            playerInvHeight,
-            outline: false, 
-            screenAnchor: true
-        );
-        w.SetComponent<PlayerHUD>(playerHUD.GetParentEntity(), new PlayerHUD());
-
-        InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
-            playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
-        
-        playerHUD.AddChild(playerInvView.GetParentEntity(), w); 
-
-        int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
-        w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
-        playerHUD.AddChild(hpEnt, w); 
-        
-        int playerInvEnt = playerInvView.GetInventoryEntity(); 
-        w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
-        w.SetComponent<Interactor>(playerEntity, Interactor.Get());
-        w.SetComponent<CardinalMovement>(playerEntity, new CardinalMovement(Constants.PlayerSpeed)); 
-        w.SetComponent<Collidable>(playerEntity, Collidable.Get()); 
-        w.SetComponent<HeldItem>(playerEntity, new HeldItem(playerInv, playerInvEnt)); 
-        w.SetComponent<Outline>(playerEntity, 
-            new Outline(Colors.PlayerOutline, Constants.PlayerOutlineThickness, Depth.PlayerOutline)); 
-        w.SetComponent<Background>(playerEntity, new Background(Colors.PlayerBackground, Depth.PlayerBackground));
-        w.SetComponent<Player>(playerEntity, new Player()); 
-        w.SetComponent<Health>(playerEntity, w.GetComponent<Health>(playerDataEnt));
-        w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerDataEnt));
-        w.SetComponent<Inventory>(playerEntity, playerInv); 
-        //w.SetComponent<Teleporter>(playerEntity, new Teleporter()); 
-        w.SetComponent<Parrier>(playerEntity, new Parrier());
-        w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerDataEnt)); 
-        w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt)); 
-        w.SetComponent<Damage>(playerEntity, new Damage(0)); 
-
-        w.UnlockCameraPan(); 
-        w.TrackEntity(playerEntity); 
-        return playerEntity; 
+        return PlayerWrap.Draw(position, w);
     }
 
     private static void DrawWalls(Vector2 cameraTopLeft, World w) {
@@ -215,6 +168,8 @@ public static class DrawCitySystem {
 
                 break; 
             case CityID.HauntedPowerPlant: 
+                Layout.Draw(w, Layout.L1);
+                /*
                 w.SetCameraBounds(topleft.Y - 300f, topleft.X + 100f, topleft.Y - 150f, topleft.X - 100f); 
                 DrawPlayer(topleft, topleft - new Vector2(50, 50), city, w); 
                 DrawTrainYard(topleft - new Vector2(50, 50), 50, 50, w); 
@@ -243,7 +198,7 @@ public static class DrawCitySystem {
                 w.SetComponent<EnemySpawner>(enemySpawnEnt, new EnemySpawner()); 
 
                 drawWall(leftWallPos + new Vector2(50f, 225f), 300f, 50f, w);
-                    
+                */
                 break;
             case CityID.Armory: 
                 drawDefault(topleft, null, city, w); 

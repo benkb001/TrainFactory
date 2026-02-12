@@ -56,6 +56,8 @@ public class Game1 : Game {
         w.SetComponent<Button>(nextTestButton, new Button());
         w.SetComponent<Sprite>(nextTestButton, new Sprite(w.GetTexture(Textures.Button), Depth.NextTestButton));
         w.SetComponent<NextDrawTestButton>(nextTestButton, new NextDrawTestButton()); 
+
+        MovementSystem.SetCollisionSpace(SceneSystem.CameraPositions[SceneType.RPG]);
         VirtualMouse.UsePhysicalMouse(); 
     }
 

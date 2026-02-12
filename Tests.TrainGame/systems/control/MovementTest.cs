@@ -9,13 +9,16 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Systems; 
 
+[Collection("Sequential")]
 public class MovementTest {
 
     private World init() {
         World w = new World(); 
         RegisterComponents.All(w); 
+        MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w); 
         MovementSystem.Register(w); 
+        MovementSystem.SetCollisionSpace(Vector2.Zero);
         return w; 
     }
 
@@ -269,7 +272,6 @@ public class MovementTest {
     public void MovementSystem_ShouldStopMovingEntitiesOnCollisionsByDirection() {
         //should stop an object that collides horizontally from moving horizontally, 
         //but should not stop it from moving vertically, and vice-versa
-
         World w = init(); 
 
         int width = 5; 
@@ -295,6 +297,8 @@ public class MovementTest {
 
         w.SetComponent<Collidable>(e1, c); 
         w.SetComponent<Collidable>(e2, c); 
+        w.SetComponent<Active>(e1, new Active());
+        w.SetComponent<Active>(e2, new Active());
 
         w.Update(); 
         

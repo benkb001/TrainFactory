@@ -25,10 +25,14 @@
 
 **** NEXT FEATURES **** 
 
+* Get movement system to actually run quickly
 * Add a flow for new floors/levels in HPP 
-* Add new bullet, shoot patterns, and onExpireEffects
+  * First need to make it so hpp has a place to actually enter the combat 
+  * Next need to update spawn system so it can work with layouts
+    * Should be able to add enemies to spawner directly
+    * Spawner should create a ladder of sorts to go down to the next floors
+* Add new bullet, shoot patterns
   * Exploding bullets 
-  * Square/Circle/Line patterns 
 * Add new enemy types
   * Just need to try various combinations of movement, 
     onExpire, pattern, and bulletType to see what works 

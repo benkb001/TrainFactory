@@ -890,21 +890,8 @@ namespace TrainGame.Constants
 
             //add player data
 
-            Inventory playerInv = new Inventory(Constants.PlayerInvID, 
-                Constants.PlayerInvRows, Constants.PlayerInvCols);
-            int playerInvDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
-
-            w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
-            w.SetComponent<Player>(playerInvDataEnt, new Player()); 
-            w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
-            w.SetComponent<RespawnLocation>(playerInvDataEnt, new RespawnLocation(cities[CityID.Factory].Item2));
-            w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
-
-            (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
-            armorInv.SetArmor();
-            w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
-
-            playerInv.Add(ItemID.Gun, 1); 
+            PlayerWrap.AddData(w);
+            PlayerWrap.SetRespawn(w, cities[CityID.Factory].Item2);
 
             //add one train to factory
 

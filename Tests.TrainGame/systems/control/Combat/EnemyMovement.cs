@@ -19,7 +19,10 @@ public class EnemyMovementSystemTest {
     [Fact]
     public void EnemyMovementSystem_ShouldSetANonZeroVelocityToEnemyEntity() {
         World w = WorldFactory.Build(); 
-        int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
+        int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
+
+        PlayerWrap.AddTest(w);
+
         w.SetComponent<Enemy>(e, new Enemy()); 
         w.SetComponent<Movement>(e, new Movement()); 
         w.Update(); 

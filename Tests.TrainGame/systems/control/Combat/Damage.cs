@@ -15,6 +15,7 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+[Collection("Sequential")]
 public class DamageSystemTest {
     private (World, int) init(int damage = 1) {
         World w = WorldFactory.Build(); 
@@ -27,11 +28,12 @@ public class DamageSystemTest {
         w.SetComponent<Bullet>(bulletEnt, new Bullet(damage)); 
         w.SetComponent<Enemy>(bulletEnt, new Enemy()); 
 
+        MovementSystem.SetCollisionSpace(Vector2.Zero);
         return (w, playerEnt); 
     }
 
     [Fact]
-    public void DamageSystem_EnemyBulletsCollidignWithPlayerShouldDamagePlayer() {
+    public void DamageSystem_EnemyBulletsCollidingWithPlayerShouldDamagePlayer() {
         (World w, int playerEnt) = init(); 
 
         w.Update(); 

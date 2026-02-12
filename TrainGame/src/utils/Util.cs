@@ -51,4 +51,12 @@ public static class Util {
     private static T[] GetEnumList<T>() {
         return (T[])Enum.GetValues(typeof(T));
     }
+
+    public static void PrintList(IEnumerable<int> ints) {
+        int j = 0; 
+        foreach (int i in ints) {
+            Console.WriteLine($"{j}: {i}");
+            j++;
+        }
+    }
 }

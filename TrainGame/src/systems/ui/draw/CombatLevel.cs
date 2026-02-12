@@ -1,0 +1,94 @@
+namespace TrainGame.Systems; 
+
+using System; 
+using System.Drawing; 
+using System.Collections.Generic;
+using System.Linq; 
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
+using TrainGame.ECS;  
+using TrainGame.Components; 
+using TrainGame.Utils; 
+using TrainGame.Constants;
+using TrainGame.Callbacks; 
+
+public enum TileType {
+    Enemy,
+    Ground,
+    Player,
+    Wall
+}
+
+public enum EnemyType {
+    Default
+}
+
+public class Tile {
+    private TileType type; 
+    private EnemyType enemyType; 
+
+    public TileType Type => type; 
+    public EnemyType EType => enemyType;
+
+    public Tile(TileType type, EnemyType enemyType = EnemyType.Default) {
+        this.type = type; 
+        this.enemyType = enemyType; 
+    }
+}
+
+public static class Layout {
+    private static Tile w = new Tile(TileType.Wall);
+    private static Tile g = new Tile(TileType.Ground);
+    private static Tile p = new Tile(TileType.Player); 
+    private static Tile dE = new Tile(TileType.Enemy); 
+
+    public static List<List<Tile>> L1 = new() {
+        new() {w, w, w, w, w, w, w, w, w, w},
+        new() {w, p, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, dE, g, dE, g, dE, g, dE, w},
+        new() {w, w, w, w, w, w, w, w, w, w}
+    };
+
+    public static List<List<List<Tile>>> Levels = new() {
+        L1
+    };
+
+    public static void Draw(World w, List<List<Tile>> tss) {
+        Vector2 topleft = w.GetCameraTopLeft(); 
+
+        float tileSize = 50f; 
+
+        for (int i = 0; i < tss.Count; i++) {
+            List<Tile> ts = tss[i]; 
+            for (int j = 0; j < ts.Count; j++) {
+                Vector2 tilePos = topleft + new Vector2(tileSize * i, tileSize * j);
+                int e = EntityFactory.AddUI(w, tilePos, tileSize, tileSize);
+                Tile t = ts[j]; 
+                switch (t.Type) {
+                    case TileType.Wall: 
+                        w.SetComponent<Collidable>(e, new Collidable()); 
+                        w.SetComponent<Outline>(e, new Outline()); 
+                        break;
+                    case TileType.Ground: 
+                        break;
+                    case TileType.Player: 
+                        PlayerWrap.Draw(tilePos, w);
+                        break; 
+                    case TileType.Enemy: 
+                        EnemyWrap.Draw(w, tilePos, t.EType);
+                        break; 
+                    default: 
+                        throw new InvalidOperationException("Unhandled tile type in draw layout");
+                }
+            }
+        }
+    }
+}

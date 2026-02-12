@@ -50,9 +50,8 @@ public static class DamageSystem {
             bulletEnts.ForEach(e => {
                 int dmg = w.GetComponent<Bullet>(e).Damage;
 
-                List<int> hitEnts =
-                MovementSystem.GetIntersectingEntities(w, e)
-                .Where(ent => potentialReceivers.Contains(ent))
+                List<int> intersectingEnts = MovementSystem.GetIntersectingEntities(w, e);
+                List<int> hitEnts = intersectingEnts.Where(ent => potentialReceivers.Contains(ent))
                 .ToList();
 
                 if (hitEnts.Count > 0) {
@@ -63,8 +62,6 @@ public static class DamageSystem {
             });
 
             potentialReceivers
-            .Where(e => receivingDamage[e] > 0)
-            .ToList()
             .ForEach(e => w.SetComponent<ReceiveDamageMessage>(e, new ReceiveDamageMessage(receivingDamage[e])));
         });
     }

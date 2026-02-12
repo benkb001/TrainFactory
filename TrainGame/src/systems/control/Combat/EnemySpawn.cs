@@ -81,6 +81,94 @@ public class EnemySpawner {
     }
 }
 
+public class EnemyConst {
+    public EnemyType Type; 
+    public float Size; 
+    public int Damage; 
+    public int HP; 
+    public int TicksPerShot; 
+    public int BulletSpeed; 
+    public int Ammo; 
+    public int Skill; 
+    public ShootPattern SPattern; 
+    public BulletType BType; 
+    public OnExpireEffect OExpireEffect; 
+    public int Armor; 
+    public float PatternSize;
+    public float MoveSpeed; 
+    public int TicksBetweenMovement;
+    public MoveType MType; 
+    public int MovePatternLength;
+    public int BulletsPerShot; 
+
+    public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
+        int Damage = 1, int HP = 10, int TicksPerShot = 10, int BulletSpeed = 2, 
+        int Ammo = 8, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
+        BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
+        int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 0,
+        MoveType MType = MoveType.Default, int MovePatternLength = 1, int BulletsPerShot = 1) {
+        
+        this.Type = Type; 
+        this.Size = Size; 
+        this.Damage = Damage; 
+        this.HP = HP; 
+        this.TicksPerShot = TicksPerShot; 
+        this.BulletSpeed = BulletSpeed; 
+        this.Ammo = Ammo; 
+        this.Skill = Skill; 
+        this.SPattern = SPattern; 
+        this.BType = BType; 
+        this.OExpireEffect = OExpireEffect;
+        this.Armor = Armor;
+        this.PatternSize = PatternSize;
+        this.MoveSpeed = MoveSpeed;
+        this.TicksBetweenMovement = TicksBetweenMovement;
+        this.MType = MType; 
+        this.MovePatternLength = MovePatternLength;
+        this.BulletsPerShot = BulletsPerShot;
+    }
+
+}
+
+public static class EnemyWrap {
+    private static Dictionary<EnemyType, EnemyConst> enemies = new() {
+        [EnemyType.Default] = new EnemyConst()
+    };
+
+    public static int Draw(World w, Vector2 pos, EnemyType enemyType) {
+        EnemyConst e = enemies[enemyType];
+
+        int enemyEnt = EntityFactory.AddUI(w, pos, e.Size, e.Size, setOutline: true); 
+        Health h = new Health(e.HP);
+        w.SetComponent<Health>(enemyEnt, h); 
+        
+        w.SetComponent<Shooter>(enemyEnt, new Shooter(
+            bulletDamage: e.Damage,
+            ticksPerShot: e.TicksPerShot,
+            bulletSpeed: e.BulletSpeed,
+            ammo: e.Ammo,
+            skill: e.Skill,
+            shootPattern: e.SPattern,
+            bulletsPerShot: e.BulletsPerShot,
+            patternSize: e.PatternSize
+        )); 
+
+        w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
+
+        w.SetComponent<Movement>(enemyEnt, new Movement(
+            speed: e.MoveSpeed,
+            ticksBetweenMovement: e.TicksBetweenMovement,
+            Type: e.MType,
+            patternLength: e.MovePatternLength
+        )); 
+
+        w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
+        w.SetComponent<Armor>(enemyEnt, new Armor(e.Armor)); 
+        
+        return enemyEnt;
+    }
+}
+
 public static class EnemySpawnSystem {
     private const float armorThresh = 0.05f; 
     private const float damageThresh = 0.01f; 
@@ -105,33 +193,11 @@ public static class EnemySpawnSystem {
                     float y = f.GetHeight() * yRand; 
                     Vector2 pos = f.Position + new Vector2(x, y); 
 
-                    int enemyEnt = EntityFactory.AddUI(w, pos, Constants.EnemySize, 
-                        Constants.EnemySize, setOutline: true);
-                    Health h = new Health(5 + round);
-                    w.SetComponent<Health>(enemyEnt, h); 
-                    spawner.Spawn(h); 
-                    
-                    w.SetComponent<Shooter>(enemyEnt, new Shooter(
-                        bulletDamage: 1 + (round / 5),
-                        ticksPerShot: Math.Max(10, 30 - round), 
-                        bulletSpeed: Math.Min(3, 2 + (round / 10)),
-                        ammo: Math.Min(8, 3 + round), 
-                        skill: 1 + round,
-                        shootPattern: ShootPattern.VerticalLine, 
-                        bulletsPerShot: 3,
-                        patternSize: 100f
-                    )); 
-
-                    w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
-                    w.SetComponent<Movement>(enemyEnt, new Movement(
-                        speed: Math.Min(6f, 2f + (round / 3f)),
-                        ticksBetweenMovement: Math.Max(0, 300 - (5 * round)),
-                        Type: MoveType.Chase,
-                        patternLength: 2
-                    )); 
-                    w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
-                    w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, spawner.Round, InventoryWrap.GetPlayerInv(w)));
-                    w.SetComponent<Armor>(enemyEnt, new Armor()); 
+                    int enemyEnt = EnemyWrap.Draw(w, new Vector2(x, y), EnemyType.Default);
+                    //todo: some sort of enemy container with a .GetHealth would be good here
+                    spawner.Spawn(w.GetComponent<Health>(enemyEnt));
+                    w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, spawner.Round, 
+                        InventoryWrap.GetPlayerInv(w)));
                 }
             } else if (spawner.CanReward()) {
                 
