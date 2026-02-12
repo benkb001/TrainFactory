@@ -31,7 +31,7 @@ public static class RegisterSystems {
         DamageSystem.RegisterArmor(w); 
         DamageSystem.RegisterParry(w); 
         DamageSystem.RegisterAddInvincibleMessage(w);
-        //DamageSystem.RegisterReceive(w); 
+        DamageSystem.RegisterReceive(w); 
         DamageSystem.RegisterSetInvincible(w);
         DamageSystem.RegisterDecayInvincibility(w);
         LootSystem.Register(w); 

@@ -12,22 +12,8 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils;
 
-public class Partition {
-    RectangleF bounds; 
-    HashSet<int> entities; 
-
-    public RectangleF Bounds => bounds; 
-    public HashSet<int> Ents => entities; 
-
-    public Partition(RectangleF bounds, HashSet<int> entities) {
-        this.bounds = bounds; 
-        this.entities = entities; 
-    }
-}
-
 public class MovementBounds {
     private RectangleF bounds; 
-    public readonly List<Partition> Partitions = new(); 
 
     public RectangleF Bounds => bounds; 
 
@@ -37,10 +23,6 @@ public class MovementBounds {
 
     public void SetBounds(RectangleF bounds) {
         this.bounds = bounds;
-    }
-
-    public void AddPartition(Partition partition) {
-        Partitions.Add(partition);
     }
 }
 
@@ -79,15 +61,28 @@ public class SpatialHash {
 
     private bool intersectsWith(int x, int y, RectangleF f) {
         (float cX, float cY) = getCoords(x, y); 
+        
         float cRight = cX + cellWidth; 
         float cBot = cY + cellWidth; 
-        return f.Left < cRight && f.Right > cX && f.Top > cBot && f.Bottom < cY;
+        bool intersects = f.Left <= cRight && f.Right >= cX && f.Top <= cBot && f.Bottom >= cY;
+        return intersects;
     }
 
     private (int, int) getCell(RectangleF rect) {
-        int x = Math.Clamp((int)((rect.X - bounds.X) / cellWidth), 0, cellsPerRow - 1);
-        int y = Math.Clamp((int)((rect.Y - bounds.Y) / cellWidth), 0, cellsPerRow - 1); 
+        float xF = (rect.X - bounds.X) / cellWidth; 
 
+        if (Util.FloatEqual(xF, (float)((int)xF))) {
+            xF -= 1f; 
+        }
+
+        float yF = (rect.Y - bounds.Y) / cellWidth; 
+        if (Util.FloatEqual(yF, (float)((int)yF))) {
+            yF -= 1f;
+        }
+
+        int x = Math.Clamp((int)xF, 0, cellsPerRow - 1);
+        int y = Math.Clamp((int)yF, 0, cellsPerRow - 1); 
+        
         return (x, y);
     }
 
@@ -100,7 +95,7 @@ public class SpatialHash {
         
         bool found = false; 
         while (partitions.Count > (maxX + 1) && !found) {
-            if (intersectsWith(maxX, y, rect)) {
+            if (intersectsWith(maxX + 1, y, rect)) {
                 maxX++;
             } else {
                 found = true; 
@@ -109,7 +104,7 @@ public class SpatialHash {
 
         found = false; 
         while (partitions[x].Count > (maxY + 1) && !found) {
-            if (intersectsWith(x, maxY, rect)) {
+            if (intersectsWith(x, maxY + 1, rect)) {
                 maxY++; 
             } else {
                 found = true; 
@@ -136,18 +131,20 @@ public class SpatialHash {
         partitions.ForEach(ps => ps.ForEach(p => p.Remove(e)));
     }
 
-    public List<int> GetIntersectingEntities(World w, Frame f) {
-        List<int> es = new(); 
+    public HashSet<int> GetIntersectingEntities(World w, Frame f) {
+        HashSet<int> es = new(); 
 
         FillIntersectingEnts(w, f, es);
         return es; 
     }
 
-    public void FillIntersectingEnts(World w, Frame f, List<int> es) {
+    public void FillIntersectingEnts(World w, Frame f, HashSet<int> es) {
         es.Clear();
-        foreach (HashSet<int> p in getIntersectingPartitions(f.GetRectangle())) {
+        List<HashSet<int>> ps = getIntersectingPartitions(f.GetRectangle());
+        foreach (HashSet<int> p in ps) {
             foreach (int e in p) {
-                if (w.GetComponent<Frame>(e).IntersectsWith(f)) {
+                (Frame otherF, bool success) = w.GetComponentSafe<Frame>(e);
+                if (success && otherF.IntersectsWith(f)) {
                     es.Add(e);
                 }
             }
@@ -186,6 +183,8 @@ public static class MovementSystem {
 
     private static List<int> drawnBoundEnts = new();
 
+    public static List<HashSet<int>> Partitions => partition.GetAll();
+
     public static void DrawBounds(World w) {
         drawnBoundEnts.ForEach(e => w.RemoveEntity(e));
         partition
@@ -199,8 +198,6 @@ public static class MovementSystem {
     public static void SetCollisionSpace(Vector2 center) {
         partition = setPartition(center);
     }
-
-
 
     private static void addToPartition(World w, MovementBounds mb, int e) {
         partition.AddEnt(mb.Bounds, e);
@@ -249,10 +246,9 @@ public static class MovementSystem {
                     } else {
                         mb.SetBounds(bounds);
                     }
-                }
-
-                if (!s2) {
-                    mb = new MovementBounds(f.GetRectangle()); 
+                } else if (!s2) {
+                    mb = new MovementBounds(f.GetRectangle());
+                    w.SetComponent<MovementBounds>(e, mb);
                 }
 
                 if (!s2 || v.Length() > 0) {
@@ -348,15 +344,15 @@ public static class MovementSystem {
         });
     }
 
-    public static void FillIntersectingEnts(World w, int e, List<int> es) {
+    public static void FillIntersectingEnts(World w, int e, HashSet<int> es) {
         partition.FillIntersectingEnts(w, w.GetComponent<Frame>(e), es);
     }
 
-    public static List<int> GetIntersectingEntities(World w, int e) {
+    public static HashSet<int> GetIntersectingEntities(World w, int e) {
         return GetIntersectingEntities(w, w.GetComponent<Frame>(e));
     }
 
-    public static List<int> GetIntersectingEntities(World w, Frame f) {
+    public static HashSet<int> GetIntersectingEntities(World w, Frame f) {
         return partition.GetIntersectingEntities(w, f);
     }
 }

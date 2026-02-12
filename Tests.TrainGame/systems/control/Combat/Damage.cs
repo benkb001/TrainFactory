@@ -20,9 +20,8 @@ public class DamageSystemTest {
     private (World, int) init(int damage = 1) {
         World w = WorldFactory.Build(); 
 
-        int playerEnt = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
-        w.SetComponent<Health>(playerEnt, new Health(10)); 
-        w.SetComponent<Player>(playerEnt, new Player()); 
+        PlayerWrap.AddTest(w);
+        int playerEnt = PlayerWrap.Draw(Vector2.Zero, w);
         
         int bulletEnt = EntityFactory.AddUI(w, Vector2.Zero, 2, 2);
         w.SetComponent<Bullet>(bulletEnt, new Bullet(damage)); 
@@ -38,7 +37,7 @@ public class DamageSystemTest {
 
         w.Update(); 
 
-        Assert.Equal(9, w.GetComponent<Health>(playerEnt).HP); 
+        Assert.Equal(Constants.PlayerHP - 1, w.GetComponent<Health>(playerEnt).HP); 
     }
 
     [Fact]
@@ -47,7 +46,7 @@ public class DamageSystemTest {
 
         w.SetComponent<Armor>(playerEnt, new Armor(1)); 
         w.Update(); 
-        Assert.Equal(10, w.GetComponent<Health>(playerEnt).HP); 
+        Assert.Equal(Constants.PlayerHP, w.GetComponent<Health>(playerEnt).HP); 
     }
 
     [Fact]
@@ -58,6 +57,6 @@ public class DamageSystemTest {
         p.StartParry(w.Time); 
         w.SetComponent<Parrier>(playerEnt, p);
         w.Update(); 
-        Assert.Equal(10, w.GetComponent<Health>(playerEnt).HP); 
+        Assert.Equal(Constants.PlayerHP, w.GetComponent<Health>(playerEnt).HP); 
     }
 }

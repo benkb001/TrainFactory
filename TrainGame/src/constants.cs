@@ -37,6 +37,7 @@ namespace TrainGame.Constants
         public const float PlayerHeight = 50f; 
         public const float PlayerSpeed = 5f; 
         public const int PlayerOutlineThickness = 1; 
+        public const int PlayerHP = 6;
 
         public const int ButtonOutlineThickness = 1; 
         public const int ButtonHeldOutlineThickness = 2; 

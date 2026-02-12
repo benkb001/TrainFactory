@@ -30,7 +30,7 @@ public static class PlayerWrap {
 
         w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
         w.SetComponent<Player>(playerInvDataEnt, new Player()); 
-        w.SetComponent<Health>(playerInvDataEnt, new Health(6)); 
+        w.SetComponent<Health>(playerInvDataEnt, new Health(Constants.PlayerHP)); 
         w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
 
         (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);

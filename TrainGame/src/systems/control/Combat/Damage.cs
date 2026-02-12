@@ -30,6 +30,10 @@ public class ReceiveDamageMessage {
         damageSources.Add(Math.Max(0, dmg));
     }
 
+    public void ReduceDamage(int dmg) {
+        damageSources.Add(-dmg);
+    }
+
     public void SetDamage(int dmg) {
         damageSources.Clear();
         AddDamage(dmg);
@@ -47,19 +51,20 @@ public static class DamageSystem {
             .Select(e => new KeyValuePair<int, int>(e, 0))
             .ToDictionary(); 
 
-            List<int> intersectingEnts = new(); 
+            HashSet<int> intersectingEnts = new(); 
             
             bulletEnts.ForEach(e => {
                 int dmg = w.GetComponent<Bullet>(e).Damage;
 
                 MovementSystem.FillIntersectingEnts(w, e, intersectingEnts);
                 bool hit = false; 
-                intersectingEnts.ForEach(iEnt => {
+
+                foreach (int iEnt in intersectingEnts) {
                     if (potentialReceivers.Contains(iEnt)) {
                         hit = true; 
                         receivingDamage[iEnt] += dmg;
                     }
-                });
+                }
                 
                 if (hit) {
                     w.RemoveEntity(e);
@@ -74,7 +79,7 @@ public static class DamageSystem {
     public static void RegisterArmor(World w) {
         w.AddSystem([typeof(ReceiveDamageMessage), typeof(Armor), typeof(Active)], (w, e) => {
             int defense = w.GetComponent<Armor>(e).Defense;
-            w.GetComponent<ReceiveDamageMessage>(e).AddDamage(-defense); 
+            w.GetComponent<ReceiveDamageMessage>(e).ReduceDamage(defense); 
         });
     }
 
