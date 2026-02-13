@@ -77,4 +77,12 @@ public class InteractSystem {
             }
         });
     }
+
+    public static void Register<T>(World w, Action<World, int, T> tf) {
+        w.AddSystem([typeof(T), typeof(Interactable), typeof(Active)], (w, e) => {
+            if (w.GetComponent<Interactable>(e).Interacted) {
+                tf(w, e, w.GetComponent<T>(e));
+            }
+        });
+    }
 }

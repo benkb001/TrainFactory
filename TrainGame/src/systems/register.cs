@@ -104,6 +104,7 @@ public static class RegisterSystems {
         HealthPotionInteractSystem.Register(w); 
         TimeCrystalInteractSystem.Register(w); 
         DamagePotionInteractSystem.Register(w); 
+        LadderInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
 

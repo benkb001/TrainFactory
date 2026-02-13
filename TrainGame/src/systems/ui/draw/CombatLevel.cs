@@ -18,6 +18,7 @@ public enum TileType {
     Enemy,
     Ground,
     Player,
+    Spawner,
     Wall
 }
 
@@ -43,28 +44,46 @@ public static class Layout {
     private static Tile g = new Tile(TileType.Ground);
     private static Tile p = new Tile(TileType.Player); 
     private static Tile dE = new Tile(TileType.Enemy); 
+    private static Tile sp = new Tile(TileType.Spawner);
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
         new() {w, p, g, g, g, g, g, g, g, g},
+        new() {w, g, sp, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, dE, g, dE, g, dE, g, dE, g},
         new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, dE, g, dE, g, dE, g, dE, g},
+        new() {w, g, g, g, g, g, g, g, dE, g},
+        new() {w, w, w, w, w, w, w, w, w, w}
+    };
+
+        public static List<List<Tile>> L2 = new() {
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+        new() {w, p, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, dE, w},
+        new() {w, g, g, g, g, g, g, g, g, w, w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, dE, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 
     public static List<List<List<Tile>>> Levels = new() {
-        L1
+        L1, L2
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {
+        SceneSystem.EnterScene(w, SceneType.RPG);
         Vector2 topleft = w.GetCameraTopLeft(); 
 
         float tileSize = 50f; 
+        int spawnerEnt = EntityFactory.Add(w); 
+        EnemySpawner spawner = new EnemySpawner(); 
+        w.SetComponent<EnemySpawner>(spawnerEnt, spawner);
 
         for (int i = 0; i < tss.Count; i++) {
             List<Tile> ts = tss[i]; 
@@ -83,12 +102,20 @@ public static class Layout {
                         PlayerWrap.Draw(tilePos, w);
                         break; 
                     case TileType.Enemy: 
-                        EnemyWrap.Draw(w, tilePos, t.EType);
+                        EnemyWrap ew = EnemyWrap.Draw(w, tilePos, t.EType);
+                        spawner.Spawn(ew);
                         break; 
+                    case TileType.Spawner: 
+                        w.SetComponent<Frame>(spawnerEnt, new Frame(tilePos, tileSize, tileSize));
+                        break;
                     default: 
                         throw new InvalidOperationException("Unhandled tile type in draw layout");
                 }
             }
         }
+    }
+
+    public static void DrawRandom(World w) {
+        Draw(w, Levels[w.NextInt(Levels.Count)]);
     }
 }

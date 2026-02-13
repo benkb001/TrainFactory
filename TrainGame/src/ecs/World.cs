@@ -162,6 +162,11 @@ public partial class World {
         return gameClock.TotalSeconds; 
     }
 
+    public int NextInt(int maxExclusive) {
+        int r = random.Next(maxExclusive);
+        return r;
+    }
+
     public double NextDouble() {
         return (random.NextDouble() * 2) - 1;
     }

@@ -33,8 +33,10 @@ namespace TrainGame.Constants
         public static readonly float InventoryHeldOutlineDepth = 0.45f; 
         public static readonly float InventoryHeldTextBoxDepth = 0.45f; 
 
-        public const float PlayerWidth = 50f; 
-        public const float PlayerHeight = 50f; 
+        public const float TileWidth = 50f;
+
+        public const float PlayerWidth = TileWidth; 
+        public const float PlayerHeight = TileWidth; 
         public const float PlayerSpeed = 5f; 
         public const int PlayerOutlineThickness = 1; 
         public const int PlayerHP = 6;

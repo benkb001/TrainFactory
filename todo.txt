@@ -22,14 +22,16 @@
   this instead of using bootstrap.initWorld
 * Add train position to save/load
 * Make carts items
+* Clean enemySpawn and movementSystem files to split classes into individual files
 
 **** NEXT FEATURES **** 
 
-* Add a flow for new floors/levels in HPP 
-  * First need to make it so hpp has a place to actually enter the combat 
-  * Next need to update spawn system so it can work with layouts
-    * Should be able to add enemies to spawner directly
-    * Spawner should create a ladder of sorts to go down to the next floors
+* Add better level layouts 
+* Add better rewards, ie randomizing resources 
+* Try change time crystal to ectoplasm, have a shop with ect -> resources, 
+  so no more double scaling. Can try leave time crystal but doesn't scale with floor
+* Add a way to leave when done with combat
+* Make sure to reset floor in data ent when player dies or leaves
 * Add new bullet, shoot patterns
   * Exploding bullets 
 * Add new enemy types
@@ -48,6 +50,7 @@
   * Add logic/functions for each of these 
   * Add UI
 * Add a way to resize window 
+* Add layouts for the new cities
 
 **** FUTURE FEATURES **** 
 

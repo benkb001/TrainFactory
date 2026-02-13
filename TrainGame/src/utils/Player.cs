@@ -32,6 +32,7 @@ public static class PlayerWrap {
         w.SetComponent<Player>(playerInvDataEnt, new Player()); 
         w.SetComponent<Health>(playerInvDataEnt, new Health(Constants.PlayerHP)); 
         w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
+        w.SetComponent<Floor>(playerInvDataEnt, new Floor());
 
         (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
         armorInv.SetArmor();

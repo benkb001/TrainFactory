@@ -76,6 +76,10 @@ public class EnemySpawner {
         hs.Add(h); 
     }
 
+    public void Spawn(EnemyWrap ew) {
+        Spawn(ew.GetHealth());
+    }
+
     public void AddReward(CombatReward reward) {
         rewards.Add(reward); 
     }
@@ -102,7 +106,7 @@ public class EnemyConst {
     public int BulletsPerShot; 
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
-        int Damage = 1, int HP = 10, int TicksPerShot = 10, int BulletSpeed = 2, 
+        int Damage = 1, int HP = 5, int TicksPerShot = 10, int BulletSpeed = 2, 
         int Ammo = 8, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
         BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
         int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 0,
@@ -130,19 +134,21 @@ public class EnemyConst {
 
 }
 
-public static class EnemyWrap {
+public class EnemyWrap {
     private static Dictionary<EnemyType, EnemyConst> enemies = new() {
         [EnemyType.Default] = new EnemyConst()
     };
 
-    public static int Draw(World w, Vector2 pos, EnemyType enemyType) {
+    public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
+
+    public static EnemyWrap Draw(World w, Vector2 pos, EnemyType enemyType) {
         EnemyConst e = enemies[enemyType];
 
         int enemyEnt = EntityFactory.AddUI(w, pos, e.Size, e.Size, setOutline: true); 
         Health h = new Health(e.HP);
         w.SetComponent<Health>(enemyEnt, h); 
         
-        w.SetComponent<Shooter>(enemyEnt, new Shooter(
+        Shooter shooter = new Shooter(
             bulletDamage: e.Damage,
             ticksPerShot: e.TicksPerShot,
             bulletSpeed: e.BulletSpeed,
@@ -151,23 +157,48 @@ public static class EnemyWrap {
             shootPattern: e.SPattern,
             bulletsPerShot: e.BulletsPerShot,
             patternSize: e.PatternSize
-        )); 
+        );
+        w.SetComponent<Shooter>(enemyEnt, shooter); 
 
         w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
 
-        w.SetComponent<Movement>(enemyEnt, new Movement(
+        Movement movement = new Movement(
             speed: e.MoveSpeed,
             ticksBetweenMovement: e.TicksBetweenMovement,
             Type: e.MType,
             patternLength: e.MovePatternLength
-        )); 
+        );
+        w.SetComponent<Movement>(enemyEnt, movement); 
 
         w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
-        w.SetComponent<Armor>(enemyEnt, new Armor(e.Armor)); 
+        Armor armor = new Armor(e.Armor);
+        w.SetComponent<Armor>(enemyEnt, armor); 
         
-        return enemyEnt;
+        return new EnemyWrap(enemyEnt, h, armor, movement, shooter);
+    }
+
+    private Armor armor; 
+    private Movement movement; 
+    private Shooter shooter; 
+    private Health health; 
+    private int e; 
+
+    public Health GetHealth() => health; 
+    public int Entity => e; 
+    public Armor GetArmor() => armor; 
+    public Movement GetMovement() => movement; 
+    public Shooter GetShooter() => shooter; 
+
+    private EnemyWrap(int e, Health health, Armor armor, Movement movement, Shooter shooter) {
+        this.e = e; 
+        this.armor = armor; 
+        this.movement = movement; 
+        this.shooter = shooter; 
+        this.health = health; 
     }
 }
+
+class Ladder {}
 
 public static class EnemySpawnSystem {
     private const float armorThresh = 0.05f; 
@@ -177,35 +208,23 @@ public static class EnemySpawnSystem {
     private const int numRewards = 2;
 
     public static void Register(World w) {
+        Vector2 dx(int i) {
+            return new Vector2((i * 110f) + 10f, 10f); 
+        }
+
         w.AddSystem([typeof(EnemySpawner), typeof(Frame), typeof(Active)], (w, e) => {
             EnemySpawner spawner = w.GetComponent<EnemySpawner>(e); 
             Frame f = w.GetComponent<Frame>(e); 
             spawner.Update(w.Time); 
             int round = spawner.Round; 
 
-            if (spawner.CanSpawn(w.Time)) {
-                spawner.FinishRound(); 
-            
-                for (int i = 0; i < Math.Min(5, spawner.Round); i++) {
-                    float xRand = w.NextFloat(); 
-                    float yRand = w.NextFloat(); 
-                    float x = f.GetWidth() * xRand;
-                    float y = f.GetHeight() * yRand; 
-                    Vector2 pos = f.Position + new Vector2(x, y); 
+            if (spawner.CanReward()) {
 
-                    int enemyEnt = EnemyWrap.Draw(w, new Vector2(x, y), EnemyType.Default);
-                    //todo: some sort of enemy container with a .GetHealth would be good here
-                    spawner.Spawn(w.GetComponent<Health>(enemyEnt));
-                    w.SetComponent<Loot>(enemyEnt, new Loot(ItemID.TimeCrystal, spawner.Round, 
-                        InventoryWrap.GetPlayerInv(w)));
-                }
-            } else if (spawner.CanReward()) {
-                
                 for (int i = 0; i < numRewards; i++) {
-                    Vector2 pos = f.Position + new Vector2((i * 110f) + 10f, 10f); 
+                    Vector2 pos = f.Position + dx(i);
 
-                    int rewardEnt = EntityFactory.AddUI(w, pos, 50f, 
-                        50f, setOutline: true, setInteractable: true);
+                    int rewardEnt = EntityFactory.AddUI(w, pos, Constants.TileWidth, 
+                        Constants.TileWidth, setOutline: true, setInteractable: true);
 
                     CombatReward reward = new CombatReward(); 
                     w.SetComponent<CombatReward>(rewardEnt, reward); 
@@ -234,6 +253,52 @@ public static class EnemySpawnSystem {
 
                     w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
                 }
+
+                int ladderEnt = EntityFactory.AddUI(w, f.Position + dx(numRewards), Constants.TileWidth,
+                    Constants.TileWidth, setOutline: true, setInteractable: true, text: "Ladder");
+                w.SetComponent<Ladder>(ladderEnt, new Ladder());
+            }
+        });
+    }
+}
+
+public class Floor {
+    private int number;
+    
+    public Floor() {
+        number = 0; 
+    }
+
+    public static implicit operator int(Floor f) {
+        return f.number;
+    }
+
+    public static Floor operator ++(Floor f) {
+        f.number = f.number + 1; 
+        return f;
+    }
+}
+
+public static class LadderInteractSystem {
+    public static void Register(World w) {
+        InteractSystem.Register<Ladder>(w, (w, _) => {
+            int playerEnt = PlayerWrap.GetEntity(w);
+            (Floor f, bool s1) = w.GetComponentSafe<Floor>(playerEnt);
+            if (!s1) {
+                f = new Floor();
+                w.SetComponent<Floor>(playerEnt, f);
+            }
+
+            (Inventory inv, bool s2) = w.GetComponentSafe<Inventory>(playerEnt); 
+            if (!s2) {
+                throw new InvalidOperationException($"Player data ent {playerEnt} did not have inv component");
+            }
+
+            f++;
+            Layout.DrawRandom(w);
+            
+            foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
+                w.SetComponent<Loot>(e, new Loot(ItemID.TimeCrystal, f, inv));
             }
         });
     }
