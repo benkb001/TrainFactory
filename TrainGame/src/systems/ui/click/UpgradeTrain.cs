@@ -20,7 +20,7 @@ public class UpgradeTrainClickSystem {
             Inventory pInv = btn.PlayerInv; 
             Train t = btn.UpgradingTrain; 
 
-            if (pInv.Take(ItemID.TrainUpgrade, 1).Count == 1) {
+            if (pInv.Take(ItemID.Engine, 1).Count == 1) {
                 t.UpgradePower(Constants.UpgradePowerStep); 
             }
 

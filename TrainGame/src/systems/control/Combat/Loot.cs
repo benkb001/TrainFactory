@@ -21,7 +21,7 @@ public static class LootSystem {
             if (w.GetComponent<Health>(e).HP <= 0) {
                 Loot loot = w.GetComponent<Loot>(e);
                 int transferred = loot.Transfer(); 
-                string itemID = loot.ItemID; 
+                string itemID = loot.GetItemID(); 
                 Vector2 pos = w.GetComponent<Frame>(e).Position; 
                 int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {itemID}!");
                 w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));

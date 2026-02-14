@@ -23,20 +23,21 @@
 * Add train position to save/load
 * Make carts items
 * Clean enemySpawn and movementSystem files to split classes into individual files
+* GetByID should throw exceptions when not found, such as city.GetByID
+* Fix rotation of layout drawing
 
 **** NEXT FEATURES **** 
 
-* Add better level layouts 
-* Add better rewards, ie randomizing resources 
-* Try change time crystal to ectoplasm, have a shop with ect -> resources, 
-  so no more double scaling. Can try leave time crystal but doesn't scale with floor
+* Add vendor for credit -> items
 * Add a way to leave when done with combat
 * Make sure to reset floor in data ent when player dies or leaves
+* Make sure to remove some of the items in HPP inv when player dies
 * Add new bullet, shoot patterns
   * Exploding bullets 
 * Add new enemy types
   * Just need to try various combinations of movement, 
     onExpire, pattern, and bulletType to see what works 
+* Add better level layouts 
 * Add Laboratory, a place to get percent upgrades to  
   product per resources, train speed, train fuel, and 
   train stack size. And logarithmic upgrades to machine

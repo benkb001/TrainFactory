@@ -59,4 +59,8 @@ public static class Util {
             j++;
         }
     }
+
+    public static int Pow(int b, double e) {
+        return (int)(Math.Pow((double)b, e));
+    }
 }

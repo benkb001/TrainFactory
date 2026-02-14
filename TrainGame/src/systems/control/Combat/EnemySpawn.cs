@@ -198,7 +198,15 @@ public class EnemyWrap {
     }
 }
 
-class Ladder {}
+public class Ladder {}
+
+public class LadderWrap {
+    public static void Draw(World w, Vector2 pos) {
+        int e = EntityFactory.AddUI(w, pos, Constants.TileWidth, Constants.TileWidth, 
+            setInteractable: true, text: "Ladder", setOutline: true);
+        w.SetComponent<Ladder>(e, new Ladder());
+    }
+}
 
 public static class EnemySpawnSystem {
     private const float armorThresh = 0.05f; 
@@ -233,30 +241,25 @@ public static class EnemySpawnSystem {
                     string rewardStr = ""; 
                     float rand = w.NextFloat(); 
 
+                    //TODO: maybe some items should be rewards here? 
+                    //like machines and such ? 
                     if (rand < armorThresh) {
                         rewardStr = "Armor +1"; 
                         w.SetComponent<TempArmor>(rewardEnt, new TempArmor(1)); 
                     } else if (rand < damageThresh) {
                         rewardStr = "Damage +1"; 
                         w.SetComponent<DamagePotion>(rewardEnt, new DamagePotion(1)); 
-                    } else if (rand < healthThresh) {
+                    } else {
                         int hp = round; 
                         hp = 1 + (int)(w.NextFloat() * w.NextFloat() * hp); 
                         rewardStr = $"HP +{hp}";
                         w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(hp)); 
-                    } else if (rand < timeCrystalThresh) {
-                        int timeCrystals = 10 * round; 
-                        timeCrystals = 1 + (int)(w.NextFloat() * 2 * timeCrystals); 
-                        rewardStr = $"{timeCrystals} Time Crystals";
-                        w.SetComponent<TimeCrystal>(rewardEnt, new TimeCrystal(timeCrystals)); 
-                    }
+                    } 
 
                     w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
                 }
 
-                int ladderEnt = EntityFactory.AddUI(w, f.Position + dx(numRewards), Constants.TileWidth,
-                    Constants.TileWidth, setOutline: true, setInteractable: true, text: "Ladder");
-                w.SetComponent<Ladder>(ladderEnt, new Ladder());
+                LadderWrap.Draw(w, f.Position + dx(numRewards));
             }
         });
     }
@@ -289,16 +292,13 @@ public static class LadderInteractSystem {
                 w.SetComponent<Floor>(playerEnt, f);
             }
 
-            (Inventory inv, bool s2) = w.GetComponentSafe<Inventory>(playerEnt); 
-            if (!s2) {
-                throw new InvalidOperationException($"Player data ent {playerEnt} did not have inv component");
-            }
-
             f++;
             Layout.DrawRandom(w);
+            City withPlayer = CityWrap.GetCityWithPlayer(w); 
+            Inventory inv = withPlayer.Inv;
             
             foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
-                w.SetComponent<Loot>(e, new Loot(ItemID.TimeCrystal, f, inv));
+                w.SetComponent<Loot>(e, Loot.GetRandom(f, inv, w));
             }
         });
     }

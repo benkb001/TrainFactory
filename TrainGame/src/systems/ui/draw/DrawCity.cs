@@ -75,11 +75,6 @@ public static class DrawCitySystem {
         return e; 
     }
 
-    private static void DrawTrainYard(Vector2 position, float width, float height, World w) {
-        int e = drawInteractable(position, width, height, "Train Yard", w); 
-        w.SetComponent<TrainYard>(e, TrainYard.Get()); 
-    }
-
     private static void DrawMachine(Machine m, Vector2 position, float width, float height, World w) {
         int e = drawInteractable(position, width, height, m.Id, w); 
         w.SetComponent<MachineUI>(e, new MachineUI(m)); 
@@ -88,7 +83,7 @@ public static class DrawCitySystem {
     private static void drawDefault(Vector2 topleft, Machine m, City c, World w) {
         DrawWalls(topleft, w); 
         DrawPlayer(topleft, topleft + new Vector2(20, 20), c, w); 
-        DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
+        TrainYardWrap.Draw(w, topleft + new Vector2(w.ScreenWidth - 130f, 20f));
 
         if (m != null) {
             DrawMachine(
@@ -100,18 +95,7 @@ public static class DrawCitySystem {
             );
         }
  
-    } 
-
-    private static int drawVendor(World w, Vector2 pos, City city, string vendorID) {
-        int vendorEnt = EntityFactory.AddUI(w, pos, 50, 50, 
-        setOutline: true, setInteractable: true, setCollidable: true, text: vendorID);
-        EnterInterfaceInteractable<VendorInterfaceData> interactable = 
-            new EnterInterfaceInteractable<VendorInterfaceData>(
-                new VendorInterfaceData(city, vendorID));
-        w.SetComponent<EnterInterfaceInteractable<VendorInterfaceData>>(vendorEnt, interactable); 
-        return vendorEnt; 
-    }
-                
+    }      
 
     //entities should be drawn on the max scene
     private static void DrawLayout(City city, Vector2 topleft, World w) {
@@ -124,7 +108,7 @@ public static class DrawCitySystem {
             case CityID.Factory: 
                 DrawWalls(topleft, w); 
                 DrawPlayer(topleft, topleft + new Vector2(20, 20), city, w); 
-                DrawTrainYard(topleft + new Vector2(w.ScreenWidth - 130f, 20f), 100f, 100f, w);
+                TrainYardWrap.Draw(w, topleft + new Vector2(w.ScreenWidth - 130f, 20f));
 
                 Machine[] ms = CityID.CityMap[CityID.Factory].Machines.Select(s => city.Machines[s]).ToArray(); 
                 Vector2 msTopLeft = topleft + new Vector2(20, 130); 
@@ -168,42 +152,12 @@ public static class DrawCitySystem {
 
                 break; 
             case CityID.HauntedPowerPlant: 
-                Layout.Draw(w, Layout.L1);
-                /*
-                w.SetCameraBounds(topleft.Y - 300f, topleft.X + 100f, topleft.Y - 150f, topleft.X - 100f); 
-                DrawPlayer(topleft, topleft - new Vector2(50, 50), city, w); 
-                DrawTrainYard(topleft - new Vector2(50, 50), 50, 50, w); 
-
-                void drawWall(Vector2 pos, float width, float height, World w) {
-                    int e = EntityFactory.AddUI(w, pos, width, height, setOutline: true); 
-                    w.SetComponent<Collidable>(e, new Collidable()); 
-                }
-
-                float roomWidth = 850f; 
-                float roomHeight = 500f; 
-
-                float wallWidth = 50f; 
-
-                Vector2 leftWallPos = topleft + new Vector2(-450, -450);
-                drawWall(topleft + new Vector2(-400, 50), roomWidth, wallWidth, w);
-                drawWall(leftWallPos, wallWidth, 500f, w); 
-                drawWall(topleft + new Vector2(-400, -500), roomWidth, wallWidth, w); 
-                drawWall(topleft + new Vector2(450, -450), wallWidth, roomHeight, w);
-
-                float spawnWidth = roomWidth - 100f; 
-                float spawnHeight = 150f; 
-
-                int enemySpawnEnt = EntityFactory.AddUI(w, leftWallPos + new Vector2(60, 10), 
-                    spawnWidth, spawnHeight, setOutline: true); 
-                w.SetComponent<EnemySpawner>(enemySpawnEnt, new EnemySpawner()); 
-
-                drawWall(leftWallPos + new Vector2(50f, 225f), 300f, 50f, w);
-                */
+                Layout.Draw(w, Layout.Cities[CityID.HauntedPowerPlant]);
                 break;
             case CityID.Armory: 
                 drawDefault(topleft, null, city, w); 
-                drawVendor(w, topleft + new Vector2(50, 150), city, VendorID.ArmorCraftsman); 
-                drawVendor(w, topleft + new Vector2(110, 150), city, VendorID.WeaponCraftsman); 
+                VendorWrap.Draw(w, topleft + new Vector2(50, 150), city, VendorID.ArmorCraftsman); 
+                VendorWrap.Draw(w, topleft + new Vector2(110, 150), city, VendorID.WeaponCraftsman); 
                 break;
             case CityID.Reservoir: 
                 //TODO: Write

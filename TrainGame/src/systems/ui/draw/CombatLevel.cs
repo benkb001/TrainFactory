@@ -17,8 +17,11 @@ using TrainGame.Callbacks;
 public enum TileType {
     Enemy,
     Ground,
+    Ladder,
     Player,
     Spawner,
+    TrainYard,
+    Vendor,
     Wall
 }
 
@@ -29,13 +32,16 @@ public enum EnemyType {
 public class Tile {
     private TileType type; 
     private EnemyType enemyType; 
+    private string id; 
+    public string ID => id; 
 
     public TileType Type => type; 
     public EnemyType EType => enemyType;
 
-    public Tile(TileType type, EnemyType enemyType = EnemyType.Default) {
+    public Tile(TileType type, EnemyType enemyType = EnemyType.Default, string id = "") {
         this.type = type; 
         this.enemyType = enemyType; 
+        this.id = id; 
     }
 }
 
@@ -45,6 +51,9 @@ public static class Layout {
     private static Tile p = new Tile(TileType.Player); 
     private static Tile dE = new Tile(TileType.Enemy); 
     private static Tile sp = new Tile(TileType.Spawner);
+    private static Tile ld = new Tile(TileType.Ladder);
+    private static Tile trainYard = new Tile(TileType.TrainYard); 
+    private static Tile hppVendor = new Tile(TileType.Vendor, id: VendorID.HPPVendor);
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
@@ -59,7 +68,7 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 
-        public static List<List<Tile>> L2 = new() {
+    public static List<List<Tile>> L2 = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, p, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, dE, w},
@@ -70,6 +79,20 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, dE, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
+    };
+
+    public static List<List<Tile>> HauntedPowerPlant = new() {
+        new() {w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, w},
+        new() {w, g, trainYard, g, ld, g, w},
+        new() {w, g, g, g, g, g, w},
+        new() {w, g, p, g, hppVendor, g, w},
+        new() {w, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w},
+    };
+
+    public static Dictionary<string, List<List<Tile>>> Cities = new() {
+        [CityID.HauntedPowerPlant] = HauntedPowerPlant
     };
 
     public static List<List<List<Tile>>> Levels = new() {
@@ -107,6 +130,15 @@ public static class Layout {
                         break; 
                     case TileType.Spawner: 
                         w.SetComponent<Frame>(spawnerEnt, new Frame(tilePos, tileSize, tileSize));
+                        break;
+                    case TileType.Ladder: 
+                        LadderWrap.Draw(w, tilePos);
+                        break;
+                    case TileType.Vendor: 
+                        VendorWrap.Draw(w, tilePos, CityWrap.GetCityWithPlayer(w), t.ID);
+                        break;
+                    case TileType.TrainYard: 
+                        TrainYardWrap.Draw(w, tilePos);
                         break;
                     default: 
                         throw new InvalidOperationException("Unhandled tile type in draw layout");

@@ -170,8 +170,8 @@ public class SpatialHash {
 
 public static class MovementSystem {
     private static Type[] types = [typeof(Collidable), typeof(Frame), typeof(Velocity), typeof(Active)]; 
-    private static float baseLen = 400f; 
-    private static int cellsPerRow = 4; 
+    private static float baseLen = 1000f; 
+    private static int cellsPerRow = 10; 
     private static SpatialHash setPartition(Vector2 center) {
         
         RectangleF bounds = new RectangleF(

@@ -18,3 +18,15 @@ public class VendorInteractSystem {
         EnterInterfaceInteractSystem.Register<VendorInterfaceData>(w); 
     }
 }
+
+public class VendorWrap {
+    public static int Draw(World w, Vector2 pos, City city, string vendorID) {
+        int vendorEnt = EntityFactory.AddUI(w, pos, Constants.TileWidth, Constants.TileWidth, 
+        setOutline: true, setInteractable: true, setCollidable: true, text: vendorID);
+        EnterInterfaceInteractable<VendorInterfaceData> interactable = 
+            new EnterInterfaceInteractable<VendorInterfaceData>(
+                new VendorInterfaceData(city, vendorID));
+        w.SetComponent<EnterInterfaceInteractable<VendorInterfaceData>>(vendorEnt, interactable); 
+        return vendorEnt; 
+    }
+}
