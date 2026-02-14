@@ -25,10 +25,6 @@ public enum TileType {
     Wall
 }
 
-public enum EnemyType {
-    Default
-}
-
 public class Tile {
     private TileType type; 
     private EnemyType enemyType; 
@@ -54,6 +50,7 @@ public static class Layout {
     private static Tile ld = new Tile(TileType.Ladder);
     private static Tile trainYard = new Tile(TileType.TrainYard); 
     private static Tile hppVendor = new Tile(TileType.Vendor, id: VendorID.HPPVendor);
+    private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
@@ -63,7 +60,7 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, g, g},
+        new() {w, g, robot, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, dE, g},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
@@ -71,13 +68,13 @@ public static class Layout {
     public static List<List<Tile>> L2 = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, p, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, dE, w},
+        new() {w, g, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, dE, g, g, g, g, g, g, dE, w},
+        new() {w, g, robot, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 

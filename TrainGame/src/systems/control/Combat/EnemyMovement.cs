@@ -72,7 +72,7 @@ public class Movement {
     }
 
     public void Move(WorldTime t) {
-        canMove = t + new WorldTime(ticks: ticksBetweenMovement); 
+        canMove = t + new WorldTime(ticks: ticksToMove + ticksBetweenMovement); 
         stopMove = t + new WorldTime(ticks: ticksToMove);
     } 
 }

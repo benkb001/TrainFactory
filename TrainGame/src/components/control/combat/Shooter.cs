@@ -48,6 +48,7 @@ public class Shooter {
     private int patternIndex = 0; 
     private int patternLength;
     private float patternSize;
+    private int reloadTicks; 
 
     private ShootPattern shootPattern;
     private BulletType bulletType; 
@@ -61,10 +62,10 @@ public class Shooter {
     public float SpreadDegrees => spreadDegrees;
     public float PatternSize => patternSize; 
 
-    public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3, 
+    public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3f, 
         int ammo = 10, int skill = 1, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
         BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
-        int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f) {
+        int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f, int reloadTicks = 150) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -79,13 +80,14 @@ public class Shooter {
         this.bulletSize = bulletSize; 
         this.patternLength = patternLength; 
         this.patternSize = patternSize;
+        this.reloadTicks = reloadTicks;
     }
 
     public Bullet Shoot(WorldTime now) {
         ammo--; 
         if (ammo <= 0) {
             ammo = maxAmmo; 
-            canShoot = now + new WorldTime(ticks: ticksPerShot * 5);
+            canShoot = now + new WorldTime(ticks: reloadTicks);
         } else {
             canShoot = now + new WorldTime(ticks: ticksPerShot);
         }

@@ -22,6 +22,8 @@ public static class PlayerStats {
         h.ResetHP(); 
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
+        Floor f = w.GetComponent<Floor>(e);
+        f.Reset();
     }
 }
 
@@ -32,8 +34,8 @@ public static class PlayerDeathSystem {
             Health h = w.GetComponent<Health>(e);
             if (h.HP <= 0) {
                 PlayerStats.Reset(w); 
-                Inventory playerInv = w.GetComponent<Inventory>(e);
-                playerInv.Take(ItemID.TimeCrystal, playerInv.ItemCount(ItemID.TimeCrystal) / 2); 
+                Inventory inv = LootWrap.GetDestination(w);
+                inv.Take(ItemID.Credit, inv.ItemCount(ItemID.Credit) / 2); 
                 City c = w.GetComponent<RespawnLocation>(e).GetCity(); 
                 MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(c));
             }

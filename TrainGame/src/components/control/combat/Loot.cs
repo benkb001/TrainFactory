@@ -71,3 +71,9 @@ public class Loot {
         throw new InvalidOperationException($"Loot randomization error, maxDrop: {maxDrop}, rand: {rand}");
     }
 }
+
+public class LootWrap {
+    public static Inventory GetDestination(World w) {
+        return CityWrap.GetCityWithPlayer(w).Inv;
+    }
+}

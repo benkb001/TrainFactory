@@ -25,13 +25,15 @@
 * Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
 * Fix rotation of layout drawing
+* Fix how we are doing shoot pattern, 
+  * I don't like that depending on type implementation, certain variables 
+    should or shouldn't be specified. Maybe this is a good case for 
+    inheritance but that's also ick, idk. Think about it. 
 
 **** NEXT FEATURES **** 
 
 * Add vendor for credit -> items
 * Add a way to leave when done with combat
-* Make sure to reset floor in data ent when player dies or leaves
-* Make sure to remove some of the items in HPP inv when player dies
 * Add new bullet, shoot patterns
   * Exploding bullets 
 * Add new enemy types

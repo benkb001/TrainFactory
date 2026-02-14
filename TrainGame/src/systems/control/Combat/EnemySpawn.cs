@@ -85,119 +85,6 @@ public class EnemySpawner {
     }
 }
 
-public class EnemyConst {
-    public EnemyType Type; 
-    public float Size; 
-    public int Damage; 
-    public int HP; 
-    public int TicksPerShot; 
-    public int BulletSpeed; 
-    public int Ammo; 
-    public int Skill; 
-    public ShootPattern SPattern; 
-    public BulletType BType; 
-    public OnExpireEffect OExpireEffect; 
-    public int Armor; 
-    public float PatternSize;
-    public float MoveSpeed; 
-    public int TicksBetweenMovement;
-    public MoveType MType; 
-    public int MovePatternLength;
-    public int BulletsPerShot; 
-
-    public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
-        int Damage = 1, int HP = 5, int TicksPerShot = 10, int BulletSpeed = 2, 
-        int Ammo = 8, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
-        BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
-        int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 0,
-        MoveType MType = MoveType.Default, int MovePatternLength = 1, int BulletsPerShot = 1) {
-        
-        this.Type = Type; 
-        this.Size = Size; 
-        this.Damage = Damage; 
-        this.HP = HP; 
-        this.TicksPerShot = TicksPerShot; 
-        this.BulletSpeed = BulletSpeed; 
-        this.Ammo = Ammo; 
-        this.Skill = Skill; 
-        this.SPattern = SPattern; 
-        this.BType = BType; 
-        this.OExpireEffect = OExpireEffect;
-        this.Armor = Armor;
-        this.PatternSize = PatternSize;
-        this.MoveSpeed = MoveSpeed;
-        this.TicksBetweenMovement = TicksBetweenMovement;
-        this.MType = MType; 
-        this.MovePatternLength = MovePatternLength;
-        this.BulletsPerShot = BulletsPerShot;
-    }
-
-}
-
-public class EnemyWrap {
-    private static Dictionary<EnemyType, EnemyConst> enemies = new() {
-        [EnemyType.Default] = new EnemyConst()
-    };
-
-    public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
-
-    public static EnemyWrap Draw(World w, Vector2 pos, EnemyType enemyType) {
-        EnemyConst e = enemies[enemyType];
-
-        int enemyEnt = EntityFactory.AddUI(w, pos, e.Size, e.Size, setOutline: true); 
-        Health h = new Health(e.HP);
-        w.SetComponent<Health>(enemyEnt, h); 
-        
-        Shooter shooter = new Shooter(
-            bulletDamage: e.Damage,
-            ticksPerShot: e.TicksPerShot,
-            bulletSpeed: e.BulletSpeed,
-            ammo: e.Ammo,
-            skill: e.Skill,
-            shootPattern: e.SPattern,
-            bulletsPerShot: e.BulletsPerShot,
-            patternSize: e.PatternSize
-        );
-        w.SetComponent<Shooter>(enemyEnt, shooter); 
-
-        w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
-
-        Movement movement = new Movement(
-            speed: e.MoveSpeed,
-            ticksBetweenMovement: e.TicksBetweenMovement,
-            Type: e.MType,
-            patternLength: e.MovePatternLength
-        );
-        w.SetComponent<Movement>(enemyEnt, movement); 
-
-        w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
-        Armor armor = new Armor(e.Armor);
-        w.SetComponent<Armor>(enemyEnt, armor); 
-        
-        return new EnemyWrap(enemyEnt, h, armor, movement, shooter);
-    }
-
-    private Armor armor; 
-    private Movement movement; 
-    private Shooter shooter; 
-    private Health health; 
-    private int e; 
-
-    public Health GetHealth() => health; 
-    public int Entity => e; 
-    public Armor GetArmor() => armor; 
-    public Movement GetMovement() => movement; 
-    public Shooter GetShooter() => shooter; 
-
-    private EnemyWrap(int e, Health health, Armor armor, Movement movement, Shooter shooter) {
-        this.e = e; 
-        this.armor = armor; 
-        this.movement = movement; 
-        this.shooter = shooter; 
-        this.health = health; 
-    }
-}
-
 public class Ladder {}
 
 public class LadderWrap {
@@ -272,6 +159,10 @@ public class Floor {
         number = 0; 
     }
 
+    public void Reset() {
+        number = 0;
+    }
+
     public static implicit operator int(Floor f) {
         return f.number;
     }
@@ -294,8 +185,7 @@ public static class LadderInteractSystem {
 
             f++;
             Layout.DrawRandom(w);
-            City withPlayer = CityWrap.GetCityWithPlayer(w); 
-            Inventory inv = withPlayer.Inv;
+            Inventory inv = LootWrap.GetDestination(w);
             
             foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
                 w.SetComponent<Loot>(e, Loot.GetRandom(f, inv, w));
