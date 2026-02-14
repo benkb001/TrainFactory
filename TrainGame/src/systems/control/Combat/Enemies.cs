@@ -15,6 +15,7 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
 public enum EnemyType {
+    Artillery, //Shoots vertically, homing bullets
     Default,
     Robot //moves left to right and shoots up/down in bursts
 }
@@ -40,6 +41,8 @@ public class EnemyConst {
     public int BulletsPerShot; 
     public int ReloadTicks;
     public int TicksToMove; 
+    public int BulletSize; 
+    public int BulletLifetimeTicks;
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
         int Damage = 1, int HP = 5, int TicksPerShot = 10, float BulletSpeed = 2f, 
@@ -47,7 +50,7 @@ public class EnemyConst {
         BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
         int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 0,
         MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 120, int BulletsPerShot = 1,
-        int ReloadTicks = 30) {
+        int ReloadTicks = 30, int BulletSize = Constants.BulletSize, int BulletLifetimeTicks = 120) {
         
         this.Type = Type; 
         this.Size = Size; 
@@ -69,11 +72,32 @@ public class EnemyConst {
         this.BulletsPerShot = BulletsPerShot;
         this.ReloadTicks = ReloadTicks;
         this.TicksToMove = TicksToMove;
+        this.BulletSize = BulletSize;
+        this.BulletLifetimeTicks = BulletLifetimeTicks;
     }
 }
 
 public class EnemyWrap {
     private static Dictionary<EnemyType, EnemyConst> enemies = new() {
+        [EnemyType.Artillery] = new EnemyConst(
+            Type: EnemyType.Artillery, 
+            HP: 10, 
+            TicksPerShot: 300, 
+            ReloadTicks: 100, 
+            BulletSpeed: 2f, 
+            Ammo: 4, 
+            SPattern: ShootPattern.VerticalLine, 
+            BulletsPerShot: 2, 
+            PatternSize: Constants.TileWidth * 2, 
+            Size: Constants.TileWidth * 2, 
+            MoveSpeed: 0.5f, 
+            TicksBetweenMovement: 60, 
+            TicksToMove: 60, 
+            MType: MoveType.Chase,
+            BType: BulletType.Homing,
+            BulletSize: Constants.BulletSize * 2,
+            BulletLifetimeTicks: 600
+        ),
         [EnemyType.Default] = new EnemyConst(),
         [EnemyType.Robot] = new EnemyConst(
             Type: EnemyType.Robot, 
@@ -110,7 +134,10 @@ public class EnemyWrap {
             shootPattern: e.SPattern,
             bulletsPerShot: e.BulletsPerShot,
             patternSize: e.PatternSize,
-            reloadTicks: e.ReloadTicks
+            reloadTicks: e.ReloadTicks,
+            bulletType: e.BType, 
+            bulletSize: e.BulletSize,
+            bulletLifetimeTicks: e.BulletLifetimeTicks
         );
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 

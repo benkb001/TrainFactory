@@ -51,6 +51,7 @@ public static class Layout {
     private static Tile trainYard = new Tile(TileType.TrainYard); 
     private static Tile hppVendor = new Tile(TileType.Vendor, id: VendorID.HPPVendor);
     private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
+    private static Tile artillery = new Tile(TileType.Enemy, EnemyType.Artillery);
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
@@ -60,7 +61,7 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, robot, g, g, g, g, g, g, g},
+        new() {w, g, artillery, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, dE, g},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
@@ -73,9 +74,19 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, robot, g, g, g, g, g, g, w},
+        new() {w, g, artillery, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
+    };
+
+    public static List<List<Tile>> L3 = new() {
+        new() {w, w, w, w, w, w, w, w, w, w},
+        new() {w, p, g, g, g, g, g, g, g, w},
+        new() {w, g, sp, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, artillery, g, g, g, g, g, g, artillery, w},
+        new() {w, w, w, w, w, w, w, w, w, w},
     };
 
     public static List<List<Tile>> HauntedPowerPlant = new() {
@@ -93,7 +104,7 @@ public static class Layout {
     };
 
     public static List<List<List<Tile>>> Levels = new() {
-        L1, L2
+        L1, L2, L3
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {

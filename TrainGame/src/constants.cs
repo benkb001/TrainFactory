@@ -840,9 +840,26 @@ namespace TrainGame.Constants
                 }, 1)
             },
             [HPPVendor] = new() {
-                //TODO: Add more things to buy! ! ! 
                 [ItemID.Iron] = (new() {
                     [ItemID.Credit] = 1
+                }, 1),
+                [ItemID.Plasma] = (new() {
+                    [ItemID.Credit] = 5
+                }, 1), 
+                [ItemID.Wood] = (new() {
+                    [ItemID.Credit] = 5
+                }, 1), 
+                [ItemID.Fuel] = (new() {
+                    [ItemID.Credit] = 6
+                }, 1), 
+                [ItemID.Glass] = (new() {
+                    [ItemID.Credit] = 20
+                }, 1), 
+                [ItemID.Assembler] = (new() {
+                    [ItemID.Credit] = 20
+                }, 1),
+                [ItemID.Motherboard] = (new() {
+                    [ItemID.Credit] = 200
                 }, 1)
             }
         };

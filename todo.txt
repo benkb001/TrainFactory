@@ -32,7 +32,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add vendor for credit -> items
 * Add a way to leave when done with combat
 * Add new bullet, shoot patterns
   * Exploding bullets 

@@ -49,6 +49,7 @@ public class Shooter {
     private int patternLength;
     private float patternSize;
     private int reloadTicks; 
+    private int bulletLifetimeTicks;
 
     private ShootPattern shootPattern;
     private BulletType bulletType; 
@@ -65,7 +66,8 @@ public class Shooter {
     public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3f, 
         int ammo = 10, int skill = 1, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
         BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
-        int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f, int reloadTicks = 150) {
+        int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f, int reloadTicks = 150,
+        int bulletLifetimeTicks = 120) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -81,6 +83,7 @@ public class Shooter {
         this.patternLength = patternLength; 
         this.patternSize = patternSize;
         this.reloadTicks = reloadTicks;
+        this.bulletLifetimeTicks = bulletLifetimeTicks;
     }
 
     public Bullet Shoot(WorldTime now) {
@@ -92,7 +95,7 @@ public class Shooter {
             canShoot = now + new WorldTime(ticks: ticksPerShot);
         }
 
-        return new Bullet(bulletDamage); 
+        return new Bullet(bulletDamage, maxFramesActive: bulletLifetimeTicks); 
     }
 
     public float GetBulletSpeed() => bulletSpeed; 

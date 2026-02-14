@@ -16,7 +16,7 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class Bullet {
-    private static int maxFramesActive = 120; 
+    private int maxFramesActive; 
     public int MaxFramesActive => maxFramesActive; 
     
     private int framesActive; 
@@ -30,10 +30,11 @@ public class Bullet {
     public OnExpireEffect GetOnExpireEffect() => onExpireEffect;
 
     public Bullet(int damage = 1, BulletType bulletType = BulletType.Default, 
-        OnExpireEffect onExpireEffect = OnExpireEffect.Default) {
+        OnExpireEffect onExpireEffect = OnExpireEffect.Default, int maxFramesActive = 120) {
         this.damage = damage; 
         this.bulletType = bulletType; 
         this.onExpireEffect = onExpireEffect;
+        this.maxFramesActive = maxFramesActive;
         this.framesActive = 0;
     }
 
