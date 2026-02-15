@@ -189,9 +189,11 @@ public class Train : IInventorySource, IID {
         setMPH(); 
     }
 
-    public void UpgradeInventoryExponential(CartType type) {
-        int levelsAdded = Carts[type].UpgradeExponential();
-        mass += Constants.CartMass[type] * levelsAdded;
+    public void UpgradeInventoryExponential() {
+        foreach (CartType type in Cart.AllTypes) {
+            int levelsAdded = Carts[type].UpgradeExponential();
+            mass += Constants.CartMass[type] * levelsAdded;
+        }
         setMPH();
     }
 
@@ -237,7 +239,7 @@ public class Train : IInventorySource, IID {
     }
 
     public void UpgradePowerExponential() {
-        power = power * 1.1f; 
+        power = power * Constants.ExponentialTrainPowerUpgradeFactor; 
         setMPH();
     }
 
@@ -249,7 +251,7 @@ public class Train : IInventorySource, IID {
 
     public void UpgradeMassMilesPerFuelExponential() {
         float prev = massMilesPerFuel;
-        massMilesPerFuel *= 1.1f; 
+        massMilesPerFuel *= Constants.ExponentialMilesPerFuelUpgradeFactor; 
         milesOfFuel *= (massMilesPerFuel / prev);
     }
 

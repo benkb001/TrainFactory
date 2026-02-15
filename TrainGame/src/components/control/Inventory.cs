@@ -184,7 +184,7 @@ public class Inventory : IID {
 
     public int UpgradeExponential() {
         int prevLevel = level; 
-        level = Math.Max(level + 1, (int)(level * 1.1f));
+        level = Math.Max(level + 1, (int)(level * Constants.ExponentialInvSizeUpgradeFactor));
         return level - prevLevel;
     }
 

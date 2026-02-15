@@ -120,7 +120,7 @@ public class Machine : IID {
     }
 
     public void UpgradeProductCountExponential() {
-        productCount = Math.Max((int)(productCount * 1.1f), productCount + 1); 
+        productCount = Math.Max((int)(productCount * Constants.ExponentialProductCountUpgradeFactor), productCount + 1); 
     }
 
     public string GetCraftSpeedFormatted() {

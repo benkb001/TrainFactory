@@ -90,6 +90,11 @@ namespace TrainGame.Constants
         public const float EnemySize = 50f;
         public const int InvincibilityFrames = 60;
 
+        public const float ExponentialInvSizeUpgradeFactor = 1.1f; 
+        public const float ExponentialMilesPerFuelUpgradeFactor = 1.1f;
+        public const float ExponentialTrainPowerUpgradeFactor = 1.1f; 
+        public const float ExponentialProductCountUpgradeFactor = 1.1f; 
+
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.Credit => 10000,
@@ -417,8 +422,8 @@ namespace TrainGame.Constants
 
     public static class ItemID {
         public const string Accelerator = "Accelerator";
-        public const string AirResistor = "Air-Resistor";
-        public const string AntiGravity = "Anti-Gravity";
+        public const string AirResistor = "Air Resistor";
+        public const string AntiGravity = "Anti Gravity";
         public const string Armor1 = "Armor1"; 
         public const string Armor2 = "Armor2"; 
         public const string Armor3 = "Armor3"; 
@@ -437,17 +442,17 @@ namespace TrainGame.Constants
         public const string Gun = "Gun"; 
         public const string Gun2 = "Gun2"; 
         public const string Gun3 = "Gun3"; 
-        public const string GunUpgrade = "GunUpgrade"; 
+        public const string GunUpgrade = "Gun Upgrade"; 
         public const string Iron = "Iron"; 
         public const string Kiln = "Kiln"; 
         public const string Lubricant = "Lubricant";
-        public const string MachineUpgrade = "MachineUpgrade"; 
+        public const string MachineUpgrade = "Machine Upgrade"; 
         public const string Motherboard = "Motherboard"; 
         public const string Oil = "Oil"; 
         public const string OilRig = "Oil Rig";
         public const string Petroleum = "Petroleum";
         public const string Plasma = "Plasma";
-        public const string PocketDimension = "PocketDimension";
+        public const string PocketDimension = "Pocket Dimension";
         public const string Pump = "Pump"; 
         public const string Rail = "Rail"; 
         public const string Refinery = "Refinery";
@@ -482,8 +487,8 @@ namespace TrainGame.Constants
 
     public static class MachineID {
         public const string AcceleratorAssembler = "Accelerator Assembler";
-        public const string AirResistorAssembler = "Air-Resistor Assembler";
-        public const string AntiGravityAssembler = "Anti-Gravity Assembler";
+        public const string AirResistorAssembler = "Air Resistor Assembler";
+        public const string AntiGravityAssembler = "Anti Gravity Assembler";
         public const string AssemblerFactory = "Assembler Factory"; 
         public const string CargoWagonAssembler = "Cargo Wagon Assembler"; 
         public const string CombustionControllerAssembler = "Combustion Controller Assembler";

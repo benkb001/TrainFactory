@@ -150,6 +150,7 @@ public static class RegisterComponents {
         r<TrainYard>(); 
         r<UnpauseButton>(); 
         r<UpgradeFuelConsumptionButton>();
+        r<UpgradeInventoryExponentialButton>();
         r<UpgradeMachineButton>(); 
         r<UpgradeTrainButton>(); 
         r<UpgradeTrainPowerButton>();

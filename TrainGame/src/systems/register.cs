@@ -99,7 +99,8 @@ public static class RegisterSystems {
         ConnectCitiesClickSystem.Register(w);
         UpgradeTrainPowerClickSystem.Register(w);
         UpgradeFuelConsumptionClickSystem.Register(w);
-
+        UpgradeInventoryExponentialClickSystem.Register(w);
+        
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
         LootInteractSystem.Register(w); 

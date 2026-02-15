@@ -27,11 +27,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add Add UI for upgrades to  
-  product per resources, train speed, train fuel, and 
-  train stack size. And logarithmic upgrades to machine
-  crafting speed
-* Add a way to resize window / make fullscreen
 * Make drawing cities use Layout class/ tiles
 
 **** FUTURE FEATURES **** 

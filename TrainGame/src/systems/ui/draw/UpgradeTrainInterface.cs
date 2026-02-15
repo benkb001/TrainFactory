@@ -32,14 +32,19 @@ public class UpgradeTrainInterfaceData : IInterfaceData {
 
 public class UpgradeTrainPowerButton {
     private Train train; 
+    private bool exponential;
     public Train GetTrain() => train;
 
-    public UpgradeTrainPowerButton(Train t) {
+    public UpgradeTrainPowerButton(Train t, bool exponential = false) {
         this.train = t; 
+        this.exponential = exponential; 
     }
 
     public bool TryUpgrade() {
-        if (train.ComingFrom.Inv.Take(ItemID.Engine, 1).Count == 1) {
+        if (exponential && train.ComingFrom.Inv.Take(ItemID.AirResistor, 1).Count == 1) {
+            train.UpgradePowerExponential();
+            return true;
+        } else if (train.ComingFrom.Inv.Take(ItemID.Engine, 1).Count == 1) {
             train.UpgradePower(Constants.PowerPerEngine);
             return true;
         }
@@ -49,14 +54,21 @@ public class UpgradeTrainPowerButton {
 
 public class UpgradeFuelConsumptionButton {
     private Train train; 
+    private bool exponential;
+
+    public bool Exponential => exponential;
     public Train GetTrain() => train;
 
-    public UpgradeFuelConsumptionButton(Train t) {
+    public UpgradeFuelConsumptionButton(Train t, bool exponential = false) {
         this.train = t; 
+        this.exponential = exponential;
     }
 
     public bool TryUpgrade() {
-        if (train.ComingFrom.Inv.Take(ItemID.CombustionController, 1).Count == 1) {
+        if (exponential && train.ComingFrom.Inv.Take(ItemID.AntiGravity, 1).Count == 1) {
+            train.UpgradeMassMilesPerFuelExponential();
+            return true;
+        } else if (train.ComingFrom.Inv.Take(ItemID.CombustionController, 1).Count == 1) {
             train.UpgradeMassMilesPerFuel(Constants.MassMilesPerFuelPerCombustionController);
             return true;
         }
@@ -70,7 +82,6 @@ public static class UpgradeTrainPowerClickSystem {
             if (b.TryUpgrade()) {
                 DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain());
             }
-
         });
     }
 }
@@ -95,37 +106,110 @@ public static class DrawUpgradeTrainInterfaceSystem {
             int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, 200, 200, setOutline: true, text: summary);
             outer.AddChild(sumEnt, w);
 
-            LinearLayoutContainer stack = LinearLayoutWrap.Add(
+            LinearLayoutContainer row1 = LinearLayoutWrap.Add(
                 w, 
                 Vector2.Zero,
                 outer.LLWidth,
-                outer.LLHeight / 2f,
+                outer.LLHeight / 4f,
                 direction: "horizontal",
                 outline: false
             );
-            outer.AddChild(stack.GetParentEntity(), w);
+            outer.AddChild(row1.GetParentEntity(), w);
 
-            float btnWidth = 200; 
+            float btnWidth = 150; 
             float btnHeight = 100;
-            int addCartBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, btnWidth, btnHeight, setButton: true, 
-                setOutline: true, text: "Add Cart?");
+
+            int addButton(string text) {
+                return EntityFactory.AddUI(w, Vector2.Zero, btnWidth, btnHeight, setButton: true, 
+                    setOutline: true, text: text);
+            }
+            int addCartBtnEnt = addButton("Add Cart?");
             w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, t.ComingFrom));
-            stack.AddChild(addCartBtnEnt, w);
+            row1.AddChild(addCartBtnEnt, w);
 
-            int upgradeFuelEnt = EntityFactory.AddUI(w, Vector2.Zero, btnWidth, btnHeight, setButton: true, 
-                setOutline: true, text: "Upgrade Fuel Consumption? Requires 1 Combustion Controller"); 
+            int upgradeFuelEnt = addButton("Upgrade Fuel Consumption? Requires 1 Combustion Controller");
             w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelEnt, new UpgradeFuelConsumptionButton(t));
-            stack.AddChild(upgradeFuelEnt, w);
+            row1.AddChild(upgradeFuelEnt, w);
 
-            int upgradePowerEnt = EntityFactory.AddUI(w, Vector2.Zero, btnWidth, btnHeight, setButton: true, 
-                setOutline: true, text: "Upgrade Speed? Requires 1 Engine");
+            int upgradePowerEnt = addButton("Upgrade Speed? Requires 1 Engine");
             w.SetComponent<UpgradeTrainPowerButton>(upgradePowerEnt, new UpgradeTrainPowerButton(t));
-            stack.AddChild(upgradePowerEnt, w);
+            row1.AddChild(upgradePowerEnt, w);
+
+            LinearLayoutContainer row2 = LinearLayoutWrap.Add(
+                w,
+                Vector2.Zero,
+                outer.LLWidth,
+                outer.LLHeight / 4f,
+                direction: "horizontal",
+                outline: false
+            );
+            outer.AddChild(row2.GetParentEntity(), w);
+
+            int upgradeInvExpoEnt = addButton(
+                $"Multiply Inventory Sizes By {Constants.ExponentialInvSizeUpgradeFactor}? Requires 1 {ItemID.PocketDimension}");
+            w.SetComponent<UpgradeInventoryExponentialButton>(upgradeInvExpoEnt, new UpgradeInventoryExponentialButton(train: t));
+            row2.AddChild(upgradeInvExpoEnt, w);
+
+            int upgradeFuelExpoEnt = addButton(
+                $"Multiply Miles Per Fuel By {Constants.ExponentialMilesPerFuelUpgradeFactor}? Requires 1 {ItemID.AntiGravity}");
+            w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelExpoEnt, new UpgradeFuelConsumptionButton(t, exponential: true));
+            row2.AddChild(upgradeFuelExpoEnt, w);
+
+            int upgradePowerExpoEnt = addButton(
+                $"Multiply Power by {Constants.ExponentialTrainPowerUpgradeFactor}? Requires 1 {ItemID.AirResistor}");
+            w.SetComponent<UpgradeTrainPowerButton>(upgradePowerExpoEnt, new UpgradeTrainPowerButton(t, exponential: true));
+            row2.AddChild(upgradePowerExpoEnt, w);
         });
     }
 
     public static void AddMessage(World w, Train t) {
         MakeMessage.Add<DrawInterfaceMessage<UpgradeTrainInterfaceData>>(w, 
             new DrawInterfaceMessage<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t)));
+    }
+}
+
+public class UpgradeInventoryExponentialButton {
+    private Inventory inv; 
+    private Train train;
+    public bool IsTrainInv => train != null; 
+    public Train GetTrain() => train;
+
+    public UpgradeInventoryExponentialButton(Inventory inv = null, Train train = null) {
+        this.inv = inv; 
+        this.train = train;
+        if (inv == null) {
+            if (train != null) {
+                this.inv = train.ComingFrom.Inv;
+            } else {
+                throw new InvalidOperationException("""
+                    Cannot initialize an 'UpgradeInventoryExponentialButton' without a 
+                    non-null reference to either a Train or Inventory object
+                    """
+                );
+            }
+            
+        }
+    }
+
+    public bool TryUpgrade() {
+        if (inv.Take(ItemID.PocketDimension, 1).Count == 1) {
+            if (train != null) {
+                train.UpgradeInventoryExponential(); 
+            } else {
+                inv.UpgradeExponential();
+            }
+            return true;
+        }
+        return false;
+    }
+}
+
+public static class UpgradeInventoryExponentialClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<UpgradeInventoryExponentialButton>(w, (w, e, b) => {
+            if (b.TryUpgrade() && b.IsTrainInv) {
+                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain());
+            }
+        });
     }
 }

@@ -22,6 +22,11 @@ public class Game1 : Game {
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
+
+        _graphics.PreferredBackBufferWidth = 800;
+        _graphics.PreferredBackBufferHeight = 480;
+
+        _graphics.IsFullScreen = true;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
