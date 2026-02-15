@@ -23,23 +23,16 @@
 * Make carts items
 * Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
+* Add machine speed level to persistent state
 
 **** NEXT FEATURES **** 
 
-* Add Laboratory, a place to get percent upgrades to  
+* Add Add UI for upgrades to  
   product per resources, train speed, train fuel, and 
   train stack size. And logarithmic upgrades to machine
   crafting speed
-  * Add crafting speed upgrade functions in constants 
-    * Currently they all start at their fastest, 
-      I'd like where they currently are to be a base speed, 
-      and have them approach much faster speeds. Like iron
-      and sand should bottom at 3 ticks per craft, everything
-      else can be somewhat proportional to this minimum
-  * Add logic/functions for each of these 
-  * Add UI
-* Add a way to resize window 
-* Add layouts for the new cities
+* Add a way to resize window / make fullscreen
+* Make drawing cities use Layout class/ tiles
 
 **** FUTURE FEATURES **** 
 
@@ -63,10 +56,11 @@
 * Add new gun types 
 * Add new level layouts 
 * Add new cities 
+* Make it so only cities that have a railroad that can connect them to an 
+  accessible city are drawn on the map
 
 **** FAR FUTURE FEATURES **** 
 
-* Add a tile system for rpg mode
 * Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
 * Consider making a train interior so player can do certain things while waiting inside a train

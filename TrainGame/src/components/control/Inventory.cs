@@ -182,6 +182,12 @@ public class Inventory : IID {
         level++; 
     }
 
+    public int UpgradeExponential() {
+        int prevLevel = level; 
+        level = Math.Max(level + 1, (int)(level * 1.1f));
+        return level - prevLevel;
+    }
+
     public Item Take(int row, int col) {
         ensureValidIndices(row, col); 
         int idx = getIndex(row, col);

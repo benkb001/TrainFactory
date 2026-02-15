@@ -92,6 +92,7 @@ namespace TrainGame.Constants
 
         public static int ItemStackSize(string itemId) {
             return itemId switch {
+                ItemID.Credit => 10000,
                 ItemID.Fuel => 100,
                 ItemID.Glass => 50, 
                 ItemID.GunUpgrade => 100,
@@ -244,6 +245,7 @@ namespace TrainGame.Constants
         public const string Factory = "Factory"; 
         public const string Greenhouse = "Greenhouse"; 
         public const string HauntedPowerPlant = "Haunted Power Plant";
+        public const string Laboratory = "Laboratory";
         public const string Mine = "Mine"; 
         public const string Refinery = "Refinery";
         public const string Reservoir = "Reservoir"; 
@@ -280,6 +282,12 @@ namespace TrainGame.Constants
                 [ItemID.Oil] = 1000, 
                 [ItemID.Iron] = 2000, 
                 [ItemID.Wood] = 2000
+            },
+            [CityID.Laboratory] = new Dictionary<string, int>() {
+                [ItemID.Engine] = 100,
+                [ItemID.CombustionController] = 100,
+                [ItemID.Iron] = 10000, 
+                [ItemID.Wood] = 10000
             }
         };
 
@@ -376,7 +384,18 @@ namespace TrainGame.Constants
                 [],
                 new Dictionary<string, Dictionary<string, int>>() {
                     [CityID.Greenhouse] = railroadCosts[CityID.TrainYard],
-                    [CityID.HauntedPowerPlant] = railroadCosts[CityID.TrainYard]
+                    [CityID.HauntedPowerPlant] = railroadCosts[CityID.TrainYard],
+                    [CityID.Laboratory] = railroadCosts[CityID.Laboratory]
+                }
+            ),
+            [CityID.Laboratory] = new CityArg(
+                [MachineID.SmartAssemblerFactory, MachineID.AcceleratorAssembler,
+                 MachineID.AntiGravityAssembler, MachineID.AirResistorAssembler, 
+                 MachineID.DuplicatorAssembler, MachineID.PocketDimensionAssembler],
+                950f, 10f, 5f, -2.5f,
+                [],
+                new Dictionary<string, Dictionary<string, int>>() {
+                    [CityID.TrainYard] = railroadCosts[CityID.Laboratory]
                 }
             )
         };
@@ -397,6 +416,9 @@ namespace TrainGame.Constants
     }
 
     public static class ItemID {
+        public const string Accelerator = "Accelerator";
+        public const string AirResistor = "Air-Resistor";
+        public const string AntiGravity = "Anti-Gravity";
         public const string Armor1 = "Armor1"; 
         public const string Armor2 = "Armor2"; 
         public const string Armor3 = "Armor3"; 
@@ -404,6 +426,7 @@ namespace TrainGame.Constants
         public const string CombustionController = "Combustion Controller";
         public const string Credit = "Credit";
         public const string DepotUpgrade = "Depot Upgrade"; 
+        public const string Duplicator = "Duplicator";
         public const string Drill = "Drill"; 
         public const string Engine = "Engine";
         public const string Excavator = "Excavator"; 
@@ -424,21 +447,24 @@ namespace TrainGame.Constants
         public const string OilRig = "Oil Rig";
         public const string Petroleum = "Petroleum";
         public const string Plasma = "Plasma";
+        public const string PocketDimension = "PocketDimension";
         public const string Pump = "Pump"; 
         public const string Rail = "Rail"; 
         public const string Refinery = "Refinery";
         public const string Sand = "Sand"; 
+        public const string SmartAssembler = "Smart Assembler";
         public const string Water = "Water"; 
         public const string Wood = "Wood"; 
         public const string TimeCrystal = "Time Crystal"; 
 
         public static readonly List<string> All = [
-            Armor1, Armor2, Armor3, Assembler, Credit, DepotUpgrade, 
-            Drill, Engine, Excavator, Fuel, Gasifier, Greenhouse,
+            Accelerator, AirResistor, AntiGravity, Armor1, Armor2, 
+            Armor3, Assembler, Credit, DepotUpgrade,
+            Drill, Duplicator, Engine, Excavator, Fuel, Gasifier, Greenhouse,
             Glass, Gun, Gun2, Gun3, GunUpgrade, Iron, 
             Kiln, Lubricant, MachineUpgrade, Motherboard, Oil, 
-            OilRig, Petroleum, Plasma, Pump, Rail, Refinery, Sand, 
-            TimeCrystal, Water, Wood
+            OilRig, Petroleum, Plasma, PocketDimension, Pump, Rail, Refinery, Sand, 
+            SmartAssembler, TimeCrystal, Water, Wood
         ]; 
 
         public static readonly List<string> Liquids = [
@@ -455,12 +481,16 @@ namespace TrainGame.Constants
     }
 
     public static class MachineID {
+        public const string AcceleratorAssembler = "Accelerator Assembler";
+        public const string AirResistorAssembler = "Air-Resistor Assembler";
+        public const string AntiGravityAssembler = "Anti-Gravity Assembler";
         public const string AssemblerFactory = "Assembler Factory"; 
         public const string CargoWagonAssembler = "Cargo Wagon Assembler"; 
         public const string CombustionControllerAssembler = "Combustion Controller Assembler";
         public const string DepotUpgradeAssembler = "Depot Upgrade Assembler"; 
         public const string Drill = "Drill"; 
         public const string DrillAssembler = "Drill Assembler"; 
+        public const string DuplicatorAssembler = "Duplicator Assembler";
         public const string EngineAssembler = "Engine Assembler";
         public const string Excavator = "Excavator"; 
         public const string ExcavatorAssembler = "Excavator Assembler"; 
@@ -476,9 +506,11 @@ namespace TrainGame.Constants
         public const string MotherboardAssembler = "Motherboard Assembler"; 
         public const string OilRig = "Oil Rig";
         public const string OilRigAssembler = "Oil Rig Assembler";
+        public const string PocketDimensionAssembler = "Pocket Dimension Assembler";
         public const string Pump = "Pump"; 
         public const string PumpAssembler = "Pump Assembler"; 
         public const string RefineryAssembler = "Refinery Assembler";
+        public const string SmartAssemblerFactory = "Smart Assembler Factory";
         public const string FuelRefinery = "Fuel Refinery"; 
         public const string LubricantRefinery = "Lubricant Refinery"; 
         public const string PetroleumRefinery = "Petroleum Refinery";
@@ -514,13 +546,55 @@ namespace TrainGame.Constants
     public static class Machines {
 
         private static Dictionary<string, MachineArg> args = new() {
+            [MachineID.AcceleratorAssembler] = new MachineArg(
+                ProductItemId: ItemID.Accelerator,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Lubricant] = 1000,
+                    [ItemID.Petroleum] = 1000,
+                    [ItemID.Plasma] = 1000,
+                    [ItemID.Engine] = 100
+                },
+                MinTicks: 3,
+                SlowFactor: 18000, 
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler
+            ),
+            [MachineID.AirResistorAssembler] = new MachineArg(
+                ProductItemId: ItemID.AirResistor, 
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Lubricant] = 1000,
+                    [ItemID.Plasma] = 1000,
+                    [ItemID.Iron] = 2000
+                },
+                MinTicks: 3,
+                SlowFactor: 18000,
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler
+            ),
+            [MachineID.AntiGravityAssembler] = new MachineArg(
+                ProductItemId: ItemID.AntiGravity,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Glass] = 1000,
+                    [ItemID.Fuel] = 2000,
+                    [ItemID.Plasma] = 3000
+                },
+                MinTicks: 3,
+                SlowFactor: 18000,
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler
+            ),
             [MachineID.AssemblerFactory] = new MachineArg(
                 ProductItemId: ItemID.Assembler, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Iron] = 20
                 },
-                MinTicks: 600,
+                MinTicks: 3,
+                SlowFactor: 6000, 
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler,
                 Level: 0
             ),
@@ -534,7 +608,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 500, 
                     [ItemID.Fuel] = 500
                 }, 
-                MinTicks: 1200,
+                MinTicks: 3,
+                SlowFactor: 12000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.DepotUpgradeAssembler] = new MachineArg(
@@ -544,9 +620,24 @@ namespace TrainGame.Constants
                     [ItemID.Wood] = 500, 
                     [ItemID.Iron] = 200
                 }, 
-                MinTicks: 6000, 
+                MinTicks: 3,
+                SlowFactor: 60000, 
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler, 
                 Level: -1
+            ),
+            [MachineID.DuplicatorAssembler] = new MachineArg(
+                ProductItemId: ItemID.Duplicator,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Wood] = 1000,
+                    [ItemID.Glass] = 2000,
+                    [ItemID.Petroleum] = 2000
+                },
+                MinTicks: 3,
+                SlowFactor: 18000,
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler
             ),
             [MachineID.Gasifier] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 
@@ -554,7 +645,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Wood] = 1
                 },
-                MinTicks: 60, 
+                MinTicks: 3, 
+                SlowFactor: 600,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Gasifier,
                 Level: 0
             ), 
@@ -566,7 +659,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 15, 
                     [ItemID.Glass] = 5
                 },
-                MinTicks: 480, 
+                MinTicks: 3, 
+                SlowFactor: 4800,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.Kiln] = new MachineArg(
@@ -576,7 +671,9 @@ namespace TrainGame.Constants
                     [ItemID.Fuel] = 1, 
                     [ItemID.Sand] = 1
                 },
-                MinTicks: 60,
+                MinTicks: 3,
+                SlowFactor: 600,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Kiln
             ), 
             [MachineID.KilnAssembler] = new MachineArg(
@@ -586,7 +683,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 10, 
                     [ItemID.Fuel] = 10
                 },
-                MinTicks: 540,
+                MinTicks: 3,
+                SlowFactor: 5400,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.LocomotiveAssembler] = new MachineArg(
@@ -596,7 +695,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 10,
                     [ItemID.Plasma] = 20
                 },
-                MinTicks: 600,
+                MinTicks: 3,
+                SlowFactor: 6000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ), 
             [MachineID.CargoWagonAssembler] = new MachineArg(
@@ -605,7 +706,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Wood] = 10
                 },
-                MinTicks: 600,
+                MinTicks: 3,
+                SlowFactor: 6000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.Drill] = new MachineArg(
@@ -614,7 +717,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 }, 
-                MinTicks: 30,
+                MinTicks: 3,
+                SlowFactor: 300,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Drill,
                 AllowManual: true
             ), 
@@ -625,7 +730,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 20, 
                     [ItemID.Fuel] = 5
                 },
-                MinTicks: 600, 
+                MinTicks: 3, 
+                SlowFactor: 6000, 
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.EngineAssembler] = new MachineArg(
@@ -637,7 +744,9 @@ namespace TrainGame.Constants
                     [ItemID.Fuel] = 100,
                     [ItemID.Plasma] = 100
                 }, 
-                MinTicks: 600, 
+                MinTicks: 3,
+                SlowFactor: 6000, 
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.Excavator] = new MachineArg(
@@ -646,7 +755,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 2
                 },
-                MinTicks: 60,
+                MinTicks: 3,
+                SlowFactor: 600,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Excavator,
                 AllowManual: true
             ), 
@@ -657,7 +768,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 20, 
                     [ItemID.Glass] = 5
                 },
-                MinTicks: 480,
+                MinTicks: 3,
+                SlowFactor: 4800,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.FuelRefinery] = new MachineArg(
@@ -667,7 +780,9 @@ namespace TrainGame.Constants
                     [ItemID.Oil] = 1, 
                     [ItemID.Water] = 1
                 },
-                MinTicks: 60, 
+                MinTicks: 3,
+                SlowFactor: 600,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Refinery
             ),
             [MachineID.Greenhouse] = new MachineArg(
@@ -676,7 +791,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Water] = 10
                 },
-                MinTicks: 30,
+                MinTicks: 3,
+                SlowFactor: 300,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Greenhouse,
                 AllowManual: true
             ),
@@ -687,18 +804,9 @@ namespace TrainGame.Constants
                     [ItemID.Glass] = 20, 
                     [ItemID.Iron] = 10
                 },
-                MinTicks: 600,
-                UpgradeItemID: ItemID.Assembler
-            ),
-            [MachineID.GunUpgradeAssembler] = new MachineArg(
-                ProductItemId: ItemID.GunUpgrade, 
-                ProductCount: 1, 
-                Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 100, 
-                    [ItemID.Glass] = 50, 
-                    [ItemID.Fuel] = 200
-                },
-                MinTicks: 2400,
+                MinTicks: 3,
+                SlowFactor: 6000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.LiquidWagonAssembler] = new MachineArg(
@@ -708,7 +816,9 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 10, 
                     [ItemID.Glass] = 5
                 },
-                MinTicks: 900,
+                MinTicks: 3,
+                SlowFactor: 9000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ), 
             [MachineID.LubricantRefinery] = new MachineArg(
@@ -719,7 +829,9 @@ namespace TrainGame.Constants
                     [ItemID.Water] = 5, 
                     [ItemID.Petroleum] = 1
                 },
-                MinTicks: 180, 
+                MinTicks: 3,
+                SlowFactor: 1800,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Refinery
             ),
             [MachineID.MotherboardAssembler] = new MachineArg(
@@ -729,7 +841,9 @@ namespace TrainGame.Constants
                     [ItemID.Glass] = 50,
                     [ItemID.Iron] = 20
                 },
-                MinTicks: 1200,
+                MinTicks: 3,
+                SlowFactor: 12000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.OilRig] = new MachineArg(
@@ -738,7 +852,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 },
-                MinTicks: 60, 
+                MinTicks: 3,
+                SlowFactor: 600,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.OilRig
             ),
             [MachineID.OilRigAssembler] = new MachineArg(
@@ -749,7 +865,9 @@ namespace TrainGame.Constants
                     [ItemID.Glass] = 100, 
                     [ItemID.Fuel] = 100
                 },
-                MinTicks: 1200, 
+                MinTicks: 3,
+                SlowFactor: 12000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.RefineryAssembler] = new MachineArg(
@@ -761,7 +879,9 @@ namespace TrainGame.Constants
                     [ItemID.Oil] = 100, 
                     [ItemID.Water] = 100
                 },
-                MinTicks: 600, 
+                MinTicks: 3,
+                SlowFactor: 6000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
             ),
             [MachineID.PetroleumRefinery] = new MachineArg(
@@ -772,8 +892,22 @@ namespace TrainGame.Constants
                     [ItemID.Oil] = 2, 
                     [ItemID.Water] = 10
                 },
-                MinTicks: 120, 
+                MinTicks: 3,
+                SlowFactor: 1200,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Refinery
+            ),
+            [MachineID.PocketDimensionAssembler] = new MachineArg(
+                ProductItemId: ItemID.PocketDimension,
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Glass] = 2000,
+                    [ItemID.Petroleum] = 2000
+                },
+                MinTicks: 3,
+                SlowFactor: 18000,
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler
             ),
             [MachineID.Pump] = new MachineArg(
                 ProductItemId: ItemID.Water, 
@@ -781,7 +915,9 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 }, 
-                MinTicks: 10,
+                MinTicks: 3,
+                SlowFactor: 100,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Pump
             ),
             [MachineID.PumpAssembler] = new MachineArg(
@@ -791,8 +927,25 @@ namespace TrainGame.Constants
                     [ItemID.Iron] = 15, 
                     [ItemID.Glass] = 10
                 },
-                MinTicks: 600,
+                MinTicks: 3,
+                SlowFactor: 6000,
+                StartFactor: 10,
                 UpgradeItemID: ItemID.Assembler
+            ),
+            [MachineID.SmartAssemblerFactory] = new MachineArg(
+                ProductItemId: ItemID.SmartAssembler, 
+                ProductCount: 1,
+                Recipe: new Dictionary<string, int>() {
+                    [ItemID.Assembler] = 100,
+                    [ItemID.Engine] = 100,
+                    [ItemID.Lubricant] = 1000,
+                    [ItemID.Fuel] = 2000
+                },
+                MinTicks: 3,
+                SlowFactor: 18000,
+                StartFactor: 10,
+                UpgradeItemID: ItemID.SmartAssembler, 
+                Level: 0
             )
         }; 
 
@@ -867,7 +1020,7 @@ namespace TrainGame.Constants
                     [ItemID.Credit] = 20
                 }, 1),
                 [ItemID.Motherboard] = (new() {
-                    [ItemID.Credit] = 200
+                    [ItemID.Credit] = 2000
                 }, 1)
             }
         };

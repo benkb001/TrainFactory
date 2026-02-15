@@ -189,6 +189,12 @@ public class Train : IInventorySource, IID {
         setMPH(); 
     }
 
+    public void UpgradeInventoryExponential(CartType type) {
+        int levelsAdded = Carts[type].UpgradeExponential();
+        mass += Constants.CartMass[type] * levelsAdded;
+        setMPH();
+    }
+
     public void Move(WorldTime now, Train inFront = null) {
         float hours = (now - lastMoved).InHours(); 
         float moved = milesPerHour * hours; 
@@ -230,9 +236,20 @@ public class Train : IInventorySource, IID {
         setMPH(); 
     }
 
+    public void UpgradePowerExponential() {
+        power = power * 1.1f; 
+        setMPH();
+    }
+
     public void UpgradeMassMilesPerFuel(float m) {
         float prev = massMilesPerFuel;
         massMilesPerFuel += m;
+        milesOfFuel *= (massMilesPerFuel / prev);
+    }
+
+    public void UpgradeMassMilesPerFuelExponential() {
+        float prev = massMilesPerFuel;
+        massMilesPerFuel *= 1.1f; 
         milesOfFuel *= (massMilesPerFuel / prev);
     }
 

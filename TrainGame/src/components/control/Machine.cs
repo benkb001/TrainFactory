@@ -43,6 +43,7 @@ public class Machine : IID {
     private int numRecipeToStore;
     private bool playerAtMachine; 
     private int lifetimeProductsCrafted; 
+    private int speedLevel; 
 
     public float Completion => (float)(((float)curCraftTicks) / craftTicks);
     public int CraftTicks => craftTicks; 
@@ -69,7 +70,7 @@ public class Machine : IID {
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
         string upgradeItemID = ItemID.MachineUpgrade, bool allowManual = false, int level = -1, int curCraftTicks = 0, 
-        int numRecipeToStore = 0, CraftState state = CraftState.Idle, int priority = 0) {
+        int numRecipeToStore = 0, CraftState state = CraftState.Idle, int priority = 0, int speedLevel = 0) {
         this.Inv = Inv;
         this.PlayerInv = PlayerInv; 
         this.recipe = recipe;
@@ -88,6 +89,7 @@ public class Machine : IID {
         }
         this.id = id; 
         this.level = level; 
+        this.speedLevel = speedLevel;
         this.allowManual = allowManual;
 
         this.curCraftTicks = curCraftTicks; 
@@ -101,7 +103,7 @@ public class Machine : IID {
     }
     
     public void SetCraftTicks() {
-        craftTicks = (int)(minTicks + (slowFactor / (level + startFactor)));
+        craftTicks = (int)(minTicks + (slowFactor / (speedLevel + startFactor)));
     }
 
     public void SetPriority(int p) {
@@ -110,7 +112,15 @@ public class Machine : IID {
 
     public void Upgrade(int levels = 1) {
         this.level += levels; 
-        SetCraftTicks(); 
+    }
+
+    public void UpgradeSpeed(int levels = 1) {
+        this.speedLevel += levels; 
+        SetCraftTicks();
+    }
+
+    public void UpgradeProductCountExponential() {
+        productCount = Math.Max((int)(productCount * 1.1f), productCount + 1); 
     }
 
     public string GetCraftSpeedFormatted() {
