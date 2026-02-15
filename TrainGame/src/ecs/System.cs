@@ -65,7 +65,7 @@ public class _System {
                 entsEnum = es.OrderBy(orderer); 
             }
 
-            foreach (int e in entsEnum) {
+            foreach (int e in entsEnum.ToList()) {
                 transformer(w, e); 
             }
         }

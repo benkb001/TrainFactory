@@ -17,7 +17,6 @@
 
 **** CLEAN UP **** 
 
-* Fix movement system tests that aren't passing
 * Make code for constants => json, and load 
   this instead of using bootstrap.initWorld
 * Add train position to save/load
@@ -32,9 +31,6 @@
 
 **** NEXT FEATURES **** 
 
-* Add a way to leave when done with combat
-* Add new bullet, shoot patterns
-  * Exploding bullets 
 * Add new enemy types
   * Just need to try various combinations of movement, 
     onExpire, pattern, and bulletType to see what works 

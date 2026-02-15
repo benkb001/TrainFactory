@@ -18,6 +18,7 @@ public enum TileType {
     Enemy,
     Ground,
     Ladder,
+    LadderDown,
     Player,
     Spawner,
     TrainYard,
@@ -48,6 +49,7 @@ public static class Layout {
     private static Tile dE = new Tile(TileType.Enemy); 
     private static Tile sp = new Tile(TileType.Spawner);
     private static Tile ld = new Tile(TileType.Ladder);
+    private static Tile ldDown = new Tile(TileType.LadderDown);
     private static Tile trainYard = new Tile(TileType.TrainYard); 
     private static Tile hppVendor = new Tile(TileType.Vendor, id: VendorID.HPPVendor);
     private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
@@ -55,44 +57,48 @@ public static class Layout {
 
     public static List<List<Tile>> L1 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, p, g, g, g, g, g, g, g, g},
-        new() {w, g, sp, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, g, g},
-        new() {w, g, artillery, g, g, g, g, g, g, g},
-        new() {w, g, g, g, g, g, g, g, dE, g},
+        new() {w, p, g, g, g, g, g, g, ld, w},
+        new() {w, g, sp, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, robot, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 
     public static List<List<Tile>> L2 = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
-        new() {w, p, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, p, g, g, g, g, g, g, ld, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, artillery, g, g, g, g, g, g, w},
+        new() {w, g, robot, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, dE, w},
         new() {w, w, w, w, w, w, w, w, w, w}
     };
 
     public static List<List<Tile>> L3 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, p, g, g, g, g, g, g, g, w},
+        new() {w, p, g, g, g, g, g, g, ld, w},
         new() {w, g, sp, g, g, g, g, g, g, w},
+        new() {w, g, g, g, artillery, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, artillery, g, g, g, g, g, g, artillery, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, artillery, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w},
     };
 
     public static List<List<Tile>> HauntedPowerPlant = new() {
         new() {w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, ld, g, w},
+        new() {w, g, trainYard, g, ldDown, g, w},
         new() {w, g, g, g, g, g, w},
         new() {w, g, p, g, hppVendor, g, w},
         new() {w, g, g, g, g, g, w},
@@ -140,7 +146,10 @@ public static class Layout {
                         w.SetComponent<Frame>(spawnerEnt, new Frame(tilePos, tileSize, tileSize));
                         break;
                     case TileType.Ladder: 
-                        LadderWrap.Draw(w, tilePos);
+                        LadderWrap.Draw(w, tilePos, 0);
+                        break;
+                    case TileType.LadderDown: 
+                        LadderWrap.Draw(w, tilePos, 1);
                         break;
                     case TileType.Vendor: 
                         VendorWrap.Draw(w, tilePos, CityWrap.GetCityWithPlayer(w), t.ID);

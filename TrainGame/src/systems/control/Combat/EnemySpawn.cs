@@ -37,6 +37,7 @@ public class EnemySpawner {
     private WorldTime between_rounds = new WorldTime(minutes: 5); 
     private WorldTime next_round = new WorldTime(); 
     private CombatState state = CombatState.Cooldown;
+    public int FloorDest = 1; 
 
     public int Round => round; 
 
@@ -85,13 +86,19 @@ public class EnemySpawner {
     }
 }
 
-public class Ladder {}
+public class Ladder {
+    public int FloorDest;
+
+    public Ladder(int FloorDest = 1) {
+        this.FloorDest = FloorDest;
+    }
+}
 
 public class LadderWrap {
-    public static void Draw(World w, Vector2 pos) {
+    public static void Draw(World w, Vector2 pos, int FloorDest) {
         int e = EntityFactory.AddUI(w, pos, Constants.TileWidth, Constants.TileWidth, 
-            setInteractable: true, text: "Ladder", setOutline: true);
-        w.SetComponent<Ladder>(e, new Ladder());
+            setInteractable: true, text: FloorDest == 0 ? "Exit" : "Ladder", setOutline: true);
+        w.SetComponent<Ladder>(e, new Ladder(FloorDest));
     }
 }
 
@@ -146,7 +153,7 @@ public static class EnemySpawnSystem {
                     w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
                 }
 
-                LadderWrap.Draw(w, f.Position + dx(numRewards));
+                LadderWrap.Draw(w, f.Position + dx(numRewards), spawner.FloorDest);
             }
         });
     }
@@ -175,20 +182,21 @@ public class Floor {
 
 public static class LadderInteractSystem {
     public static void Register(World w) {
-        InteractSystem.Register<Ladder>(w, (w, _) => {
-            int playerEnt = PlayerWrap.GetEntity(w);
-            (Floor f, bool s1) = w.GetComponentSafe<Floor>(playerEnt);
-            if (!s1) {
-                f = new Floor();
-                w.SetComponent<Floor>(playerEnt, f);
+        InteractSystem.Register<Ladder>(w, (w, _, ladder) => {
+            if (ladder.FloorDest == 0) {
+                MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
+            } else {
+                Layout.DrawRandom(w);
             }
 
-            f++;
-            Layout.DrawRandom(w);
             Inventory inv = LootWrap.GetDestination(w);
             
             foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
-                w.SetComponent<Loot>(e, Loot.GetRandom(f, inv, w));
+                w.SetComponent<Loot>(e, Loot.GetRandom(ladder.FloorDest, inv, w));
+            }
+
+            foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {
+                w.GetComponent<EnemySpawner>(e).FloorDest = ladder.FloorDest + 1; 
             }
         });
     }
