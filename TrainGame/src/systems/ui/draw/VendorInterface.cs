@@ -44,7 +44,7 @@ public static class DrawVendorInterfaceSystem {
                 int count = kvp.Value.Item2; 
 
                 PurchaseButton pb = new PurchaseButton(itemID, cost, inv, count);
-                int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, text: $"Purchase {itemID}? {Util.FormatMap(cost)}", 
+                int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, text: $"Purchase {itemID}?\n {Util.FormatMap(cost)}", 
                     setOutline: true, setButton: true);
                 w.SetComponent<PurchaseButton>(btnEnt, pb); 
                 vendor.AddChild(btnEnt, w); 

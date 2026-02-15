@@ -985,6 +985,10 @@ namespace TrainGame.Constants
         public const string WeaponCraftsman = "Weapon Craftsman"; 
         public const string HPPVendor = "HPP Vendor"; 
 
+        public static List<String> All = new() {
+            ArmorCraftsman, WeaponCraftsman, HPPVendor
+        };
+
         public static Dictionary<string, Dictionary<string, (Dictionary<string, int>, int)>> ProductMap = new() {
             [ArmorCraftsman] = new () {
                 [ItemID.Armor1] = (new () {

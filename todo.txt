@@ -6,6 +6,9 @@
 * Camera lag when teleporting, exiting interfaces, basically entity tracking is
   a bit wonky
 * Not decreasing received damage after picking up +1 armor
+  * Not sure if this is specific to tempArmor, try with perma armor too
+* When pressing e not near a machine it still thinks we are interacting with it,
+  Probably an issue with deciding if close enough to trigger interaction
   
 **** TEST **** 
 
@@ -27,7 +30,6 @@
 
 **** NEXT FEATURES **** 
 
-* Make drawing cities use Layout class/ tiles
 * Add UI for exponential upgrades to machines
 
 **** FUTURE FEATURES **** 
