@@ -35,7 +35,7 @@ namespace TrainGame.Constants
 
         public const float TileWidth = 50f;
 
-        public const float PlayerWidth = TileWidth; 
+        public const float PlayerWidth = 45f; 
         public const float PlayerHeight = TileWidth; 
         public const float PlayerSpeed = 5f; 
         public const int PlayerOutlineThickness = 1; 
@@ -499,26 +499,38 @@ namespace TrainGame.Constants
         public const string EngineAssembler = "Engine Assembler";
         public const string Excavator = "Excavator"; 
         public const string ExcavatorAssembler = "Excavator Assembler"; 
+        public const string FuelRefinery = "Fuel Refinery"; 
         public const string Gasifier = "Gasifier"; 
-        public const string GasifierAssembler = "GasifierAssembler"; 
+        public const string GasifierAssembler = "Gasifier Assembler"; 
         public const string Greenhouse = "Greenhouse"; 
         public const string GreenhouseAssembler = "Greenhouse Assembler";
         public const string GunUpgradeAssembler = "Gun Upgrade Assembler"; 
         public const string Kiln = "Kiln"; 
-        public const string KilnAssembler = "KilnAssembler"; 
+        public const string KilnAssembler = "Kiln Assembler"; 
         public const string LiquidWagonAssembler = "Liquid Wagon Assembler"; 
         public const string LocomotiveAssembler = "Locomotive Assembler"; 
+        public const string LubricantRefinery = "Lubricant Refinery"; 
         public const string MotherboardAssembler = "Motherboard Assembler"; 
         public const string OilRig = "Oil Rig";
         public const string OilRigAssembler = "Oil Rig Assembler";
+        public const string SmartAssemblerFactory = "Smart Assembler Factory";
+        public const string PetroleumRefinery = "Petroleum Refinery";
         public const string PocketDimensionAssembler = "Pocket Dimension Assembler";
         public const string Pump = "Pump"; 
         public const string PumpAssembler = "Pump Assembler"; 
         public const string RefineryAssembler = "Refinery Assembler";
-        public const string SmartAssemblerFactory = "Smart Assembler Factory";
-        public const string FuelRefinery = "Fuel Refinery"; 
-        public const string LubricantRefinery = "Lubricant Refinery"; 
-        public const string PetroleumRefinery = "Petroleum Refinery";
+
+        public static List<string> All = new() {
+            AcceleratorAssembler, AirResistorAssembler, AntiGravityAssembler,
+            AssemblerFactory, CargoWagonAssembler, CombustionControllerAssembler,
+            DepotUpgradeAssembler, Drill, DrillAssembler, DuplicatorAssembler,
+            EngineAssembler, Excavator, ExcavatorAssembler, FuelRefinery, Gasifier, 
+            GasifierAssembler, Greenhouse, GreenhouseAssembler, GunUpgradeAssembler, 
+            Kiln, KilnAssembler, LiquidWagonAssembler, LocomotiveAssembler, 
+            LubricantRefinery, MotherboardAssembler, OilRig, OilRigAssembler, 
+            PetroleumRefinery, PocketDimensionAssembler,
+            Pump, PumpAssembler, RefineryAssembler, SmartAssemblerFactory
+        };
     }
 
     public class MachineArg {

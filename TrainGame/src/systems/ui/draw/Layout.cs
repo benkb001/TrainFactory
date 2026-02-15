@@ -19,6 +19,7 @@ public enum TileType {
     Ground,
     Ladder,
     LadderDown,
+    Machine,
     Player,
     Spawner,
     TrainYard,
@@ -58,6 +59,10 @@ public static class Layout {
     private static Tile ninja = new Tile(TileType.Enemy, EnemyType.Ninja);
     private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
     private static Tile shotgun = new Tile(TileType.Enemy, EnemyType.Shotgun);
+
+    private static Dictionary<string, Tile> m = MachineID.All
+    .Select(s => new KeyValuePair<string, Tile>(s, new Tile(TileType.Machine, id: s)))
+    .ToDictionary();
 
     public static List<List<Tile>> L0 = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
@@ -126,6 +131,28 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w},
     };
 
+
+    public static List<List<Tile>> Factory = new() {
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, trainYard, g, p, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, 
+        m[MachineID.AssemblerFactory], g, m[MachineID.CargoWagonAssembler], g, 
+        m[MachineID.DrillAssembler], g, m[MachineID.ExcavatorAssembler], g, 
+        m[MachineID.Gasifier], g, m[MachineID.GasifierAssembler], g, 
+        m[MachineID.GreenhouseAssembler], g, m[MachineID.Kiln], g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, 
+        m[MachineID.KilnAssembler], g, m[MachineID.LocomotiveAssembler], g, 
+        m[MachineID.LiquidWagonAssembler], g, m[MachineID.MotherboardAssembler], g, 
+        m[MachineID.OilRigAssembler], g, m[MachineID.PumpAssembler], g, 
+        m[MachineID.RefineryAssembler], g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+    };
+
     public static List<List<Tile>> HauntedPowerPlant = new() {
         new() {w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, w},
@@ -137,7 +164,8 @@ public static class Layout {
     };
 
     public static Dictionary<string, List<List<Tile>>> Cities = new() {
-        [CityID.HauntedPowerPlant] = HauntedPowerPlant
+        [CityID.Factory] = Factory,
+        [CityID.HauntedPowerPlant] = HauntedPowerPlant,
     };
 
     public static List<List<List<List<Tile>>>> Levels = new() {
@@ -188,6 +216,13 @@ public static class Layout {
                         break;
                     case TileType.TrainYard: 
                         TrainYardWrap.Draw(w, tilePos);
+                        break;
+                    case TileType.Machine: 
+                        w.SetComponent<Interactable>(e, new Interactable()); 
+                        w.SetComponent<MachineUI>(e, new MachineUI(MachineWrap.GetByID(w, t.ID)));
+                        w.SetComponent<Collidable>(e, new Collidable());
+                        w.SetComponent<Outline>(e, new Outline());
+                        w.SetComponent<TextBox>(e, new TextBox(t.ID));
                         break;
                     default: 
                         throw new InvalidOperationException("Unhandled tile type in draw layout");

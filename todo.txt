@@ -28,6 +28,7 @@
 **** NEXT FEATURES **** 
 
 * Make drawing cities use Layout class/ tiles
+* Add UI for exponential upgrades to machines
 
 **** FUTURE FEATURES **** 
 

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Utils;
 using TrainGame.Constants;
+using TrainGame.ECS;
 
 public enum CraftState {
     Idle, 
@@ -247,5 +248,20 @@ public class Machine : IID {
     public static Machine GetDefault() {
         Inventory inv = new Inventory("Default", 1, 1); 
         return new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
+    }
+}
+
+public class MachineWrap {
+    public static Machine GetByID(World w, string id) {
+        Machine res = w.GetMatchingEntities([typeof(Machine), typeof(Data)])
+        .Select(e => w.GetComponent<Machine>(e))
+        .Where(m => m.Id == id)
+        .FirstOrDefault();
+
+        if (res == null || res.Equals(default(Machine))) {
+            throw new InvalidOperationException($"No machine with {id} exists");
+        }
+
+        return res;
     }
 }
