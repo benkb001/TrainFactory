@@ -159,27 +159,6 @@ public static class EnemySpawnSystem {
     }
 }
 
-public class Floor {
-    private int number;
-    
-    public Floor() {
-        number = 0; 
-    }
-
-    public void Reset() {
-        number = 0;
-    }
-
-    public static implicit operator int(Floor f) {
-        return f.number;
-    }
-
-    public static Floor operator ++(Floor f) {
-        f.number = f.number + 1; 
-        return f;
-    }
-}
-
 public static class LadderInteractSystem {
     public static void Register(World w) {
         InteractSystem.Register<Ladder>(w, (w, _, ladder) => {

@@ -77,7 +77,6 @@ public static class RegisterComponents {
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
         r<EquipmentSlot<Armor>>();
         r<EquipmentUI>(); 
-        r<Floor>();
         r<Frame>(); 
         r<GameClockView>();
         r<Health>(); 

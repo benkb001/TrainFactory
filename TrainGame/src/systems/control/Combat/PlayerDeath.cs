@@ -22,8 +22,6 @@ public static class PlayerStats {
         h.ResetHP(); 
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
-        Floor f = w.GetComponent<Floor>(e);
-        f.Reset();
     }
 }
 
