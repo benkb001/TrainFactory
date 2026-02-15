@@ -16,6 +16,33 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public static class EnemyShootSystem {
+    private static float[] ds = {-1f, 1f};
+
+    private static void shootCardinal(World w, int axis, Frame enemyFrame, Shooter shooter, Func<int> addBulletEnt) {
+        V2 enemyPosition = new V2(enemyFrame.Position);
+        V2 enemySize = new V2(new Vector2(enemyFrame.GetWidth(), enemyFrame.GetHeight()));
+        int bullets = shooter.BulletsPerShot;
+
+        float minBulletPos = enemyPosition[axis + 1] + (enemySize[axis + 1] / 2) - 
+            (shooter.PatternSize / 2f);
+        float enemyCenter = enemyPosition[axis] + (enemySize[axis] / 2f);
+        float spacePerBullet = shooter.PatternSize / (float)(bullets - 1);
+
+        foreach (int d in ds) {
+            for (int i = 0; i < bullets; i++) {
+                int bulletEnt = addBulletEnt(); 
+                V2 vel = new V2(0f, 0f);
+                vel[axis] = d * shooter.GetBulletSpeed();
+                w.SetComponent<Velocity>(bulletEnt, new Velocity(vel));
+                Frame f = w.GetComponent<Frame>(bulletEnt);
+                V2 pos = new V2(0f, 0f); 
+                pos[axis] = enemyCenter + (0.5f * enemySize[axis] * d); 
+                pos[axis + 1] = minBulletPos + (spacePerBullet * i);
+                f.SetCoordinates(pos);
+            }
+        }
+    }
+
     public static void Register(World w) {
         w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
             Shooter shooter = w.GetComponent<Shooter>(e);
@@ -35,8 +62,6 @@ public static class EnemyShootSystem {
 
                     float offset;
                     int bulletEnt; 
-                    float direction; 
-                    float spacePerBullet;
 
                     int addBulletEnt() {
                         int bEnt = EntityFactory.AddUI(w, enemyPos, shooter.BulletSize, 
@@ -72,32 +97,10 @@ public static class EnemyShootSystem {
 
                             break;
                         case ShootPattern.HorizontalLine: 
-                            direction = playerFrame.Position.X > enemyFrame.Position.X ? 1f : -1f; 
-                            float topBulletPos = enemyFrame.Position.Y - (shooter.PatternSize / 2f);
-                            spacePerBullet = shooter.PatternSize / (float)(bullets - 1);
-
-                            for (int i = 0; i < bullets; i++) {
-                                bulletEnt = addBulletEnt(); 
-                                Vector2 v = new Vector2(direction * speed, 0f);
-                                w.SetComponent<Velocity>(bulletEnt, new Velocity(v));
-                                Frame f = w.GetComponent<Frame>(bulletEnt);
-                                f.SetCoordinates(f.Position.X, topBulletPos + (spacePerBullet * i));
-                            }
-
+                            shootCardinal(w, 0, enemyFrame, shooter, addBulletEnt);
                             break;
                         case ShootPattern.VerticalLine: 
-                            direction = playerFrame.Position.Y > enemyFrame.Position.Y ? 1f : -1f; 
-                            float leftBulletPos = enemyFrame.Position.X - (shooter.PatternSize / 2f);
-                            spacePerBullet = shooter.PatternSize / (float)(bullets - 1);
-
-                            for (int i = 0; i < bullets; i++) {
-                                bulletEnt = addBulletEnt(); 
-                                Vector2 v = new Vector2(0f, direction * speed);
-                                w.SetComponent<Velocity>(bulletEnt, new Velocity(v));
-                                Frame f = w.GetComponent<Frame>(bulletEnt);
-                                f.SetCoordinates(leftBulletPos + (spacePerBullet * i), f.Position.Y);
-                            }
-                            
+                            shootCardinal(w, 1, enemyFrame, shooter, addBulletEnt);
                             break;
                         default: 
                             throw new InvalidOperationException("Undefined shoot pattern type");

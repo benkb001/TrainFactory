@@ -15,7 +15,7 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
 public enum EnemyType {
-    Artillery, //Shoots vertically, homing bullets
+    Artillery, //Big, Shoots vertically, homing bullets
     Default,
     Robot //moves left to right and shoots up/down in bursts
 }
@@ -108,7 +108,7 @@ public class EnemyWrap {
             SPattern: ShootPattern.VerticalLine,
             BulletsPerShot: 2, 
             TicksBetweenMovement: 60, 
-            PatternSize: 20f,
+            PatternSize: Constants.TileWidth,
             TicksToMove: 360,
             MType: MoveType.Horizontal,
             MovePatternLength: 2,

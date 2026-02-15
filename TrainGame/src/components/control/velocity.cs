@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+using TrainGame.Utils;
+
 public class Velocity {
     public Vector2 Vector; 
 
