@@ -44,7 +44,7 @@ public class Shooter {
     private int maxAmmo; 
     private int bulletsPerShot; 
     private int bulletSize; 
-    private float spreadDegrees = 10f;
+    private float spreadDegrees;
     private int patternIndex = 0; 
     private int patternLength;
     private float patternSize;
@@ -67,7 +67,7 @@ public class Shooter {
         int ammo = 10, int skill = 1, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
         BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
         int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f, int reloadTicks = 150,
-        int bulletLifetimeTicks = 120) {
+        int bulletLifetimeTicks = 120, float spreadDegrees = 10f) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -84,6 +84,7 @@ public class Shooter {
         this.patternSize = patternSize;
         this.reloadTicks = reloadTicks;
         this.bulletLifetimeTicks = bulletLifetimeTicks;
+        this.spreadDegrees = spreadDegrees;
     }
 
     public Bullet Shoot(WorldTime now) {
@@ -103,5 +104,8 @@ public class Shooter {
     public int Inaccuracy => 100 - skill; 
     public bool CanShoot(WorldTime t) {
         return t.IsAfterOrAt(canShoot); 
+    }
+    public void IncreaseDamage(int dmg) {
+        bulletDamage += dmg; 
     }
 }

@@ -34,7 +34,7 @@ public enum MoveType {
 public class Movement {
 
     private int patternLength; 
-    private int patternIndex = 0;
+    private int patternIndex;
     private float speed; 
     private int ticksToMove; 
     private int ticksBetweenMovement; 
@@ -48,7 +48,7 @@ public class Movement {
     public int PatternIndex => patternIndex;
 
     public Movement(float speed = 2f, int ticksToMove = 120, int ticksBetweenMovement = 300,
-        int patternLength = 1, MoveType Type = MoveType.Default) {
+        int patternLength = 1, MoveType Type = MoveType.Default, int patternIndex = 0) {
         canMove = new WorldTime(); 
 
         this.patternLength = patternLength;
@@ -56,6 +56,7 @@ public class Movement {
         this.ticksToMove = ticksToMove; 
         this.ticksBetweenMovement = ticksBetweenMovement; 
         this.Type = Type;
+        this.patternIndex = patternIndex;
     }
 
     public bool CanMove(WorldTime t) {

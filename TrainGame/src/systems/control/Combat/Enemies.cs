@@ -17,7 +17,9 @@ using TrainGame.Callbacks;
 public enum EnemyType {
     Artillery, //Big, Shoots vertically, homing bullets
     Default,
-    Robot //moves left to right and shoots up/down in bursts
+    Ninja, //Dashes around, shoots occasionally
+    Robot, //moves left to right and shoots up/down in bursts
+    Shotgun
 }
 
 public class EnemyConst {
@@ -43,14 +45,16 @@ public class EnemyConst {
     public int TicksToMove; 
     public int BulletSize; 
     public int BulletLifetimeTicks;
+    public float SpreadDegrees;
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
-        int Damage = 1, int HP = 5, int TicksPerShot = 10, float BulletSpeed = 2f, 
-        int Ammo = 8, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
+        int Damage = 1, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
+        int Ammo = 3, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
         BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
-        int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 0,
-        MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 120, int BulletsPerShot = 1,
-        int ReloadTicks = 30, int BulletSize = Constants.BulletSize, int BulletLifetimeTicks = 120) {
+        int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 120,
+        MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 60, int BulletsPerShot = 1,
+        int ReloadTicks = 120, int BulletSize = Constants.BulletSize, int BulletLifetimeTicks = 120,
+        float SpreadDegrees = 10f) {
         
         this.Type = Type; 
         this.Size = Size; 
@@ -74,6 +78,7 @@ public class EnemyConst {
         this.TicksToMove = TicksToMove;
         this.BulletSize = BulletSize;
         this.BulletLifetimeTicks = BulletLifetimeTicks;
+        this.SpreadDegrees = SpreadDegrees;
     }
 }
 
@@ -99,6 +104,19 @@ public class EnemyWrap {
             BulletLifetimeTicks: 600
         ),
         [EnemyType.Default] = new EnemyConst(),
+        [EnemyType.Ninja] = new EnemyConst(
+            Type: EnemyType.Ninja, 
+            HP: 6, 
+            TicksPerShot: 2, 
+            Ammo: 2, 
+            BulletsPerShot: 1, 
+            ReloadTicks: 120, 
+            MType: MoveType.Chase, 
+            MoveSpeed: Constants.PlayerSpeed / 1.5f, 
+            TicksBetweenMovement: 15,
+            TicksToMove: 20,
+            Skill: 90
+        ),
         [EnemyType.Robot] = new EnemyConst(
             Type: EnemyType.Robot, 
             HP: 8, 
@@ -114,6 +132,18 @@ public class EnemyWrap {
             MovePatternLength: 2,
             ReloadTicks: 60
         ),
+        [EnemyType.Shotgun] = new EnemyConst(
+            Type: EnemyType.Shotgun, 
+            SPattern: ShootPattern.Multi,
+            HP: 8, 
+            TicksPerShot: 120, 
+            ReloadTicks: 240, 
+            Ammo: 12, 
+            BulletsPerShot: 4, 
+            SpreadDegrees: 40f,
+            BulletLifetimeTicks: 180,
+            BulletSpeed: 1.5f
+        )
     };
 
     public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
@@ -137,7 +167,8 @@ public class EnemyWrap {
             reloadTicks: e.ReloadTicks,
             bulletType: e.BType, 
             bulletSize: e.BulletSize,
-            bulletLifetimeTicks: e.BulletLifetimeTicks
+            bulletLifetimeTicks: e.BulletLifetimeTicks,
+            spreadDegrees: e.SpreadDegrees
         );
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 

@@ -95,6 +95,10 @@ public class Ladder {
 }
 
 public class LadderWrap {
+    public static void AddMessage(World w, Vector2 pos, int FloorDest) {
+        MakeMessage.Add<DrawLadderMessage>(w, new DrawLadderMessage(pos, FloorDest));
+    }
+
     public static void Draw(World w, Vector2 pos, int FloorDest) {
         int e = EntityFactory.AddUI(w, pos, Constants.TileWidth, Constants.TileWidth, 
             setInteractable: true, text: FloorDest == 0 ? "Exit" : "Ladder", setOutline: true);
@@ -102,11 +106,33 @@ public class LadderWrap {
     }
 }
 
+//This is necessary because if interacting with a ladder 
+//draws another ladder on the same frame, 
+//bad things with modifying list during iteration
+//on ladderInteractSystem entities
+public class DrawLadderMessage {
+    public Vector2 Pos; 
+    public int FloorDest; 
+
+    public DrawLadderMessage(Vector2 Pos, int FloorDest) {
+        this.Pos = Pos; 
+        this.FloorDest = FloorDest; 
+    }
+}
+
+public static class DrawLadderSystem {
+    public static void Register(World w) {
+        DrawSystem.Register<DrawLadderMessage>(w, (w, e, dm) => {
+            LadderWrap.Draw(w, dm.Pos, dm.FloorDest);
+        });
+    }
+}
+
 public static class EnemySpawnSystem {
     private const float armorThresh = 0.05f; 
     private const float damageThresh = 0.01f; 
-    private const float healthThresh = 0.5f; 
-    private const float timeCrystalThresh = 1f;
+    private const float healthThresh = 0.2f; 
+    private const float itemThresh = 1f;
     private const int numRewards = 2;
 
     public static void Register(World w) {
@@ -143,12 +169,16 @@ public static class EnemySpawnSystem {
                     } else if (rand < damageThresh) {
                         rewardStr = "Damage +1"; 
                         w.SetComponent<DamagePotion>(rewardEnt, new DamagePotion(1)); 
-                    } else {
+                    } else if (rand < healthThresh) {
                         int hp = round; 
                         hp = 1 + (int)(w.NextFloat() * w.NextFloat() * hp); 
                         rewardStr = $"HP +{hp}";
                         w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(hp)); 
-                    } 
+                    } else {
+                        Loot loot = Loot.GetRandom(spawner.FloorDest * 2, CityWrap.GetCityWithPlayer(w).Inv, w);
+                        w.SetComponent<Loot>(rewardEnt, loot);
+                        rewardStr = $"{loot.GetItemID()}: {loot.Count}";
+                    }
 
                     w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
                 }
@@ -165,13 +195,15 @@ public static class LadderInteractSystem {
             if (ladder.FloorDest == 0) {
                 MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
             } else {
-                Layout.DrawRandom(w);
+                Layout.DrawRandom(w, ladder.FloorDest);
             }
 
             Inventory inv = LootWrap.GetDestination(w);
+            int extraDamage = ladder.FloorDest / 5;
             
             foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
                 w.SetComponent<Loot>(e, Loot.GetRandom(ladder.FloorDest, inv, w));
+                w.GetComponent<Shooter>(e).IncreaseDamage(extraDamage);
             }
 
             foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {

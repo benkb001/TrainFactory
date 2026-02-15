@@ -55,15 +55,6 @@ public class HealthPotion {
     }
 }
 
-public class TimeCrystal {
-    private int count; 
-    public int Count => count; 
-
-    public TimeCrystal(int count) {
-        this.count = count; 
-    }
-}
-
 public class DamagePotion {
     private int dmg; 
     public int DMG => dmg; 
@@ -83,12 +74,11 @@ public static class HealthPotionInteractSystem {
     }
 }
 
-public static class TimeCrystalInteractSystem {
+public static class LootInteractSystem {
     public static void Register(World w) {
-        RewardInteractSystem.Register<TimeCrystal>(w, (w, e, interactorEntity) => {
-            Inventory playerInv = w.GetComponent<Inventory>(interactorEntity); 
-            TimeCrystal tc = w.GetComponent<TimeCrystal>(e); 
-            playerInv.Add(ItemID.TimeCrystal, tc.Count); 
+        RewardInteractSystem.Register<Loot>(w, (w, e, interactorEntity) => {
+            Loot l = w.GetComponent<Loot>(e); 
+            l.Transfer();
         });
     }
 }

@@ -31,6 +31,14 @@ public static class DrawSystem {
             w.RemoveEntity(e);
         });
     }
+
+    public static void Register<T>(World w, Action<World, int, T> tf) {
+        w.AddSystem([typeof(T)], (w, e) => {
+            T t = w.GetComponent<T>(e);
+            tf(w, e, t); 
+            w.RemoveEntity(e);
+        });
+    }
 }
 
 public static class DrawInterfaceSystem {

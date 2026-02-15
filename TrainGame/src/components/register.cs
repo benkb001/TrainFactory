@@ -60,7 +60,8 @@ public static class RegisterComponents {
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
-        r<DrawInventoryContainerMessage<Train>>(); 
+        r<DrawInventoryContainerMessage<Train>>();
+        r<DrawLadderMessage>(); 
         r<DrawMachineInterfaceMessage>(); 
         r<DrawMachineRequestMessage>(); 
         r<DrawMapMessage>(); 
@@ -142,7 +143,6 @@ public static class RegisterComponents {
         r<TempArmor>(); 
         r<TextBox>(); 
         r<TextInput>(); 
-        r<TimeCrystal>();
         r<Toast>(); 
         r<Train>(); 
         r<TrainAssembler>(); 

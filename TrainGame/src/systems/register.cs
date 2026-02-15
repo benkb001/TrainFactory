@@ -102,7 +102,7 @@ public static class RegisterSystems {
 
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
-        TimeCrystalInteractSystem.Register(w); 
+        LootInteractSystem.Register(w); 
         DamagePotionInteractSystem.Register(w); 
         LadderInteractSystem.Register(w);
         
@@ -148,6 +148,7 @@ public static class RegisterSystems {
         DrawEquipmentInterfaceSystem.Register(w); 
         DrawUpgradeTrainInterfaceSystem.Register(w);
         SetMachineHeaderSystem.Register(w); 
+        DrawLadderSystem.Register(w);
         //CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

@@ -23,18 +23,9 @@
 * Make carts items
 * Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
-* Fix rotation of layout drawing
-* Fix how we are doing shoot pattern, 
-  * I don't like that depending on type implementation, certain variables 
-    should or shouldn't be specified. Maybe this is a good case for 
-    inheritance but that's also ick, idk. Think about it. 
 
 **** NEXT FEATURES **** 
 
-* Add new enemy types
-  * Just need to try various combinations of movement, 
-    onExpire, pattern, and bulletType to see what works 
-* Add better level layouts 
 * Add Laboratory, a place to get percent upgrades to  
   product per resources, train speed, train fuel, and 
   train stack size. And logarithmic upgrades to machine

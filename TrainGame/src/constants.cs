@@ -107,6 +107,14 @@ namespace TrainGame.Constants
                 _ => 100
             }; 
         }
+
+        public static int FloorDifficulty(int floor) {
+            if (floor < 5) {
+                return 0;
+            } else {
+                return 1; 
+            }
+        }
     }
 
     public static class Textures {

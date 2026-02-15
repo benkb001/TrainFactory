@@ -19,6 +19,7 @@ public class Loot {
     private string itemID; 
     private int count; 
     private Inventory destination; 
+    public int Count => count;
 
     //TODO: drop chances should also shift with floor? 
     private static List<(string, int)> drops = new() {
