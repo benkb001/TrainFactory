@@ -78,10 +78,13 @@ public static class PersistentState {
                 ["isTraveling"] = t.IsTraveling(),
                 ["left"] = JSONObjectFromWorldTime(t.DepartureTime),
                 ["mass"] = t.Mass, 
+                ["milesOfFuel"] = t.MilesOfFuel,
                 ["milesPerHour"] = t.MilesPerHour, 
                 ["nextInstruction"] = nextInstruction,
                 ["power"] = t.Power,
-                ["program"] = t.Program
+                ["program"] = t.Program,
+                ["x"] = t.Position.X, 
+                ["y"] = t.Position.Y
             };
 
             return new KeyValuePair<string, JsonNode>(id, trainJSON);
@@ -112,7 +115,9 @@ public static class PersistentState {
                 ["level"] = machine.Level,
                 ["lifetimeProductsCrafted"] = machine.LifetimeProductsCrafted,
                 ["numRecipeToStore"] = machine.NumRecipeToStore,
-                ["priority"] = machine.Priority
+                ["priority"] = machine.Priority,
+                ["productCount"] = machine.ProductCount,
+                ["speedLevel"] = machine.SpeedLevel
             });
         })));
 
@@ -204,6 +209,8 @@ public static class PersistentState {
                 int level = (int)machineData["level"];
                 int numRecipeToStore = (int)machineData["numRecipeToStore"];
                 int lifetimeProductsCrafted = (int)machineData["lifetimeProductsCrafted"];
+                int speedLevel = (int)machineData["speedLevel"];
+                int productCount = (int)machineData["productCount"];
 
                 Machine m = Machines.Get(
                     inv, 
@@ -214,7 +221,9 @@ public static class PersistentState {
                     level: level,
                     numRecipeToStore: numRecipeToStore
                 ); 
-
+                
+                m.SetProductCount(productCount);
+                m.UpgradeSpeed(speedLevel);
                 m.SetLifetimeProductsCrafted(lifetimeProductsCrafted); 
 
                 int e = EntityFactory.AddData<Machine>(w, m); 
@@ -254,7 +263,10 @@ public static class PersistentState {
             float mass = (float)trainData["mass"]; 
             float power = (float)trainData["power"]; 
             float milesPerHour = (float)trainData["milesPerHour"]; 
+            float milesOfFuel = (float)trainData["milesOfFuel"];
             string comingFromID = (string)trainData["comingFromID"]; 
+            float x = (float)trainData["x"];
+            float y = (float)trainData["y"];
             City comingFrom = cities[comingFromID]; 
             Dictionary<CartType, Inventory> carts = new(); 
 
@@ -262,7 +274,9 @@ public static class PersistentState {
                 carts[type] = inventories[Train.GetCartID(type, trainID)]; 
             }
 
-            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass, Carts: carts); 
+            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass, Carts: carts,
+                milesOfFuel: milesOfFuel); 
+            t.SetPosition(x, y);
             TrainWrap.Add(w, t); 
             trains[trainID] = t; 
             string program = (string)trainData["program"];

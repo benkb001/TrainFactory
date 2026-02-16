@@ -100,6 +100,8 @@ public static class RegisterSystems {
         UpgradeTrainPowerClickSystem.Register(w);
         UpgradeFuelConsumptionClickSystem.Register(w);
         UpgradeInventoryExponentialClickSystem.Register(w);
+        UpgradeMachineSpeedClickSystem.Register(w);
+        UpgradeMachineProductCountClickSystem.Register(w);
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 

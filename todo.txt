@@ -22,15 +22,12 @@
 
 * Make code for constants => json, and load 
   this instead of using bootstrap.initWorld
-* Add train position to save/load
 * Make carts items
 * Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
-* Add machine speed level to persistent state
 
 **** NEXT FEATURES **** 
 
-* Add UI for exponential upgrades to machines
 
 **** FUTURE FEATURES **** 
 

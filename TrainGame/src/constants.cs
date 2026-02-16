@@ -968,10 +968,10 @@ namespace TrainGame.Constants
 
         public static Machine Get(Inventory inv, string id, int curCraftTicks = 0, 
             CraftState state = CraftState.Idle, int level = -2, int priority = 0, 
-            int numRecipeToStore = 0) {
+            int numRecipeToStore = 0, int productCount = 0) {
             
             MachineArg arg = args[id]; 
-            return new Machine(inv, arg.Recipe, arg.ProductItemId, arg.ProductCount, arg.MinTicks, 
+            return new Machine(inv, arg.Recipe, arg.ProductItemId, productCount, arg.MinTicks, 
                 id, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
                 allowManual: arg.AllowManual, level: level < -1 ? arg.Level : level, 
                 curCraftTicks: curCraftTicks, state: state, priority: priority, 

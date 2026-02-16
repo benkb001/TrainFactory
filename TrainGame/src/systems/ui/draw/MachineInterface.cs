@@ -11,6 +11,7 @@ using TrainGame.Components;
 using TrainGame.ECS;
 using TrainGame.Constants; 
 using TrainGame.Callbacks; 
+using TrainGame.Utils;
 
 public static class DrawMachineInterfaceSystem {
     public static void Register(World w) {
@@ -147,7 +148,65 @@ public static class DrawMachineInterfaceSystem {
                 LinearLayoutWrap.AddChild(manualCraftButtonEnt, colEnt, col, w); 
             }
 
+            int upgradeSpeedBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
+                setOutline: true, text: $"Increase Craft Speed? Requires 1 {ItemID.Accelerator}",
+                setButton: true);
+            w.SetComponent<UpgradeMachineSpeedButton>(upgradeSpeedBtnEnt, new UpgradeMachineSpeedButton(m));
+            LinearLayoutWrap.AddChild(upgradeSpeedBtnEnt, colEnt, col, w);
+
+            int upgradeRatioBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
+                setOutline: true, text: $"Increase Product Count? Requires 1 {ItemID.Duplicator}",
+                setButton: true);
+            w.SetComponent<UpgradeMachineProductCountButton>(upgradeRatioBtnEnt, new UpgradeMachineProductCountButton(m));
+            LinearLayoutWrap.AddChild(upgradeRatioBtnEnt, colEnt, col, w);
+
             w.RemoveEntity(e); 
+        });
+    }
+
+    public static void AddMessage(World w, Machine m) {
+        MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m));
+    }
+}
+
+public class UpgradeMachineSpeedButton {
+    private Machine machine; 
+    public Machine GetMachine() => machine; 
+
+    public UpgradeMachineSpeedButton(Machine machine) {
+        this.machine = machine; 
+    }
+}
+
+public class UpgradeMachineProductCountButton {
+    private Machine machine; 
+    public Machine GetMachine() => machine; 
+
+    public UpgradeMachineProductCountButton(Machine machine) {
+        this.machine = machine; 
+    }
+}
+
+public static class UpgradeMachineSpeedClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<UpgradeMachineSpeedButton>(w, (w, e, btn) => {
+            Machine m = btn.GetMachine();
+            if (m.Inv.Take(ItemID.Accelerator, 1).Count == 1) {
+                m.UpgradeSpeed();
+                DrawMachineInterfaceSystem.AddMessage(w, m);
+            }
+        });
+    }
+}
+
+public static class UpgradeMachineProductCountClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<UpgradeMachineProductCountButton>(w, (w, e, btn) => {
+            Machine m = btn.GetMachine(); 
+            if (m.Inv.Take(ItemID.Duplicator, 1).Count == 1) {
+                m.UpgradeProductCountExponential(); 
+                DrawMachineInterfaceSystem.AddMessage(w, m);
+            }
         });
     }
 }

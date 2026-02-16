@@ -34,7 +34,7 @@ public class Train : IInventorySource, IID {
     private Vector2 journey;
     private Vector2 mapJourney;
     private Vector2 moved => position - comingFrom.Position;
-    private float milesOfFuel = 25f;
+    private float milesOfFuel;
     private float massMilesPerFuel = Constants.MassMilesPerFuel;
 
     public WorldTime DepartureTime => left; 
@@ -58,7 +58,7 @@ public class Train : IInventorySource, IID {
     public const string DefaultID = ""; 
 
     public Train(Inventory Inv, City origin, string Id = DefaultID, float milesPerHour = 0f, float power = 0f, float mass = 1f,
-        Dictionary<CartType, Inventory> Carts = null) {
+        Dictionary<CartType, Inventory> Carts = null, float milesOfFuel = 25f) {
         
         if (Id.Equals("")) {
             Id = ID.GetNext(Constants.TrainStr); 
@@ -83,6 +83,7 @@ public class Train : IInventorySource, IID {
 
         this.power = power; 
         this.mass = mass;
+        this.milesOfFuel = milesOfFuel; 
         setMPH(); 
 
         if (Carts == null) {
@@ -272,6 +273,10 @@ public class Train : IInventorySource, IID {
 
     public string GetID() {
         return Id; 
+    }
+
+    public void SetPosition(float x, float y) {
+        this.position = new Vector2(x, y);
     }
 
     public void SetProgram(string program, string programName = "") {

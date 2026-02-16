@@ -152,6 +152,8 @@ public static class RegisterComponents {
         r<UpgradeFuelConsumptionButton>();
         r<UpgradeInventoryExponentialButton>();
         r<UpgradeMachineButton>(); 
+        r<UpgradeMachineProductCountButton>();
+        r<UpgradeMachineSpeedButton>();
         r<UpgradeTrainButton>(); 
         r<UpgradeTrainPowerButton>();
         r<Velocity>(); 

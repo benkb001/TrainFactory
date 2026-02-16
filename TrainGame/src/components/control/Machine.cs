@@ -67,6 +67,7 @@ public class Machine : IID {
     public int CurCraftTicks => curCraftTicks; 
     public int LifetimeProductsCrafted => lifetimeProductsCrafted; 
     public int ProductDelivered => productDelivered; 
+    public int SpeedLevel => speedLevel;
 
     public Machine(Inventory Inv, Dictionary<string, int> recipe, string productItemId, int productCount, int minTicks, 
         string id = "", float slowFactor = 0f, float startFactor = 1f, Inventory PlayerInv = null, 
@@ -109,6 +110,10 @@ public class Machine : IID {
 
     public void SetPriority(int p) {
         this.priority = p; 
+    }
+
+    public void SetProductCount(int productCount) {
+        this.productCount = productCount;
     }
 
     public void Upgrade(int levels = 1) {
