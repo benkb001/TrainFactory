@@ -38,21 +38,6 @@ public class DrawTrainInterfaceSystem {
             text: summary);
         LinearLayoutWrap.AddChild(sumEnt, buttonsContainerEnt, buttonsContainer, w);
 
-        //add upgrade button    
-
-        Inventory playerInv = InventoryWrap.GetyByEntityOrId(w, inventoryId: Constants.PlayerInvID);
-
-        UpgradeTrainButton upgradeTrainBtn = new UpgradeTrainButton(t, playerInv); 
-        DrawButtonMessage<UpgradeTrainButton> upgradeMsg = new DrawButtonMessage<UpgradeTrainButton>(
-            Position: Vector2.Zero, 
-            Width: buttonWidth, 
-            Height: buttonHeight, 
-            Button: upgradeTrainBtn
-        );
-
-        int upgradeBtnEnt = DrawButtonSystem.Draw<UpgradeTrainButton>(upgradeMsg, w); 
-        LinearLayoutWrap.AddChild(upgradeBtnEnt, buttonsContainerEnt, buttonsContainer, w);
-
         //draw Add Cart button 
         //TODO: this should only be clickable if there is a cart to add at the city
 

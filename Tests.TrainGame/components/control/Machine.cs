@@ -23,7 +23,7 @@ public class MachineTest {
     public void Machine_CraftTimeFunctionShouldCorrectlyDecreaseWithLevel() {
         (Inventory inv, Machine m) = init(); 
         Assert.Equal(110, m.CraftTicks);
-        m.Upgrade(9);
+        m.UpgradeSpeed(9);
         Assert.Equal(20, m.CraftTicks);  
     }
 
