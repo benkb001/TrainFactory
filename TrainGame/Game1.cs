@@ -26,7 +26,7 @@ public class Game1 : Game {
         _graphics.PreferredBackBufferWidth = 800;
         _graphics.PreferredBackBufferHeight = 480;
 
-        _graphics.IsFullScreen = true;
+        //_graphics.IsFullScreen = true;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }

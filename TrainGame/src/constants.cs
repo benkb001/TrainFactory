@@ -968,10 +968,10 @@ namespace TrainGame.Constants
 
         public static Machine Get(Inventory inv, string id, int curCraftTicks = 0, 
             CraftState state = CraftState.Idle, int level = -2, int priority = 0, 
-            int numRecipeToStore = 0, int productCount = 0) {
+            int numRecipeToStore = 0) {
             
             MachineArg arg = args[id]; 
-            return new Machine(inv, arg.Recipe, arg.ProductItemId, productCount, arg.MinTicks, 
+            return new Machine(inv, arg.Recipe, arg.ProductItemId, arg.ProductCount, arg.MinTicks, 
                 id, arg.SlowFactor, arg.StartFactor, upgradeItemID: arg.UpgradeItemID,
                 allowManual: arg.AllowManual, level: level < -1 ? arg.Level : level, 
                 curCraftTicks: curCraftTicks, state: state, priority: priority, 
@@ -1102,14 +1102,7 @@ namespace TrainGame.Constants
             
             Train t = new Train(trainInv, factory, "T0", 
                 power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
-            int trainDataEnt = TrainWrap.Add(w, t);
-
-            Train t2 = new Train(trainInv, factory, "T2", 
-                power: Constants.TrainDefaultPower * 2f, mass: Constants.TrainDefaultMass);
-            TrainWrap.Add(w, t2);
-
-            factory.Inv.Add(ItemID.Engine, 10);
-            factory.Inv.Add(ItemID.CombustionController, 10);
+            TrainWrap.Add(w, t);
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 

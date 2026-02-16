@@ -10,10 +10,10 @@ public class ManualCraftUpdateSystem {
             Button b = w.GetComponent<Button>(e); 
             if (b.TicksHeld > 10) {
                 ManualCraftButton craftBtn = w.GetComponent<ManualCraftButton>(e); 
-                craftBtn.Completion += .01f; 
+                craftBtn.Completion += .1f; 
                 if (craftBtn.Completion >= 1) {
                     Machine m = w.GetComponent<Machine>(e); 
-                    m.Inv.Add(m.ProductItemId, m.ProductCount);
+                    m.Inv.Add(m.ProductItemId, 1);
                     craftBtn.Completion = 0f; 
                 }
                 ProgressBar pb = w.GetComponent<ProgressBar>(craftBtn.PBEntity); 
