@@ -15,8 +15,7 @@ using TrainGame.Callbacks;
 
 public static class PurchaseClickSystem {
     public static void Register(World w) {
-        ClickSystem.Register<PurchaseButton>(w, (w, e) => {
-            PurchaseButton btn = w.GetComponent<PurchaseButton>(e); 
+        ClickAndHoldSystem.Register<PurchaseButton>(w, (w, e, btn) => {
             Inventory dest = btn.Dest; 
             int count = btn.ItemCount; 
             string itemID = btn.ItemID; 

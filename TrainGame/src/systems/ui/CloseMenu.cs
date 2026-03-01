@@ -13,6 +13,18 @@ using TrainGame.Components;
 using TrainGame.Utils;
 using TrainGame.Constants; 
 
+public class CloseMenuMessage {}
+
+public static class CloseMenuClickSystem {
+    public static void Register(World w) {
+        w.AddSystem((w) => {
+            if (VirtualKeyboard.IsClicked(KeyBinds.Interact)) {
+                CloseMenuSystem.AddMessage(w); 
+            }
+        });
+    }
+}
+
 public static class CloseMenuSystem {
 
     private static void returnFrom(SceneType type, Menu menu, World w) {
@@ -85,20 +97,24 @@ public static class CloseMenuSystem {
         }
     }
 
+    public static void AddMessage(World w) {
+        MakeMessage.Add<CloseMenuMessage>(w, new CloseMenuMessage()); 
+    }
+
     public static void Register(World world) {
-        Action<World> update = (w) => {
-            if (VirtualKeyboard.IsClicked(KeyBinds.Interact) && SceneSystem.CanExitScene(w)) {
-                List<int> menuEntities = w.GetMatchingEntities([typeof(Menu), typeof(Scene), typeof(Active)]); 
+        world.AddSystem([typeof(CloseMenuMessage)], (w, e) => {
+            if (SceneSystem.CanExitScene(w)) {
+                List<int> menuEntities = SceneSystem.GetMenuEntities(w); 
 
                 if (menuEntities.Count >= 1) {
-                    int e = menuEntities[0]; 
-                    Menu menu = w.GetComponent<Menu>(e); 
-                    SceneType type = w.GetComponent<Scene>(e).Type; 
+                    int menuEnt = menuEntities[0]; 
+                    Menu menu = w.GetComponent<Menu>(menuEnt); 
+                    SceneType type = w.GetComponent<Scene>(menuEnt).Type; 
                     w.LockCamera(); 
                     returnFrom(type, menu, w); 
                 }
             }
-        };
-        world.AddSystem(update); 
+            w.RemoveEntity(e); 
+        }); 
     }
 }

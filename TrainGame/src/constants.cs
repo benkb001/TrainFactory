@@ -98,17 +98,14 @@ namespace TrainGame.Constants
         public static int ItemStackSize(string itemId) {
             return itemId switch {
                 ItemID.Credit => 10000,
-                ItemID.Fuel => 100,
-                ItemID.Glass => 50, 
-                ItemID.GunUpgrade => 100,
-                ItemID.Iron => 100, 
-                ItemID.MachineUpgrade => 100, 
-                ItemID.Oil => 1000, 
-                ItemID.Rail => 100, 
+                ItemID.Fuel => 1000,
+                ItemID.Glass => 500, 
+                ItemID.Iron => 1000, 
+                ItemID.Oil => 10000, 
                 ItemID.Sand => 1000,
                 ItemID.TimeCrystal => 1000,
                 ItemID.Water => 1000, 
-                ItemID.Wood => 100,
+                ItemID.Wood => 10000,
                 "StackSize1" => 1,
                 _ => 100
             }; 
@@ -278,9 +275,9 @@ namespace TrainGame.Constants
                 [ItemID.Wood] = 250
             }, 
             [CityID.Reservoir] = new Dictionary<string, int>() {
-                [ItemID.Iron] = 1000, 
-                [ItemID.Wood] = 2000, 
-                [ItemID.Glass] = 500, 
+                [ItemID.Iron] = 500, 
+                [ItemID.Wood] = 500, 
+                [ItemID.Glass] = 100, 
                 [ItemID.Water] = 3000
             },
             [CityID.TrainYard] = new Dictionary<string, int>() {
@@ -301,6 +298,7 @@ namespace TrainGame.Constants
                 [
                     MachineID.AssemblerFactory,
                     MachineID.CargoWagonAssembler, 
+                    MachineID.DepotUpgradeAssembler,
                     MachineID.DrillAssembler,
                     MachineID.ExcavatorAssembler,
                     MachineID.Gasifier, 
@@ -333,7 +331,7 @@ namespace TrainGame.Constants
             [CityID.Coast] = new CityArg(
                 [MachineID.Excavator, MachineID.Pump], 
                 350f, 210f, -2.5f, 0f, 
-                [CityID.Factory, CityID.Armory],
+                [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
                     [CityID.Armory] = railroadCosts[CityID.Armory]
                 }
@@ -343,7 +341,8 @@ namespace TrainGame.Constants
                 550f, 410f, 0f, 2.5f, 
                 [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Armory] = railroadCosts[CityID.Armory]
+                    [CityID.Armory] = railroadCosts[CityID.Armory],
+                    [CityID.Reservoir] = railroadCosts[CityID.Reservoir]
                 }
             ),
             [CityID.HauntedPowerPlant] = new CityArg(
@@ -992,16 +991,16 @@ namespace TrainGame.Constants
         public static Dictionary<string, Dictionary<string, (Dictionary<string, int>, int)>> ProductMap = new() {
             [ArmorCraftsman] = new () {
                 [ItemID.Armor1] = (new () {
-                    [ItemID.TimeCrystal] = 50, 
+                    [ItemID.Credit] = 50, 
                     [ItemID.Iron] = 50
                 }, 1), 
                 [ItemID.Armor2] = (new () {
-                    [ItemID.TimeCrystal] = 150, 
+                    [ItemID.Credit] = 150, 
                     [ItemID.Iron] = 200, 
                     [ItemID.Fuel] = 100
                 }, 1), 
                 [ItemID.Armor3] = (new () {
-                    [ItemID.TimeCrystal] = 1000,
+                    [ItemID.Credit] = 1000,
                     [ItemID.Iron] = 2000, 
                     [ItemID.Fuel] = 3000,
                     [ItemID.Glass] = 500
@@ -1009,13 +1008,13 @@ namespace TrainGame.Constants
             },
             [WeaponCraftsman] = new () {
                 [ItemID.Gun2] = (new () {
-                    [ItemID.TimeCrystal] = 100, 
+                    [ItemID.Credit] = 100, 
                     [ItemID.Fuel] = 300, 
                     [ItemID.Iron] = 500, 
                     [ItemID.Water] = 1000
                 }, 1),
                 [ItemID.Gun3] = (new () {
-                    [ItemID.TimeCrystal] = 2000, 
+                    [ItemID.Credit] = 2000, 
                     [ItemID.Iron] = 3000, 
                     [ItemID.Fuel] = 4000, 
                     [ItemID.Glass] = 5000
@@ -1023,23 +1022,23 @@ namespace TrainGame.Constants
             },
             [HPPVendor] = new() {
                 [ItemID.Iron] = (new() {
-                    [ItemID.Credit] = 1
-                }, 1),
+                    [ItemID.Credit] = 100
+                }, 100),
                 [ItemID.Plasma] = (new() {
-                    [ItemID.Credit] = 5
-                }, 1), 
+                    [ItemID.Credit] = 500
+                }, 100), 
                 [ItemID.Wood] = (new() {
-                    [ItemID.Credit] = 5
-                }, 1), 
+                    [ItemID.Credit] = 500
+                }, 100), 
                 [ItemID.Fuel] = (new() {
-                    [ItemID.Credit] = 6
-                }, 1), 
+                    [ItemID.Credit] = 600
+                }, 100), 
                 [ItemID.Glass] = (new() {
-                    [ItemID.Credit] = 20
-                }, 1), 
+                    [ItemID.Credit] = 200
+                }, 10), 
                 [ItemID.Assembler] = (new() {
-                    [ItemID.Credit] = 20
-                }, 1),
+                    [ItemID.Credit] = 200
+                }, 10),
                 [ItemID.Motherboard] = (new() {
                     [ItemID.Credit] = 2000
                 }, 1)

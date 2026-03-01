@@ -9,6 +9,7 @@
   * Not sure if this is specific to tempArmor, try with perma armor too
 * When pressing e not near a machine it still thinks we are interacting with it,
   Probably an issue with deciding if close enough to trigger interaction
+* Couldn't easily reproduce but maybe not resetting worldtime passage to slow
   
 **** TEST **** 
 
@@ -17,6 +18,8 @@
 * Train.Move()
 * Train fuel consumption
 * Upgrade train fuel consumption/power
+* New train programs aren't too cpu intensive
+* ExitExpired 
 
 **** CLEAN UP **** 
 
@@ -28,6 +31,36 @@
 
 **** NEXT FEATURES **** 
 
+* Fix loops to grab products if there is no space for the 
+  machines to craft
+  * Need to have access to city depot level/stack sizes in TAL,
+    or just a way to check the number of empty slots in an inv
+  * Could also make WAIT accept a time in game-seconds for the 
+    train to wait before leaving and pass as an OR. 
+* Fix somehow negative items? 
+* Fix randomly unlocking zoom
+* Fix armor not applying
+* Add an interface to stop trains running on programs, either
+  a screen accessible from map or when you click on a moving train 
+* Add harder levels to HPP, with more enemies on the screen 
+  * But also change homing enemy to shoot way less often
+* Increase the growth rate of HPP rewards significantly 
+  * Maybe change drop rates as you increase, and time
+    crystals get slightly more likely every few floors 
+  * Give way more credits as you go deeper 
+  * Might help if we drew the floor number in the HUD? 
+* Tune train movement speed and machine crafting rates 
+  * Currently the gains are somewhat small. We start with only 
+    50 fuel and less than double on each loop, so there has to 
+    be a ton of loops to gain fuel especially when a lot of it 
+    is going to iron and glass. If we make the loops take 
+    longer, it may allow the player to focus a little more on 
+    HPP (and in the future, other RPG stuff like npc and quests)
+* Remove traveling between cities, have player just stay in the 
+  center, which will have access to HPP area 
+* Tune default stack sizes, should be bigger if we want 
+  railroads to be as expensive as they are 
+* Make railroad purchase button a 1x1 paged layout
 
 **** FUTURE FEATURES **** 
 

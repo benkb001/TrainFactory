@@ -36,6 +36,7 @@ public static class RegisterComponents {
         r<City>(); 
         r<CityUI>(); 
         r<ClearLLMessage>(); 
+        r<CloseMenuMessage>(); 
         r<Collidable>(); 
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
@@ -146,6 +147,7 @@ public static class RegisterComponents {
         r<Toast>(); 
         r<Train>(); 
         r<TrainAssembler>(); 
+        r<TrainEmbarkedMessage>(); 
         r<TrainUI>(); 
         r<TrainYard>(); 
         r<UnpauseButton>(); 

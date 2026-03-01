@@ -126,7 +126,7 @@ public class Train : IInventorySource, IID {
         mapJourney = goingTo.MapPosition - comingFrom.MapPosition; 
         float journeyMiles = journey.Length();
         float hours = journeyMiles / milesPerHour; 
-        int fuelToTake = (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / massMilesPerFuel);
+        int fuelToTake = 2 * (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / massMilesPerFuel);
         
         int taken = Inv.Take(ItemID.Fuel, fuelToTake).Count;
         taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;

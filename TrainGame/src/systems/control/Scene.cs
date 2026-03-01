@@ -90,4 +90,8 @@ public static class SceneSystem {
         return w.GetMatchingEntities([typeof(TextInput), typeof(Active)]).Where(
             e => w.GetComponent<TextInput>(e).Active).ToList().Count == 0; 
     }
+
+    public static List<int> GetMenuEntities(World w) {
+        return w.GetMatchingEntities([typeof(Menu), typeof(Scene), typeof(Active)]);
+    }
 }

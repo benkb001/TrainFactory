@@ -68,9 +68,12 @@ public class TALInstruction {
 public class TALBody {
     private List<TALInstruction> instructions; 
     private int nextInstruction; 
+    private bool paused = false; 
+    private Train train; 
+
     public int InstructionCount => instructions.Count; 
     public int NextInstruction => nextInstruction; 
-    private Train train; 
+    public bool Paused => paused; 
 
     public TALBody(List<TALInstruction> instructions, Train train, int nextInstruction = 0) {
         this.instructions = instructions; 
@@ -79,7 +82,7 @@ public class TALBody {
     }
 
     public void Execute(World w) {
-        if (train.IsTraveling()) {
+        if (paused || train.IsTraveling()) {
             return; 
         }
 
@@ -118,6 +121,7 @@ public class TALBody {
 
                 case InstructionType.Wait: 
                     nextInstruction++; 
+                    executing = false;
                     break; 
 
                 case InstructionType.While: 
@@ -139,9 +143,15 @@ public class TALBody {
                 nextInstruction = 0; 
                 executing = false; 
             }
-
         }
-        
+    }
+
+    public void Pause() {
+        paused = true; 
+    }
+
+    public void Unpause() {
+        paused = false; 
     }
 }
 

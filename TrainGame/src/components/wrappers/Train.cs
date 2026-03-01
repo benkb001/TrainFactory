@@ -11,6 +11,30 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS;
+using TrainGame.Utils; 
+using TrainGame.Components; 
+using TrainGame.Systems; 
+
+class TrainEmbarkedMessage {
+    private Train train; 
+    public Train GetTrain() => train; 
+
+    public TrainEmbarkedMessage(Train train) {
+        this.train = train; 
+    }
+}
+
+public static class ExitExpiredTrainMenuSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(TrainEmbarkedMessage)], (w, e) => {
+            Train t = w.GetComponent<TrainEmbarkedMessage>(e).GetTrain();
+            if (SceneSystem.GetMenuEntities(w).Any(e => t.Equals(w.GetComponent<Menu>(e).GetTrain()))) {
+                CloseMenuSystem.AddMessage(w); 
+            }
+            w.RemoveEntity(e); 
+        });
+    }
+}
 
 public static class TrainWrap {
     public static Train GetTestTrain() {
@@ -47,5 +71,6 @@ public static class TrainWrap {
 
     public static void Embark(Train t, City dest, World w) {
         t.Embark(dest, w.Time); 
+        MakeMessage.Add<TrainEmbarkedMessage>(w, new TrainEmbarkedMessage(t)); 
     }
 }

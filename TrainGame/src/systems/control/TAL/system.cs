@@ -35,35 +35,34 @@ public class TAL {
 
     public static Dictionary<string, string> Scripts = new() {
         [IronFactoryLoop] = @"
-            LOAD Factory.Fuel / 2 Fuel; 
+            LOAD Factory.Fuel / 10 Fuel; 
             GO TO Mine; 
             UNLOAD SELF.Fuel Fuel; 
             WHILE Mine.Fuel > 0 {
-                WAIT;
+                LOAD Mine.Iron Iron; 
             }
-            LOAD Mine.Iron Iron; 
+            
             GO TO Factory; 
             UNLOAD SELF.Iron Iron; 
         ",
         [WaterFactoryLoop] = @"
-            LOAD Factory.Fuel / 2 Fuel; 
+            LOAD Factory.Fuel / 10 Fuel; 
             GO TO Coast;
             UNLOAD SELF.Fuel Fuel;
             WHILE Coast.Fuel > 0 {
-                WAIT;
+                LOAD Coast.Water Water; 
             }
-            LOAD Coast.Water Water; 
+            
             GO TO Factory; 
             UNLOAD SELF.Water Water;
         ",
         [SandFactoryLoop] = @"
-            LOAD Factory.Fuel / 2 Fuel; 
+            LOAD Factory.Fuel / 10 Fuel; 
             GO TO Coast;
             UNLOAD SELF.Fuel Fuel;
             WHILE Coast.Fuel > 0 {
-                WAIT;
+                LOAD Coast.Sand Sand; 
             }
-            LOAD Coast.Sand Sand; 
             GO TO Factory; 
             UNLOAD SELF.Sand Sand;
         ",
@@ -72,9 +71,8 @@ public class TAL {
             GO TO Greenhouse;
             UNLOAD SELF.Water Water;
             WHILE Greenhouse.Water > 0 {
-                WAIT;
+                LOAD Greenhouse.Wood Wood; 
             }
-            LOAD Greenhouse.Wood Wood; 
             GO TO Factory; 
             UNLOAD SELF.Wood Wood;
         ",
@@ -83,16 +81,14 @@ public class TAL {
             GO TO Coast; 
             UNLOAD SELF.Fuel Fuel; 
             WHILE Coast.Fuel > 0 {
-                WAIT;
+                LOAD Coast.Water Water;
             }
-            LOAD Coast.Water Water; 
             GO TO Factory; 
             GO TO Greenhouse; 
             UNLOAD SELF.Water Water; 
             WHILE Greenhouse.Water > 0 {
-                WAIT;
+                LOAD Greenhouse.Wood Wood;
             }
-            LOAD Greenhouse.Wood Wood; 
             GO TO Factory; 
             UNLOAD SELF.Wood Wood; 
         ",
@@ -102,7 +98,7 @@ public class TAL {
     private static string loopExplanation(string productID, string cityID) {
         return @"
         Trains with this program begin at the factory. They will 
-        load half of the factory's fuel, then go to the " + cityID + @" and 
+        load a tenth of the factory's fuel, then go to the " + cityID + @" and 
         drop off all their fuel. They will wait until there is no 
         more fuel, and then take all the " + productID + @". 
         Then, they drop it all of at the factory. Then they continue 
@@ -114,7 +110,7 @@ public class TAL {
         [IronFactoryLoop] = loopExplanation(ItemID.Iron, CityID.Mine),
         [SandFactoryLoop] = loopExplanation(ItemID.Sand, CityID.Coast),
         [WaterFactoryLoop] = loopExplanation(ItemID.Water, CityID.Coast),
-        [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse),
+        [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse), //TODO: Fix woodfactoryloop explanation
         [FuelLoop] = @"
             Begins at factory. Brings half the factory's fuel to the coast.
             Waits until there is no more fuel at the coast and brings all the 

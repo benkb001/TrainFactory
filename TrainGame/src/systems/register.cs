@@ -102,6 +102,7 @@ public static class RegisterSystems {
         UpgradeInventoryExponentialClickSystem.Register(w);
         UpgradeMachineSpeedClickSystem.Register(w);
         UpgradeMachineProductCountClickSystem.Register(w);
+        CloseMenuClickSystem.Register(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -160,6 +161,8 @@ public static class RegisterSystems {
         StepperUISystem.Register(w); 
         
         ToastSystem.Register(w); 
+
+        ExitExpiredTrainMenuSystem.Register(w); 
 
         InventoryControlSystem.RegisterUpdate(w); 
         
