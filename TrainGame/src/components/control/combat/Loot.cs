@@ -23,13 +23,13 @@ public class Loot {
 
     //TODO: drop chances should also shift with floor? 
     private static List<(string, int)> drops = new() {
-        (ItemID.Plasma, 40),
-        (ItemID.Credit, 30), 
-        (ItemID.Iron, 15), 
-        (ItemID.Glass, 5),
-        (ItemID.Wood, 5),
-        (ItemID.Assembler, 3), 
-        (ItemID.Motherboard, 1),
+        (ItemID.Plasma, 0),
+        (ItemID.Credit, 99), 
+        (ItemID.Iron, 0), 
+        (ItemID.Glass, 0),
+        (ItemID.Wood, 0),
+        (ItemID.Assembler, 0), 
+        (ItemID.Motherboard, 0),
         (ItemID.TimeCrystal, 1)
     };
 
@@ -37,7 +37,7 @@ public class Loot {
 
     private static Dictionary<string, Func<int, int>> dropCounts = new() {
         [ItemID.Plasma] = (f) => f, 
-        [ItemID.Credit] = (f) => Util.Pow(f * 2, 1.1), 
+        [ItemID.Credit] = (f) => Util.Pow(f + (f * f * 0.1 * Util.NextDoublePositive()), 1d), 
         [ItemID.Iron] = (f) => 10 + f, 
         [ItemID.Glass] = (f) => f, 
         [ItemID.Wood] = (f) => f, 
@@ -59,12 +59,12 @@ public class Loot {
     }
 
     public static Loot GetRandom(int floor, Inventory destination, World w) {
-        int rand = w.NextInt(maxDrop + 1); 
+        int rand = w.NextInt(maxDrop); 
         int sum = 0; 
 
         foreach ((string itemID, int chance) in drops) {
             sum += chance; 
-            if (sum >= rand) {
+            if (sum > rand) {
                 return new Loot(itemID, dropCounts[itemID](floor), destination);
             }
         }

@@ -162,21 +162,17 @@ public partial class World {
         return gameClock.TotalSeconds; 
     }
 
+    //TODO: remove randoms
     public int NextInt(int maxExclusive) {
-        int r = random.Next(maxExclusive);
-        return r;
+        return Util.NextInt(maxExclusive); 
     }
 
     public double NextDouble() {
-        return (random.NextDouble() * 2) - 1;
+        return Util.NextDouble(); 
     }
 
     public float NextFloat() {
-        float f = (float)random.NextDouble(); 
-        if (f < 0f) {
-            throw new InvalidOperationException("bug");
-        }
-        return f;
+        return Util.NextFloat(); 
     }
 
     public float NextNeg1To1() {

@@ -129,9 +129,9 @@ public static class DrawLadderSystem {
 }
 
 public static class EnemySpawnSystem {
-    private const float armorThresh = 0.05f; 
-    private const float damageThresh = 0.01f; 
-    private const float healthThresh = 0.2f; 
+    private const float armorThresh = 0.01f;
+    private const float damageThresh = 0.02f; 
+    private const float healthThresh = 0.07f; 
     private const float itemThresh = 1f;
     private const int numRewards = 2;
 
@@ -193,13 +193,14 @@ public static class LadderInteractSystem {
     public static void Register(World w) {
         InteractSystem.Register<Ladder>(w, (w, _, ladder) => {
             if (ladder.FloorDest == 0) {
+                PlayerStats.Reset(w); 
                 MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
             } else {
                 Layout.DrawRandom(w, ladder.FloorDest);
             }
 
             Inventory inv = LootWrap.GetDestination(w);
-            int extraDamage = ladder.FloorDest / 5;
+            int extraDamage = Constants.FloorDifficulty(ladder.FloorDest) / 2; 
             
             foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
                 w.SetComponent<Loot>(e, Loot.GetRandom(ladder.FloorDest, inv, w));

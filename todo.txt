@@ -20,6 +20,7 @@
 * Upgrade train fuel consumption/power
 * New train programs aren't too cpu intensive
 * ExitExpired 
+* Armor decreasing damage received
 
 **** CLEAN UP **** 
 
@@ -39,28 +40,29 @@
     train to wait before leaving and pass as an OR. 
 * Fix somehow negative items? 
 * Fix randomly unlocking zoom
-* Fix armor not applying
-* Add an interface to stop trains running on programs, either
-  a screen accessible from map or when you click on a moving train 
+* Fix enemy collision things
 * Add harder levels to HPP, with more enemies on the screen 
+  * Will need to add harder enemy patterns. 
   * But also change homing enemy to shoot way less often
-* Increase the growth rate of HPP rewards significantly 
-  * Maybe change drop rates as you increase, and time
-    crystals get slightly more likely every few floors 
-  * Give way more credits as you go deeper 
-  * Might help if we drew the floor number in the HUD? 
-* Tune train movement speed and machine crafting rates 
-  * Currently the gains are somewhat small. We start with only 
-    50 fuel and less than double on each loop, so there has to 
-    be a ton of loops to gain fuel especially when a lot of it 
-    is going to iron and glass. If we make the loops take 
-    longer, it may allow the player to focus a little more on 
-    HPP (and in the future, other RPG stuff like npc and quests)
 * Remove traveling between cities, have player just stay in the 
   center, which will have access to HPP area 
-* Tune default stack sizes, should be bigger if we want 
-  railroads to be as expensive as they are 
 * Make railroad purchase button a 1x1 paged layout
+* Add a way to unpause train program from the regular train menu
+* Make floor layout generation procedural
+* Add an elevator system
+  * at rest floors players can save their 
+  progress and manage their trains. 
+  * Players can get a portion of the stat boosts they 
+  would get, had they played from floor zero. 
+* Change HPP rewards: 
+  * first, roll for stats vs items, try 30% stats? 
+  * For items, it's always either credit or plasma, but amounts are randomized, 
+    and you can't buy plasma with credits anymore. 
+  * For stats, it should be two different options, and add a few new ones: 
+    * Shoot speed, number of bullets, reload time, clip size, parry duration, 
+      parry base cooldown, parry decrease
+  * Make health on the scale of 100 for player, and then most enemies do 
+    like 10 damage, put a cap on armor, and remove enemy damage scaling. 
 
 **** FUTURE FEATURES **** 
 
@@ -76,14 +78,8 @@
   * Player written programs 
 * Add tutorials 
   * Syntax for TAL will def be needed 
-* Add a way to pause/resume trains running on a program
-  * Will need an interface that displays all trains, but 
-    doesn't allow you to go into train interface
 * Add an equipment type to upgrade mobility, ie longer duration/shorter cd, 
   or more decrease from parrying 
-* Add new gun types 
-* Add new level layouts 
-* Add new cities 
 * Make it so only cities that have a railroad that can connect them to an 
   accessible city are drawn on the map
 
@@ -95,7 +91,6 @@
 * Add some tutorials/guides
 * Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
   if completed give high rewards 
-* Add random fights at each city that also give high-rewards if defeated
 * Use OpenFileDialog class to let players submit a program file from their cpu
 
 **** NICE TO HAVE LOW PRIORITY **** 

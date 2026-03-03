@@ -103,6 +103,7 @@ public static class RegisterSystems {
         UpgradeMachineSpeedClickSystem.Register(w);
         UpgradeMachineProductCountClickSystem.Register(w);
         CloseMenuClickSystem.Register(w); 
+        PauseTrainProgramButtonClickSystem.Register(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -121,11 +122,9 @@ public static class RegisterSystems {
 
         CloseMenuSystem.Register(w); 
         
-        OpenMapSystem.Register(w); 
+        //OpenMapSystem.Register(w); 
 
         RedrawMapSystem.Register(w);
-
-        ResetPlayerStatsSystem.RegisterLeftCity(w); 
 
         DrawBackgroundSystem.Register(w); 
         DrawHPSystem.Register(w); 

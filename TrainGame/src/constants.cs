@@ -56,13 +56,13 @@ namespace TrainGame.Constants
 
         public static float InvUpgradeMass = 1000f; 
 
-        public const float TrainDefaultPower = 25000f; 
-        public const float PowerPerEngine = 1000f;
-        public const float UpgradePowerStep = 1000f; 
+        public const float TrainDefaultPower = 1250f; 
+        public const float PowerPerEngine = 100f;
+        public const float UpgradePowerStep = 100f; 
         public const float TrainDefaultMass = 1000f; 
         public const float MassMilesPerFuel = 25000f;
         public const float MassMilesPerFuelPerCombustionController = 1000f;
-        public const float MinSpeed = 0.0002f;
+        public const float MinSpeed = 0.00001f;
 
         public static readonly Dictionary<CartType, float> CartMass = new() {
             [CartType.Freight] = 1250f, 
@@ -113,9 +113,11 @@ namespace TrainGame.Constants
 
         public static int FloorDifficulty(int floor) {
             if (floor < 5) {
-                return 0;
-            } else {
+                return 0; 
+            } else if (floor < 10) {
                 return 1; 
+            } else {
+                return 2; 
             }
         }
     }
@@ -242,11 +244,9 @@ namespace TrainGame.Constants
     }
 
     public static class CityID {
-        public const string Armory = "Armory"; 
         public const string Coast = "Coast"; 
         public const string Factory = "Factory"; 
         public const string Greenhouse = "Greenhouse"; 
-        public const string HauntedPowerPlant = "Haunted Power Plant";
         public const string Laboratory = "Laboratory";
         public const string Mine = "Mine"; 
         public const string Refinery = "Refinery";
@@ -261,14 +261,6 @@ namespace TrainGame.Constants
 
         private static Dictionary<string, Dictionary<string, int>> noConnections = new(); 
         private static Dictionary<string, Dictionary<string, int>> railroadCosts = new() {
-            [CityID.Armory] = new Dictionary<string, int>() {
-                [ItemID.Wood] = 1000, 
-                [ItemID.Iron] = 500
-            },
-            [CityID.HauntedPowerPlant] = new Dictionary<string, int>() {
-                [ItemID.Wood] = 100,
-                [ItemID.Iron] = 100
-            },
             [CityID.Refinery] = new Dictionary<string, int>() {
                 [ItemID.Oil] = 100, 
                 [ItemID.Iron] = 100, 
@@ -316,7 +308,7 @@ namespace TrainGame.Constants
                 550f, 210f, 0f, 0f, 
                 [CityID.Greenhouse, CityID.Coast, CityID.Mine],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.HauntedPowerPlant] = railroadCosts[CityID.HauntedPowerPlant]
+                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
                 }
             ),
             [CityID.Greenhouse] = new CityArg(
@@ -324,8 +316,7 @@ namespace TrainGame.Constants
                 550f, 10f, 0f, -2.5f, 
                 [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Refinery] = railroadCosts[CityID.Refinery],
-                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
+                    [CityID.Refinery] = railroadCosts[CityID.Refinery]
                 }
             ),
             [CityID.Coast] = new CityArg(
@@ -333,7 +324,7 @@ namespace TrainGame.Constants
                 350f, 210f, -2.5f, 0f, 
                 [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Armory] = railroadCosts[CityID.Armory]
+                    
                 }
             ),
             [CityID.Mine] = new CityArg(
@@ -341,27 +332,7 @@ namespace TrainGame.Constants
                 550f, 410f, 0f, 2.5f, 
                 [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Armory] = railroadCosts[CityID.Armory],
                     [CityID.Reservoir] = railroadCosts[CityID.Reservoir]
-                }
-            ),
-            [CityID.HauntedPowerPlant] = new CityArg(
-                [], 
-                750f, 210f, 2.5f, 0f, 
-                [],
-                new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Factory] = railroadCosts[CityID.HauntedPowerPlant], 
-                    [CityID.Reservoir] = railroadCosts[CityID.Reservoir],
-                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
-                }
-            ),
-            [CityID.Armory] = new CityArg(
-                [],
-                350f, 410f, -2.5f, 2.5f, 
-                [],
-                new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Coast] = railroadCosts[CityID.Armory],
-                    [CityID.Mine] = railroadCosts[CityID.Armory]
                 }
             ),
             [CityID.Reservoir] = new CityArg(
@@ -369,8 +340,7 @@ namespace TrainGame.Constants
                 750f, 410f, 2.5f, 2.5f,
                 [],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Mine] = railroadCosts[CityID.Reservoir], 
-                    [CityID.HauntedPowerPlant] = railroadCosts[CityID.Reservoir]
+                    [CityID.Mine] = railroadCosts[CityID.Reservoir]
                 }
             ),
             [CityID.Refinery] = new CityArg(
@@ -384,11 +354,10 @@ namespace TrainGame.Constants
             ),
             [CityID.TrainYard] = new CityArg(
                 [MachineID.EngineAssembler, MachineID.CombustionControllerAssembler],
-                750f, 10f, 2.5f, -2.5f,
+                750f, 210f, 2.5f, 0f,
                 [],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Greenhouse] = railroadCosts[CityID.TrainYard],
-                    [CityID.HauntedPowerPlant] = railroadCosts[CityID.TrainYard],
+                    [CityID.Factory] = railroadCosts[CityID.TrainYard],
                     [CityID.Laboratory] = railroadCosts[CityID.Laboratory]
                 }
             ),
@@ -396,10 +365,11 @@ namespace TrainGame.Constants
                 [MachineID.SmartAssemblerFactory, MachineID.AcceleratorAssembler,
                  MachineID.AntiGravityAssembler, MachineID.AirResistorAssembler, 
                  MachineID.DuplicatorAssembler, MachineID.PocketDimensionAssembler],
-                950f, 10f, 5f, -2.5f,
+                750f, 10f, 2.5f, -2.5f,
                 [],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.TrainYard] = railroadCosts[CityID.Laboratory]
+                    [CityID.TrainYard] = railroadCosts[CityID.Laboratory],
+                    [CityID.Greenhouse] = railroadCosts[CityID.Laboratory]
                 }
             )
         };
@@ -657,7 +627,7 @@ namespace TrainGame.Constants
             ),
             [MachineID.Gasifier] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 
-                ProductCount: 1, 
+                ProductCount: 2, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Wood] = 1
                 },
@@ -805,7 +775,7 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Wood, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Water] = 10
+                    [ItemID.Water] = 5
                 },
                 MinTicks: 3,
                 SlowFactor: 300,
@@ -927,7 +897,7 @@ namespace TrainGame.Constants
             ),
             [MachineID.Pump] = new MachineArg(
                 ProductItemId: ItemID.Water, 
-                ProductCount: 20, 
+                ProductCount: 40, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 }, 
@@ -1031,10 +1001,10 @@ namespace TrainGame.Constants
                     [ItemID.Credit] = 500
                 }, 100), 
                 [ItemID.Fuel] = (new() {
-                    [ItemID.Credit] = 600
+                    [ItemID.Credit] = 300
                 }, 100), 
                 [ItemID.Glass] = (new() {
-                    [ItemID.Credit] = 200
+                    [ItemID.Credit] = 100
                 }, 10), 
                 [ItemID.Assembler] = (new() {
                     [ItemID.Credit] = 200

@@ -40,8 +40,6 @@ public static class DrawCitySystem {
         City c = w.GetComponent<DrawCityMessage>(e).GetCity();
         c.HasPlayer = true; 
 
-        w.LockCamera(); 
-
         Layout.Draw(w, Layout.Cities[c.Id]);
         w.RemoveEntity(e); 
     }; 

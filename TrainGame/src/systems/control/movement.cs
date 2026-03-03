@@ -185,6 +185,14 @@ public static class MovementSystem {
 
     public static List<HashSet<int>> Partitions => partition.GetAll();
 
+    private static float getVelocity(World w, int e) {
+        (Velocity v, bool s) = w.GetComponentSafe<Velocity>(e); 
+        if (!s) {
+            return 0f; 
+        }
+        return v.Vector.Length(); 
+    }
+
     public static void DrawBounds(World w) {
         drawnBoundEnts.ForEach(e => w.RemoveEntity(e));
         partition

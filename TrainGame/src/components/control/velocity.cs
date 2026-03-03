@@ -24,4 +24,6 @@ public class Velocity {
     public Velocity(Vector2 v) {
         Vector = v; 
     }
+
+    public static implicit operator Vector2(Velocity v) => v.Vector;
 }

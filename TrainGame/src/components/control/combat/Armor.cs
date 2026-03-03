@@ -5,8 +5,7 @@ using TrainGame.Constants;
 public class Armor {
     private int defense; 
     private int tempDefense; 
-    public int Defense => defense; 
-    public int TempDefense => tempDefense; 
+    public int Defense => defense + tempDefense; 
 
     public Armor(int defense = 0) {
         this.defense = defense; 

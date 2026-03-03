@@ -118,6 +118,7 @@ public static class RegisterComponents {
         r<Parrier>();
         r<ParryCooldownBar>();
         r<PauseButton>(); 
+        r<PauseTrainProgramButton>();
         r<PlayerAccessTrainButton>(); 
         r<Player>(); 
         r<PlayerHUD>(); 

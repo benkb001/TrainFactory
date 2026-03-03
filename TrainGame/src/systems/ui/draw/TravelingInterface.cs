@@ -37,6 +37,7 @@ public class DrawTravelingInterfaceSystem {
     public static void Register(World w) {
 
         DrawInterfaceSystem.Register<TravelingInterfaceData>(w, (w, e, data) => {
+            
             Train t = data.GetTrain(); 
 
             Vector2 topleft = w.GetCameraTopLeft(); 
@@ -44,29 +45,38 @@ public class DrawTravelingInterfaceSystem {
             float width = w.ScreenWidth - 20f; 
             float height = w.ScreenHeight - 20f; 
 
-            int travelingInterfaceLayoutEnt = EntityFactory.Add(w); 
-            LinearLayout travelingInterfaceLL = new LinearLayout("vertical", "alignlow");
-            w.SetComponent<LinearLayout>(travelingInterfaceLayoutEnt, travelingInterfaceLL); 
-            w.SetComponent<Frame>(travelingInterfaceLayoutEnt, new Frame(pos, width, height)); 
+            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
+
             
             int summaryEnt = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(summaryEnt, travelingInterfaceLayoutEnt, travelingInterfaceLL, w);
+            outer.AddChild(summaryEnt, w); 
             w.SetComponent<Frame>(summaryEnt, new Frame(0, 0, w.ScreenWidth - 40f, w.ScreenHeight / 4f)); 
             string s = $"{t.Id}\nArrival Time: {t.ArrivalTime}";
             w.SetComponent<TextBox>(summaryEnt, new TextBox(s)); 
             w.SetComponent<Outline>(summaryEnt, new Outline()); 
             
             int timeEnt = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(timeEnt, travelingInterfaceLayoutEnt, travelingInterfaceLL, w); 
+            outer.AddChild(timeEnt, w); 
             w.SetComponent<Frame>(timeEnt, new Frame(0, 0, w.ScreenHeight / 4f, w.ScreenHeight / 4f)); 
             w.SetComponent<GameClockView>(timeEnt, GameClockView.Get());
             w.SetComponent<Outline>(timeEnt, new Outline()); 
             w.SetComponent<TextBox>(timeEnt, new TextBox("")); 
-
+            
+            (float invWidth, float invHeight) = InventoryWrap.GetUI(t.Inv); 
             DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(
-                t, Vector2.Zero, w.ScreenWidth - 40f, w.ScreenHeight / 4f); 
+                t, Vector2.Zero, invWidth, invHeight); 
             InventoryContainer<Train> container = DrawInventoryContainerSystem.Draw<Train>(dm, w);
-            LinearLayoutWrap.AddChild(container.GetParentEntity(), travelingInterfaceLayoutEnt, travelingInterfaceLL, w); 
+
+            LinearLayoutContainer row = LinearLayoutWrap.Add(w, Vector2.Zero, w.ScreenWidth - 40f, w.ScreenHeight / 4f);
+            outer.AddChild(row.GetParentEntity(), w); 
+
+            row.AddChild(container.GetParentEntity(), w);
+
+            if (t.Executable != null) {
+                int pauseProgramBtnEnt = PauseTrainProgramButtonWrap.Add(w, t, w.ScreenHeight / 4f, w.ScreenHeight / 5f);
+                row.AddChild(pauseProgramBtnEnt, w); 
+            }
+
             w.RemoveEntity(e); 
         }); 
     }

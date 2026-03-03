@@ -1,0 +1,7 @@
+
+THINGS I MIGHT FORGET THAT ARE MAYBE IMPORTANT 
+
+The class PlayerAccessTrainButton is the button used to enter 
+a train as a player so they can ride it to another city, that 
+functionality might be removed but I'm writing it here in case 
+I decide to put it back. 

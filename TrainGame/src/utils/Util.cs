@@ -19,6 +19,7 @@ using TrainGame.Components;
 using TrainGame.ECS;  
 
 public static class Util {
+    private static Random random = new Random(); 
     public static Rectangle RectangleFromRectangleF(RectangleF rectF) {
         return new Rectangle(
             (int)rectF.X,
@@ -60,7 +61,28 @@ public static class Util {
         }
     }
 
-    public static int Pow(int b, double e) {
-        return (int)(Math.Pow((double)b, e));
+    public static int Pow(double b, double e) {
+        return (int)(Math.Pow(b, e));
+    }
+
+    public static float NextFloat() {
+        float f = (float)random.NextDouble(); 
+        if (f < 0f) {
+            throw new InvalidOperationException("bug");
+        }
+        return f;
+    }
+
+    public static double NextDouble() {
+        return (random.NextDouble() * 2) - 1;
+    }
+
+    public static double NextDoublePositive() {
+        return random.NextDouble(); 
+    }
+
+    public static int NextInt(int maxExclusive) {
+        int r = random.Next(maxExclusive);
+        return r;
     }
 }
