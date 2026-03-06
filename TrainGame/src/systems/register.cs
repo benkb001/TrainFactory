@@ -168,6 +168,7 @@ public static class RegisterSystems {
         InventoryControlSystem.RegisterUpdate(w); 
         
         PlayerHUDPositionSystem.Register(w); 
+        DrawAmmoHUDSystem.Register(w); 
         
         ScreenAnchorSystem.Register(w); //***
         LinearLayoutSystem.Register(w);

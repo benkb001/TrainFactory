@@ -22,6 +22,7 @@ public static class RegisterComponents {
         r<Active>(); 
         r<AddCartButton>(); 
         r<AddCartInterfaceButton>(); 
+        r<AmmoHUD>(); 
         r<Armor>();
         r<Background>(); 
         r<Backgrounds>(); 

@@ -67,6 +67,8 @@ public class Shooter {
     public int BulletSize => bulletSize; 
     public float SpreadDegrees => spreadDegrees;
     public float PatternSize => patternSize; 
+    public int Ammo => ammo; 
+    public int MaxAmmo => maxAmmo; 
 
     public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3f, 
         int ammo = 10, int skill = 50, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 

@@ -3,6 +3,7 @@ namespace TrainGame.Utils;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -37,11 +38,42 @@ public static class PlayerWrap {
         armorInv.SetArmor();
         w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
 
-        playerInv.Add(ItemID.Gun, 1); 
+        playerInv.Add(ItemID.Gun3, 1); 
     }
 
     public static void SetRespawn(World w, City c) {
         w.SetComponent<RespawnLocation>(GetEntity(w), new RespawnLocation(c));
+    }
+
+    public static int GetHeldItemEnt(World w) {
+        List<int> es = w.GetMatchingEntities([typeof(HeldItem), typeof(Active)]);
+        
+        if (es.Count > 0) {
+            return es[0]; 
+        }
+
+        return -1; 
+    }
+
+    public static string GetHeldItemID(World w) {
+        int e = GetHeldItemEnt(w); 
+        (HeldItem h, bool s) = w.GetComponentSafe<HeldItem>(e); 
+
+        if (s) {
+            return h.ItemID; 
+        }
+        
+        return "";
+    }
+
+    public static Shooter GetShooter(World w) {
+        string itemID = GetHeldItemID(w);
+
+        if (Weapons.GunMap.ContainsKey(itemID)) {
+            return Weapons.GunMap[itemID];
+        }
+        
+        return null; 
     }
 
     public static int Draw(Vector2 position, World w) {
@@ -70,6 +102,10 @@ public static class PlayerWrap {
         int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
         w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
         playerHUD.AddChild(hpEnt, w); 
+
+        int ammoEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "Ammo"); 
+        w.SetComponent<AmmoHUD>(ammoEnt, new AmmoHUD());
+        playerHUD.AddChild(ammoEnt, w); 
         
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 

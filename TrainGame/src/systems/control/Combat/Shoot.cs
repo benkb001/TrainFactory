@@ -38,19 +38,13 @@ public static class ShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
-                List<int> es = w.GetMatchingEntities([typeof(HeldItem), typeof(Active)])
-                .Where(e => Weapons.GunMap.ContainsKey(w.GetComponent<HeldItem>(e).ItemId))
-                .ToList(); 
-
-                if (es.Count > 0) {
-                    int e = es[0]; 
-
-                    HeldItem gun = w.GetComponent<HeldItem>(e); 
-                    Shooter shooter = Weapons.GunMap[gun.ItemID];
+                Shooter shooter = PlayerWrap.GetShooter(w); 
+                if (shooter != null) {
                     Vector2 mousePos = w.GetWorldMouseCoordinates(); 
-                    (Frame f, bool s) = w.GetComponentSafe<Frame>(e); 
+                    int itemEnt = PlayerWrap.GetHeldItemEnt(w); 
+                    (Frame f, bool s2) = w.GetComponentSafe<Frame>(itemEnt); 
 
-                    if (s) {
+                    if (s2) {
                         ShooterWrap.TryShoot(w, shooter, f, mousePos, ShooterType.Player);
                     }
                 }

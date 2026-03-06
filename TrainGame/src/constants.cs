@@ -454,7 +454,10 @@ namespace TrainGame.Constants
 
     public static class Weapons {
         public static Dictionary<string, Shooter> GunMap = new() {
-            [ItemID.Gun] = new Shooter(skill: 80, ticksPerShot: 20, ammo: 8, reloadTicks: 40)
+            [ItemID.Gun] = new Shooter(skill: 80, ticksPerShot: 20, ammo: 8, reloadTicks: 40),
+            [ItemID.Gun2] = new Shooter(skill: 90, ticksPerShot: 10, ammo: 16, reloadTicks: 40, bulletSpeed: 6f),
+            [ItemID.Gun3] = new Shooter(skill: 95, ticksPerShot: 5, ammo: 32, reloadTicks: 40, bulletSpeed: 12f, 
+                shootPattern: ShootPattern.Multi, bulletsPerShot: 2, spreadDegrees: 10f)
         };
     }
 
