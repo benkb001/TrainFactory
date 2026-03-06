@@ -133,7 +133,7 @@ public static class EnemySpawnSystem {
     private const float damageThresh = 0.02f; 
     private const float healthThresh = 0.07f; 
     private const float itemThresh = 1f;
-    private const int numRewards = 2;
+    private const int numRewards = 1;
 
     public static void Register(World w) {
         Vector2 dx(int i) {
@@ -158,27 +158,9 @@ public static class EnemySpawnSystem {
                     w.SetComponent<CombatReward>(rewardEnt, reward); 
                     spawner.AddReward(reward); 
 
-                    string rewardStr = ""; 
-                    float rand = w.NextFloat(); 
-
-                    //TODO: maybe some items should be rewards here? 
-                    //like machines and such ? 
-                    if (rand < armorThresh) {
-                        rewardStr = "Armor +1"; 
-                        w.SetComponent<TempArmor>(rewardEnt, new TempArmor(1)); 
-                    } else if (rand < damageThresh) {
-                        rewardStr = "Damage +1"; 
-                        w.SetComponent<DamagePotion>(rewardEnt, new DamagePotion(1)); 
-                    } else if (rand < healthThresh) {
-                        int hp = round; 
-                        hp = 1 + (int)(w.NextFloat() * w.NextFloat() * hp); 
-                        rewardStr = $"HP +{hp}";
-                        w.SetComponent<HealthPotion>(rewardEnt, new HealthPotion(hp)); 
-                    } else {
-                        Loot loot = Loot.GetRandom(spawner.FloorDest * 2, CityWrap.GetCityWithPlayer(w).Inv, w);
-                        w.SetComponent<Loot>(rewardEnt, loot);
-                        rewardStr = $"{loot.GetItemID()}: {loot.Count}";
-                    }
+                    Loot loot = Loot.GetRandom(spawner.FloorDest, CityWrap.GetCityWithPlayer(w).Inv, w);
+                    w.SetComponent<Loot>(rewardEnt, loot);
+                    string rewardStr = $"{loot.GetItemID()}: {loot.Count}";
 
                     w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
                 }
@@ -192,24 +174,32 @@ public static class EnemySpawnSystem {
 public static class LadderInteractSystem {
     public static void Register(World w) {
         InteractSystem.Register<Ladder>(w, (w, _, ladder) => {
-            if (ladder.FloorDest == 0) {
-                PlayerStats.Reset(w); 
-                MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
-            } else {
-                Layout.DrawRandom(w, ladder.FloorDest);
-            }
-
-            Inventory inv = LootWrap.GetDestination(w);
-            int extraDamage = Constants.FloorDifficulty(ladder.FloorDest) / 2; 
-            
-            foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
-                w.SetComponent<Loot>(e, Loot.GetRandom(ladder.FloorDest, inv, w));
-                w.GetComponent<Shooter>(e).IncreaseDamage(extraDamage);
-            }
-
-            foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {
-                w.GetComponent<EnemySpawner>(e).FloorDest = ladder.FloorDest + 1; 
-            }
+            FloorSystem.GoToFloor(w, ladder.FloorDest); 
         });
+    }
+}
+
+public static class FloorSystem {
+    public static void GoToFloor(World w, int floor) {
+        if (floor == 0) {
+            PlayerStats.Reset(w); 
+            MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
+        } else {
+            Layout.DrawRandom(w, floor);
+        }
+
+        Inventory inv = LootWrap.GetDestination(w);
+        int extraDamage = Constants.FloorDifficulty(floor) / 2; 
+        
+        foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
+            w.SetComponent<Loot>(e, Loot.GetRandom(floor, inv, w));
+            w.GetComponent<Shooter>(e).IncreaseDamage(extraDamage);
+        }
+
+        foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {
+            w.GetComponent<EnemySpawner>(e).FloorDest = floor + 1; 
+        }
+
+        Globals.MaxFloor = Math.Max(Globals.MaxFloor, floor); 
     }
 }

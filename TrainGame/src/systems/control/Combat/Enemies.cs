@@ -48,7 +48,7 @@ public class EnemyConst {
     public float SpreadDegrees;
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
-        int Damage = 1, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
+        int Damage = 5, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
         int Ammo = 3, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
         BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
         int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 120,
@@ -188,6 +188,11 @@ public class EnemyWrap {
         w.SetComponent<Armor>(enemyEnt, armor); 
         
         return new EnemyWrap(enemyEnt, h, armor, movement, shooter);
+    }
+
+    public static int GetFirst(World w) {
+        List<int> es = w.GetMatchingEntities(EnemySignature); 
+        return es.Count > 0 ? es[0] : -1; 
     }
 
     private Armor armor; 

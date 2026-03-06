@@ -21,9 +21,8 @@ public static class RegisterSystems {
         
         MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w); 
-        MovementSystem.Register(w); //***
+        MovementSystem.Register(w);
 
-        //TeleportSystem.Register(w); 
         ParrySystem.RegisterStartParry(w); 
         ParrySystem.RegisterEndParry(w); 
         DamageSystem.RegisterShoot<Player, Enemy>(w); 
@@ -94,6 +93,7 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<UpgradeTrainInterfaceData>(w);
+        EnterInterfaceInteractSystem.Register<ElevatorInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
         UpgradeDepotClickSystem.Register(w); 
         ConnectCitiesClickSystem.Register(w);
@@ -104,6 +104,7 @@ public static class RegisterSystems {
         UpgradeMachineProductCountClickSystem.Register(w);
         CloseMenuClickSystem.Register(w); 
         PauseTrainProgramButtonClickSystem.Register(w); 
+        ElevatorSystem.Register(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -152,6 +153,7 @@ public static class RegisterSystems {
         DrawUpgradeTrainInterfaceSystem.Register(w);
         SetMachineHeaderSystem.Register(w); 
         DrawLadderSystem.Register(w);
+        DrawElevatorInterfaceSystem.Register(w); 
         //CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 

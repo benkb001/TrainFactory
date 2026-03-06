@@ -35,8 +35,9 @@ public class StepperContainer {
 
 public class StepperWrap {
 
-    public static StepperContainer Draw(float width, float viewHeight, 
-        string submitStr, World w, int defaultVal = 0) {
+    public static StepperContainer Draw(World w, float width, float viewHeight, 
+        string submitStr, int defaultVal = 0, int min = -Int32.MaxValue, 
+        int max = Int32.MaxValue, int step = 1) {
         
         int viewEntity = EntityFactory.Add(w); 
         LinearLayout ll = new LinearLayout("vertical", "alignLow"); 
@@ -52,8 +53,8 @@ public class StepperWrap {
         float elementWidth = width - (2 * margin); 
 
         int stepperEntity = EntityFactory.Add(w); 
-        Stepper step = new Stepper(defaultVal);
-        w.SetComponent<Stepper>(stepperEntity, step);
+        Stepper stepper = new Stepper(defaultVal, min, max);
+        w.SetComponent<Stepper>(stepperEntity, stepper);
         w.SetComponent<Frame>(stepperEntity, new Frame(Vector2.Zero, elementWidth, elementHeight));
         w.SetComponent<Outline>(stepperEntity, new Outline()); 
         w.SetComponent<TextBox>(stepperEntity, new TextBox($"{defaultVal}"));
@@ -64,7 +65,7 @@ public class StepperWrap {
         triangleUp.Add(new Vector2(elementWidth, 0));
         triangleUp.Add(new Vector2(elementWidth / 2, -elementHeight));
         w.SetComponent<Button>(stepUpEntity, new Button());
-        w.SetComponent<StepperButton>(stepUpEntity, new StepperButton(stepperEntity, 1));
+        w.SetComponent<StepperButton>(stepUpEntity, new StepperButton(stepperEntity, step));
         w.SetComponent<Frame>(stepUpEntity, new Frame(triangleUp)); 
         w.SetComponent<Outline>(stepUpEntity, new Outline()); 
 
@@ -74,7 +75,7 @@ public class StepperWrap {
         triangleDown.Add(new Vector2(elementWidth, 0));
         triangleDown.Add(new Vector2(elementWidth / 2, elementHeight));
         w.SetComponent<Button>(stepDownEntity, new Button()); 
-        w.SetComponent<StepperButton>(stepDownEntity, new StepperButton(stepperEntity, -1));
+        w.SetComponent<StepperButton>(stepDownEntity, new StepperButton(stepperEntity, -step));
         w.SetComponent<Frame>(stepDownEntity, new Frame(triangleDown)); 
         w.SetComponent<Outline>(stepDownEntity, new Outline()); 
 
@@ -83,6 +84,7 @@ public class StepperWrap {
         w.SetComponent<Frame>(submitEntity, new Frame(Vector2.Zero, elementWidth, elementHeight)); 
         w.SetComponent<Outline>(submitEntity, new Outline()); 
         w.SetComponent<TextBox>(submitEntity, new TextBox(submitStr));
+        w.SetComponent<Stepper>(submitEntity, stepper);
 
         ll.AddChild(stepUpEntity); 
         ll.AddChild(stepperEntity); 
@@ -90,6 +92,6 @@ public class StepperWrap {
         ll.AddChild(submitEntity); 
 
         return new StepperContainer(stepUpEntity, stepDownEntity, submitEntity, stepperEntity,
-            viewEntity, container, step); 
+            viewEntity, container, stepper); 
     }   
 }

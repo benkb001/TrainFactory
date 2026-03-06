@@ -22,27 +22,43 @@ public class Loot {
     public int Count => count;
 
     //TODO: drop chances should also shift with floor? 
-    private static List<(string, int)> drops = new() {
-        (ItemID.Plasma, 0),
-        (ItemID.Credit, 99), 
-        (ItemID.Iron, 0), 
-        (ItemID.Glass, 0),
-        (ItemID.Wood, 0),
-        (ItemID.Assembler, 0), 
-        (ItemID.Motherboard, 0),
+    private static List<(string, int)> drops1 = new() {
+        (ItemID.Plasma, 49),
+        (ItemID.Credit, 50), 
         (ItemID.TimeCrystal, 1)
     };
 
-    private static int maxDrop => drops.Aggregate(0, (acc, cur) => acc + cur.Item2);
+    private static List<(string, int)> drops2 = new() {
+        (ItemID.Carbon, 38),
+        (ItemID.Credit, 60),
+        (ItemID.TimeCrystal, 2)
+    };
+
+    private static List<(string, int)> drops3 = new() {
+        (ItemID.Adamantite, 27), 
+        (ItemID.Credit, 70),
+        (ItemID.TimeCrystal, 3)
+    };
+
+    private static List<(string, int)> getDrops(int floor) {
+        if (floor < 20) {
+            return drops1;
+        } else if (floor < 40) {
+            return drops2;
+        } else {
+            return drops3; 
+        }
+    }
+
+    private static int maxDrop(List<(string, int)> drops) {
+        return drops.Aggregate(0, (acc, cur) => acc + cur.Item2);
+    }
 
     private static Dictionary<string, Func<int, int>> dropCounts = new() {
-        [ItemID.Plasma] = (f) => f, 
-        [ItemID.Credit] = (f) => Util.Pow(f + (f * f * 0.1 * Util.NextDoublePositive()), 1d), 
-        [ItemID.Iron] = (f) => 10 + f, 
-        [ItemID.Glass] = (f) => f, 
-        [ItemID.Wood] = (f) => f, 
-        [ItemID.Assembler] = (f) => 1 + (f / 5), 
-        [ItemID.Motherboard] = (f) => 1, 
+        [ItemID.Plasma] = (f) => f + (int)(f * 3 * Util.NextDoublePositive()), 
+        [ItemID.Credit] = (f) => f + (int)(f * f * 0.1 * Util.NextDoublePositive()), 
+        [ItemID.Carbon] = (f) => f + (int)(f * 2 * Util.NextDoublePositive()),
+        [ItemID.Adamantite] = (f) => f + (int)(f * Util.NextDoublePositive()),
         [ItemID.TimeCrystal] = (f) => 10
     };
 
@@ -59,7 +75,10 @@ public class Loot {
     }
 
     public static Loot GetRandom(int floor, Inventory destination, World w) {
-        int rand = w.NextInt(maxDrop); 
+        List<(string, int)> drops = getDrops(floor);
+
+        int max = maxDrop(drops); 
+        int rand = w.NextInt(max); 
         int sum = 0; 
 
         foreach ((string itemID, int chance) in drops) {

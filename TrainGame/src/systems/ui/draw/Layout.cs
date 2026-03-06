@@ -15,6 +15,7 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
 public enum TileType {
+    Elevator,
     Enemy,
     Ground,
     Ladder,
@@ -58,6 +59,7 @@ public static class Layout {
     private static Tile ninja = new Tile(TileType.Enemy, EnemyType.Ninja);
     private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
     private static Tile shotgun = new Tile(TileType.Enemy, EnemyType.Shotgun);
+    private static Tile elevator = new Tile(TileType.Elevator); 
 
     private static Dictionary<string, Tile> m = MachineID.All
     .Select(s => new KeyValuePair<string, Tile>(s, new Tile(TileType.Machine, id: s)))
@@ -181,7 +183,7 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, ldDown, g, g, g, g, g, g, g, g, g, g, g, g, g, trainYard, g, w},
+        new() {w, g, ldDown, g, g, g, g, elevator, g, g, g, g, g, g, g, g, trainYard, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
     };
@@ -329,6 +331,14 @@ public static class Layout {
                         w.SetComponent<Collidable>(e, new Collidable());
                         w.SetComponent<Outline>(e, new Outline());
                         w.SetComponent<TextBox>(e, new TextBox(t.ID));
+                        break;
+                    case TileType.Elevator: 
+                        w.SetComponent<EnterInterfaceInteractable<ElevatorInterfaceData>>(e, 
+                            new EnterInterfaceInteractable<ElevatorInterfaceData>(new ElevatorInterfaceData()));
+                        w.SetComponent<Collidable>(e, new Collidable()); 
+                        w.SetComponent<Outline>(e, new Outline()); 
+                        w.SetComponent<Interactable>(e, new Interactable()); 
+                        w.SetComponent<TextBox>(e, new TextBox("Elevator")); 
                         break;
                     default: 
                         throw new InvalidOperationException("Unhandled tile type in draw layout");

@@ -31,6 +31,7 @@ public static class PersistentState {
         }
 
         dom.Add("time", JSONObjectFromWorldTime(w.Time));
+        dom.Add("maxFloor", Globals.MaxFloor);
 
         Type[] ts = [typeof(Train), typeof(City), typeof(Inventory), typeof(Machine)];
 
@@ -172,6 +173,7 @@ public static class PersistentState {
         JsonObject dom = JsonNode.Parse(File.ReadAllText(filepath)).AsObject(); 
 
         w.PassTime(WorldTimeFromJSONObject(dom["time"].AsObject()));
+        Globals.MaxFloor = (int)dom["maxFloor"];
 
         Dictionary<string, Inventory> inventories = new(); 
         Dictionary<string, City> cities = new(); 

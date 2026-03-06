@@ -21,6 +21,7 @@
 * New train programs aren't too cpu intensive
 * ExitExpired 
 * Armor decreasing damage received
+* Elevator
 
 **** CLEAN UP **** 
 
@@ -29,6 +30,7 @@
 * Make carts items
 * Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
+* Fix test directory to match some file placement changes
 
 **** NEXT FEATURES **** 
 
@@ -40,29 +42,25 @@
     train to wait before leaving and pass as an OR. 
 * Fix somehow negative items? 
 * Fix randomly unlocking zoom
-* Fix enemy collision things
-* Add harder levels to HPP, with more enemies on the screen 
-  * Will need to add harder enemy patterns. 
-  * But also change homing enemy to shoot way less often
-* Remove traveling between cities, have player just stay in the 
-  center, which will have access to HPP area 
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
-* Make floor layout generation procedural
-* Add an elevator system
-  * at rest floors players can save their 
-  progress and manage their trains. 
-  * Players can get a portion of the stat boosts they 
-  would get, had they played from floor zero. 
-* Change HPP rewards: 
-  * first, roll for stats vs items, try 30% stats? 
-  * For items, it's always either credit or plasma, but amounts are randomized, 
-    and you can't buy plasma with credits anymore. 
-  * For stats, it should be two different options, and add a few new ones: 
+
+* HPP: 
+  * Add new stats and equipment types: 
     * Shoot speed, number of bullets, reload time, clip size, parry duration, 
-      parry base cooldown, parry decrease
+      parry base cooldown, parry decrease, movement speed 
+    * Instead of just 1 armor, maybe armor, boots, and helmet,
+      with helmet being for utility and boots for movement speed 
+    * Add new guns
   * Make health on the scale of 100 for player, and then most enemies do 
-    like 10 damage, put a cap on armor, and remove enemy damage scaling. 
+    like 10 damage in the earlier floors, it increases basically forcing
+    player to wait until they can afford better equipment.
+  * Harder enemies should drop more items
+  * Dying should remove credits from factory depot
+  * Resetting HP should cost something
+  * Add way more enemy types, like 1 enemy type per floor.
+  * Add way more layouts, like 20 per 5 floors. Try Tiled
+  * Fix enemy collision things
 
 **** FUTURE FEATURES **** 
 
@@ -82,6 +80,7 @@
   or more decrease from parrying 
 * Make it so only cities that have a railroad that can connect them to an 
   accessible city are drawn on the map
+* Add an auto-save feature
 
 **** FAR FUTURE FEATURES **** 
 

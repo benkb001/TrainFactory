@@ -21,7 +21,7 @@ public static class StepperUISystem {
         Action<World, int> tf = (w, e) => {
             StepperMessage sm = w.GetComponent<StepperMessage>(e); 
             Stepper s = w.GetComponent<Stepper>(sm.Entity); 
-            s.Value += sm.Delta; 
+            s.Adjust(sm.Delta); 
             w.SetComponent<TextBox>(sm.Entity, new TextBox(s.Value.ToString())); 
             w.RemoveEntity(e); 
         };

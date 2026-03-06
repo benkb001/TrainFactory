@@ -61,6 +61,7 @@ public static class RegisterComponents {
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
+        r<DrawInterfaceMessage<ElevatorInterfaceData>>();
         r<DrawInventoryContainerMessage<Train>>();
         r<DrawLadderMessage>(); 
         r<DrawMachineInterfaceMessage>(); 
@@ -68,6 +69,7 @@ public static class RegisterComponents {
         r<DrawMapMessage>(); 
         r<DrawSetTrainProgramInterfaceMessage>();
         r<DrawTrainInterfaceMessage>(); 
+        r<ElevatorButton>();
         r<EmbarkButton>(); 
         r<EmbarkedMessage>();
         r<Enemy>(); 
@@ -77,6 +79,7 @@ public static class RegisterComponents {
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
+        r<EnterInterfaceInteractable<ElevatorInterfaceData>>();
         r<EquipmentSlot<Armor>>();
         r<EquipmentUI>(); 
         r<Frame>(); 

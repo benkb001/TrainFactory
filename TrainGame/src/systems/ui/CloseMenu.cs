@@ -92,6 +92,9 @@ public static class CloseMenuSystem {
             case SceneType.UpgradeTrainInterface: 
                 MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain()));
                 break;
+            case SceneType.ElevatorInterface: 
+                SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
+                break;
             default: 
                 throw new InvalidOperationException("Not handled"); 
         }

@@ -20,7 +20,7 @@ public class Homing {
     public int TrackedEntity => trackedEntity; 
 
     public Homing(int e) {
-        this.trackedEntity = e;
+        this.trackedEntity = e; 
     }
 }
 

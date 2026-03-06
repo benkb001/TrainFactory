@@ -85,14 +85,14 @@ public static class DrawMachineInterfaceSystem {
 
             float stepperWidth = midColWidth - 10f;
             float stepperHeight = (midColHeight / 2f) - 20f;
-            StepperContainer setPrioStepper = StepperWrap.Draw(stepperWidth, 
-                stepperHeight, $"Set {m.Id} priority?", w, defaultVal: m.Priority);
+            StepperContainer setPrioStepper = StepperWrap.Draw(w, stepperWidth, 
+                stepperHeight, $"Set {m.Id} priority?", defaultVal: m.Priority);
             w.SetComponent<MachinePriorityStepper>(setPrioStepper.SubmitEnt, 
                 new MachinePriorityStepper(m, setPrioStepper.Step));
             LinearLayoutWrap.AddChild(setPrioStepper.ContainerEnt, midColEnt, midCol, w); 
 
-            StepperContainer setSizeStepper = StepperWrap.Draw(stepperWidth, stepperHeight, 
-                $"Set {m.Id} storage size?", w, defaultVal: m.NumRecipeToStore);
+            StepperContainer setSizeStepper = StepperWrap.Draw(w, stepperWidth, stepperHeight, 
+                $"Set {m.Id} storage size?", defaultVal: m.NumRecipeToStore);
             w.SetComponent<MachineStorageStepper>(setSizeStepper.SubmitEnt, 
                 new MachineStorageStepper(m, setSizeStepper.Step));
             LinearLayoutWrap.AddChild(setSizeStepper.ContainerEnt, midColEnt, midCol, w); 

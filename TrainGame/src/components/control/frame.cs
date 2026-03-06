@@ -113,7 +113,7 @@ public class Frame {
         bool touchingTop = (Math.Abs(p.Bottom - other.p.Top) < touchThreshold); 
 
         bool touchingY = (touchingBot || touchingTop) && overlapping(p.Left, p.Right, other.p.Left, other.p.Right); 
-        bool touchingX = touchingLeft || touchingRight && overlapping(p.Top, p.Bottom, other.p.Top, other.p.Bottom); 
+        bool touchingX = (touchingLeft || touchingRight) && overlapping(p.Top, p.Bottom, other.p.Top, other.p.Bottom); 
 
         return touchingX || touchingY; 
     }
