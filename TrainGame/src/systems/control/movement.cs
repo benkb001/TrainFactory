@@ -169,7 +169,6 @@ public class SpatialHash {
 }
 
 public static class MovementSystem {
-    private static Type[] types = [typeof(Collidable), typeof(Frame), typeof(Velocity), typeof(Active)]; 
     private static float baseLen = 1000f; 
     private static int cellsPerRow = 10; 
     private static SpatialHash setPartition(Vector2 center) {
@@ -291,11 +290,9 @@ public static class MovementSystem {
 
                     float x = f.GetX(); 
                     float y = f.GetY(); 
+                    
                     float width = f.GetWidth(); 
                     float height = f.GetHeight(); 
-
-                    float max_penetration_x = 0f; 
-                    float max_penetration_y = 0f; 
 
                     bool movingX = !Util.FloatEqual(dx, 0f); 
                     bool movingY = !Util.FloatEqual(dy, 0f);
@@ -312,10 +309,13 @@ public static class MovementSystem {
                             continue; 
                         }
                         
-                        (Velocity otherVelocity, bool success) = w.GetComponentSafe<Velocity>(otherEnt); 
-                        Vector2 otherVelocityVec = success ? otherVelocity.Vector : Vector2.Zero; 
-                        RectangleF oRect = other.GetRectangle(otherVelocityVec); 
+                        bool otherMoving = w.ComponentContainsEntity<Velocity>(otherEnt); 
 
+                        if (otherMoving) {
+                            continue;
+                        }
+                        
+                        RectangleF oRect = other.GetRectangle(); 
                         RectangleF expected = new RectangleF(x + dx, y + dy, width, height); 
 
                         float cur_penetration_x = 0f; 
@@ -345,11 +345,9 @@ public static class MovementSystem {
                                 cur_avoid_dy = (oRect.Bottom) - y; 
                             }
 
-                            if ((cur_penetration_x > cur_penetration_y || !movingX) && cur_penetration_y > max_penetration_y) {
-                                max_penetration_y = cur_penetration_y; 
+                            if (((cur_penetration_y < cur_penetration_x) && movingY) || !movingX) {
                                 dy = cur_avoid_dy; 
-                            } else if (cur_penetration_x > max_penetration_x) {
-                                max_penetration_x = cur_penetration_x; 
+                            } else {
                                 dx = cur_avoid_dx;
                             }
                         }
@@ -364,7 +362,7 @@ public static class MovementSystem {
             }
         }; 
 
-        world.AddSystem(types, tf); 
+        world.AddSystem(tf); 
     }
 
     public static void Register(World w) {

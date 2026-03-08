@@ -20,7 +20,7 @@ public static class RegisterSystems {
         EnemyMovementSystem.Register(w); 
         
         MovementSystem.RegisterPartition(w);
-        MovementSystem.RegisterCollision(w); 
+        MovementSystem.RegisterCollision(w);
         MovementSystem.Register(w);
 
         ParrySystem.RegisterStartParry(w); 
