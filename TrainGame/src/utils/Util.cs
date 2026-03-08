@@ -30,7 +30,7 @@ public static class Util {
     }
 
     public static bool FloatEqual(float f1, float f2) {
-        return Math.Abs(f1 - f2) < 0.001;
+        return Math.Abs(f1 - f2) < 0.001f;
     }
 
     public static bool DoubleEqual(double d1, double d2) {

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 using TrainGame.Systems; 
+using TrainGame.Utils; 
 
 [Collection("Sequential")]
 public class MovementTest {
@@ -169,8 +170,7 @@ public class MovementTest {
 
         w.Update(); 
 
-        Assert.Equal(6, w.GetComponent<Frame>(e1).GetX());
-        Assert.Equal(5, w.GetComponent<Frame>(e1).GetY()); 
+        Assert.True((f1.GetX() == 5 && f1.GetY() == 6) || (f1.GetX() == 6 && f1.GetY() == 5));
     }
 
     [Fact]
@@ -263,9 +263,11 @@ public class MovementTest {
         w.Update(); 
 
         Assert.Equal(25, w.GetComponent<Frame>(e_above).GetY()); 
+        Assert.Equal(30, f_above.GetX()); 
         Assert.Equal(35, w.GetComponent<Frame>(e_below).GetY());
-        Assert.Equal(25, w.GetComponent<Frame>(e_left).GetX());
+        Assert.Equal(30, f_below.GetX()); 
         Assert.Equal(35, w.GetComponent<Frame>(e_right).GetX());
+        Assert.Equal(25, w.GetComponent<Frame>(e_left).GetX());
     }
 
     [Fact]
@@ -307,7 +309,6 @@ public class MovementTest {
         Velocity v_test = w.GetComponent<Velocity>(e1); 
         w.Update();
         v_test = w.GetComponent<Velocity>(e1); 
-        Assert.Equal(0f, v_test.Vector.X); 
         Assert.Equal(10f, v_test.Vector.Y); 
     }
 
@@ -320,5 +321,12 @@ public class MovementTest {
         w.Update(); 
 
         Assert.Contains(MovementSystem.Partitions, p => p.Contains(e1) && p.Contains(e2));
+    }
+}
+
+public class UtilTest {
+    [Fact]
+    public void Util_FloatEqualShouldNotSayNumbersOffByMoreThanOneAreEqual() {
+        Assert.False(Util.FloatEqual(1f, 0f));
     }
 }

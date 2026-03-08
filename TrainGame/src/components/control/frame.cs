@@ -21,6 +21,8 @@ public class Frame {
     private static float touchThreshold = 2f; 
 
     public Vector2 Position => new Vector2(x, y); 
+    public float Width => GetWidth(); 
+    public float Height => GetHeight(); 
 
     public Frame(float x, float y, float width, float height, float rotation = 0f) {
         this.x = x;
@@ -48,6 +50,8 @@ public class Frame {
         this.width = p.Right - p.Left; 
     }
 
+    public Frame(Frame f) : this(new List<Vector2>(f.GetPoints())) {}
+    
     public RectangleF GetRectangle() {
         return new RectangleF(x, y, width, height); 
     }

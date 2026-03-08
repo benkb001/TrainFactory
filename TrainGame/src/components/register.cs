@@ -28,6 +28,7 @@ public static class RegisterComponents {
         r<Backgrounds>(); 
         r<Body>();
         r<Bullet>(); 
+        r<BulletWarning>(); 
         r<Button>(); 
         r<CameraReturn>();
         r<CardinalMovement>(); 

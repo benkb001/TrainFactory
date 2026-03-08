@@ -66,6 +66,8 @@ public static class SceneSystem {
         [SceneType.ElevatorInterface] = new Vector2(14000, 14000)
     };
 
+    public static Vector2 OffScreenPosition => CameraPositions[SceneType.OffScreen];
+
     public static void EnterScene(World w, SceneType type, bool useOldScene = false) {
 
         currentScene = type; 

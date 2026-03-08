@@ -30,12 +30,31 @@ public static class RemoveBulletSystem {
 public static class CollideBulletSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Bullet), typeof(Frame), typeof(Active)], (w, e) => {
-            if (MovementSystem.GetIntersectingEntities(w, e)
-                .Where(ent => !w.ComponentContainsEntity<Player>(ent) && !w.ComponentContainsEntity<Shooter>(ent))
-                .ToList()
-                .Count > 0) {
+            List<int> collidingEnts = MovementSystem.GetIntersectingEntities(w, e)
+            .Where(ent => !w.ComponentContainsEntity<Player>(ent) && !w.ComponentContainsEntity<Shooter>(ent))
+            .ToList();
 
-                w.RemoveEntity(e); 
+            if (collidingEnts.Count > 0) {
+                int otherEnt = collidingEnts[0];
+                Frame otherFrame = w.GetComponent<Frame>(otherEnt); 
+                Bullet b = w.GetComponent<Bullet>(e);
+
+                switch (b.GetOnCollideEffect()) {
+                    case OnCollideEffect.Bounce: 
+                        //need to get which side of the wall it collided with. 
+                        //
+                        
+
+                        break;
+                    case OnCollideEffect.None:
+                        break;
+                    default: 
+                        throw new InvalidOperationException("Unimplemented OnCollideEffect");
+                }
+
+                if (b.IsRemovedOnCollision) {
+                    w.RemoveEntity(e); 
+                }
             }
         });
     }

@@ -24,6 +24,7 @@ public enum ShootPattern {
     Circle,
     Default,
     HorizontalLine,
+    Melee,
     Multi,
     Square,
     VerticalLine
@@ -55,6 +56,7 @@ public class Shooter {
     private float patternSize;
     private int reloadTicks; 
     private int bulletLifetimeTicks;
+    private bool bulletsAreRemovedOnCollision; 
 
     private ShootPattern shootPattern;
     private BulletType bulletType; 
@@ -69,12 +71,15 @@ public class Shooter {
     public float PatternSize => patternSize; 
     public int Ammo => ammo; 
     public int MaxAmmo => maxAmmo; 
+    public readonly WorldTime WarningDuration; 
+    public bool BulletsAreWarned => WarningDuration != null;
 
     public Shooter(int bulletDamage = 1, int ticksPerShot = 30, float bulletSpeed = 3f, 
         int ammo = 10, int skill = 50, int bulletsPerShot = 1, ShootPattern shootPattern = ShootPattern.Default, 
         BulletType bulletType = BulletType.Default, OnExpireEffect onExpireEffect = OnExpireEffect.Default, 
         int bulletSize = Constants.BulletSize, int patternLength = 1, float patternSize = 10f, int reloadTicks = 150,
-        int bulletLifetimeTicks = 120, float spreadDegrees = 10f) {
+        int bulletLifetimeTicks = 120, float spreadDegrees = 10f, bool bulletsAreRemovedOnCollision = true, 
+        WorldTime WarningDuration = null) {
         this.bulletDamage = bulletDamage; 
         this.ticksPerShot = ticksPerShot; 
         this.bulletSpeed = bulletSpeed; 
@@ -92,6 +97,8 @@ public class Shooter {
         this.reloadTicks = reloadTicks;
         this.bulletLifetimeTicks = bulletLifetimeTicks;
         this.spreadDegrees = spreadDegrees;
+        this.bulletsAreRemovedOnCollision = bulletsAreRemovedOnCollision; 
+        this.WarningDuration = WarningDuration; 
     }
 
     public Bullet Shoot(WorldTime now) {
@@ -103,7 +110,8 @@ public class Shooter {
             canShoot = now + new WorldTime(ticks: ticksPerShot);
         }
 
-        return new Bullet(bulletDamage, maxFramesActive: bulletLifetimeTicks); 
+        return new Bullet(bulletDamage, maxFramesActive: bulletLifetimeTicks, 
+            isRemovedOnCollision: bulletsAreRemovedOnCollision); 
     }
 
     public float GetBulletSpeed() => bulletSpeed; 
@@ -177,6 +185,14 @@ public static class ShooterWrap {
                     bulletVelocity = new Velocity(Vector2.Normalize(dest - pos) * speed);
                     w.SetComponent<Velocity>(bulletEnt, bulletVelocity); 
                     break;
+                case ShootPattern.Melee: 
+                    bulletEnt = addBulletEnt(); 
+                    Frame bulletFrame = w.GetComponent<Frame>(bulletEnt);
+                    float dx = (bulletFrame.Width - f.Width) / 2f; 
+                    float dy = (bulletFrame.Height - f.Height) / 2f; 
+                    Vector2 bulletPos = bulletFrame.Position; 
+                    bulletFrame.SetCoordinates(bulletPos.X - dx, bulletPos.Y - dy);
+                    break;
                 case ShootPattern.Multi: 
                     offset = (float)(inaccuracy * w.NextDouble()); 
                     dest += new Vector2(offset, offset); 
@@ -202,7 +218,6 @@ public static class ShooterWrap {
                 default: 
                     throw new InvalidOperationException("Undefined shoot pattern type");
             }
-
             
             bulletEnts.ForEach(ent => {
                 switch (type) {
@@ -231,6 +246,20 @@ public static class ShooterWrap {
                         break;
                     default: 
                         throw new InvalidOperationException("Undefined bullet type");
+                }
+
+                if (shooter.BulletsAreWarned) {
+                    w.RemoveComponent<Active>(ent); 
+                    int warnEnt = EntityFactory.Add(w); 
+                    Frame bulletFrame = w.GetComponent<Frame>(ent);
+                    w.SetComponent<Frame>(warnEnt, new Frame(bulletFrame));
+                    bulletFrame.SetCoordinates(SceneSystem.OffScreenPosition);
+                    BulletWarning warn = new BulletWarning(w.Time + shooter.WarningDuration, ent);
+                    w.SetComponent<BulletWarning>(warnEnt, warn); 
+                    w.SetComponent<Outline>(warnEnt, new Outline(Colors.Warning));
+                    TextBox tb = new TextBox("!"); 
+                    tb.TextColor = Colors.Warning;
+                    w.SetComponent<TextBox>(warnEnt, tb);
                 }
             });
         }

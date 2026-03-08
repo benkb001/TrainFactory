@@ -59,6 +59,9 @@ public static class Layout {
     private static Tile ninja = new Tile(TileType.Enemy, EnemyType.Ninja);
     private static Tile robot = new Tile(TileType.Enemy, EnemyType.Robot);
     private static Tile shotgun = new Tile(TileType.Enemy, EnemyType.Shotgun);
+    private static Tile barb = new Tile(TileType.Enemy, EnemyType.Barbarian); 
+    private static Tile mach = new Tile(TileType.Enemy, EnemyType.MachineGun); 
+
     private static Tile elevator = new Tile(TileType.Elevator); 
 
     private static Dictionary<string, Tile> m = MachineID.All
@@ -77,6 +80,18 @@ public static class Layout {
         new() {w, g, g, g, w, w, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, sp, dE, g, g, g, g, dE, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w, w},
+    };
+
+    public static List<List<Tile>> LB = new() {
+        new() {w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, p, g, g, g, g, g, ld, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, barb, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w},
     };
@@ -143,13 +158,42 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, sp, g, g, g, g, w},
         new() {w, g, g, g, w, w, g, g, g, g, g, g, g, g, w, w, g, g, g, w},
         new() {w, g, g, g, w, w, g, g, g, g, g, g, g, g, w, w, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, dE, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, mach, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, dE, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, robot, g, g, g, g, g, g, g, g, g, dE, g, dE, g, g, g, g, w},
+        new() {w, g, robot, g, g, g, g, g, g, g, g, g, dE, g, mach, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+    };
+
+    public static List<List<Tile>> LM = new() {
+        new() {w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, p, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, ld, w},
+        new() {w, g, g, w, w, w, w, w, w},
+        new() {w, g, g, w, w, w, w, g, w},
+        new() {w, g, g, w, w, w, w, w, w},
+        new() {w, g, g, w, w, w, w, w, w},
+        new() {w, sp, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, mach, g, g, g, g, g, mach, w},
+        new() {w, w, w, w, w, w, w, w, w},
+    };
+
+    public static List<List<Tile>> L6 = new() {
+        new() {w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, p, g, w, w, g, mach, ld, w},
+        new() {w, g, g, g, w, w, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, barb, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w, w},
     };
 
     //Cities
@@ -277,8 +321,8 @@ public static class Layout {
 
     public static List<List<List<List<Tile>>>> Levels = new() {
         new() { L0, L1, L2},
-        new() { L3, L4},
-        new() { L5 }
+        new() { L3, L4, LB},
+        new() { L5, L6, LM }
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {

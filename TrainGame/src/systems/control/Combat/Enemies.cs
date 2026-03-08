@@ -16,7 +16,9 @@ using TrainGame.Callbacks;
 
 public enum EnemyType {
     Artillery, //Big, Shoots vertically, homing bullets
+    Barbarian, //Melee attacks around it
     Default,
+    MachineGun, //Shoots a lot of bullets
     Ninja, //Dashes around, shoots occasionally
     Robot, //moves left to right and shoots up/down in bursts
     Shotgun
@@ -46,6 +48,8 @@ public class EnemyConst {
     public int BulletSize; 
     public int BulletLifetimeTicks;
     public float SpreadDegrees;
+    public WorldTime WarningDuration; 
+    public bool BulletsAreRemovedOnCollision; 
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
         int Damage = 5, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
@@ -54,7 +58,8 @@ public class EnemyConst {
         int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 120,
         MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 60, int BulletsPerShot = 1,
         int ReloadTicks = 120, int BulletSize = Constants.BulletSize, int BulletLifetimeTicks = 120,
-        float SpreadDegrees = 10f) {
+        float SpreadDegrees = 10f, bool BulletsAreWarned = false, WorldTime WarningDuration = null,
+        bool BulletsAreRemovedOnCollision = true) {
         
         this.Type = Type; 
         this.Size = Size; 
@@ -79,6 +84,8 @@ public class EnemyConst {
         this.BulletSize = BulletSize;
         this.BulletLifetimeTicks = BulletLifetimeTicks;
         this.SpreadDegrees = SpreadDegrees;
+        this.WarningDuration = WarningDuration; 
+        this.BulletsAreRemovedOnCollision = BulletsAreRemovedOnCollision; 
     }
 }
 
@@ -86,7 +93,7 @@ public class EnemyWrap {
     private static Dictionary<EnemyType, EnemyConst> enemies = new() {
         [EnemyType.Artillery] = new EnemyConst(
             Type: EnemyType.Artillery, 
-            HP: 10, 
+            HP: 15, 
             TicksPerShot: 300, 
             ReloadTicks: 100, 
             BulletSpeed: 2f, 
@@ -101,9 +108,40 @@ public class EnemyWrap {
             MType: MoveType.Chase,
             BType: BulletType.Homing,
             BulletSize: Constants.BulletSize * 2,
-            BulletLifetimeTicks: 600
+            BulletLifetimeTicks: 600,
+            Damage: 15
+        ),
+        [EnemyType.Barbarian] = new EnemyConst(
+            Type: EnemyType.Barbarian, 
+            HP: 30, 
+            TicksPerShot: 200, 
+            ReloadTicks: 200,
+            Ammo: 1, 
+            MType: MoveType.Chase, 
+            MoveSpeed: Constants.PlayerSpeed / 3f,
+            TicksBetweenMovement: 200, 
+            TicksToMove: 60, 
+            BulletLifetimeTicks: 15,
+            BulletSpeed: 0f, 
+            BulletsAreWarned: true, 
+            WarningDuration: new WorldTime(ticks: 45),
+            BulletSize: (int)Constants.TileWidth * 3,
+            SPattern: ShootPattern.Melee,
+            Damage: 25
         ),
         [EnemyType.Default] = new EnemyConst(),
+        [EnemyType.MachineGun] = new EnemyConst(
+            Type: EnemyType.MachineGun,
+            HP: 25,
+            Ammo: 36, 
+            ReloadTicks: 120,
+            MType: MoveType.Chase,
+            MoveSpeed: Constants.PlayerSpeed / 2f, 
+            TicksBetweenMovement: 0,
+            TicksToMove: 10,
+            Skill: 90, 
+            Damage: 15
+        ),
         [EnemyType.Ninja] = new EnemyConst(
             Type: EnemyType.Ninja, 
             HP: 6, 
@@ -143,7 +181,7 @@ public class EnemyWrap {
             SpreadDegrees: 40f,
             BulletLifetimeTicks: 180,
             BulletSpeed: 1.5f
-        )
+        ),
     };
 
     public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
@@ -168,7 +206,8 @@ public class EnemyWrap {
             bulletType: e.BType, 
             bulletSize: e.BulletSize,
             bulletLifetimeTicks: e.BulletLifetimeTicks,
-            spreadDegrees: e.SpreadDegrees
+            spreadDegrees: e.SpreadDegrees,
+            WarningDuration: e.WarningDuration
         );
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 

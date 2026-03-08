@@ -102,6 +102,7 @@ namespace TrainGame.Constants
                 ItemID.Glass => 500, 
                 ItemID.Iron => 1000, 
                 ItemID.Oil => 10000, 
+                ItemID.Plasma => 1000,
                 ItemID.Sand => 1000,
                 ItemID.TimeCrystal => 1000,
                 ItemID.Water => 1000, 
@@ -218,6 +219,8 @@ namespace TrainGame.Constants
 
         public static readonly Color PlayerOutline = Color.Black; 
         public static readonly Color PlayerBackground = Color.White; 
+
+        public static readonly Color Warning = Color.Red; 
     }
 
     public class CityArg {
@@ -384,9 +387,9 @@ namespace TrainGame.Constants
 
         public static void InitMaps() {
             EquipmentSlot<Armor>.EquipmentMap = new() {
-                [ItemID.Armor1] = new Armor(1),
-                [ItemID.Armor2] = new Armor(2),
-                [ItemID.Armor3] = new Armor(3)
+                [ItemID.Armor1] = new Armor(5),
+                [ItemID.Armor2] = new Armor(10),
+                [ItemID.Armor3] = new Armor(15)
             };
         }
     }
@@ -789,7 +792,8 @@ namespace TrainGame.Constants
                 SlowFactor: 300,
                 StartFactor: 10,
                 UpgradeItemID: ItemID.Greenhouse,
-                AllowManual: true
+                AllowManual: true,
+                Level: 0
             ),
             [MachineID.GreenhouseAssembler] = new MachineArg(
                 ProductItemId: ItemID.Greenhouse,
@@ -807,8 +811,8 @@ namespace TrainGame.Constants
                 ProductItemId: "", 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 10, 
-                    [ItemID.Glass] = 5
+                    [ItemID.Iron] = 400, 
+                    [ItemID.Glass] = 100
                 },
                 MinTicks: 3,
                 SlowFactor: 9000,
@@ -1002,24 +1006,16 @@ namespace TrainGame.Constants
                 [ItemID.Iron] = (new() {
                     [ItemID.Credit] = 100
                 }, 100),
-                [ItemID.Plasma] = (new() {
-                    [ItemID.Credit] = 500
-                }, 100), 
+                [ItemID.Sand] = (new() {
+                    [ItemID.Credit] = 100
+                }, 100),
+                [ItemID.Water] = (new() {
+                    [ItemID.Credit] = 100
+                }, 1000),
                 [ItemID.Wood] = (new() {
                     [ItemID.Credit] = 500
-                }, 100), 
-                [ItemID.Fuel] = (new() {
-                    [ItemID.Credit] = 300
-                }, 100), 
-                [ItemID.Glass] = (new() {
-                    [ItemID.Credit] = 100
-                }, 10), 
-                [ItemID.Assembler] = (new() {
-                    [ItemID.Credit] = 200
-                }, 10),
-                [ItemID.Motherboard] = (new() {
-                    [ItemID.Credit] = 2000
-                }, 1)
+                }, 100),
+                
             }
         };
     }
@@ -1072,7 +1068,6 @@ namespace TrainGame.Constants
             //add one train to factory
 
             Inventory trainInv = new Inventory("T0", Constants.TrainRows, Constants.TrainCols); 
-            trainInv.SetSolid(); 
             int trainInvDataEnt = EntityFactory.AddData<Inventory>(w, trainInv); 
 
             (int _, City factory) = cities[CityID.Factory];

@@ -116,6 +116,7 @@ public static class RegisterSystems {
 
         ShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
+        BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 
         

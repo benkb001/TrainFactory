@@ -289,13 +289,16 @@ public static class MovementSystem {
                     float dx = velocity.X; 
                     float dy = velocity.Y; 
 
-                    float dx_og = dx; 
-                    float dy_og = dy; 
-
                     float x = f.GetX(); 
                     float y = f.GetY(); 
                     float width = f.GetWidth(); 
                     float height = f.GetHeight(); 
+
+                    float max_penetration_x = 0f; 
+                    float max_penetration_y = 0f; 
+
+                    bool movingX = !Util.FloatEqual(dx, 0f); 
+                    bool movingY = !Util.FloatEqual(dy, 0f);
 
                     foreach (int otherEnt in es) {
                         (Frame other, bool fSuccess) = w.GetComponentSafe<Frame>(otherEnt);
@@ -313,25 +316,45 @@ public static class MovementSystem {
                         Vector2 otherVelocityVec = success ? otherVelocity.Vector : Vector2.Zero; 
                         RectangleF oRect = other.GetRectangle(otherVelocityVec); 
 
-                        RectangleF expectedHorizontal = new RectangleF(x + dx, y, width, height); 
-                        if (expectedHorizontal.IntersectsWith(oRect)) {
-                            if (dx > 0) {
-                                dx = (oRect.Left - width) - x; 
-                            } else {
-                                dx = oRect.Right - x; 
-                            }
-                        }
+                        RectangleF expected = new RectangleF(x + dx, y + dy, width, height); 
 
-                        RectangleF expectedVertical = new RectangleF(x + dx, y + dy, width, height);
-                        if (expectedVertical.IntersectsWith(oRect)) {
-                            if (dy > 0) {
-                                dy = (oRect.Top - height) - y; 
+                        float cur_penetration_x = 0f; 
+                        float cur_penetration_y = 0f; 
+                        float cur_avoid_dx = 0f; 
+                        float cur_avoid_dy = 0f; 
+
+                        if (expected.IntersectsWith(oRect)) {
+                            
+                            if (!movingX) {
+                                cur_penetration_x = 0f; 
+                            } else if (dx > 0) {
+                                cur_penetration_x = expected.Right - oRect.Left; 
+                                cur_avoid_dx = (oRect.Left - width) - x;
                             } else {
-                                dy = (oRect.Bottom) - y; 
+                                cur_penetration_x = oRect.Right - expected.Left;
+                                cur_avoid_dx = oRect.Right - x;
+                            }
+
+                            if (!movingY) {
+                                cur_penetration_y = 0f; 
+                            } else if (dy > 0) {
+                                cur_penetration_y = expected.Bottom - oRect.Top; 
+                                cur_avoid_dy = (oRect.Top - height) - y; 
+                            } else {
+                                cur_penetration_y = oRect.Bottom - expected.Top;
+                                cur_avoid_dy = (oRect.Bottom) - y; 
+                            }
+
+                            if ((cur_penetration_x > cur_penetration_y || !movingX) && cur_penetration_y > max_penetration_y) {
+                                max_penetration_y = cur_penetration_y; 
+                                dy = cur_avoid_dy; 
+                            } else if (cur_penetration_x > max_penetration_x) {
+                                max_penetration_x = cur_penetration_x; 
+                                dx = cur_avoid_dx;
                             }
                         }
                     }
-
+                    
                     w.SetComponent<Velocity>(e, new Velocity(dx, dy)); 
                 }
 
