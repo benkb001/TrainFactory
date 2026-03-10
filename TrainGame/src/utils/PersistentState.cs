@@ -125,14 +125,17 @@ public static class PersistentState {
         int playerEnt = PlayerWrap.GetEntity(w); 
         Inventory playerInv = w.GetComponent<Inventory>(playerEnt); 
         Inventory armorInv = w.GetComponent<EquipmentSlot<Armor>>(playerEnt).GetInventory();
-        int maxHP = w.GetComponent<Health>(playerEnt).MaxHP; 
+        Health playerHealth = PlayerWrap.GetHP(w);
+        int maxHP = playerHealth.MaxHP; 
+        int hp = playerHealth.HP;
         int armor = w.GetComponent<Armor>(playerEnt).Defense; 
 
         dom.Add("player", new JsonObject() {
             ["armor"] = armor,
             ["armorInventoryID"] = armorInv.Id,
             ["inventoryID"] = playerInv.Id, 
-            ["maxHP"] = maxHP
+            ["maxHP"] = maxHP,
+            ["HP"] = hp
         });
 
         dom.Add("cities", new JsonObject(cities.Select(kvp => {
@@ -302,9 +305,11 @@ public static class PersistentState {
         Inventory armorInv = inventories[(string)playerJSON["armorInventoryID"]];
         int armor = (int)playerJSON["armor"];
         int maxHP = (int)playerJSON["maxHP"];
+        int hp = (int)playerJSON["HP"];
 
         Armor playerArmor = new Armor(armor); 
         Health playerHealth = new Health(maxHP); 
+        playerHealth.SetHP(hp);
         EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
 
         int playerDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 

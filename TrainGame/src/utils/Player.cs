@@ -38,8 +38,7 @@ public static class PlayerWrap {
         armorInv.SetArmor();
         w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
 
-        playerInv.Add(ItemID.Gun3, 1); 
-        playerInv.Add(ItemID.Armor3, 1);
+        playerInv.Add(ItemID.Gun, 1); 
     }
 
     public static void SetRespawn(World w, City c) {
@@ -54,6 +53,14 @@ public static class PlayerWrap {
         }
 
         return -1; 
+    }
+
+    public static Inventory GetInventory(World w) {
+        return w.GetComponent<Inventory>(GetEntity(w)); 
+    }
+
+    public static Health GetHP(World w) {
+        return w.GetComponent<Health>(GetEntity(w));
     }
 
     public static string GetHeldItemID(World w) {

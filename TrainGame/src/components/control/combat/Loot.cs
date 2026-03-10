@@ -23,20 +23,20 @@ public class Loot {
 
     //TODO: drop chances should also shift with floor? 
     private static List<(string, int)> drops1 = new() {
-        (ItemID.Plasma, 49),
-        (ItemID.Credit, 50), 
+        (ItemID.Plasma, 39),
+        (ItemID.Credit, 69), 
         (ItemID.TimeCrystal, 1)
     };
 
     private static List<(string, int)> drops2 = new() {
-        (ItemID.Carbon, 38),
-        (ItemID.Credit, 60),
+        (ItemID.Carbon, 28),
+        (ItemID.Credit, 70),
         (ItemID.TimeCrystal, 2)
     };
 
     private static List<(string, int)> drops3 = new() {
-        (ItemID.Adamantite, 27), 
-        (ItemID.Credit, 70),
+        (ItemID.Adamantite, 17), 
+        (ItemID.Credit, 80),
         (ItemID.TimeCrystal, 3)
     };
 
@@ -55,8 +55,8 @@ public class Loot {
     }
 
     private static Dictionary<string, Func<int, int>> dropCounts = new() {
-        [ItemID.Plasma] = (f) => f + (int)(f * 5 * Util.NextDoublePositive()), 
-        [ItemID.Credit] = (f) => f + (int)(f * f * Util.NextDoublePositive()), 
+        [ItemID.Plasma] = (f) => f + (int)(f * 3 * Util.NextDoublePositive()), 
+        [ItemID.Credit] = (f) => f + (int)((double)(f * f) * Util.NextDoublePositive() * Util.NextDoublePositive()), 
         [ItemID.Carbon] = (f) => f + (int)(f * 2 * Util.NextDoublePositive()),
         [ItemID.Adamantite] = (f) => f + (int)(f * Util.NextDoublePositive()),
         [ItemID.TimeCrystal] = (f) => 10
@@ -74,7 +74,7 @@ public class Loot {
         this.destination = destination; 
     }
 
-    public static Loot GetRandom(int floor, Inventory destination, World w) {
+    public static Loot GetRandom(int floor, Inventory destination, World w, int difficulty = 1) {
         List<(string, int)> drops = getDrops(floor);
 
         int max = maxDrop(drops); 
@@ -84,7 +84,8 @@ public class Loot {
         foreach ((string itemID, int chance) in drops) {
             sum += chance; 
             if (sum > rand) {
-                return new Loot(itemID, dropCounts[itemID](floor), destination);
+                int count = dropCounts[itemID](floor);
+                return new Loot(itemID, count * difficulty, destination);
             }
         }
 

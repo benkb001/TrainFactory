@@ -105,8 +105,8 @@ namespace TrainGame.Constants
                 ItemID.Plasma => 1000,
                 ItemID.Sand => 1000,
                 ItemID.TimeCrystal => 1000,
-                ItemID.Water => 1000, 
-                ItemID.Wood => 10000,
+                ItemID.Water => 10000, 
+                ItemID.Wood => 1000,
                 "StackSize1" => 1,
                 _ => 100
             }; 
@@ -117,8 +117,10 @@ namespace TrainGame.Constants
                 return 0; 
             } else if (floor < 10) {
                 return 1; 
-            } else {
+            } else if (floor < 15) {
                 return 2; 
+            } else {
+                return 3;
             }
         }
     }
@@ -311,7 +313,7 @@ namespace TrainGame.Constants
                 550f, 210f, 0f, 0f, 
                 [CityID.Greenhouse, CityID.Coast, CityID.Mine],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
+                    [CityID.Reservoir] = railroadCosts[CityID.Reservoir]
                 }
             ),
             [CityID.Greenhouse] = new CityArg(
@@ -336,7 +338,7 @@ namespace TrainGame.Constants
                 550f, 410f, 0f, 2.5f, 
                 [CityID.Factory],
                 new Dictionary<string, Dictionary<string, int>>() {
-                    [CityID.Reservoir] = railroadCosts[CityID.Reservoir]
+                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
                 }
             ),
             [CityID.Reservoir] = new CityArg(
@@ -586,8 +588,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Assembler, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 20, 
-                    [ItemID.Plasma] = 20
+                    [ItemID.Iron] = 50, 
+                    [ItemID.Plasma] = 50
                 },
                 MinTicks: 3,
                 SlowFactor: 6000, 
@@ -652,9 +654,9 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Gasifier, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Fuel] = 10, 
-                    [ItemID.Iron] = 15, 
-                    [ItemID.Glass] = 5
+                    [ItemID.Fuel] = 50, 
+                    [ItemID.Iron] = 100, 
+                    [ItemID.Glass] = 50
                 },
                 MinTicks: 3, 
                 SlowFactor: 4800,
@@ -677,7 +679,7 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Kiln, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 10, 
+                    [ItemID.Iron] = 100, 
                     [ItemID.Fuel] = 10
                 },
                 MinTicks: 3,
@@ -689,8 +691,8 @@ namespace TrainGame.Constants
                 ProductItemId: "", 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 400,
-                    [ItemID.Plasma] = 200
+                    [ItemID.Iron] = 500,
+                    [ItemID.Plasma] = 500
                 },
                 MinTicks: 3,
                 SlowFactor: 6000,
@@ -701,7 +703,7 @@ namespace TrainGame.Constants
                 ProductItemId: "", 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Wood] = 10
+                    [ItemID.Wood] = 200
                 },
                 MinTicks: 3,
                 SlowFactor: 6000,
@@ -724,8 +726,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Drill,
                 ProductCount: 1,
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 20, 
-                    [ItemID.Fuel] = 5
+                    [ItemID.Iron] = 250, 
+                    [ItemID.Fuel] = 100
                 },
                 MinTicks: 3, 
                 SlowFactor: 6000, 
@@ -762,8 +764,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Excavator, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 20, 
-                    [ItemID.Glass] = 5
+                    [ItemID.Iron] = 100, 
+                    [ItemID.Glass] = 10
                 },
                 MinTicks: 3,
                 SlowFactor: 4800,
@@ -799,8 +801,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Greenhouse,
                 ProductCount: 1,
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Glass] = 20, 
-                    [ItemID.Iron] = 10
+                    [ItemID.Glass] = 100, 
+                    [ItemID.Iron] = 100
                 },
                 MinTicks: 3,
                 SlowFactor: 6000,
@@ -836,8 +838,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Motherboard,
                 ProductCount: 1,
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Glass] = 50,
-                    [ItemID.Iron] = 20
+                    [ItemID.Glass] = 200,
+                    [ItemID.Iron] = 400
                 },
                 MinTicks: 3,
                 SlowFactor: 12000,
@@ -922,8 +924,8 @@ namespace TrainGame.Constants
                 ProductItemId: ItemID.Pump, 
                 ProductCount: 1, 
                 Recipe: new Dictionary<string, int>() {
-                    [ItemID.Iron] = 15, 
-                    [ItemID.Glass] = 10
+                    [ItemID.Iron] = 150, 
+                    [ItemID.Glass] = 20
                 },
                 MinTicks: 3,
                 SlowFactor: 6000,
@@ -961,6 +963,56 @@ namespace TrainGame.Constants
 
     }
 
+    public class PurchaseItem : IBuyable { 
+        public readonly string ItemID; 
+        public readonly int Count; 
+        public readonly Dictionary<string, int> Cost; 
+
+        public PurchaseItem(string ItemID, int Count, Dictionary<string, int> Cost) {
+            this.ItemID = ItemID; 
+            this.Count = Count; 
+            this.Cost = Cost; 
+        }
+
+        public Dictionary<string, int> GetCost() {
+            return Cost; 
+        }
+    }
+
+    public class ResetHP : IBuyable {
+        private static Dictionary<string, int> cost = new() {
+            [ItemID.Credit] = 1000, //TODO: make this dynamic ? 
+        };
+
+        public readonly int Credits;
+        public readonly Inventory Dest; 
+
+        public ResetHP(int Credits = 0, Inventory Dest = null) {
+            this.Credits = Credits; 
+            this.Dest = Dest; 
+        }
+
+        public Dictionary<string, int> GetCost() {
+            return cost;
+        }
+    }
+
+    public class PurchaseInfo<T> where T : IBuyable {
+        public readonly T Buyable;
+
+        private PurchaseInfo(T Buyable) {
+            this.Buyable = Buyable;
+        }
+
+        public static PurchaseInfo<IBuyable> AddItemInfo(string ItemID, int Count, Dictionary<string, int> Cost) {
+            return new PurchaseInfo<IBuyable>(new PurchaseItem(ItemID, Count, Cost)); 
+        }
+
+        public static PurchaseInfo<IBuyable> AddResetHP() {
+            return new PurchaseInfo<IBuyable>(new ResetHP());
+        }
+    }
+
     public static class VendorID {
         public const string ArmorCraftsman = "Armor Craftsman"; 
         public const string WeaponCraftsman = "Weapon Craftsman"; 
@@ -970,54 +1022,57 @@ namespace TrainGame.Constants
             ArmorCraftsman, WeaponCraftsman, HPPVendor
         };
 
-        public static Dictionary<string, Dictionary<string, (Dictionary<string, int>, int)>> ProductMap = new() {
+        public static Dictionary<string, List<PurchaseInfo<IBuyable>>> ProductMap = new() {
             [ArmorCraftsman] = new () {
-                [ItemID.Armor1] = (new () {
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor1, 1, new() {
                     [ItemID.Credit] = 50, 
                     [ItemID.Iron] = 50
-                }, 1), 
-                [ItemID.Armor2] = (new () {
+                }),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor2, 1, new () {
                     [ItemID.Credit] = 150, 
                     [ItemID.Iron] = 200, 
                     [ItemID.Fuel] = 100
-                }, 1), 
-                [ItemID.Armor3] = (new () {
+                }),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor3, 1, new () {
                     [ItemID.Credit] = 1000,
                     [ItemID.Iron] = 2000, 
                     [ItemID.Fuel] = 3000,
                     [ItemID.Glass] = 500
-                }, 1)
+                }),
             },
             [WeaponCraftsman] = new () {
-                [ItemID.Gun2] = (new () {
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun2, 1, new () {
                     [ItemID.Credit] = 100, 
                     [ItemID.Fuel] = 300, 
                     [ItemID.Iron] = 500, 
                     [ItemID.Water] = 1000
-                }, 1),
-                [ItemID.Gun3] = (new () {
+                }),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun3, 1, new () {
                     [ItemID.Credit] = 2000, 
                     [ItemID.Iron] = 3000, 
                     [ItemID.Fuel] = 4000, 
                     [ItemID.Glass] = 5000
-                }, 1)
+                }),
             },
             [HPPVendor] = new() {
-                [ItemID.Iron] = (new() {
+                PurchaseInfo<IBuyable>.AddResetHP(),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Iron, 100, new() {
                     [ItemID.Credit] = 100
-                }, 100),
-                [ItemID.Sand] = (new() {
+                }),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Sand, 100, new() {
                     [ItemID.Credit] = 100
-                }, 100),
-                [ItemID.Water] = (new() {
+                }),
+                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Water, 100, new() {
                     [ItemID.Credit] = 100
-                }, 1000),
-                [ItemID.Wood] = (new() {
-                    [ItemID.Credit] = 500
-                }, 100),
-                
+                })
             }
         };
+
+        public static int GetResetHPCost(Inventory dest, Health playerHP) {
+            float proportionMissing = 1f - ((float)playerHP.HP / playerHP.MaxHP);
+            int cost = (int)(proportionMissing * 0.5 * (1000 + dest.ItemCount(ItemID.Credit)));
+            return cost; 
+        }
     }
 
     public static class Bootstrap {

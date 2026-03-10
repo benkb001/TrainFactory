@@ -33,9 +33,11 @@ public static class PlayerDeathSystem {
             if (h.HP <= 0) {
                 PlayerStats.Reset(w); 
                 Inventory inv = LootWrap.GetDestination(w);
-                inv.Take(ItemID.Credit, inv.ItemCount(ItemID.Credit) / 2); 
+                int lostCredits = inv.ItemCount(ItemID.Credit) / 2;
+                inv.Take(ItemID.Credit, lostCredits); 
                 City c = w.GetComponent<RespawnLocation>(e).GetCity(); 
                 MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(c));
+                MakeMessage.Add<DrawToastMessage>(w, new DrawToastMessage($"Lost {lostCredits} on death"));
             }
         });
     }

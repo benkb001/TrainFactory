@@ -38,15 +38,39 @@ public static class DrawVendorInterfaceSystem {
                 childrenPerPage: 3
             );
 
-            foreach (KeyValuePair<string, (Dictionary<string, int>, int)> kvp in VendorID.ProductMap[vendorID]) {
-                string itemID = kvp.Key; 
-                Dictionary<string, int> cost = kvp.Value.Item1; 
-                int count = kvp.Value.Item2; 
+            foreach (PurchaseInfo<IBuyable> purchaseInfo in VendorID.ProductMap[vendorID]) {
+                IBuyable buyable = purchaseInfo.Buyable; 
+                int btnEnt = -1;
+                
+                if (buyable is PurchaseItem item) {
+                    PurchaseButton<PurchaseItem> pb = new PurchaseButton<PurchaseItem>(item);
+                    btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, 
+                    text: $"Purchase {item.Count} {item.ItemID}?\n {Util.FormatMap(item.GetCost())}", 
+                        setOutline: true, setButton: true);
+                    w.SetComponent<PurchaseButton<PurchaseItem>>(btnEnt, pb);
+                } else if (buyable is ResetHP _) {
+                    //this is very gross but whatever, 
+                    //basically just use the resetHP as the type check 
+                    //and then here we can calculate the price and pass this 
+                    //to the button. We can't calculate the price from the constant
+                    
+                    Inventory dest = CityWrap.GetCityWithPlayer(w).Inv; 
+                    Health playerHP = PlayerWrap.GetHP(w);
+                    
+                    int credits = VendorID.GetResetHPCost(dest, playerHP);
+                    PurchaseButton<ResetHP> pb = new PurchaseButton<ResetHP>(new ResetHP(credits, dest));
+                    Dictionary<string, int> cost = new() {
+                        [ItemID.Credit] = credits
+                    };
 
-                PurchaseButton pb = new PurchaseButton(itemID, cost, inv, count);
-                int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, text: $"Purchase {count} {itemID}?\n {Util.FormatMap(cost)}", 
-                    setOutline: true, setButton: true);
-                w.SetComponent<PurchaseButton>(btnEnt, pb); 
+                    btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, 
+                        text: $"Reset HP?\n{Util.FormatMap(cost)}", setOutline: true, 
+                        setButton: true);
+                    w.SetComponent<PurchaseButton<ResetHP>>(btnEnt, pb);
+                } else {
+                    throw new InvalidOperationException("Unimplemented purchase button type");
+                }
+                
                 vendor.AddChild(btnEnt, w); 
             }
 

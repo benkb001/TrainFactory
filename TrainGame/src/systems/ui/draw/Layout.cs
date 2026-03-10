@@ -61,6 +61,9 @@ public static class Layout {
     private static Tile shotgun = new Tile(TileType.Enemy, EnemyType.Shotgun);
     private static Tile barb = new Tile(TileType.Enemy, EnemyType.Barbarian); 
     private static Tile mach = new Tile(TileType.Enemy, EnemyType.MachineGun); 
+    private static Tile voll = new Tile(TileType.Enemy, EnemyType.Volley);
+    private static Tile snip = new Tile(TileType.Enemy, EnemyType.Sniper); 
+    private static Tile warr = new Tile(TileType.Enemy, EnemyType.Warrior); 
 
     private static Tile elevator = new Tile(TileType.Elevator); 
 
@@ -196,26 +199,43 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w},
     };
 
-    //Cities
-    public static List<List<Tile>> Armory = new() {
+    public static List<List<Tile>> LV = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
+        new() {w, g, p, g, g, g, g, g, ld, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, v[VendorID.ArmorCraftsman], g, v[VendorID.WeaponCraftsman], g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, voll, g, g, g, g, voll, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w},
     };
 
-    public static List<List<Tile>> Coast = new() {
+    public static List<List<Tile>> LS = new() {
         new() {w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
+        new() {w, g, p, g, g, g, g, g, ld, w},
         new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.Excavator], g, m[MachineID.Pump], g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, snip, g, g, g, g, snip, g, w},
         new() {w, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w},
     };
+
+    public static List<List<Tile>> LW = new() {
+        new() {w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, p, g, g, g, g, g, ld, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, warr, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w, w},
+    };
+
+    //Cities
 
     public static List<List<Tile>> Factory = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
@@ -232,97 +252,15 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
     };
 
-    public static List<List<Tile>> Greenhouse = new() {
-        new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.Greenhouse], g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> Mine = new() {
-        new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.Drill], g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> HauntedPowerPlant = new() {
-        new() {w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, ldDown, g, w},
-        new() {w, g, g, g, g, g, w},
-        new() {w, g, p, g, v[VendorID.HPPVendor], g, w},
-        new() {w, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> Refinery = new() {
-        new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, m[MachineID.FuelRefinery], g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.LubricantRefinery], g, m[MachineID.PetroleumRefinery], g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> Reservoir = new() {
-        new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.OilRig], g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> TrainYard = new() {
-        new() {w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, g, m[MachineID.EngineAssembler], g, m[MachineID.CombustionControllerAssembler], g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w},
-    };
-
-    public static List<List<Tile>> Laboratory = new() {
-        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, trainYard, g, p, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, 
-        m[MachineID.SmartAssemblerFactory], g, m[MachineID.AcceleratorAssembler], g, 
-        m[MachineID.AntiGravityAssembler], g, m[MachineID.AirResistorAssembler], g, 
-        m[MachineID.DuplicatorAssembler], g, m[MachineID.PocketDimensionAssembler], g, 
-        g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
-    };
-
     public static Dictionary<string, List<List<Tile>>> Cities = new() {
-        [CityID.Coast] = Coast,
-        [CityID.Factory] = Factory,
-        [CityID.Greenhouse] = Greenhouse,
-        [CityID.Laboratory] = Laboratory,
-        [CityID.Mine] = Mine,
-        [CityID.Refinery] = Refinery,
-        [CityID.Reservoir] = Reservoir,
-        [CityID.TrainYard] = TrainYard
+        [CityID.Factory] = Factory
     };
 
     public static List<List<List<List<Tile>>>> Levels = new() {
         new() { L0, L1, L2},
         new() { L3, L4, LB},
-        new() { L5, L6, LM }
+        new() { L5, L6, LM },
+        new() { LV, LS, LW }
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {

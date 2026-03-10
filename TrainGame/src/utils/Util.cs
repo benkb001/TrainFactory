@@ -78,6 +78,7 @@ public static class Util {
     }
 
     public static double NextDoublePositive() {
+        double d = random.NextDouble(); 
         return random.NextDouble(); 
     }
 

@@ -14,16 +14,6 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
-public enum EnemyType {
-    Artillery, //Big, Shoots vertically, homing bullets
-    Barbarian, //Melee attacks around it
-    Default,
-    MachineGun, //Shoots a lot of bullets
-    Ninja, //Dashes around, shoots occasionally
-    Robot, //moves left to right and shoots up/down in bursts
-    Shotgun
-}
-
 public class EnemyConst {
     public EnemyType Type; 
     public float Size; 
@@ -50,6 +40,7 @@ public class EnemyConst {
     public float SpreadDegrees;
     public WorldTime WarningDuration; 
     public bool BulletsAreRemovedOnCollision; 
+    public int Difficulty;
 
     public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
         int Damage = 5, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
@@ -59,7 +50,7 @@ public class EnemyConst {
         MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 60, int BulletsPerShot = 1,
         int ReloadTicks = 120, int BulletSize = Constants.BulletSize, int BulletLifetimeTicks = 120,
         float SpreadDegrees = 10f, bool BulletsAreWarned = false, WorldTime WarningDuration = null,
-        bool BulletsAreRemovedOnCollision = true) {
+        bool BulletsAreRemovedOnCollision = true, int Difficulty = 1) {
         
         this.Type = Type; 
         this.Size = Size; 
@@ -86,11 +77,12 @@ public class EnemyConst {
         this.SpreadDegrees = SpreadDegrees;
         this.WarningDuration = WarningDuration; 
         this.BulletsAreRemovedOnCollision = BulletsAreRemovedOnCollision; 
+        this.Difficulty = Difficulty; 
     }
 }
 
 public class EnemyWrap {
-    private static Dictionary<EnemyType, EnemyConst> enemies = new() {
+    public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
         [EnemyType.Artillery] = new EnemyConst(
             Type: EnemyType.Artillery, 
             HP: 15, 
@@ -109,7 +101,8 @@ public class EnemyWrap {
             BType: BulletType.Homing,
             BulletSize: Constants.BulletSize * 2,
             BulletLifetimeTicks: 600,
-            Damage: 15
+            Damage: 15,
+            Difficulty: 2
         ),
         [EnemyType.Barbarian] = new EnemyConst(
             Type: EnemyType.Barbarian, 
@@ -127,7 +120,8 @@ public class EnemyWrap {
             WarningDuration: new WorldTime(ticks: 45),
             BulletSize: (int)Constants.TileWidth * 3,
             SPattern: ShootPattern.Melee,
-            Damage: 25
+            Damage: 25,
+            Difficulty: 2
         ),
         [EnemyType.Default] = new EnemyConst(),
         [EnemyType.MachineGun] = new EnemyConst(
@@ -182,12 +176,53 @@ public class EnemyWrap {
             BulletLifetimeTicks: 180,
             BulletSpeed: 1.5f
         ),
+        [EnemyType.Sniper] = new EnemyConst(
+            Type: EnemyType.Default, 
+            Ammo: 1, 
+            ReloadTicks: 300,
+            Damage: 40,
+            HP: 40, 
+            BulletSpeed: 10f, 
+            BulletsAreWarned: true, 
+            WarningDuration: new WorldTime(ticks: 20),
+            BulletLifetimeTicks: 240,
+            Skill: 100
+        ),
+        [EnemyType.Volley] = new EnemyConst(
+            Type: EnemyType.Volley, 
+            SPattern: ShootPattern.Multi,
+            HP: 40, 
+            TicksPerShot: 60, 
+            ReloadTicks: 200, 
+            Ammo: 24, 
+            BulletsPerShot: 12, 
+            SpreadDegrees: 80f,
+            BulletLifetimeTicks: 60,
+            BulletSpeed: 3f,
+            Damage: 40
+        ),
+        [EnemyType.Warrior] = new EnemyConst(
+            Type: EnemyType.Warrior, 
+            SPattern: ShootPattern.Multi, 
+            HP: 80,
+            ReloadTicks: 480,
+            BulletSpeed: 4f,
+            WarningDuration: new WorldTime(ticks: 30),
+            BulletLifetimeTicks: 240,
+            Skill: 100,
+            BulletsPerShot: 20,
+            Ammo: 20,
+            Damage: 60,
+            SpreadDegrees: 180f,
+            Size: Constants.TileWidth * 2
+        )
+
     };
 
     public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
 
     public static EnemyWrap Draw(World w, Vector2 pos, EnemyType enemyType) {
-        EnemyConst e = enemies[enemyType];
+        EnemyConst e = Enemies[enemyType];
 
         int enemyEnt = EntityFactory.AddUI(w, pos, e.Size, e.Size, setOutline: true); 
         Health h = new Health(e.HP);
@@ -211,7 +246,7 @@ public class EnemyWrap {
         );
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 
-        w.SetComponent<Enemy>(enemyEnt, new Enemy()); 
+        w.SetComponent<Enemy>(enemyEnt, new Enemy(enemyType)); 
 
         Movement movement = new Movement(
             speed: e.MoveSpeed,

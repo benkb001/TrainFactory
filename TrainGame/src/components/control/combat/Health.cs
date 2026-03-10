@@ -39,6 +39,17 @@ public class Health {
     public void ResetHP() {
         hp = maxHP; 
     }
+
+    public void SetHP(int hp) {
+        this.hp = Math.Max(0, hp); 
+        this.hp = Math.Min(hp, maxHP);
+    }
 }
 
-public class Enemy {}
+public class Enemy {
+    public readonly EnemyType Type; 
+    
+    public Enemy(EnemyType Type = EnemyType.Default) {
+        this.Type = Type; 
+    }
+}

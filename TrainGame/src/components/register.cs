@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
 using TrainGame.Systems;
+using TrainGame.Constants;
 
 public static class RegisterComponents {
     public static void All(World w) {
@@ -70,6 +71,7 @@ public static class RegisterComponents {
         r<DrawMachineRequestMessage>(); 
         r<DrawMapMessage>(); 
         r<DrawSetTrainProgramInterfaceMessage>();
+        r<DrawToastMessage>();
         r<DrawTrainInterfaceMessage>(); 
         r<ElevatorButton>();
         r<EmbarkButton>(); 
@@ -128,7 +130,8 @@ public static class RegisterComponents {
         r<Player>(); 
         r<PlayerHUD>(); 
         r<ProgressBar>(); 
-        r<PurchaseButton>();
+        r<PurchaseButton<PurchaseItem>>();
+        r<PurchaseButton<ResetHP>>();
         r<ReceiveDamageMessage>(); 
         r<RespawnLocation>(); 
         r<SaveButton>(); 

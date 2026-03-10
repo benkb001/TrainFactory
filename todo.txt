@@ -46,28 +46,9 @@
 * Fix randomly unlocking zoom
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
-* Add a button to make player not collidable for debugging
 
-* HPP: 
-  * Harder enemies should drop more items
-  * Dying should remove credits from factory depot
-  * Resetting HP should cost something
-  * Add some new bullet types for enemies
-    * Add bullets that bounce off of walls
-    * Add a way to make new bullet paths easily ( like parametric curves? )
-  * Add on-death effects for enemies 
-    * Add enemy that splits into two on death 
-    * Add enemy that explodes on death 
-  * Add way more enemy types, like 1 enemy type per floor.
-    * Add a sniper
-    * One shoots bouncy bullets 
-    * One randomly shoots all around them 
-    * One shoots in geometric shapes 
-    * One shoots bullets in a curvy pattern 
-    * One has bullets that circle around them 
-  * Add way more layouts, like 20 per 5 floors. Try Tiled
-  * Fix enemy collision things
-  * Add visuals reloading, press r to reload
+* Combat: 
+  * Add a few harder enemies and layouts for floors 15-60
 
 **** FUTURE FEATURES **** 
 
@@ -94,6 +75,22 @@
     with helmet being for utility and boots for movement speed 
 * Make it so messages can be drawn when you hover over an item 
   at a vendor to potentially buy it
+* Combat:
+    * Add some new bullet types for enemies
+    * Add bullets that bounce off of walls
+    * Add a way to make new bullet paths easily ( like parametric curves? )
+  * Add on-death effects for enemies 
+    * Add enemy that splits into two on death 
+    * Add enemy that explodes on death 
+  * Add way more enemy types, like 1 enemy type per floor.
+    * Add a sniper
+    * One shoots bouncy bullets 
+    * One randomly shoots all around them 
+    * One shoots in geometric shapes 
+    * One shoots bullets in a curvy pattern 
+    * One has bullets that circle around them 
+  * Add way more layouts, like 20 per 5 floors. Try Tiled
+  * Add visuals reloading, press r to reload
 
 **** FAR FUTURE FEATURES **** 
 

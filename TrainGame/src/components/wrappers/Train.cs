@@ -50,8 +50,9 @@ public static class TrainWrap {
         
         int tEnt = EntityFactory.AddData<Train>(w, t); 
 
-        foreach (KeyValuePair<CartType, Inventory> kvp in t.Carts) {
-            Inventory cur = kvp.Value; 
+        List<Inventory> invs = t.Carts.Values.ToList(); 
+        invs.Add(t.Inv);
+        foreach (Inventory cur in invs) {
             if (EntityFactory.GetDataEntity<Inventory>(w, cur) == -1) {
                 InventoryWrap.Add(w, cur); 
             }

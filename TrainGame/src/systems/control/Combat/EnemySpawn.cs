@@ -158,7 +158,7 @@ public static class EnemySpawnSystem {
                     w.SetComponent<CombatReward>(rewardEnt, reward); 
                     spawner.AddReward(reward); 
 
-                    Loot loot = Loot.GetRandom(spawner.FloorDest, CityWrap.GetCityWithPlayer(w).Inv, w);
+                    Loot loot = Loot.GetRandom(spawner.FloorDest, CityWrap.GetCityWithPlayer(w).Inv, w, difficulty: 3);
                     w.SetComponent<Loot>(rewardEnt, loot);
                     string rewardStr = $"{loot.GetItemID()}: {loot.Count}";
 
@@ -182,7 +182,6 @@ public static class LadderInteractSystem {
 public static class FloorSystem {
     public static void GoToFloor(World w, int floor) {
         if (floor == 0) {
-            PlayerStats.Reset(w); 
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
         } else {
             Layout.DrawRandom(w, floor);
@@ -192,7 +191,8 @@ public static class FloorSystem {
         int extraDamage = Constants.FloorDifficulty(floor) / 2; 
         
         foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
-            w.SetComponent<Loot>(e, Loot.GetRandom(floor, inv, w));
+            int difficulty = EnemyWrap.Enemies[w.GetComponent<Enemy>(e).Type].Difficulty; 
+            w.SetComponent<Loot>(e, Loot.GetRandom(floor, inv, w, difficulty: difficulty));
             w.GetComponent<Shooter>(e).IncreaseDamage(extraDamage);
         }
 

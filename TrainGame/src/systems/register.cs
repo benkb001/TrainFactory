@@ -95,6 +95,7 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<UpgradeTrainInterfaceData>(w);
         EnterInterfaceInteractSystem.Register<ElevatorInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
+        PurchaseClickSystem.RegisterResetHP(w);
         UpgradeDepotClickSystem.Register(w); 
         ConnectCitiesClickSystem.Register(w);
         UpgradeTrainPowerClickSystem.Register(w);
@@ -155,6 +156,7 @@ public static class RegisterSystems {
         SetMachineHeaderSystem.Register(w); 
         DrawLadderSystem.Register(w);
         DrawElevatorInterfaceSystem.Register(w); 
+        ToastSystem.RegisterDraw(w);
         //CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
