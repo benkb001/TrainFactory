@@ -121,7 +121,7 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w},
     };
 
-        public static List<List<Tile>> L3 = new() {
+    public static List<List<Tile>> L3 = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, ld, w},
         new() {w, g, g, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, w},
@@ -235,6 +235,66 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w},
     };
 
+    public static List<List<Tile>> L7 = new() {
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+        new() {w, w, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, ld, w},
+        new() {w, w, w, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, sp, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, w, w, w, w, w, w, w, w, w, w, w, w, w, w, g, g, w},
+        new() {w, g, g, w, w, w, w, w, w, w, w, w, w, w, w, w, w, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, g, voll, g, g, snip, g, g, snip, g, g, g, g, voll, g, w, w, w},
+        new() {w, w, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, w, w},
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+    };
+
+    public static List<List<Tile>> L8 = new() {
+        new() {w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, p, g, g, warr, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, ld, w},
+        new() {w, g, g, w, w, w, g, g, w},
+        new() {w, g, g, w, w, w, g, g, w},
+        new() {w, g, g, w, w, w, g, g, w},
+        new() {w, g, g, w, w, w, g, g, w},
+        new() {w, sp, g, g, g, g, g, g, w},
+        new() {w, g, g, warr, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w},
+    };
+
+    public static List<List<Tile>> L9 = new() {
+        new() {g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+        new() {g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g},
+        new() {g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, snip, g, snip, g, g, g, w, g, g, g},
+        new() {g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g},
+        new() {g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, snip, g, w, g, g, g, g, g},
+        new() {g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g},
+        new() {g, g, g, g, g, g, g, g, w, g, g, voll, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g},
+        new() {g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g},
+        new() {g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g},
+        new() {g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g},
+        new() {g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g},
+        new() {g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, voll, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, sp, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, snip, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, snip, g, snip, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+    };
+
     //Cities
 
     public static List<List<Tile>> Factory = new() {
@@ -256,11 +316,13 @@ public static class Layout {
         [CityID.Factory] = Factory
     };
 
+    //need 13 sets of floors 
     public static List<List<List<List<Tile>>>> Levels = new() {
-        new() { L0, L1, L2},
-        new() { L3, L4, LB},
+        new() { L0, L1, L2 },
+        new() { L3, L4, LB },
         new() { L5, L6, LM },
-        new() { LV, LS, LW }
+        new() { LV, LS, LW },
+        new() { L7, L8, L9 }
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {

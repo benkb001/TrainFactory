@@ -34,7 +34,7 @@
 * Need to add some way to prevent/deal with player forgetting to put a particular item 
   in train cuz its quite frustrating ? 
 
-**** NEXT FEATURES **** 
+**** THIS SPRINT **** 
 
 * Fix loops to grab products if there is no space for the 
   machines to craft
@@ -48,7 +48,28 @@
 * Add a way to unpause train program from the regular train menu
 
 * Combat: 
-  * Add a few harder enemies and layouts for floors 15-60
+  * Add a few harder enemies and layouts for floors 25-60
+  * Fix taking damage from multiple bullets at the same time (i think) bug
+
+**** NEXT SPRINT **** 
+
+* Add NPCs
+  * Interacting should activate dialogue unless there is none, then if there 
+    is a vendor it should open it. 
+* Add dialogue 
+  * NPCs should be able to store dialogues, sequences of strings. 
+  * Tweak scene so we can deactivate/reactivate the elements beneath the dialogue 
+  * Make it so it goes to the next dialgoue when you click on it or press e 
+  * Add a system for code that runs once at the beginning of a day
+    * It should basically add a 'day started' message when 
+      hours = 0, minutes = 0, ticks = 0, and then delete it later in that tick. 
+  * Make it so NPC dialogue gets refreshed at the beginning of the day 
+* Add quests 
+  * NPCs can store quests, we will need to check which ones have been completed 
+    in persistent-state. We'll have to have some sort of object that keeps 
+    track of quest completion status or is able to query for it, depending on 
+    the quest, for those that can have progress completed before the player 
+    accepts it. Quests will have some associated reward.
 
 **** FUTURE FEATURES **** 
 
@@ -56,7 +77,6 @@
   have arrived, but when trains leave the button gets grayed out to 
   show the train isn't there anymore, and if refreshed the button will disappear
 * Add a button to close menu
-* Add a way to skip to harder rounds in hpp
 * Add a system to highlight entities if player is in interacting range
 * Add warning if player is going to send a train with an empty inv
 * Add some default toasts
@@ -94,7 +114,6 @@
 
 **** FAR FUTURE FEATURES **** 
 
-* Implement dialogue
 * Augment Sprite/DrawSystem to handle animation/spritesheets
 * Consider making a train interior so player can do certain things while waiting inside a train
 * Add some tutorials/guides

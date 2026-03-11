@@ -23,13 +23,13 @@ public class Loot {
 
     //TODO: drop chances should also shift with floor? 
     private static List<(string, int)> drops1 = new() {
-        (ItemID.Plasma, 39),
+        (ItemID.Cobalt, 39),
         (ItemID.Credit, 69), 
         (ItemID.TimeCrystal, 1)
     };
 
     private static List<(string, int)> drops2 = new() {
-        (ItemID.Carbon, 28),
+        (ItemID.Mythril, 28),
         (ItemID.Credit, 70),
         (ItemID.TimeCrystal, 2)
     };
@@ -55,9 +55,9 @@ public class Loot {
     }
 
     private static Dictionary<string, Func<int, int>> dropCounts = new() {
-        [ItemID.Plasma] = (f) => f + (int)(f * 3 * Util.NextDoublePositive()), 
+        [ItemID.Cobalt] = (f) => f + (int)(f * 3 * Util.NextDoublePositive()), 
         [ItemID.Credit] = (f) => f + (int)((double)(f * f) * Util.NextDoublePositive() * Util.NextDoublePositive()), 
-        [ItemID.Carbon] = (f) => f + (int)(f * 2 * Util.NextDoublePositive()),
+        [ItemID.Mythril] = (f) => f + (int)(f * 2 * Util.NextDoublePositive()),
         [ItemID.Adamantite] = (f) => f + (int)(f * Util.NextDoublePositive()),
         [ItemID.TimeCrystal] = (f) => 10
     };
