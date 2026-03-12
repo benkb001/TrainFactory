@@ -18,7 +18,7 @@ using TrainGame.Constants;
 using TrainGame.Components;
 using TrainGame.ECS;  
 
-public static class Util {
+public static partial class Util {
     private static Random random = new Random(); 
     public static Rectangle RectangleFromRectangleF(RectangleF rectF) {
         return new Rectangle(

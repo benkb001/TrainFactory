@@ -30,6 +30,8 @@ public enum TokenType {
     Train, 
     OpenCurly, 
     CloseCurly, 
+    OpenParen,
+    CloseParen,
     Wait,
     While, 
     Access, 
@@ -118,6 +120,8 @@ public class TALLexer {
     public static Regex rxDivide = new Regex(@"\G/"); 
     public static Regex rxOpenCurly = new Regex(@"\G{"); 
     public static Regex rxCloseCurly = new Regex(@"\G}"); 
+    public static Regex rxOpenParen = new Regex(@"\G\(");
+    public static Regex rxCloseParen = new Regex(@"\G\)");
     public static Regex rxSemi = new Regex(@"\G;");
     public static Regex rxAccess = new Regex(@"\G\."); 
     public static Regex rxEqual = new Regex(@"\G=="); 
@@ -135,8 +139,8 @@ public class TALLexer {
     public static List<Regex> rxs = [
         rxCity, rxItem, rxTrue, rxFalse, rxAnd, rxOr, rxSelf, rxInt, 
         rxLoad, rxUnload, rxGo, rxWait, rxWhile, rxPlus, rxMinus, 
-        rxMultiply, rxDivide, rxOpenCurly, rxCloseCurly,
-        rxSemi, rxAccess, rxEqual, rxNotEqual, rxNot, 
+        rxMultiply, rxDivide, rxOpenCurly, rxCloseCurly, rxOpenParen,
+        rxCloseParen, rxSemi, rxAccess, rxEqual, rxNotEqual, rxNot, 
         rxGreaterEqual, rxLessEqual, rxGreater, rxLess, 
         rxTrain
     ];
@@ -159,6 +163,8 @@ public class TALLexer {
         [rxDivide] = (m) => new TALToken(TokenType.Divide), 
         [rxOpenCurly] = (m) => new TALToken(TokenType.OpenCurly), 
         [rxCloseCurly] = (m) => new TALToken(TokenType.CloseCurly), 
+        [rxOpenParen] = (m) => new TALToken(TokenType.OpenParen),
+        [rxCloseParen] = (m) => new TALToken(TokenType.CloseParen),
         [rxSemi] = (m) => new TALToken(TokenType.Semicolon),
         [rxAccess] = (m) => new TALToken(TokenType.Access), 
         [rxEqual] = (m) => new TALToken(TokenType.Equal), 

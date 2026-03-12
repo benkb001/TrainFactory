@@ -103,15 +103,20 @@ public static class TALParser {
         TALToken t1 = Lookahead(ts); 
         TALToken t2; 
         TALExpression e1; 
-        TALExpression e2; 
+        TALExpression e2;
 
         if (t1.Type == TokenType.Not) {
             MatchOne(TokenType.Not, ts); 
             e1 = ParseConditionalExp(ts, w, train); 
             return TALExpression.Not(e1);
+        } else if (t1.Type == TokenType.OpenParen) {
+            MatchOne(TokenType.OpenParen, ts); 
+            e1 = ParseConditionalExp(ts, w, train);
+            MatchOne(TokenType.CloseParen, ts); 
+        } else {
+            e1 = ParseBooleanExp(ts, w, train); 
         }
 
-        e1 = ParseBooleanExp(ts, w, train); 
         t2 = Lookahead(ts); 
 
         switch (t2.Type) {

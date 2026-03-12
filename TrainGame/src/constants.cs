@@ -109,6 +109,8 @@ namespace TrainGame.Constants
                 ItemID.Wood => 1000,
                 ItemID.Mythril => 1000,
                 ItemID.Adamantite => 1000,
+                ItemID.Lubricant => 1000,
+                ItemID.Petroleum => 1000,
                 "StackSize1" => 1,
                 _ => 100
             }; 
@@ -354,7 +356,8 @@ namespace TrainGame.Constants
                 [],
                 new Dictionary<string, Dictionary<string, int>>() {
                     [CityID.Factory] = railroadCosts[CityID.Reservoir],
-                    [CityID.Laboratory] = railroadCosts[CityID.Laboratory]
+                    [CityID.Laboratory] = railroadCosts[CityID.Laboratory],
+                    [CityID.TrainYard] = railroadCosts[CityID.TrainYard]
                 }
             ),
             [CityID.Refinery] = new CityArg(
@@ -666,7 +669,7 @@ namespace TrainGame.Constants
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Lubricant] = 50, 
                     [ItemID.Petroleum] = 100, 
-                    [ItemID.Cobalt] = 100,
+                    [ItemID.Mythril] = 100,
                     [ItemID.Iron] = 500, 
                     [ItemID.Fuel] = 500
                 }, 
@@ -826,7 +829,7 @@ namespace TrainGame.Constants
                     [ItemID.Lubricant] = 50, 
                     [ItemID.Iron] = 200, 
                     [ItemID.Fuel] = 100,
-                    [ItemID.Cobalt] = 100
+                    [ItemID.Mythril] = 100
                 }, 
                 MinTicks: 3,
                 SlowFactor: 6000, 
@@ -859,7 +862,7 @@ namespace TrainGame.Constants
             ),
             [MachineID.FuelRefinery] = new MachineArg(
                 ProductItemId: ItemID.Fuel, 
-                ProductCount: 1, 
+                ProductCount: 4, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Oil] = 1, 
                     [ItemID.Water] = 1
@@ -935,7 +938,7 @@ namespace TrainGame.Constants
             ),
             [MachineID.OilRig] = new MachineArg(
                 ProductItemId: ItemID.Oil, 
-                ProductCount: 10, 
+                ProductCount: 20, 
                 Recipe: new Dictionary<string, int>() {
                     [ItemID.Fuel] = 1
                 },

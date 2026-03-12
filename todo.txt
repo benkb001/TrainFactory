@@ -10,6 +10,8 @@
 * When pressing e not near a machine it still thinks we are interacting with it,
   Probably an issue with deciding if close enough to trigger interaction
 * Couldn't easily reproduce but maybe not resetting worldtime passage to slow
+* An enemy clipped outside the wall on the diagonal map
+* If a machine is delivering and player saves/quits it doesn't deliver
   
 **** TEST **** 
 
@@ -33,9 +35,13 @@
 * Fix test directory to match some file placement changes
 * Need to add some way to prevent/deal with player forgetting to put a particular item 
   in train cuz its quite frustrating ? 
+* Test why slow on diagonal map
 
 **** THIS SPRINT **** 
 
+* Test Djikstra's, make city implement INode<City>, 
+  and make it so TAL uses djikstra's to get the shortest 
+  path to the city. 
 * Fix loops to grab products if there is no space for the 
   machines to craft
   * Need to have access to city depot level/stack sizes in TAL,
@@ -49,6 +55,8 @@
 
 * Combat: 
   * Add a few harder enemies and layouts for floors 25-60
+  * Death should also take some of your ores, include these in the message (if > 0)
+  * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Fix taking damage from multiple bullets at the same time (i think) bug
 
 **** NEXT SPRINT **** 
@@ -95,6 +103,11 @@
     with helmet being for utility and boots for movement speed 
 * Make it so messages can be drawn when you hover over an item 
   at a vendor to potentially buy it
+* Add a way to view multiple machines/set their storage sizes at the same time
+* Add Embassy and Abandoned Settlement
+* Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
+  if completed give high rewards 
+* Display inventory level in header
 * Combat:
     * Add some new bullet types for enemies
     * Add bullets that bounce off of walls
@@ -115,11 +128,9 @@
 **** FAR FUTURE FEATURES **** 
 
 * Augment Sprite/DrawSystem to handle animation/spritesheets
-* Consider making a train interior so player can do certain things while waiting inside a train
 * Add some tutorials/guides
-* Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
-  if completed give high rewards 
 * Use OpenFileDialog class to let players submit a program file from their cpu
+* Add art, music, sounds, bosses, cutscenes, story, and clean UI
 
 **** NICE TO HAVE LOW PRIORITY **** 
 
@@ -134,12 +145,7 @@
   * Add expression to get time since arrival/time since departure
   * Add comments
   * Add parentheses
-* Make a system to ensure collidables cannot overlap as this results in buggy behavior
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 
 * Make drawing System based
-* Make UI Drawing based on screen coordinates
-* Make inventory draw messages automatically move around or resize other inventories as necessary
-* Chest system, currently bugged but could revamp it 
-  * possibly relative to zero-zero being an error, not pausing scene definitely

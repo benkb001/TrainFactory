@@ -137,7 +137,7 @@ public class TALParserTest {
             LOAD Factory.Fuel / 2 Fuel; 
             GO TO Mine; 
             UNLOAD TestTrain.Fuel Fuel; 
-            WHILE Mine.Fuel > 0 {
+            WHILE (Mine.Fuel > 0) AND (Factory.Iron < 1000) {
                 WAIT;
             }
             LOAD Mine.Iron Iron; 
@@ -146,5 +146,14 @@ public class TALParserTest {
         ";
         TALBody ast = TALParser.ParseProgram(program, w, t); 
         Assert.Equal(7, ast.InstructionCount); 
+    }
+
+    [Fact]
+    public void TALParser_ConditionalsWithParenthesesShouldEvaluateFirst() {
+        (City c, int cEnt, Train t, int tEnt, World w) = init();
+        string program = @"(Factory.Fuel > 10) OR (Mine.Glass < 100)";
+        List<TALToken> toks = TALLexer.Tokenize(program);
+        TALExpression e = TALParser.ParseConditionalExp(toks, w, t);
+        Assert.Equal(ConditionType.Or, e.Condition.Type);
     }
 }
