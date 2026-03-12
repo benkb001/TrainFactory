@@ -15,9 +15,9 @@ public class SetTrainProgramClickSystemTest {
         Train t = TrainWrap.GetTestTrain(); 
         t.Inv.Add(ItemID.Motherboard, 1); 
         w.SetComponent<SetTrainProgramButton>(e, 
-            new SetTrainProgramButton(TAL.IronFactoryLoop, t, TAL.Scripts[TAL.IronFactoryLoop]));
+            new SetTrainProgramButton("Iron To Factory", t, TAL.Scripts["Iron To Factory"]));
         w.Update(); 
-        Assert.Equal(TAL.Scripts[TAL.IronFactoryLoop], t.Program); 
+        Assert.Equal(TAL.Scripts["Iron To Factory"], t.Program); 
         Assert.NotNull(t.Executable); 
     }
 }

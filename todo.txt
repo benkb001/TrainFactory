@@ -39,9 +39,7 @@
 
 **** THIS SPRINT **** 
 
-* Test Djikstra's, make city implement INode<City>, 
-  and make it so TAL uses djikstra's to get the shortest 
-  path to the city. 
+* Make it so TAL uses djikstra's
 * Fix loops to grab products if there is no space for the 
   machines to craft
   * Need to have access to city depot level/stack sizes in TAL,

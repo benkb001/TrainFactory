@@ -23,7 +23,7 @@ public static partial class Util {
             .FirstOrDefault();
 
             List<T> path = paths[minDistNode];
-            int distThroughCur = path.Count + 1; 
+            int distThroughCur = path == null ? Int32.MaxValue : path.Count + 1;
 
             foreach (T node in minDistNode.GetNeighbors().Where(n => unvisited.Contains(n))) {
                 
@@ -36,7 +36,10 @@ public static partial class Util {
                 }
             }
 
-            unvisited.Remove(minDistNode);
+            bool removed = unvisited.Remove(minDistNode);
+            if (!removed) {
+                break;
+            }
         }
 
         return paths[dest];

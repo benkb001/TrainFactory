@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq; 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -90,17 +91,38 @@ public class TALBody {
         int amount; 
         string itemID; 
         bool executing = true; 
-        while (executing && nextInstruction < instructions.Count) {
+        while (executing && !paused && nextInstruction < instructions.Count) {
             TALInstruction i = instructions[nextInstruction];
             switch (i.Type) {
                 case InstructionType.Go: 
+                    
                     city = i.C; 
-                    if (train.ComingFrom.AdjacentCities.Contains(city)) {
-                        TrainWrap.Embark(train, city, w); 
+
+                    if (train.ComingFrom == city) {
+                        nextInstruction++;
+                        continue;
+                    }
+
+                    List<City> all = w
+                    .GetMatchingEntities([typeof(City), typeof(Data)])
+                    .Select(e => w.GetComponent<City>(e))
+                    .ToList();
+
+                    List<City> path = Util.ShortestPathUnweighted(all, train.ComingFrom, city); 
+
+                    if (path != null && path.Count > 0) {
+                        City next = path[0]; 
+                        TrainWrap.Embark(train, next, w); 
+                        executing = false; 
+                        if (next == city) {
+                            nextInstruction++;
+                        }
+                    } else {
+                        //pause, there is no way for the train to get to its destination,
+                        //as the player hasn't unlocked the required railroads yet
+                        paused = true; 
                     }
                     
-                    nextInstruction++; 
-                    executing = false; 
                     break; 
 
                 case InstructionType.Load: 

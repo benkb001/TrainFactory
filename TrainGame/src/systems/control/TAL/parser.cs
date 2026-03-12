@@ -22,6 +22,10 @@ using TrainGame.Utils;
 
 public static class TALParser {
     public static TALToken MatchOne(TokenType type, List<TALToken> ts) {
+        if (ts.Count == 0) {
+            throw new InvalidOperationException($"TAL parser expected {type} but ran out of input");
+        }
+
         TALToken t = ts[0]; 
         if (t.Type != type) {
             throw new InvalidOperationException($"TAL parser expected {type}, got {t.Type}");
@@ -234,7 +238,7 @@ public static class TALParser {
 
     public static List<TALInstruction> ParseBody(List<TALToken> ts, World w, Train t) {
         TALToken t1 = Lookahead(ts); 
-        List<TALInstruction> instructions = new(); 
+        List<TALInstruction> instructions = new();
 
         switch (t1.Type) {
             case TokenType.End: 

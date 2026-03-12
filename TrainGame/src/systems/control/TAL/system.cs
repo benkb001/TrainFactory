@@ -3,6 +3,7 @@ namespace TrainGame.Systems;
 using System; 
 using System.Drawing; 
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -24,153 +25,36 @@ public class TALExecutionSystem {
     }
 }
 
-public class TAL {
+public static class TAL {
 
-    public const string IronFactoryLoop = "Iron To Factory";
-    public const string SandFactoryLoop = "Sand To Factory"; 
-    public const string WoodFactoryLoop = "Wood To Factory"; 
-    public const string WaterFactoryLoop = "Water To Factory"; 
-    public const string OilToFactory = "Oil To Factory";
-    public const string MythrilToFactory = "TODO"; 
-    public const string CobaltToFactory = "TODO"; 
-    public const string AdamantiteToFactory = "TODO";
+    private static List<(string, string, string, int)> programData = new() {
+        (ItemID.Iron, CityID.Mine, CityID.Factory, 2),
+        (ItemID.Water, CityID.Coast, CityID.Factory, 10),
+        (ItemID.Sand, CityID.Coast, CityID.Factory, 1),
+        (ItemID.Wood, CityID.Greenhouse, CityID.Factory, 1),
+        (ItemID.Oil, CityID.Reservoir, CityID.Refinery, 2),
+        (ItemID.Water, CityID.Coast, CityID.Refinery, 2),
+        (ItemID.Iron, CityID.Mine, CityID.Refinery, 10),
+        (ItemID.Water, CityID.Coast, CityID.Greenhouse, 2),
+        (ItemID.Oil, CityID.Reservoir, CityID.Factory, 10),
+        (ItemID.Lubricant, CityID.Refinery, CityID.TrainYard, 4),
+        (ItemID.Petroleum, CityID.Refinery, CityID.TrainYard, 4),
+        (ItemID.Fuel, CityID.Factory, CityID.TrainYard, 20),
+        (ItemID.Mythril, CityID.Mine, CityID.TrainYard, 1),
+        (ItemID.Iron, CityID.Mine, CityID.TrainYard, 10)
+    };
 
-    public const string LubricantToTrainYard = "Lubricant To Train Yard"; 
-    public const string PetroleumToTrainYard = "Petroleum To Train Yard"; 
-    public const string FuelToTrainYard = "Fuel To Train Yard";
-    public const string MythrilToTrainYard = "Mythril To Train Yard";
-    public const string IronToTrainYard = "Iron To Train Yard";
-
-    public const string OilToRefinery = "Oil To Refinery";
-    public const string WaterToRefinery = "Water To Refinery";
-    public const string IronToRefinery = "Iron To Refinery";
-
-    public const string FuelToCoast = "Fuel To Coast";
-    public const string WaterToGreenhouse = "Water To Greenhouse";
-
-    public const string FuelLoop = "Fuel Loop"; 
-
-    private string loopScript(string productID, string citySrc, string cityDest, int proportion) {
+    private static string loopScript(string productID, string citySrc, string cityDest, int proportion) {
         int b = 100; 
         int minAtDestToLeave = b; 
         int minAtSrcToLeave = b * proportion; 
 
-        string condition = $"{citySrc}.{productID} > {minAtDestToLeave} OR {cityDest}.{productID} < {minAtSrcToLeave}";
+        string condition = $"{citySrc}.{productID} < {minAtSrcToLeave} OR {cityDest}.{productID} > {minAtDestToLeave}";
         string directions = $"LOAD {citySrc}.{productID} / {proportion} {productID}; GO TO {cityDest};";
-        directions += $"UNLOAD SELF.{productID} {productID}; GO TO {citySrc}";
+        directions += $"UNLOAD SELF.{productID} {productID}; GO TO {citySrc};";
 
         return "WHILE " + condition +  " { WAIT; } " + directions;
     }
-
-    public static Dictionary<string, string> Scripts = new() {
-        [IronFactoryLoop] = @"
-            WHILE Factory.Iron > 100 OR Mine.Iron < 100 {
-                WAIT;
-            }
-
-            LOAD Mine.Iron / 2 Iron; 
-            GO TO Factory; 
-
-            UNLOAD SELF.Iron Iron; 
-            GO TO Mine;
-        ",
-        [WaterFactoryLoop] = @"
-            WHILE Coast.Water < 1000 OR Factory.Water > 100 {
-                WAIT;
-            }
-
-            LOAD Coast.Water / 10 Water;
-            GO TO Factory; 
-
-            UNLOAD SELF.Water Water;
-            GO TO Coast;
-        ",
-        [SandFactoryLoop] = @"
-            WHILE Coast.Sand < 100 OR Factory.Sand > 100 {
-                WAIT;
-            }
-            
-            LOAD Coast.Sand Sand; 
-            GO TO Factory; 
-
-            UNLOAD SELF.Sand Sand;
-            GO TO Coast;
-        ",
-        [WoodFactoryLoop] = @"
-            WHILE Greenhouse.Wood < 100 OR Factory.Wood > 100 {
-                WAIT;
-            }
-
-            LOAD Greenhouse.Wood Wood;
-            GO TO Factory; 
-
-            UNLOAD SELF.Wood Wood;
-            GO TO Greenhouse;
-        ",
-        [OilToRefinery] = @"
-            WHILE Refinery.Oil > 100 OR Reservoir.Oil < 100 {
-                WAIT;
-            }
-            LOAD Reservoir.Oil / 2 Oil; 
-            GO TO Factory; 
-            GO TO Greenhouse; 
-            GO TO Refinery; 
-            UNLOAD SELF.Oil Oil; 
-            GO TO Greenhouse;
-            GO TO Factory;
-            GO TO Reservoir; 
-        ",
-        [WaterToRefinery] = @"
-            WHILE Refinery.Water > 100 OR Coast.Water < 100 {
-                WAIT;
-            }
-            LOAD Coast.Water / 2 Water; 
-            GO TO Refinery; 
-            UNLOAD Self.Water Water; 
-            GO TO Coast;
-        ",
-        [IronToRefinery] = @"
-            WHILE Refinery.Iron > 100 OR Mine.Iron < 1000 {
-                WAIT;
-            }
-            LOAD Mine.Iron / 10 Iron; 
-            GO TO Factory; 
-            GO TO Greenhouse; 
-            GO TO Refinery; 
-            UNLOAD Self.Iron Iron; 
-            GO TO Greenhouse; 
-            GO TO Factory; 
-            GO TO Mine;
-        ",
-        [WaterToGreenhouse] = @"
-            WHILE Greenhouse.Water > 100 OR Coast.Water < 200 {
-                WAIT;
-            }
-            LOAD Coast.Water / 2 Water; 
-            GO TO Factory; 
-            GO TO Greenhouse; 
-            UNLOAD Self.Water Water; 
-            GO TO Factory; 
-            GO TO Coast;
-        ",
-        [OilToFactory] = @"
-            WHILE Factory.Oil > 100 OR Reservoir.Oil < 1000 {
-                WAIT;
-            }
-
-            LOAD Reservoir.Oil / 10 Oil;
-            GO TO Factory; 
-            
-            UNLOAD SELF.Oil Oil; 
-            GO TO Reservoir;
-        ",
-        [LubricantToTrainYard] = "TODO",
-        [PetroleumToTrainYard] = "TODO",
-        [FuelToTrainYard] = "TODO",
-        [MythrilToTrainYard] = "TODO",
-        [IronToTrainYard] = "TODO"
-
-    };
 
     private static string loopExplanation(string productID, string citySrc, string cityDest) {
         return (@"
@@ -180,16 +64,28 @@ public class TAL {
         .Replace("\n", "");
     }
 
-    public static Dictionary<string, string> ScriptExplanations = new() {
-        [IronFactoryLoop] = loopExplanation(ItemID.Iron, CityID.Mine, CityID.Factory),
-        [SandFactoryLoop] = loopExplanation(ItemID.Sand, CityID.Coast, CityID.Factory),
-        [WaterFactoryLoop] = loopExplanation(ItemID.Water, CityID.Coast, CityID.Factory),
-        [WoodFactoryLoop] = loopExplanation(ItemID.Wood, CityID.Greenhouse, CityID.Factory), 
-        [OilToRefinery] = loopExplanation(ItemID.Oil, CityID.Reservoir, CityID.Refinery),
-        [WaterToRefinery] = loopExplanation(ItemID.Water, CityID.Coast, CityID.Refinery),
-        [IronToRefinery] = loopExplanation(ItemID.Iron, CityID.Mine, CityID.Refinery),
+    private static Dictionary<string, string> initScriptExplanations() {
+        Dictionary<string, string> scripts = new(); 
+        foreach ((string itemID, string src, string dest, int _) in programData) {
+            string title = $"{itemID} To {dest}"; 
+            string explanation = loopExplanation(itemID, src, dest); 
+            scripts[title] = explanation;
+        }
+        return scripts;
+    }
 
-    };
+    private static Dictionary<string, string> initScripts() {
+        Dictionary<string, string> scripts = new(); 
+        foreach ((string itemID, string src, string dest, int proportion) in programData) {
+            string title = $"{itemID} To {dest}"; 
+            string program = loopScript(itemID, src, dest, proportion);
+            scripts[title] = program;
+        }
+        return scripts;
+    }
+
+    public static Dictionary<string, string> ScriptExplanations = initScriptExplanations(); 
+    public static Dictionary<string, string> Scripts = initScripts(); 
 
     public static void BuyTrainProgram(string program, Train t, World w, string programName = "") {
         bool hasMotherboard = false; 
@@ -210,8 +106,8 @@ public class TAL {
                 TAL.SetTrainProgram(program, t, w, programName: programName); 
                 EntityFactory.AddToast(w, 150, 75, $"Successfully set {t.Id} program!");
                 inv.Take(ItemID.Motherboard, 1); 
-            } catch (InvalidOperationException) {
-                EntityFactory.AddToast(w, 150, 75, $"Failed to compile program for {t.Id}");
+            } catch (InvalidOperationException e) {
+                EntityFactory.AddToast(w, 150, 75, $"Failed to compile program for {t.Id}, {e}");
             }
         } else {
             EntityFactory.AddToast(w, 150, 75, $"You must place a Motherboard in {t.Id}'s inventory to program it!");

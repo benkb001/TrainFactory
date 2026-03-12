@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
 
-public class City : IID {
+public class City : IID, INode<City> {
     private string cityId; 
     private float uiX; 
     private float uiY;
@@ -134,5 +134,9 @@ public class City : IID {
 
     public int NumCarts(CartType type) {
         return carts[type]; 
+    }
+
+    public List<City> GetNeighbors() {
+        return AdjacentCities;
     }
 }
