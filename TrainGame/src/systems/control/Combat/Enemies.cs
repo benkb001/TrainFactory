@@ -106,7 +106,7 @@ public class EnemyWrap {
         ),
         [EnemyType.Barbarian] = new EnemyConst(
             Type: EnemyType.Barbarian, 
-            HP: 30, 
+            HP: 20, 
             TicksPerShot: 200, 
             ReloadTicks: 200,
             Ammo: 1, 
@@ -126,7 +126,7 @@ public class EnemyWrap {
         [EnemyType.Default] = new EnemyConst(),
         [EnemyType.MachineGun] = new EnemyConst(
             Type: EnemyType.MachineGun,
-            HP: 25,
+            HP: 12,
             Ammo: 36, 
             ReloadTicks: 120,
             MType: MoveType.Chase,
@@ -181,7 +181,7 @@ public class EnemyWrap {
             Ammo: 1, 
             ReloadTicks: 300,
             Damage: 40,
-            HP: 40, 
+            HP: 25, 
             BulletSpeed: 10f, 
             BulletsAreWarned: true, 
             WarningDuration: new WorldTime(ticks: 20),
@@ -191,7 +191,7 @@ public class EnemyWrap {
         [EnemyType.Volley] = new EnemyConst(
             Type: EnemyType.Volley, 
             SPattern: ShootPattern.Multi,
-            HP: 40, 
+            HP: 25, 
             TicksPerShot: 60, 
             ReloadTicks: 200, 
             Ammo: 24, 
@@ -204,7 +204,7 @@ public class EnemyWrap {
         [EnemyType.Warrior] = new EnemyConst(
             Type: EnemyType.Warrior, 
             SPattern: ShootPattern.Multi, 
-            HP: 80,
+            HP: 40,
             ReloadTicks: 480,
             BulletSpeed: 4f,
             WarningDuration: new WorldTime(ticks: 30),

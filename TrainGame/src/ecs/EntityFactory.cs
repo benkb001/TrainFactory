@@ -77,7 +77,7 @@ public static class EntityFactory {
 
     public static int AddUI(World w, Vector2 position, float width, float height, bool setButton = false, 
         string text = "", bool setOutline = false, bool screenAnchor = false, bool setInteractable = false, 
-        bool setCollidable = false, bool setToast = false) {
+        bool setCollidable = false, int setToast = 0) {
 
         int e = Add(w); 
         w.SetComponent<Frame>(e, new Frame(position, width, height)); 
@@ -101,8 +101,8 @@ public static class EntityFactory {
             w.SetComponent<Interactable>(e, new Interactable()); 
         }
 
-        if (setToast) {
-            w.SetComponent<Toast>(e, new Toast()); 
+        if (setToast > 0) {
+            w.SetComponent<Toast>(e, new Toast(setToast)); 
         }
         
         return e; 

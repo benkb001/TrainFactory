@@ -84,6 +84,7 @@ public static class RegisterComponents {
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
         r<EnterInterfaceInteractable<ElevatorInterfaceData>>();
+        r<EquipmentData>();
         r<EquipmentSlot<Armor>>();
         r<EquipmentUI>(); 
         r<Frame>(); 
@@ -99,6 +100,7 @@ public static class RegisterComponents {
         r<InventoryIndexer<Train>>(); 
         r<Inventory.Item>();
         r<InventoryOrganizeMessage>();
+        r<InventoryUpdatedFlag>();
         r<Ladder>();
         r<Machine>(); 
         r<MachineHeader>();

@@ -1116,29 +1116,34 @@ namespace TrainGame.Constants
             [ArmorCraftsman] = new () {
                 PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor1, 1, new() {
                     [ItemID.Credit] = 50, 
-                    [ItemID.Iron] = 50
+                    [ItemID.Iron] = 50,
+                    [ItemID.Cobalt] = 50
                 }),
                 PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor2, 1, new () {
-                    [ItemID.Credit] = 150, 
+                    [ItemID.Credit] = 1000, 
                     [ItemID.Iron] = 200, 
-                    [ItemID.Fuel] = 100
+                    [ItemID.Cobalt] = 200,
+                    [ItemID.Glass] = 100,
                 }),
                 PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor3, 1, new () {
-                    [ItemID.Credit] = 1000,
+                    [ItemID.Credit] = 3000,
                     [ItemID.Iron] = 2000, 
-                    [ItemID.Oil] = 1000
+                    [ItemID.Oil] = 1000,
+                    [ItemID.Mythril] = 250
                 }),
             },
             [WeaponCraftsman] = new () {
                 PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun2, 1, new () {
-                    [ItemID.Credit] = 100, 
-                    [ItemID.Fuel] = 300, 
+                    [ItemID.Credit] = 1000, 
+                    [ItemID.Water] = 1000,
                     [ItemID.Iron] = 500, 
-                    [ItemID.Water] = 1000
+                    [ItemID.Cobalt] = 500,
+                    [ItemID.Fuel] = 500
                 }),
                 PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun3, 1, new () {
                     [ItemID.Credit] = 2000, 
                     [ItemID.Iron] = 2000,
+                    [ItemID.Mythril] = 500,
                     [ItemID.Petroleum] = 500,
                     [ItemID.Lubricant] = 100
                 }),

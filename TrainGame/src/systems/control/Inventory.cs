@@ -44,6 +44,14 @@ public class InventoryControlSystem() {
             targetInv.Add(new Inventory.Item(ItemId: targetItem.ItemId, Count: targetItem.Count - addedToCur));
             
             d.SnapPosition = targetVector; 
+
+            Inventory[] invs = {targetInv, curInv}; 
+
+            foreach (Inventory inv in invs) {
+                int invEnt = InventoryWrap.GetEntity(inv.ID, w);
+                w.SetComponent<InventoryUpdatedFlag>(invEnt, InventoryUpdatedFlag.Get());
+            }
+
             w.RemoveEntity(e); 
         }; 
         

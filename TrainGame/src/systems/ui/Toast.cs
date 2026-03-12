@@ -36,17 +36,18 @@ public static class ToastSystem {
         world.AddSystem(types, transformer); 
     }
 
-    public static void Draw(World w, string message) {
+    public static void Draw(World w, string message, int ticksVisible = 100) {
         float width = w.ScreenWidth / 4f; 
         float height = w.ScreenHeight / 4f;
 
         int e = EntityFactory.AddUI(w, new Vector2((w.ScreenWidth / 2f) - (width / 2f), w.ScreenHeight / 3f), width, height, 
-            setOutline: true, screenAnchor: true, text: message, setToast: true);
+            setOutline: true, screenAnchor: true, text: message, setToast: ticksVisible);
     }
 
     public static void RegisterDraw(World w) {
         w.AddSystem([typeof(DrawToastMessage)], (w, e) => {
-            Draw(w, w.GetComponent<DrawToastMessage>(e).Text);
+            DrawToastMessage dm = w.GetComponent<DrawToastMessage>(e);
+            Draw(w, dm.Text, dm.TicksVisible);
             w.RemoveEntity(e); 
         });
     }
@@ -54,8 +55,10 @@ public static class ToastSystem {
 
 public class DrawToastMessage {
     public readonly string Text; 
+    public readonly int TicksVisible; 
 
-    public DrawToastMessage(string Text) {
+    public DrawToastMessage(string Text, int TicksVisible) {
         this.Text = Text; 
+        this.TicksVisible = TicksVisible;
     }
 }

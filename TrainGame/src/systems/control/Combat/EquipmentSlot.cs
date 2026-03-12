@@ -20,7 +20,13 @@ public class EquipmentUI {}
 
 public static class EquipSystem {
     public static void Register<T>(World w) {
-        w.AddSystem([typeof(Inventory), typeof(EquipmentSlot<T>), typeof(EquipmentUI), typeof(Active)], (w, e) => {
+        Type[] ts = {
+            typeof(Inventory), typeof(EquipmentSlot<T>), typeof(InventoryUpdatedFlag), 
+            typeof(EquipmentData), typeof(Data)
+        };
+        
+        w.AddSystem(ts, (w, e) => {
+            
             Inventory inv = w.GetComponent<Inventory>(e); 
             EquipmentSlot<T> slot = w.GetComponent<EquipmentSlot<T>>(e); 
             Inventory.Item item = inv.Get(0); 

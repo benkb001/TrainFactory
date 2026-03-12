@@ -27,6 +27,7 @@ public class Inventory : IID {
 
     public int Level => level; 
     public string Id => inventoryId; 
+    public string ID => inventoryId;
     public int Rows => rows; 
     public int Cols => cols; 
     public CartType Filter => filter; 

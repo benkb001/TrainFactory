@@ -128,10 +128,8 @@ public static class PersistentState {
         Health playerHealth = PlayerWrap.GetHP(w);
         int maxHP = playerHealth.MaxHP; 
         int hp = playerHealth.HP;
-        int armor = w.GetComponent<Armor>(playerEnt).Defense; 
 
         dom.Add("player", new JsonObject() {
-            ["armor"] = armor,
             ["armorInventoryID"] = armorInv.Id,
             ["inventoryID"] = playerInv.Id, 
             ["maxHP"] = maxHP,
@@ -179,6 +177,7 @@ public static class PersistentState {
         Globals.MaxFloor = (int)dom["maxFloor"];
 
         Dictionary<string, Inventory> inventories = new(); 
+        Dictionary<string, int> inventoryEnts = new(); 
         Dictionary<string, City> cities = new(); 
         Dictionary<string, Train> trains = new(); 
         Dictionary<string, (int, Machine)> machines = new(); 
@@ -193,7 +192,9 @@ public static class PersistentState {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
             inventories.Add(invID, inv); 
-            EntityFactory.AddData<Inventory>(w, inv); 
+            int e = EntityFactory.AddData<Inventory>(w, inv); 
+            inventoryEnts[invID] = e; 
+            w.SetComponent<InventoryUpdatedFlag>(e, InventoryUpdatedFlag.Get());
         }
 
         foreach (KeyValuePair<string, CityArg> kvp in CityID.CityMap) {
@@ -303,23 +304,26 @@ public static class PersistentState {
 
         Inventory playerInv = inventories[(string)playerJSON["inventoryID"]];
         Inventory armorInv = inventories[(string)playerJSON["armorInventoryID"]];
-        int armor = (int)playerJSON["armor"];
+
+        EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
+        int armorInvEnt = inventoryEnts[armorInv.ID];
+        w.SetComponent<EquipmentData>(armorInvEnt, new EquipmentData());
+        w.SetComponent<EquipmentSlot<Armor>>(armorInvEnt, armorSlot);
+
         int maxHP = (int)playerJSON["maxHP"];
         int hp = (int)playerJSON["HP"];
 
-        Armor playerArmor = new Armor(armor); 
         Health playerHealth = new Health(maxHP); 
         playerHealth.SetHP(hp);
-        EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
-
+        
         int playerDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
 
         w.SetComponent<Player>(playerDataEnt, new Player()); 
         w.SetComponent<Inventory>(playerDataEnt, playerInv); 
-        w.SetComponent<Armor>(playerDataEnt, playerArmor); 
         w.SetComponent<Health>(playerDataEnt, playerHealth); 
         w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, armorSlot); 
         w.SetComponent<RespawnLocation>(playerDataEnt, new RespawnLocation(cities[CityID.Factory]));
+        w.SetComponent<Armor>(playerDataEnt, new Armor(0));
 
         string playerLocation = (string)dom["playerLocation"];
 

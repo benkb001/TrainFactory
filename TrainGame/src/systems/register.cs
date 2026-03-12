@@ -106,6 +106,8 @@ public static class RegisterSystems {
         CloseMenuClickSystem.Register(w); 
         PauseTrainProgramButtonClickSystem.Register(w); 
         ElevatorSystem.Register(w); 
+
+        EquipSystem.Register<Armor>(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -187,8 +189,6 @@ public static class RegisterSystems {
         InventorySplitSystem.Register(w); 
         InventoryFastTransferSystem.Register(w); 
 
-        EquipSystem.Register<Armor>(w); 
-
         CraftProgressBarUpdateSystem.Register(w); 
         ParryCooldownBarSystem.Register(w); 
         ManualCraftUpdateSystem.Register(w); 
@@ -199,5 +199,6 @@ public static class RegisterSystems {
         InteractSystem.RegisterUninteract(w); 
         TrainFlagUpdateSystem.Register(w); 
         MachineUpdateSystem.RegisterEndFrame(w); 
+        RemoveInventoryUpdatedFlagSystem.Register(w);
     }
 }

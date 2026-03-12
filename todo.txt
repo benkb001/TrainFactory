@@ -36,10 +36,11 @@
 * Need to add some way to prevent/deal with player forgetting to put a particular item 
   in train cuz its quite frustrating ? 
 * Test why slow on diagonal map
+* Filters should be in inventory wrap
+* Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
 
 **** THIS SPRINT **** 
 
-* Make it so TAL uses djikstra's
 * Fix loops to grab products if there is no space for the 
   machines to craft
   * Need to have access to city depot level/stack sizes in TAL,
@@ -53,7 +54,6 @@
 
 * Combat: 
   * Add a few harder enemies and layouts for floors 25-60
-  * Death should also take some of your ores, include these in the message (if > 0)
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Fix taking damage from multiple bullets at the same time (i think) bug
 

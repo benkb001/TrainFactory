@@ -271,9 +271,9 @@ public static class Layout {
     public static List<List<Tile>> L9 = new() {
         new() {g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g},
-        new() {g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, snip, g, snip, g, g, g, w, g, g, g},
+        new() {g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, barb, g, snip, g, g, g, w, g, g, g},
         new() {g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g},
-        new() {g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, snip, g, w, g, g, g, g, g},
+        new() {g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, barb, g, w, g, g, g, g, g},
         new() {g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g},
         new() {g, g, g, g, g, g, g, g, w, g, g, voll, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g},
         new() {g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g},
@@ -288,9 +288,9 @@ public static class Layout {
         new() {w, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, sp, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
-        new() {w, g, snip, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, shotgun, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
-        new() {w, g, snip, g, snip, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
+        new() {w, g, snip, g, shotgun, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
         new() {w, w, w, w, w, w, w, w, w, w, w, w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g},
     };

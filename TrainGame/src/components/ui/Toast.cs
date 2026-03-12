@@ -1,9 +1,17 @@
 namespace TrainGame.Components;
 
 public class Toast {
-    public float RemainingDuration = 1f; 
+    private int curTicks; 
+    private int maxTicks; 
+
+    public float RemainingDuration => (float)curTicks / maxTicks; 
     
+    public Toast(int maxTicks = 100) {
+        this.curTicks = maxTicks; 
+        this.maxTicks = maxTicks;
+    }
+
     public void DecrementDuration() {
-        RemainingDuration -= 0.005f; 
+        curTicks--; 
     }
 }

@@ -33,6 +33,8 @@ public class EquipmentSlot<T> {
 
     public void SetEquipped(string itemID) {
         this.itemID = itemID; 
-        equipment = EquipmentMap[itemID]; 
+        if (EquipmentMap.ContainsKey(itemID)) {
+            equipment = EquipmentMap[itemID]; 
+        }
     }
 }

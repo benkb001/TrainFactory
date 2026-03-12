@@ -62,7 +62,11 @@ public static class DamageSystem {
                 foreach (int iEnt in intersectingEnts) {
                     if (potentialReceivers.Contains(iEnt)) {
                         hit = true; 
-                        receivingDamage[iEnt] += dmg;
+                        //TODO: should enemies be able to be hit multiple times in the same frame? 
+                        //for now probably doesn't matter but if we add a gun that has a 
+                        //really high number of bullets, maybe 
+                        receivingDamage[iEnt] = dmg; 
+                        break;
                     }
                 }
                 
@@ -72,7 +76,12 @@ public static class DamageSystem {
             });
 
             potentialReceivers
-            .ForEach(e => w.SetComponent<ReceiveDamageMessage>(e, new ReceiveDamageMessage(receivingDamage[e])));
+            .ForEach(e => {
+                int dmg = receivingDamage[e]; 
+                if (dmg > 0) {
+                    w.SetComponent<ReceiveDamageMessage>(e, new ReceiveDamageMessage(receivingDamage[e]));
+                }
+            });
         });
     }
 

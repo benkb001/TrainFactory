@@ -188,12 +188,10 @@ public static class FloorSystem {
         }
 
         Inventory inv = LootWrap.GetDestination(w);
-        int extraDamage = Constants.FloorDifficulty(floor) / 2; 
         
         foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
             int difficulty = EnemyWrap.Enemies[w.GetComponent<Enemy>(e).Type].Difficulty; 
             w.SetComponent<Loot>(e, Loot.GetRandom(floor, inv, w, difficulty: difficulty));
-            w.GetComponent<Shooter>(e).IncreaseDamage(extraDamage);
         }
 
         foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {
