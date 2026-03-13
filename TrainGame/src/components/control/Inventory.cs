@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 
 using TrainGame.ECS; 
 using TrainGame.Constants; 
+using TrainGame.Utils;
 
 public class Inventory : IID {
     private string inventoryId; 
@@ -421,8 +422,9 @@ public class Inventory : IID {
 }
 
 public static class InventoryWrap {
-    public static (int, Inventory) Add(World w, string id, int rows, int cols) {
-        Inventory inv = new Inventory(id, rows, cols);
+    public static (int, Inventory) Add(World w, string id, int rows, int cols, int level = 0, CartType filter = CartType.General) {
+        ID.Use(id);
+        Inventory inv = new Inventory(id, rows, cols, level, filter);
         int e = EntityFactory.AddData<Inventory>(w, inv); 
         return (e, inv); 
     }

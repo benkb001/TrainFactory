@@ -51,11 +51,15 @@
 * Fix randomly unlocking zoom
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
+* Add an exit ladder to the diagonal map 
+* Fix bug where the player gun is not updated if they switch it 
+  in the city view (maybe we just make gun equipped)
 
 * Combat: 
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Fix taking damage from multiple bullets at the same time (i think) bug
+  * Enemies should wait a random amount of time before they start to shoot the player
 
 **** NEXT SPRINT **** 
 
@@ -122,6 +126,8 @@
     * One has bullets that circle around them 
   * Add way more layouts, like 20 per 5 floors. Try Tiled
   * Add visuals reloading, press r to reload
+  * Add heat system, player can multiply the damage and the rewards, 
+    each multiplier requires getting to bottom floor of the previous multiplier
 
 **** FAR FUTURE FEATURES **** 
 

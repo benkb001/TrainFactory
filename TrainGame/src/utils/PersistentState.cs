@@ -84,6 +84,7 @@ public static class PersistentState {
                 ["nextInstruction"] = nextInstruction,
                 ["power"] = t.Power,
                 ["program"] = t.Program,
+                ["programName"] = t.ProgramName,
                 ["x"] = t.Position.X, 
                 ["y"] = t.Position.Y
             };
@@ -186,13 +187,14 @@ public static class PersistentState {
             string invID = kvp.Key; 
             JsonObject invData = kvp.Value.AsObject(); 
             CartType filter = JsonSerializer.Deserialize<CartType>((int)invData["filter"]);
-            Inventory inv = new Inventory(invID, (int)invData["rows"], (int)invData["cols"], 
+
+            (int e, Inventory inv) = InventoryWrap.Add(w, invID, (int)invData["rows"], (int)invData["cols"], 
                 (int)invData["level"], filter); 
             foreach (string itemID in ItemID.All) {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
+            
             inventories.Add(invID, inv); 
-            int e = EntityFactory.AddData<Inventory>(w, inv); 
             inventoryEnts[invID] = e; 
             w.SetComponent<InventoryUpdatedFlag>(e, InventoryUpdatedFlag.Get());
         }
@@ -286,9 +288,11 @@ public static class PersistentState {
             TrainWrap.Add(w, t); 
             trains[trainID] = t; 
             string program = (string)trainData["program"];
+            string programName = (string)trainData["programName"];
+
             int nextInstruction = (int)trainData["nextInstruction"];
             if (!string.IsNullOrEmpty(program)) {
-                TAL.SetTrainProgram(program, t, w, nextInstruction);
+                TAL.SetTrainProgram(program, t, w, nextInstruction, programName: programName);
             }
 
             if (isTraveling) {

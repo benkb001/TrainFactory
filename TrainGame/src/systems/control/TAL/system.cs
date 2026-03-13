@@ -31,6 +31,7 @@ public static class TAL {
         (ItemID.Iron, CityID.Mine, CityID.Factory, 2),
         (ItemID.Water, CityID.Coast, CityID.Factory, 10),
         (ItemID.Sand, CityID.Coast, CityID.Factory, 1),
+        (ItemID.Fuel, CityID.Refinery, CityID.Factory, 10),
         (ItemID.Wood, CityID.Greenhouse, CityID.Factory, 1),
         (ItemID.Oil, CityID.Reservoir, CityID.Refinery, 2),
         (ItemID.Water, CityID.Coast, CityID.Refinery, 2),
@@ -39,9 +40,12 @@ public static class TAL {
         (ItemID.Oil, CityID.Reservoir, CityID.Factory, 10),
         (ItemID.Lubricant, CityID.Refinery, CityID.TrainYard, 4),
         (ItemID.Petroleum, CityID.Refinery, CityID.TrainYard, 4),
-        (ItemID.Fuel, CityID.Factory, CityID.TrainYard, 20),
+        (ItemID.Fuel, CityID.Refinery, CityID.TrainYard, 20),
         (ItemID.Mythril, CityID.Mine, CityID.TrainYard, 1),
-        (ItemID.Iron, CityID.Mine, CityID.TrainYard, 10)
+        (ItemID.Iron, CityID.Mine, CityID.TrainYard, 10),
+        (ItemID.Fuel, CityID.Refinery, CityID.Coast, 10),
+        (ItemID.Fuel, CityID.Refinery, CityID.Mine, 10),
+        (ItemID.Fuel, CityID.Refinery, CityID.Reservoir, 10)
     };
 
     private static string loopScript(string productID, string citySrc, string cityDest, int proportion) {

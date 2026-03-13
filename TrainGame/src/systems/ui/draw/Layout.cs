@@ -393,7 +393,7 @@ public static class Layout {
 
     public static void DrawRandom(World w, int floor) {
         int difficulty = Constants.FloorDifficulty(floor);
-        List<List<List<Tile>>> options = Levels[difficulty];
+        List<List<List<Tile>>> options = difficulty >= Levels.Count ? Levels[Levels.Count - 1] : Levels[difficulty];
         Draw(w, options[w.NextInt(options.Count)]);
     }
 }
