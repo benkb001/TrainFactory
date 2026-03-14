@@ -86,12 +86,19 @@ public static class EnemyMovementSystem {
             if (move.CanMove(w.Time)) {
                 move.Move(w.Time); 
                 Frame f = w.GetComponent<Frame>(e); 
-                Frame playerFrame = w.GetComponent<Frame>(PlayerWrap.GetRPGEntity(w)); 
+
+                int targetableEnt = w.GetFirstMatchingEntity([typeof(Frame), typeof(Targetable), typeof(Active)]);
+                (Frame targetFrame, bool success) = w.GetComponentSafe<Frame>(targetableEnt);
+
+                if (!success) {
+                    return;
+                }
+
                 Vector2 direction = move.Type switch {
                     MoveType.Default => new Vector2(move.Speed * w.NextNeg1To1(), move.Speed * w.NextNeg1To1()),
                     MoveType.Horizontal => new Vector2(move.Speed * (move.PatternIndex == 0 ? -1 : 1), 0f),
                     MoveType.Vertical => new Vector2(0f, move.Speed * (move.PatternIndex == 0 ? -1 : 1)),
-                    MoveType.Chase => Vector2.Normalize(playerFrame.Position - f.Position) * move.Speed,
+                    MoveType.Chase => Vector2.Normalize(targetFrame.Position - f.Position) * move.Speed,
                     _ => throw new InvalidOperationException("Unknown movement type")
                 };
 

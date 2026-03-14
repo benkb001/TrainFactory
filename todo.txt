@@ -12,6 +12,7 @@
 * Couldn't easily reproduce but maybe not resetting worldtime passage to slow
 * An enemy clipped outside the wall on the diagonal map
 * If a machine is delivering and player saves/quits it doesn't deliver
+* Fix somehow negative items? 
   
 **** TEST **** 
 
@@ -38,6 +39,10 @@
 * Test why slow on diagonal map
 * Filters should be in inventory wrap
 * Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
+* Replace playerWrap call in enemyShoot system with querying for a targetable 
+  component
+* Try to find places where playerWrap can be replaced
+* Deep clean
 
 **** THIS SPRINT **** 
 
@@ -47,7 +52,6 @@
     or just a way to check the number of empty slots in an inv
   * Could also make WAIT accept a time in game-seconds for the 
     train to wait before leaving and pass as an OR. 
-* Fix somehow negative items? 
 * Fix randomly unlocking zoom
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
@@ -110,6 +114,8 @@
 * Add random deals, time-limited, city-specific, require a large amount of items based on where player is at, 
   if completed give high rewards 
 * Display inventory level in header
+* Add an easier way for player to check which routes they have 'covered', 
+  could be a list of all trains and which programs they have. 
 * Combat:
     * Add some new bullet types for enemies
     * Add bullets that bounce off of walls

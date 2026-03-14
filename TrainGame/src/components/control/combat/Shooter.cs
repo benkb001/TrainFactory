@@ -155,7 +155,7 @@ public static class ShooterWrap {
         }
     }
 
-    public static void TryShoot(World w, Shooter shooter, Frame f, Vector2 dest, ShooterType type) {
+    public static void TryShoot(World w, Shooter shooter, Frame f, Vector2 dest, ShooterType type, int targetEnt) {
         if (shooter.CanShoot(w.Time)) {
             Vector2 pos = f.Position; 
             
@@ -237,11 +237,6 @@ public static class ShooterWrap {
                     case BulletType.Default: 
                         break; 
                     case BulletType.Homing: 
-                        int targetEnt = type switch {
-                            ShooterType.Enemy => PlayerWrap.GetRPGEntity(w), 
-                            ShooterType.Player => EnemyWrap.GetFirst(w),
-                            _ => -1
-                        };
                         w.SetComponent<Homing>(ent, new Homing(targetEnt));
                         break;
                     default: 

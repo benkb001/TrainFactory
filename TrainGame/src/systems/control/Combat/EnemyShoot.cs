@@ -18,11 +18,15 @@ using TrainGame.Constants;
 public static class EnemyShootSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
-            Shooter shooter = w.GetComponent<Shooter>(e);
-            int playerEnt = PlayerWrap.GetRPGEntity(w); 
-            Vector2 playerPos = w.GetComponent<Frame>(playerEnt).Position; 
-            Frame f = w.GetComponent<Frame>(e);
-            ShooterWrap.TryShoot(w, shooter, f, playerPos, ShooterType.Enemy); 
+            int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame), typeof(Active)]); 
+            (Frame targetableFrame, bool s) = w.GetComponentSafe<Frame>(targetableEnt); 
+
+            if (s) {
+                Vector2 targetablePos = targetableFrame.Position; 
+                Shooter shooter = w.GetComponent<Shooter>(e);
+                Frame enemyFrame = w.GetComponent<Frame>(e);
+                ShooterWrap.TryShoot(w, shooter, enemyFrame, targetablePos, ShooterType.Enemy, targetableEnt); 
+            }
         });
     }
 }

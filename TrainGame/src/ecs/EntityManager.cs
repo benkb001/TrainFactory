@@ -68,22 +68,61 @@ class EntityManager {
         return eSignatures.Keys.ToList(); 
     }
 
+    private List<int> getSetIndices(bool[] signature) {
+        List<int> setIndices = new(); 
+
+        for (int i = 0; i < signature.Length; i++) {
+            if (signature[i]) {
+                setIndices.Add(i); 
+            }
+        }
+
+        return setIndices;
+    }
+
     public List<int> GetMatchingEntities(bool[] signature) {
         List<int> res = new(); 
+        
+        List<int> setIndices = getSetIndices(signature);
+
         foreach (KeyValuePair<int, bool[]> eSig in eSignatures) {
-            bool mismatch = false; 
-            int i = 0; 
-            while (i < Constants.MaxComponents && !mismatch) {
-                if (signature[i] && !eSig.Value[i]) {
-                    mismatch = true; 
-                }
-                i++; 
-            }
             
+            bool mismatch = false; 
+
+            foreach (int i in setIndices) {
+                if (!eSig.Value[i]) {
+                    mismatch = true; 
+                    break;
+                }
+            }
+
             if (!mismatch) {
                 res.Add(eSig.Key); 
             }
         }
+
         return res; 
+    }
+
+    public int GetFirstMatchingEntity(bool[] signature) {
+        List<int> setIndices = getSetIndices(signature);
+        
+        foreach (KeyValuePair<int, bool[]> eSig in eSignatures) {
+
+            bool mismatch = false; 
+
+            foreach (int i in setIndices) {
+                if (!eSig.Value[i]) {
+                    mismatch = true; 
+                    break;
+                }
+            }
+
+            if (!mismatch) {
+                return eSig.Key;
+            }
+        }
+        
+        return -1; 
     }
 }

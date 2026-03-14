@@ -123,9 +123,9 @@ public static class PersistentState {
             });
         })));
 
-        int playerEnt = PlayerWrap.GetEntity(w); 
-        Inventory playerInv = w.GetComponent<Inventory>(playerEnt); 
-        Inventory armorInv = w.GetComponent<EquipmentSlot<Armor>>(playerEnt).GetInventory();
+        Inventory playerInv = PlayerWrap.GetInventory(w); 
+        Inventory armorInv = PlayerWrap.GetArmorInventory(w);
+
         Health playerHealth = PlayerWrap.GetHP(w);
         int maxHP = playerHealth.MaxHP; 
         int hp = playerHealth.HP;

@@ -158,6 +158,11 @@ public partial class World {
         return em.GetMatchingEntities(sig); 
     }
 
+    public int GetFirstMatchingEntity(Type[] ts) {
+        bool[] sig = cm.GetSignature(ts); 
+        return em.GetFirstMatchingEntity(sig);
+    }
+
     public double GetSecondsPassed() {
         return gameClock.TotalSeconds; 
     }

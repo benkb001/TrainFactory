@@ -151,6 +151,7 @@ public static class RegisterComponents {
         r<StepperButton>(); 
         r<StepperMessage>(); 
         r<TALBody>();
+        r<Targetable>();
         r<Teleporter>(); 
         r<TempArmor>(); 
         r<TextBox>(); 

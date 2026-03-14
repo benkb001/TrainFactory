@@ -59,6 +59,11 @@ public static class PlayerWrap {
         return w.GetComponent<Inventory>(GetEntity(w)); 
     }
 
+    public static Inventory GetArmorInventory(World w) {
+        int playerEnt = PlayerWrap.GetEntity(w); 
+        return w.GetComponent<EquipmentSlot<Armor>>(playerEnt).GetInventory();
+    }
+
     public static Health GetHP(World w) {
         return w.GetComponent<Health>(GetEntity(w));
     }
@@ -133,6 +138,7 @@ public static class PlayerWrap {
         w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerDataEnt)); 
         w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt)); 
         w.SetComponent<Damage>(playerEntity, new Damage(0)); 
+        w.SetComponent<Targetable>(playerEntity, new Targetable());
 
         w.UnlockCameraPan(); 
         w.TrackEntity(playerEntity); 

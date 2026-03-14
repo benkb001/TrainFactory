@@ -45,7 +45,12 @@ public static class ShootSystem {
                     (Frame f, bool s2) = w.GetComponentSafe<Frame>(itemEnt); 
 
                     if (s2) {
-                        ShooterWrap.TryShoot(w, shooter, f, mousePos, ShooterType.Player);
+                        //for homing, we need to pass a 'target ent', for now we 
+                        //will do this. We could later have another system that 
+                        //changes the homing entity for bullets with [Homing, Bullet, Player, Active] 
+                        //to query for the closest [Enemy, Health, Frame, Active]
+                        int enemyEnt = EnemyWrap.GetFirst(w);
+                        ShooterWrap.TryShoot(w, shooter, f, mousePos, ShooterType.Player, enemyEnt);
                     }
                 }
             }
