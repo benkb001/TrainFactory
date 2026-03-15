@@ -14,7 +14,7 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 using TrainGame.Systems; 
 
-public class Train : IInventorySource, IID {
+public class Train : IInventorySource, IID, ITrain {
 
     private City comingFrom; 
     private City goingTo; 
@@ -29,7 +29,7 @@ public class Train : IInventorySource, IID {
     private static HashSet<string> usedIDs = new(); 
     private string program; 
     private string programName = "None"; 
-    private TALBody executable; 
+    private ITALBody<Train, City> executable; 
     private Vector2 position; 
     private Vector2 journey;
     private Vector2 mapJourney;
@@ -51,7 +51,7 @@ public class Train : IInventorySource, IID {
     public string Program => program; 
     public string ProgramName => programName; 
     public float Power => power; 
-    public TALBody Executable => executable; 
+    public ITALBody<Train, City> Executable => executable; 
     public Vector2 Position => position; 
     public float MilesOfFuel => milesOfFuel;
 
@@ -269,8 +269,8 @@ public class Train : IInventorySource, IID {
         this.programName = programName; 
     }
 
-    public void SetExecutable(TALBody executable) {
-        this.executable = executable; 
+    public void SetExecutable(ITALBody<Train, City> executable)  {
+        this.executable = executable;
     }
 
     public string GetSummary() {
@@ -280,6 +280,10 @@ public class Train : IInventorySource, IID {
         summary += $"Miles Per Fuel: {massMilesPerFuel / mass}\n";
         summary += $"Miles Left: {MilesOfFuel}\n";
         return summary;
+    }
+
+    public int ItemCount(string itemID) {
+        return Inv.ItemCount(itemID) + Carts.Values.Aggregate(0, (acc, cur) => acc + cur.ItemCount(itemID));
     }
 
     public static string GetCartID(CartType type, string trainID) {

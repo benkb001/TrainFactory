@@ -71,7 +71,7 @@ public static class PersistentState {
         dom.Add("trains", new JsonObject(trains.Select(kvp => {
             Train t = kvp.Value; 
             string id = kvp.Key; 
-            int nextInstruction = (t.Executable == null) ? 0 : t.Executable.NextInstruction; 
+            int nextInstruction = (t.Executable == null) ? 0 : t.Executable.NextInstruction(); 
             JsonObject trainJSON = new JsonObject() {
                 ["comingFromID"] = t.ComingFrom.GetID(),
                 ["goingToID"] = t.GoingTo.GetID(),

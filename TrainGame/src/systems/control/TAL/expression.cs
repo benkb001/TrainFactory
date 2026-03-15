@@ -5,25 +5,6 @@ using System.Linq;
 using TrainGame.Components; 
 
 public enum ExpressionType {
-    And, 
-    Access,
-    Add,
-    Equal, 
-    False,
-    Greater, 
-    GreaterEqual, 
-    Less, 
-    LessEqual, 
-    Multiply,
-    Not,
-    NotEqual, 
-    Or, 
-    Subtract,
-    True,
-    Divide, 
-    Int, 
-    Float,
-    Bool, 
     Train, 
     City, 
     ItemID
@@ -34,215 +15,274 @@ public enum AccessType {
     City
 }
 
-public class TALExpression {
-    private ExpressionType type; 
-    private AccessType accessType; 
-    private Train train; 
-    private City city; 
-    private string itemID; 
-    private int i; 
-    private bool b; 
-    private float f; 
-    private TALExpression e1; 
-    private TALExpression e2; 
+public interface ITALExpression {
+    object Evaluate();
+}
 
-    public ExpressionType Type => type; 
-    public AccessType AcType => accessType; 
-    public int IntVal => i; 
-    public bool BoolVal => b; 
-    public TALExpression E1 => e1; 
-    public TALExpression E2 => e2; 
+public class TALBoolExpression : ITALExpression {
     
-    public TALExpression(ExpressionType type) {
-        this.type = type; 
-        this.e1 = null; 
-        this.e2 = null; 
-    }
+    bool b;
 
-    public static TALExpression Bool(bool b) {
-        TALExpression e = new TALExpression(ExpressionType.Bool); 
-        e.b = b; 
-        return e; 
-    }
-
-    public static TALExpression Int(int i) {
-        TALExpression e = new TALExpression(ExpressionType.Int); 
-        e.i = i; 
-        return e; 
-    }
-
-    public static TALExpression Float(float f) {
-        TALExpression e = new TALExpression(ExpressionType.Float); 
-        e.f = f;
-        return e; 
-    }
-
-    public static TALExpression Train(Train t) {
-        TALExpression e = new TALExpression(ExpressionType.Train); 
-        e.train = t; 
-        return e; 
-    }
-
-    public static TALExpression City(City c) {
-        TALExpression e = new TALExpression(ExpressionType.City); 
-        e.city = c; 
-        return e; 
-    }
-
-    public static TALExpression ItemID(string id) {
-        TALExpression e = new TALExpression(ExpressionType.ItemID); 
-        e.itemID = id; 
-        return e; 
-    }
-
-    public static TALExpression AccessTrain(string itemID, Train train) {
-        TALExpression e = new TALExpression(ExpressionType.Access); 
-        e.accessType = AccessType.Train; 
-        e.itemID = itemID; 
-        e.train = train; 
-        return e; 
-    }
-
-    public static TALExpression AccessCity(string itemID, City city) {
-        TALExpression e = new TALExpression(ExpressionType.Access); 
-        e.accessType = AccessType.City; 
-        e.itemID = itemID; 
-        e.city = city; 
-        return e; 
-    }
-
-    public static TALExpression Add(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Add); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Subtract(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Subtract); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Multiply(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Multiply); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Divide(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Divide); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Greater(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Greater); 
-        e.e1 = e1; 
-        e.e2 = e2;
-        return e; 
-    }
-
-    public static TALExpression GreaterEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.GreaterEqual); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-
-    public static TALExpression Less(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Less); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression LessEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.LessEqual); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Equal(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Equal); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Not(TALExpression e1) {
-        TALExpression e = new TALExpression(ExpressionType.Not); 
-        e.e1 = e1; 
-        return e; 
-    }
-
-    public static TALExpression NotEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.NotEqual); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression And(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.And); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
-    }
-
-    public static TALExpression Or(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Or); 
-        e.e1 = e1; 
-        e.e2 = e2; 
-        return e; 
+    public TALBoolExpression(bool b) {
+        this.b = b;
     }
 
     public object Evaluate() {
-        return type switch {
-            ExpressionType.Bool => b, 
-            ExpressionType.Int => i, 
-            ExpressionType.Float => f,
-            ExpressionType.Train => train, 
-            ExpressionType.City => city, 
-            ExpressionType.Add => (int)e1.Evaluate() + (int)e2.Evaluate(), 
-            ExpressionType.Subtract => (int)e1.Evaluate() - (int)e2.Evaluate(), 
-            ExpressionType.Divide => (int)e1.Evaluate() / (int)e2.Evaluate(), 
-            ExpressionType.Multiply => (int)e1.Evaluate() * (int)e2.Evaluate(), 
-            ExpressionType.Access => accessType switch {
-                AccessType.Train => InventoryWrap.ItemCount(train.GetInventories(), itemID), 
-                AccessType.City => city.Inv.ItemCount(itemID),
-                _ => 0
-            }, 
-            ExpressionType.ItemID => itemID,
-            ExpressionType.And => ((bool)e1.Evaluate()) && ((bool)e2.Evaluate()), 
-            ExpressionType.Equal => e1.Evaluate().Equals(e2.Evaluate()),
-            ExpressionType.False => false, 
-            ExpressionType.Greater => (int)e1.Evaluate() > (int)e2.Evaluate(), 
-            ExpressionType.GreaterEqual => (int)e1.Evaluate() >= (int)e2.Evaluate(), 
-            ExpressionType.Less => (int)e1.Evaluate() < (int)e2.Evaluate(), 
-            ExpressionType.LessEqual => (int)e1.Evaluate() <= (int)e2.Evaluate(),  
-            ExpressionType.Not => !(bool)e1.Evaluate(), 
-            ExpressionType.NotEqual => !(e1.Evaluate().Equals(e2.Evaluate())),
-            ExpressionType.Or => (bool)e1.Evaluate() || (bool)e2.Evaluate(), 
-            ExpressionType.True => true,
-            _ => 0
-        };
+        return b;
+    }
+}
+
+public class TALAndExpression : ITALExpression {
+    ITALExpression e1; 
+    ITALExpression e2; 
+
+    public TALAndExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
     }
 
-    public Train GetTrain() {
-        return train; 
+    public object Evaluate() {
+        return (bool)e1.Evaluate() && (bool)e2.Evaluate();
+    }
+}
+
+public class TALAccessTrainExpression<T> : ITALExpression where T : ITrain {
+    private T train; 
+    private string itemID;
+
+    public TALAccessTrainExpression(T train, string itemID) {
+        this.train = train;
+        this.itemID = itemID;
     }
 
-    public City GetCity() {
-        return city; 
+    public object Evaluate() {
+        return train.ItemCount(itemID);
+    }
+}
+
+public class TALAccessCityExpression<C> : ITALExpression where C : ICity {
+    private C city; 
+    private string itemID; 
+
+    public TALAccessCityExpression(C city, string itemID) {
+        this.city = city; 
+        this.itemID = itemID;
     }
 
-    public string GetItemID() {
-        return itemID; 
+    public object Evaluate() {
+        return city.ItemCount(itemID);
+    }
+}
+
+public class TALAddExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALAddExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() + (int)e2.Evaluate();
+    }
+}
+public class TALEqualExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALEqualExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return e1.Evaluate().Equals(e2.Evaluate());
+    }
+}
+
+public class TALGreaterExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALGreaterExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() > (int)e2.Evaluate();
+    }
+}
+
+public class TALLessExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALLessExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() < (int)e2.Evaluate();
+    }
+}
+
+public class TALGreaterEqualExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALGreaterEqualExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() >= (int)e2.Evaluate();
+    }
+}
+
+public class TALLessEqualExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALLessEqualExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() <= (int)e2.Evaluate();
+    }
+}
+
+public class TALIntExpression : ITALExpression {
+    int i; 
+
+    public TALIntExpression(int i) {
+        this.i = i;
+    }
+
+    public object Evaluate() {
+        return i;
+    }
+}
+
+public class TALSubtractExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALSubtractExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() - (int)e2.Evaluate();
+    }
+}
+
+public class TALMultiplyExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALMultiplyExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() * (int)e2.Evaluate();
+    }
+}
+
+public class TALDivideExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALDivideExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (int)e1.Evaluate() / (int)e2.Evaluate();
+    }
+}
+
+public class TALNotExpression : ITALExpression {
+    private ITALExpression e1; 
+
+    public TALNotExpression(ITALExpression e1) {
+        this.e1 = e1; 
+    }
+
+    public object Evaluate() {
+        return !((bool)e1.Evaluate());
+    }
+}
+
+public class TALNotEqualExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALNotEqualExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return !(e1.Evaluate().Equals(e2.Evaluate()));
+    }
+}
+
+public class TALOrExpression : ITALExpression {
+    private ITALExpression e1; 
+    private ITALExpression e2; 
+
+    public TALOrExpression(ITALExpression e1, ITALExpression e2) {
+        this.e1 = e1; 
+        this.e2 = e2; 
+    }
+
+    public object Evaluate() {
+        return (bool)e1.Evaluate() || (bool)e2.Evaluate();
+    }
+}
+
+public class TALItemIDExpression : ITALExpression {
+    string itemID;
+
+    public TALItemIDExpression(string itemID) {
+        this.itemID = itemID;
+    }
+
+    public object Evaluate() {
+        return itemID;
+    }
+}
+
+public class TALCityExpression<C> : ITALExpression where C : ICity {
+    C city; 
+
+    public TALCityExpression(C city) {
+        this.city = city;
+    }
+
+    public object Evaluate() {
+        return city;
+    }
+}
+
+public class TALTrainExpression<T> : ITALExpression where T : ITrain {
+    T train; 
+
+    public TALTrainExpression(T train) {
+        this.train = train;
+    }
+
+    public object Evaluate() {
+        return train;
     }
 }

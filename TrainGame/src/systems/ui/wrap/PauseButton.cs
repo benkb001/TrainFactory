@@ -14,7 +14,7 @@ public static class PauseTrainProgramButtonWrap {
 
     public static int Add(World w, Train t, float width, float height) {
         if (t.Executable != null) {
-            bool paused = t.Executable.Paused; 
+            bool paused = t.Executable.Paused(); 
             string message = paused ? UnpauseMessage : PauseMessage; 
 
             int e = EntityFactory.AddUI(w, Vector2.Zero, width, height, setButton: true, setOutline: true, 

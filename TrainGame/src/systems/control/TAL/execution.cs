@@ -21,145 +21,148 @@ public enum InstructionType {
     While
 }
 
-public class TALInstruction {
-    public InstructionType Type;
-    public City C; 
-    public TALExpression E1; 
-    public TALExpression E2; 
-    public TALExpression Condition;
-    public TALBody Body; 
+public enum InstructionEffect {
+    IncrementNextInstruction,
+    None,
+    Pause,
+    StopExecution
+}
 
-    public TALInstruction(InstructionType type) {
-        this.Type = type; 
-    }
+public interface ITALInstruction<T, C> 
+    where T : ITrain 
+    where C : ICity {
+    List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w);
+}
 
-    public static TALInstruction Go(City c) {
-        TALInstruction i = new TALInstruction(InstructionType.Go); 
-        i.C = c; 
-        return i; 
-    }
+public class TALWaitInstruction<T, C> : ITALInstruction<T, C> where T : ITrain 
+    where C : ICity{
+    public TALWaitInstruction() {}
 
-    public static TALInstruction Wait() {
-        TALInstruction i = new TALInstruction(InstructionType.Wait); 
-        return i; 
-    }
-
-    public static TALInstruction Load(TALExpression E1, TALExpression E2) {
-        TALInstruction i = new TALInstruction(InstructionType.Load);
-        i.E1 = E1; 
-        i.E2 = E2;
-        return i; 
-    }
-
-    public static TALInstruction Unload(TALExpression E1, TALExpression E2) {
-        TALInstruction i = new TALInstruction(InstructionType.Unload);
-        i.E1 = E1; 
-        i.E2 = E2;
-        return i; 
-    }
-
-    public static TALInstruction While(TALExpression E1, TALBody Body) {
-        //ICKY: Could do some assertion that E1 evalutes to a boolean
-        TALInstruction i = new TALInstruction(InstructionType.While);
-        i.Condition = E1; 
-        i.Body = Body; 
-        return i; 
+    public List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w) {
+        return new List<InstructionEffect>() { InstructionEffect.IncrementNextInstruction, InstructionEffect.StopExecution };
     }
 }
 
-public class TALBody {
-    private List<TALInstruction> instructions; 
+public class TALGoInstruction<T, C> : ITALInstruction<T, C> where T : ITrain 
+    where C : ICity {
+    private C city; 
+    public C GetCity() => city; 
+    
+    public TALGoInstruction(C city) {
+        this.city = city;
+    }
+
+    public List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w) {
+        TrainState s = w.Embark(train, city);
+        List<InstructionEffect> es = new();
+        
+        es.Add( s switch {
+            TrainState.AtCity => InstructionEffect.IncrementNextInstruction,
+            TrainState.NoPath => InstructionEffect.Pause,
+            TrainState.OnMidPath => InstructionEffect.None,
+            TrainState.OnLastPath => InstructionEffect.IncrementNextInstruction,
+            _ => InstructionEffect.Pause
+        });
+        es.Add(InstructionEffect.StopExecution);
+        return es;
+    }
+}
+
+public class TALLoadInstruction<T, C> : ITALInstruction<T, C> where T : ITrain 
+    where C : ICity {
+    public ITALExpression E1; 
+    public ITALExpression E2; 
+
+    public TALLoadInstruction(ITALExpression E1, ITALExpression E2) {
+        this.E1 = E1; 
+        this.E2 = E2; 
+    }
+
+    public List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w) {
+        int amount = (int)E1.Evaluate(); 
+        string itemID = (string)E2.Evaluate(); 
+        w.Load(train, itemID, amount);
+        return new List<InstructionEffect>() { InstructionEffect.IncrementNextInstruction };
+    }
+}
+
+public class TALUnloadInstruction<T, C> : ITALInstruction<T, C> where T : ITrain 
+    where C : ICity {
+    public ITALExpression E1; 
+    public ITALExpression E2; 
+
+    public TALUnloadInstruction(ITALExpression E1, ITALExpression E2) {
+        this.E1 = E1; 
+        this.E2 = E2; 
+    }
+
+    public List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w) {
+        int amount = (int)E1.Evaluate(); 
+        string itemID = (string)E2.Evaluate(); 
+        w.Unload(train, itemID, amount);
+        return new List<InstructionEffect>() { InstructionEffect.IncrementNextInstruction };
+    }
+}
+
+public class TALWhileInstruction<T, C> : ITALInstruction<T, C> where T : ITrain 
+    where C : ICity {
+    ITALExpression Condition;
+    ITALBody<T, C> Body; 
+
+    public TALWhileInstruction(ITALExpression Condition, ITALBody<T, C> body) {
+        this.Condition = Condition; 
+        this.Body = body;
+    }
+
+    public List<InstructionEffect> Execute(T train, ITrainWorld<T, C> w) {
+        if ((bool)Condition.Evaluate()) {
+            Body.Execute(w); 
+            return new List<InstructionEffect>() { InstructionEffect.StopExecution };
+        } else {
+            return new List<InstructionEffect>() { InstructionEffect.IncrementNextInstruction };
+        }
+    }
+}
+
+public class TALBody<T, C> : ITALBody<T, C> where T : ITrain 
+    where C : ICity {
+    private List<ITALInstruction<T, C>> instructions; 
     private int nextInstruction; 
     private bool paused = false; 
-    private Train train; 
+    private T train; 
 
     public int InstructionCount => instructions.Count; 
-    public int NextInstruction => nextInstruction; 
-    public bool Paused => paused; 
+    public int NextInstruction() => nextInstruction; 
+    public bool Paused() => paused; 
 
-    public TALBody(List<TALInstruction> instructions, Train train, int nextInstruction = 0) {
+    public TALBody(List<ITALInstruction<T, C>> instructions, T train, int nextInstruction = 0) {
         this.instructions = instructions; 
         this.train = train; 
         this.nextInstruction = nextInstruction;
     }
 
-    public void Execute(World w) {
+    public void Execute(ITrainWorld<T, C> w) {
         if (paused || train.IsTraveling()) {
             return; 
         }
 
-        City city; 
-        int amount; 
-        string itemID; 
         bool executing = true; 
         while (executing && !paused && nextInstruction < instructions.Count) {
-            TALInstruction i = instructions[nextInstruction];
-            switch (i.Type) {
-                case InstructionType.Go: 
-                    
-                    city = i.C; 
-
-                    if (train.ComingFrom == city) {
-                        nextInstruction++;
-                        continue;
-                    }
-
-                    List<City> all = w
-                    .GetMatchingEntities([typeof(City), typeof(Data)])
-                    .Select(e => w.GetComponent<City>(e))
-                    .ToList();
-
-                    List<City> path = Util.ShortestPathUnweighted(all, train.ComingFrom, city); 
-
-                    if (path != null && path.Count > 0) {
-                        City next = path[0]; 
-                        TrainWrap.Embark(train, next, w); 
+            ITALInstruction<T, C> i = instructions[nextInstruction];
+            foreach (InstructionEffect e in i.Execute(train, w)) {
+                switch (e) {
+                    case InstructionEffect.StopExecution: 
                         executing = false; 
-                        if (next == city) {
-                            nextInstruction++;
-                        }
-                    } else {
-                        //pause, there is no way for the train to get to its destination,
-                        //as the player hasn't unlocked the required railroads yet
-                        paused = true; 
-                    }
-                    
-                    break; 
-
-                case InstructionType.Load: 
-                    amount = (int)i.E1.Evaluate(); 
-                    itemID = (string)i.E2.Evaluate(); 
-                    city = train.ComingFrom; 
-                    city.Inv.TransferTo(train.GetInventories(), itemID, amount);
-                    nextInstruction++; 
-                    break; 
-
-                case InstructionType.Unload: 
-                    amount = (int)i.E1.Evaluate(); 
-                    itemID = (string)i.E2.Evaluate(); 
-                    city = train.ComingFrom; 
-                    city.Inv.TransferFrom(train.GetInventories(), itemID, amount); 
-                    nextInstruction++; 
-                    break; 
-
-                case InstructionType.Wait: 
-                    nextInstruction++; 
-                    executing = false;
-                    break; 
-
-                case InstructionType.While: 
-                    if ((bool)i.Condition.Evaluate()) {
-                        i.Body.Execute(w); 
-                        executing = false; 
-                    } else {
+                        break;
+                    case InstructionEffect.IncrementNextInstruction: 
                         nextInstruction++; 
-                    }
-
-                    break; 
-                    
-                default: 
-                    executing = false; 
-                    break;
+                        break;
+                    case InstructionEffect.Pause: 
+                        paused = true; 
+                        break;
+                    default: 
+                        break;
+                }
             }
 
             if (nextInstruction >= instructions.Count) {
@@ -177,4 +180,3 @@ public class TALBody {
         paused = false; 
     }
 }
-

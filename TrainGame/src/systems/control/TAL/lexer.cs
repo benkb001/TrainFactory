@@ -100,10 +100,6 @@ public class TALLexer {
         return new Regex(rxStr.Remove(rxStr.Length - 1)); 
     }
 
-    public static List<Train> Trains(World w) {
-        return w.GetMatchingEntities([typeof(Train), typeof(Data)]).Select(e => w.GetComponent<Train>(e)).ToList();
-    }
-
     public static Regex rxCity = InList(CityID.All); 
     public static Regex rxItem = InList(ItemID.All); 
     public static Regex rxTrue = new Regex(@"\Gtrue"); 

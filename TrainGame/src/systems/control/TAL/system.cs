@@ -19,7 +19,7 @@ public class TALExecutionSystem {
         w.AddSystem([typeof(Train), typeof(Data)], (w, e) => { 
             Train t = w.GetComponent<Train>(e); 
             if (t.Executable != null) {
-                t.Executable.Execute(w); 
+                t.Executable.Execute(new TrainWorld(w)); 
             }
         });
     }
@@ -118,8 +118,9 @@ public static class TAL {
         }
     }
 
-    public static TALBody SetTrainProgram(string program, Train t, World w, int nextInstruction = 0, string programName = "") {
-        TALBody body = TALParser.ParseProgram(program, w, t, nextInstruction); 
+    public static TALBody<Train, City> SetTrainProgram(string program, Train t, World w, int nextInstruction = 0, string programName = "") {
+        TALBody<Train, City> body = TALParser.ParseProgram<Train, City>(
+            program, new TrainWorld(w), t, nextInstruction); 
         t.SetProgram(program, programName); 
         t.SetExecutable(body); 
         return body;

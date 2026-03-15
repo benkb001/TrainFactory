@@ -9,7 +9,7 @@ public static class PauseTrainProgramButtonClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<PauseTrainProgramButton>(w, (w, e, pb) => {
             Train t = pb.GetTrain(); 
-            if (t.Executable.Paused) {
+            if (t.Executable.Paused()) {
                 t.Executable.Unpause(); 
                 w.GetComponent<TextBox>(e).Text = PauseTrainProgramButtonWrap.PauseMessage;
             } else {

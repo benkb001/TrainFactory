@@ -19,7 +19,6 @@ using TrainGame.ECS;
 using TrainGame.Constants;
 using TrainGame.Utils; 
 
-
 public static class TALParser {
     public static TALToken MatchOne(TokenType type, List<TALToken> ts) {
         if (ts.Count == 0) {
@@ -41,40 +40,39 @@ public static class TALParser {
         return new TALToken(TokenType.End); 
     }
 
-    public static List<TALInstruction> ParseBody(List<TALToken> ts) {
-        return new List<TALInstruction>(); 
-    }
-
-    public static TALExpression ParseIntExp(List<TALToken> ts, World w, Train train) {
+    public static ITALExpression ParseIntExp<T, C>(List<TALToken> ts, ITrainWorld<T, C> w, 
+        T train) where T : ITrain where C : ICity {
+        
         TALToken t1 = Lookahead(ts); 
-        TALExpression e1; 
-        TALExpression e2; 
+        ITALExpression e1;
+        ITALExpression e2;
         TALToken tokItem; 
         
         switch (t1.Type) {
             case TokenType.Int: 
                 MatchOne(TokenType.Int, ts); 
-                e1 = TALExpression.Int(t1.IntVal); 
+                e1 = new TALIntExpression(t1.IntVal);
                 break; 
             case TokenType.Self: 
                 MatchOne(TokenType.Self, ts); 
                 MatchOne(TokenType.Access, ts); 
                 tokItem = MatchOne(TokenType.ItemID, ts); 
-                e1 = TALExpression.AccessTrain(tokItem.ID, train); 
+                e1 = new TALAccessTrainExpression<T>(train, tokItem.ID); 
                 break;
             case TokenType.Train: 
                 MatchOne(TokenType.Train, ts); 
                 MatchOne(TokenType.Access, ts); 
                 tokItem = MatchOne(TokenType.ItemID, ts);
-                Train specifiedTrain = ID.GetComponent<Train>(t1.ID, w); 
-                e1 = TALExpression.AccessTrain(tokItem.ID, specifiedTrain);
+
+                T specifiedTrain = w.GetTrain(t1.ID);
+                e1 = new TALAccessTrainExpression<T>(specifiedTrain, tokItem.ID);
                 break; 
             case TokenType.City: 
                 MatchOne(TokenType.City, ts); 
                 MatchOne(TokenType.Access, ts); 
                 tokItem = MatchOne(TokenType.ItemID, ts);
-                City city = ID.GetComponent<City>(t1.ID, w); 
-                e1 = TALExpression.AccessCity(tokItem.ID, city);
+                C city = w.GetCity(t1.ID);
+                e1 = new TALAccessCityExpression<C>(city, tokItem.ID);
                 break; 
             default: 
                 throw new InvalidOperationException("Did not received an expected token type when parsing integer expression"); 
@@ -84,41 +82,43 @@ public static class TALParser {
         switch (t2.Type) {
             case TokenType.Plus: 
                 MatchOne(TokenType.Plus, ts);
-                e2 = ParseIntExp(ts, w, train); 
-                return TALExpression.Add(e1, e2); 
+                e2 = ParseIntExp<T, C>(ts, w, train); 
+                return new TALAddExpression(e1, e2); 
             case TokenType.Minus: 
                 MatchOne(TokenType.Minus, ts);
-                e2 = ParseIntExp(ts, w, train); 
-                return TALExpression.Subtract(e1, e2); 
+                e2 = ParseIntExp<T, C>(ts, w, train); 
+                return new TALSubtractExpression(e1, e2); 
             case TokenType.Multiply: 
                 MatchOne(TokenType.Multiply, ts);
-                e2 = ParseIntExp(ts, w, train); 
-                return TALExpression.Multiply(e1, e2); 
+                e2 = ParseIntExp<T, C>(ts, w, train); 
+                return new TALMultiplyExpression(e1, e2); 
             case TokenType.Divide: 
                 MatchOne(TokenType.Divide, ts);
-                e2 = ParseIntExp(ts, w, train); 
-                return TALExpression.Divide(e1, e2); 
+                e2 = ParseIntExp<T, C>(ts, w, train); 
+                return new TALDivideExpression(e1, e2); 
             default: 
                 return e1; 
         }
     }
 
-    public static TALExpression ParseConditionalExp(List<TALToken> ts, World w, Train train) {
+    public static ITALExpression ParseConditionalExp<T, C>(List<TALToken> ts, ITrainWorld<T, C> w, 
+    T train) where T : ITrain where C : ICity {
+
         TALToken t1 = Lookahead(ts); 
         TALToken t2; 
-        TALExpression e1; 
-        TALExpression e2;
+        ITALExpression e1; 
+        ITALExpression e2;
 
         if (t1.Type == TokenType.Not) {
             MatchOne(TokenType.Not, ts); 
-            e1 = ParseConditionalExp(ts, w, train); 
-            return TALExpression.Not(e1);
+            e1 = ParseConditionalExp<T, C>(ts, w, train); 
+            return new TALNotExpression(e1);
         } else if (t1.Type == TokenType.OpenParen) {
             MatchOne(TokenType.OpenParen, ts); 
-            e1 = ParseConditionalExp(ts, w, train);
+            e1 = ParseConditionalExp<T, C>(ts, w, train);
             MatchOne(TokenType.CloseParen, ts); 
         } else {
-            e1 = ParseBooleanExp(ts, w, train); 
+            e1 = ParseBooleanExp<T, C>(ts, w, train); 
         }
 
         t2 = Lookahead(ts); 
@@ -126,119 +126,122 @@ public static class TALParser {
         switch (t2.Type) {
             case TokenType.And: 
                 MatchOne(TokenType.And, ts); 
-                e2 = ParseConditionalExp(ts, w, train); 
-                return TALExpression.And(e1, e2); 
+                e2 = ParseConditionalExp<T, C>(ts, w, train); 
+                return new TALAndExpression(e1, e2); 
             case TokenType.Or: 
                 MatchOne(TokenType.Or, ts); 
-                e2 = ParseConditionalExp(ts, w, train); 
-                return TALExpression.Or(e1, e2); 
+                e2 = ParseConditionalExp<T, C>(ts, w, train); 
+                return new TALOrExpression(e1, e2); 
             case TokenType.Equal: 
                 MatchOne(TokenType.Equal, ts); 
-                e2 = ParseConditionalExp(ts, w, train); 
-                return TALExpression.Equal(e1, e2); 
+                e2 = ParseConditionalExp<T, C>(ts, w, train); 
+                return new TALEqualExpression(e1, e2); 
             case TokenType.NotEqual: 
                 MatchOne(TokenType.NotEqual, ts); 
-                e2 = ParseConditionalExp(ts, w, train); 
-                return TALExpression.NotEqual(e1, e2); 
+                e2 = ParseConditionalExp<T, C>(ts, w, train); 
+                return new TALNotEqualExpression(e1, e2); 
             default: 
                 return e1; 
         }
     }
 
-    public static TALExpression ParseBooleanExp(List<TALToken> ts, World w, Train train) {
+    public static ITALExpression ParseBooleanExp<T, C>(List<TALToken> ts, 
+    ITrainWorld<T, C> w, T train) where T : ITrain where C : ICity {
         TALToken t1 = Lookahead(ts); 
         TALToken t2; 
-        TALExpression e1; 
-        TALExpression e2; 
+        ITALExpression e1; 
+        ITALExpression e2; 
 
         switch (t1.Type) {
             case TokenType.True: 
                 MatchOne(TokenType.True, ts); 
-                return TALExpression.Bool(true); 
+                return new TALBoolExpression(true); 
             case TokenType.False: 
                 MatchOne(TokenType.False, ts); 
-                return TALExpression.Bool(false); 
+                return new TALBoolExpression(false); 
             default: 
-                e1 = ParseIntExp(ts, w, train); 
+                e1 = ParseIntExp<T, C>(ts, w, train); 
                 t2 = Lookahead(ts); 
                 switch (t2.Type) {
                     case TokenType.Greater: 
                         MatchOne(TokenType.Greater, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.Greater(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALGreaterExpression(e1, e2); 
                     case TokenType.GreaterEqual: 
                         MatchOne(TokenType.GreaterEqual, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.GreaterEqual(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALGreaterEqualExpression(e1, e2); 
                     case TokenType.Less: 
                         MatchOne(TokenType.Less, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.Less(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALLessExpression(e1, e2); 
                     case TokenType.LessEqual: 
                         MatchOne(TokenType.LessEqual, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.LessEqual(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALLessEqualExpression(e1, e2); 
                     case TokenType.Equal: 
                         MatchOne(TokenType.Equal, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.Equal(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALEqualExpression(e1, e2); 
                     case TokenType.NotEqual: 
                         MatchOne(TokenType.NotEqual, ts); 
-                        e2 = ParseIntExp(ts, w, train);
-                        return TALExpression.NotEqual(e1, e2); 
+                        e2 = ParseIntExp<T, C>(ts, w, train);
+                        return new TALNotEqualExpression(e1, e2); 
                     default: 
                         throw new InvalidOperationException("Unexpected token when parsing an integer conditional");
                 }
         }
     }
 
-    public static TALInstruction ParseStatement(List<TALToken> ts, World w, Train train) {
+    public static ITALInstruction<T, C> ParseStatement<T, C>(List<TALToken> ts, ITrainWorld<T, C> w, 
+    T train) where T : ITrain where C : ICity {
         TALToken t1 = Lookahead(ts);
         TALToken t2; 
-        TALExpression e1; 
-        TALExpression e2; 
+        ITALExpression e1; 
+        ITALExpression e2; 
 
         switch (t1.Type) {
             case TokenType.Go: 
                 MatchOne(TokenType.Go, ts); 
                 t2 = MatchOne(TokenType.City, ts); 
                 MatchOne(TokenType.Semicolon, ts); 
-                return TALInstruction.Go(ID.GetComponent<City>(t2.ID, w));
+                return (ITALInstruction<T, C>)new TALGoInstruction<T, C>(w.GetCity(t2.ID));
             case TokenType.Load: 
                 MatchOne(TokenType.Load, ts); 
-                e1 = ParseIntExp(ts, w, train); 
+                e1 = ParseIntExp<T, C>(ts, w, train); 
                 t2 = MatchOne(TokenType.ItemID, ts); 
-                e2 = TALExpression.ItemID(t2.ID); 
+                e2 = new TALItemIDExpression(t2.ID); 
                 MatchOne(TokenType.Semicolon, ts); 
-                return TALInstruction.Load(e1, e2);
+                return (ITALInstruction<T, C>)new TALLoadInstruction<T, C>(e1, e2);
             case TokenType.Unload: 
                 MatchOne(TokenType.Unload, ts); 
-                e1 = ParseIntExp(ts, w, train); 
+                e1 = ParseIntExp<T, C>(ts, w, train); 
                 t2 = MatchOne(TokenType.ItemID, ts); 
-                e2 = TALExpression.ItemID(t2.ID); 
+                e2 = new TALItemIDExpression(t2.ID); 
                 MatchOne(TokenType.Semicolon, ts); 
-                return TALInstruction.Unload(e1, e2);
+                return (ITALInstruction<T, C>)new TALUnloadInstruction<T, C>(e1, e2);
             case TokenType.Wait: 
                 MatchOne(TokenType.Wait, ts); 
                 MatchOne(TokenType.Semicolon, ts); 
-                return TALInstruction.Wait(); 
+                return (ITALInstruction<T, C>)new TALWaitInstruction<T, C>();
             case TokenType.While: 
                 MatchOne(TokenType.While, ts); 
-                e1 = ParseConditionalExp(ts, w, train); 
+                e1 = ParseConditionalExp<T, C>(ts, w, train); 
                 MatchOne(TokenType.OpenCurly, ts); 
-                List<TALInstruction> instructions = ParseBody(ts, w, train);
+                List<ITALInstruction<T, C>> instructions = ParseBody<T, C>(ts, w, train);
                 MatchOne(TokenType.CloseCurly, ts); 
-                TALBody b = new TALBody(instructions, train); 
-                return TALInstruction.While(e1, b); 
+                TALBody<T, C> b = new TALBody<T, C>(instructions, train); 
+                return (ITALInstruction<T, C>)new TALWhileInstruction<T, C>(e1, b); 
             default: 
                 throw new InvalidOperationException($"Received unxpected token when parsing a statement"); 
 
         }
     }
 
-    public static List<TALInstruction> ParseBody(List<TALToken> ts, World w, Train t) {
+    public static List<ITALInstruction<T, C>> ParseBody<T, C>(List<TALToken> ts, ITrainWorld<T, C> w, 
+    T t) where T : ITrain where C : ICity {
         TALToken t1 = Lookahead(ts); 
-        List<TALInstruction> instructions = new();
+        List<ITALInstruction<T, C>> instructions = new();
 
         switch (t1.Type) {
             case TokenType.End: 
@@ -246,20 +249,22 @@ public static class TALParser {
             case TokenType.CloseCurly: 
                 return instructions; 
             default: 
-                TALInstruction next = ParseStatement(ts, w, t); 
+                ITALInstruction<T, C> next = ParseStatement<T, C>(ts, w, t); 
                 instructions.Add(next); 
-                instructions.AddRange(ParseBody(ts, w, t)); 
+                instructions.AddRange(ParseBody<T, C>(ts, w, t)); 
                 return instructions; 
         }
     }
 
-    public static TALBody ParseProgram(List<TALToken> ts, World w, Train t, int nextInstruction = 0) {
-        return new TALBody(ParseBody(ts, w, t), t, nextInstruction);
+    public static TALBody<T, C> ParseProgram<T, C>(List<TALToken> ts, ITrainWorld<T, C> w, T t, 
+    int nextInstruction = 0) where T : ITrain where C : ICity {
+        return new TALBody<T, C>(ParseBody<T, C>(ts, w, t), t, nextInstruction);
     }
 
-    public static TALBody ParseProgram(string program, World w, Train t, int nextInstruction = 0) {
+    public static TALBody<T, C> ParseProgram<T, C>(string program, ITrainWorld<T, C> w, T t, 
+    int nextInstruction = 0) where T : ITrain where C : ICity {
         List<TALToken> ts = TALLexer.Tokenize(program); 
-        return new TALBody(ParseBody(ts, w, t), t, nextInstruction);
+        return new TALBody<T, C>(ParseBody<T, C>(ts, w, t), t, nextInstruction);
     }
 }
 
