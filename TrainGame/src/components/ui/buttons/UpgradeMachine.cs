@@ -17,9 +17,12 @@ using TrainGame.Utils;
 
 public class UpgradeMachineButton {
     private Machine machine; 
+    private City city; 
     public Machine GetMachine() => machine; 
+    public City GetCity() => city;
 
-    public UpgradeMachineButton(Machine m) {
+    public UpgradeMachineButton(Machine m, City city) {
         this.machine = m; 
+        this.city = city;
     }
 }

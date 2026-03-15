@@ -59,7 +59,7 @@ public static class CloseMenuSystem {
                 break;
             case SceneType.MachineInterface: 
                 machine = menu.GetMachine();
-                city = machine.GetCity();
+                city = menu.GetCity();
                 if (!machine.PlayerAtMachine) {
                     if (city == null) {
                         throw new InvalidOperationException(@"Found a menu with no city 

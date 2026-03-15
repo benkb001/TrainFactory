@@ -18,12 +18,15 @@ using TrainGame.Utils;
 public static class UpgradeMachineClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<UpgradeMachineButton>(w, (w, e) => {
-            Machine m = w.GetComponent<UpgradeMachineButton>(e).GetMachine(); 
+            UpgradeMachineButton btn = w.GetComponent<UpgradeMachineButton>(e);
+            Machine m = btn.GetMachine(); 
             if (m.Inv.ItemCount(m.UpgradeItemID) >= 1) {
                 m.Inv.Take(m.UpgradeItemID, 1); 
                 m.Upgrade(1); 
 
-                MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m)); 
+                City city = btn.GetCity();
+
+                DrawMachineInterfaceSystem.AddMessage(w, m, city);
             }
         }); 
     }

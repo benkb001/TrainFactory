@@ -24,7 +24,6 @@ public class Machine : IID {
     
     private Dictionary<string, int> recipe;
     private Dictionary<string, int> stored; 
-    private City city; 
     private bool craftComplete = false;
     private int craftTicks;
     private int curCraftTicks; 
@@ -62,7 +61,6 @@ public class Machine : IID {
     public Dictionary<string, int> Stored => stored;
     public string UpgradeItemID => upgradeItemID; 
     public bool AllowManual => allowManual; 
-    public City GetCity() => city; 
     public bool PlayerAtMachine => playerAtMachine; 
     public int CurCraftTicks => curCraftTicks; 
     public int LifetimeProductsCrafted => lifetimeProductsCrafted; 
@@ -144,10 +142,6 @@ public class Machine : IID {
 
     public void SetPlayerAtMachine(bool at) {
         this.playerAtMachine = at; 
-    }
-
-    public void SetCity(City city) {
-        this.city = city; 
     }
 
     public void StoreRecipe() {

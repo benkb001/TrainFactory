@@ -65,11 +65,9 @@ public static class RegisterSystems {
         ClearLLSystem.Register(w); 
 
         TrainInteractSystem.Register(w); 
-        MachineInteractSystem.Register(w); 
         CityClickSystem.Register(w); 
         TrainClickSystem.Register(w); 
         EmbarkClickSystem.Register(w); 
-        MachineUIClickSystem.Register(w); 
         AddCartClickSystem.Register(w); 
         AddCartInterfaceClickSystem.Register(w); 
         UpgradeTrainClickSystem.Register(w); 
@@ -91,6 +89,7 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<ViewProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<WriteProgramInterfaceData>(w); 
         EnterInterfaceClickSystem.Register<UpgradeTrainInterfaceData>(w);
+        EnterInterfaceClickSystem.Register<MachineInterfaceData>(w);
         EnterInterfaceInteractSystem.Register<ElevatorInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
         PurchaseClickSystem.RegisterResetHP(w);

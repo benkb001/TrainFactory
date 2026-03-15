@@ -20,7 +20,6 @@ public enum TileType {
     Ground,
     Ladder,
     LadderDown,
-    Machine,
     Player,
     Spawner,
     TrainYard,
@@ -66,10 +65,6 @@ public static class Layout {
     private static Tile warr = new Tile(TileType.Enemy, EnemyType.Warrior); 
 
     private static Tile elevator = new Tile(TileType.Elevator); 
-
-    private static Dictionary<string, Tile> m = MachineID.All
-    .Select(s => new KeyValuePair<string, Tile>(s, new Tile(TileType.Machine, id: s)))
-    .ToDictionary();
 
     private static Dictionary<string, Tile> v = VendorID.All
     .Select(s => new KeyValuePair<string, Tile>(s, new Tile(TileType.Vendor, id: s)))
@@ -368,13 +363,6 @@ public static class Layout {
                         break;
                     case TileType.TrainYard: 
                         TrainYardWrap.Draw(w, tilePos);
-                        break;
-                    case TileType.Machine: 
-                        w.SetComponent<Interactable>(e, new Interactable()); 
-                        w.SetComponent<MachineUI>(e, new MachineUI(MachineWrap.GetByID(w, t.ID)));
-                        w.SetComponent<Collidable>(e, new Collidable());
-                        w.SetComponent<Outline>(e, new Outline());
-                        w.SetComponent<TextBox>(e, new TextBox(t.ID));
                         break;
                     case TileType.Elevator: 
                         w.SetComponent<EnterInterfaceInteractable<ElevatorInterfaceData>>(e, 

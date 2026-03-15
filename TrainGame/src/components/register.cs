@@ -53,16 +53,16 @@ public static class RegisterComponents {
         r<DrawCityInterfaceMessage>();
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
+        r<DrawInterfaceMessage<ElevatorInterfaceData>>();
         r<DrawInterfaceMessage<EquipmentInterfaceData>>(); 
+        r<DrawInterfaceMessage<MachineInterfaceData>>();
         r<DrawInterfaceMessage<TravelingInterfaceData>>(); 
         r<DrawInterfaceMessage<UpgradeTrainInterfaceData>>();
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
-        r<DrawInterfaceMessage<ElevatorInterfaceData>>();
         r<DrawInventoryContainerMessage<Train>>();
         r<DrawLadderMessage>(); 
-        r<DrawMachineInterfaceMessage>(); 
         r<DrawMachineRequestMessage>(); 
         r<DrawMapMessage>(); 
         r<DrawSetTrainProgramInterfaceMessage>();
@@ -74,6 +74,7 @@ public static class RegisterComponents {
         r<Enemy>(); 
         r<EnemySpawner>(); 
         r<EnterInterfaceButton<EquipmentInterfaceData>>(); 
+        r<EnterInterfaceButton<MachineInterfaceData>>();
         r<EnterInterfaceButton<UpgradeTrainInterfaceData>>();
         r<EnterInterfaceButton<ViewProgramInterfaceData>>(); 
         r<EnterInterfaceButton<WriteProgramInterfaceData>>(); 
@@ -102,7 +103,6 @@ public static class RegisterComponents {
         r<MachinePriorityStepper>();
         r<MachineRequestButton>(); 
         r<MachineStorageStepper>();
-        r<MachineUI>(); 
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
         r<Menu>(); 

@@ -15,17 +15,11 @@ using TrainGame.Utils;
 
 public static class DrawMachineInterfaceSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(DrawMachineInterfaceMessage)], (w, e) => {
-            SceneSystem.EnterScene(w, SceneType.MachineInterface); 
+        DrawInterfaceSystem.Register<MachineInterfaceData>(w, (w, e, data) => {
 
-            DrawMachineInterfaceMessage dm = w.GetComponent<DrawMachineInterfaceMessage>(e); 
-            Machine m = dm.GetMachine(); 
+            Machine m = data.GetMachine();
+            City city = data.GetCity();
             bool playerAtMachine = m.PlayerAtMachine;
-
-            int menuEnt = EntityFactory.Add(w); 
-
-            City city = dm.GetCity();
-            w.SetComponent<Menu>(menuEnt, new Menu(city: city, machine: m));
             
             //Make container 
             int containerEnt = EntityFactory.Add(w); 
@@ -109,7 +103,7 @@ public static class DrawMachineInterfaceSystem {
             Vector2 upgradePosition = Vector2.Zero;  
             float upgradeWidth = pbWidth; 
             float upgradeHeight = pbHeight * 2; 
-            int upgradeEntity = DrawUpgradeMachineButtonCallback.Draw(w, m, 
+            int upgradeEntity = DrawUpgradeMachineButtonCallback.Draw(w, m, city, 
                 upgradePosition, upgradeWidth, upgradeHeight);
             
             //draw manual progress bar if this machine can be manually collected 
@@ -151,39 +145,46 @@ public static class DrawMachineInterfaceSystem {
             int upgradeSpeedBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
                 setOutline: true, text: $"Increase Craft Speed? Requires 1 {ItemID.Accelerator}",
                 setButton: true);
-            w.SetComponent<UpgradeMachineSpeedButton>(upgradeSpeedBtnEnt, new UpgradeMachineSpeedButton(m));
+            w.SetComponent<UpgradeMachineSpeedButton>(upgradeSpeedBtnEnt, new UpgradeMachineSpeedButton(m, city));
             LinearLayoutWrap.AddChild(upgradeSpeedBtnEnt, colEnt, col, w);
 
             int upgradeRatioBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
                 setOutline: true, text: $"Increase Product Count? Requires 1 {ItemID.Duplicator}",
                 setButton: true);
-            w.SetComponent<UpgradeMachineProductCountButton>(upgradeRatioBtnEnt, new UpgradeMachineProductCountButton(m));
+            w.SetComponent<UpgradeMachineProductCountButton>(upgradeRatioBtnEnt, new UpgradeMachineProductCountButton(m, city));
             LinearLayoutWrap.AddChild(upgradeRatioBtnEnt, colEnt, col, w);
 
             w.RemoveEntity(e); 
         });
     }
 
-    public static void AddMessage(World w, Machine m) {
-        MakeMessage.Add<DrawMachineInterfaceMessage>(w, new DrawMachineInterfaceMessage(m));
+    public static void AddMessage(World w, Machine m, City city) {
+        MakeMessage.Add<DrawInterfaceMessage<MachineInterfaceData>>(w, 
+            new DrawInterfaceMessage<MachineInterfaceData>(new MachineInterfaceData(m, city)));
     }
 }
 
 public class UpgradeMachineSpeedButton {
     private Machine machine; 
+    private City city;
     public Machine GetMachine() => machine; 
+    public City GetCity() => city;
 
-    public UpgradeMachineSpeedButton(Machine machine) {
+    public UpgradeMachineSpeedButton(Machine machine, City city) {
         this.machine = machine; 
+        this.city = city;
     }
 }
 
 public class UpgradeMachineProductCountButton {
     private Machine machine; 
+    private City city;
     public Machine GetMachine() => machine; 
+    public City GetCity() => city;
 
-    public UpgradeMachineProductCountButton(Machine machine) {
+    public UpgradeMachineProductCountButton(Machine machine, City city) {
         this.machine = machine; 
+        this.city = city;
     }
 }
 
@@ -191,9 +192,10 @@ public static class UpgradeMachineSpeedClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<UpgradeMachineSpeedButton>(w, (w, e, btn) => {
             Machine m = btn.GetMachine();
+            City c = btn.GetCity();
             if (m.Inv.Take(ItemID.Accelerator, 1).Count == 1) {
                 m.UpgradeSpeed();
-                DrawMachineInterfaceSystem.AddMessage(w, m);
+                DrawMachineInterfaceSystem.AddMessage(w, m, c);
             }
         });
     }
@@ -203,9 +205,10 @@ public static class UpgradeMachineProductCountClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<UpgradeMachineProductCountButton>(w, (w, e, btn) => {
             Machine m = btn.GetMachine(); 
+            City c = btn.GetCity();
             if (m.Inv.Take(ItemID.Duplicator, 1).Count == 1) {
                 m.UpgradeProductCountExponential(); 
-                DrawMachineInterfaceSystem.AddMessage(w, m);
+                DrawMachineInterfaceSystem.AddMessage(w, m, c);
             }
         });
     }

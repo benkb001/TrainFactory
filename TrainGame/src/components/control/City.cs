@@ -82,7 +82,6 @@ public class City : IID, INode<City> {
     //todo: test
     public void AddMachine(Machine m) {
         machines[m.Id] = m; 
-        m.SetCity(this); 
     }
 
     //todo: test

@@ -1,14 +1,21 @@
 namespace TrainGame.Components; 
 
-public class MachineUI {
+using TrainGame.Systems;
+using TrainGame.Utils;
+
+public class MachineInterfaceData : IInterfaceData {
 
     private Machine machine;
+    private City city;
 
-    public MachineUI(Machine machine) {
+    public Machine GetMachine() => machine;
+    public City GetCity() => city;
+    
+    public MachineInterfaceData(Machine machine, City city) {
         this.machine = machine; 
+        this.city = city;
     }
     
-    public Machine GetMachine() {
-        return machine; 
-    }
+    public SceneType GetSceneType() => SceneType.MachineInterface;
+    public Menu GetMenu() => new Menu(machine: machine, city: city);
 }

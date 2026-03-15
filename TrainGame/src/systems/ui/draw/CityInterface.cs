@@ -78,7 +78,8 @@ public static class DrawCityInterfaceSystem {
             foreach (Machine machine in city.Machines.Values) {
                 int mEnt = EntityFactory.Add(w); 
                 machinesView.AddChild(mEnt, w); 
-                w.SetComponent<MachineUI>(mEnt, new MachineUI(machine));
+                w.SetComponent<EnterInterfaceButton<MachineInterfaceData>>(mEnt, 
+                    new EnterInterfaceButton<MachineInterfaceData>(new MachineInterfaceData(machine, city)));
                 w.SetComponent<TextBox>(mEnt, new TextBox(machine.Id)); 
                 w.SetComponent<Button>(mEnt, new Button()); 
                 w.SetComponent<Outline>(mEnt, new Outline()); 
