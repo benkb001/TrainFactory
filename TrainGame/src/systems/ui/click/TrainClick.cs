@@ -15,7 +15,7 @@ using TrainGame.Callbacks;
 
 //required order: 
 // trainClick -> drawTrainDetail 
-public class TrainClickSystem() {
+public static class TrainClickSystem {
     public static void Register(World world) {
         ClickSystem.Register<TrainUI>(world, (w, e) => {
 

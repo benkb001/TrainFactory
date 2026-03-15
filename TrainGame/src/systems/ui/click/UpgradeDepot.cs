@@ -14,15 +14,6 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
-public class UpgradeDepotButton {
-    private City city; 
-    public City GetCity() => city; 
-
-    public UpgradeDepotButton(City city) {
-        this.city = city; 
-    }
-}
-
 public static class UpgradeDepotClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<UpgradeDepotButton>(w, (w, e, btn) => {

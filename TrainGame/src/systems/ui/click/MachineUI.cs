@@ -12,7 +12,7 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 
 //needs to be clickSystem -> drawSystem
-public class MachineUIClickSystem() {
+public static class MachineUIClickSystem {
     public static void Register(World world) {
         Type[] ts = [typeof(MachineUI), typeof(Button), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {

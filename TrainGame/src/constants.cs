@@ -395,6 +395,144 @@ namespace TrainGame.Constants
         };
     }
 
+    public static class EnemyID {
+        public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
+            [EnemyType.Artillery] = new EnemyConst(
+                Type: EnemyType.Artillery, 
+                HP: 15, 
+                TicksPerShot: 300, 
+                ReloadTicks: 100, 
+                BulletSpeed: 2f, 
+                Ammo: 4, 
+                SPattern: ShootPattern.VerticalLine, 
+                BulletsPerShot: 2, 
+                PatternSize: Constants.TileWidth * 2, 
+                Size: Constants.TileWidth * 2, 
+                MoveSpeed: 0.5f, 
+                TicksBetweenMovement: 60, 
+                TicksToMove: 60, 
+                MType: MoveType.Chase,
+                BType: BulletType.Homing,
+                BulletSize: Constants.BulletSize * 2,
+                BulletLifetimeTicks: 600,
+                Damage: 15,
+                Difficulty: 2
+            ),
+            [EnemyType.Barbarian] = new EnemyConst(
+                Type: EnemyType.Barbarian, 
+                HP: 20, 
+                TicksPerShot: 200, 
+                ReloadTicks: 200,
+                Ammo: 1, 
+                MType: MoveType.Chase, 
+                MoveSpeed: Constants.PlayerSpeed / 3f,
+                TicksBetweenMovement: 200, 
+                TicksToMove: 60, 
+                BulletLifetimeTicks: 15,
+                BulletSpeed: 0f, 
+                BulletsAreWarned: true, 
+                WarningDuration: new WorldTime(ticks: 45),
+                BulletSize: (int)Constants.TileWidth * 3,
+                SPattern: ShootPattern.Melee,
+                Damage: 25,
+                Difficulty: 2
+            ),
+            [EnemyType.Default] = new EnemyConst(),
+            [EnemyType.MachineGun] = new EnemyConst(
+                Type: EnemyType.MachineGun,
+                HP: 12,
+                Ammo: 36, 
+                ReloadTicks: 120,
+                MType: MoveType.Chase,
+                MoveSpeed: Constants.PlayerSpeed / 2f, 
+                TicksBetweenMovement: 0,
+                TicksToMove: 10,
+                Skill: 90, 
+                Damage: 15
+            ),
+            [EnemyType.Ninja] = new EnemyConst(
+                Type: EnemyType.Ninja, 
+                HP: 6, 
+                TicksPerShot: 2, 
+                Ammo: 2, 
+                BulletsPerShot: 1, 
+                ReloadTicks: 120, 
+                MType: MoveType.Chase, 
+                MoveSpeed: Constants.PlayerSpeed / 1.5f, 
+                TicksBetweenMovement: 15,
+                TicksToMove: 20,
+                Skill: 90
+            ),
+            [EnemyType.Robot] = new EnemyConst(
+                Type: EnemyType.Robot, 
+                HP: 8, 
+                TicksPerShot: 2,
+                BulletSpeed: 6f, 
+                Ammo: 32,
+                SPattern: ShootPattern.VerticalLine,
+                BulletsPerShot: 2, 
+                TicksBetweenMovement: 60, 
+                PatternSize: Constants.TileWidth,
+                TicksToMove: 360,
+                MType: MoveType.Horizontal,
+                MovePatternLength: 2,
+                ReloadTicks: 60
+            ),
+            [EnemyType.Shotgun] = new EnemyConst(
+                Type: EnemyType.Shotgun, 
+                SPattern: ShootPattern.Multi,
+                HP: 8, 
+                TicksPerShot: 120, 
+                ReloadTicks: 240, 
+                Ammo: 12, 
+                BulletsPerShot: 4, 
+                SpreadDegrees: 40f,
+                BulletLifetimeTicks: 180,
+                BulletSpeed: 1.5f
+            ),
+            [EnemyType.Sniper] = new EnemyConst(
+                Type: EnemyType.Default, 
+                Ammo: 1, 
+                ReloadTicks: 300,
+                Damage: 40,
+                HP: 25, 
+                BulletSpeed: 10f, 
+                BulletsAreWarned: true, 
+                WarningDuration: new WorldTime(ticks: 20),
+                BulletLifetimeTicks: 240,
+                Skill: 100
+            ),
+            [EnemyType.Volley] = new EnemyConst(
+                Type: EnemyType.Volley, 
+                SPattern: ShootPattern.Multi,
+                HP: 25, 
+                TicksPerShot: 60, 
+                ReloadTicks: 200, 
+                Ammo: 24, 
+                BulletsPerShot: 12, 
+                SpreadDegrees: 80f,
+                BulletLifetimeTicks: 60,
+                BulletSpeed: 3f,
+                Damage: 40
+            ),
+            [EnemyType.Warrior] = new EnemyConst(
+                Type: EnemyType.Warrior, 
+                SPattern: ShootPattern.Multi, 
+                HP: 40,
+                ReloadTicks: 480,
+                BulletSpeed: 4f,
+                WarningDuration: new WorldTime(ticks: 30),
+                BulletLifetimeTicks: 240,
+                Skill: 100,
+                BulletsPerShot: 20,
+                Ammo: 20,
+                Damage: 60,
+                SpreadDegrees: 180f,
+                Size: Constants.TileWidth * 2
+            )
+        };
+    }
+
     public static class EquipmentID {
         public static List<string> Armor = new() {
             ItemID.Armor1, ItemID.Armor2, ItemID.Armor3

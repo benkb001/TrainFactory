@@ -34,7 +34,6 @@ public partial class World {
     private Vector2 targetCameraPosition; 
     private bool targetCameraPositionIsCurrent; 
     private int trackedEntity = -1;
-    private GameClock gameClock = new GameClock(); 
     private Texture2D _pixel;
     private WorldTime wt = new WorldTime(); 
     public WorldTime Time => wt; 
@@ -163,10 +162,6 @@ public partial class World {
         return em.GetFirstMatchingEntity(sig);
     }
 
-    public double GetSecondsPassed() {
-        return gameClock.TotalSeconds; 
-    }
-
     //TODO: remove randoms
     public int NextInt(int maxExclusive) {
         return Util.NextInt(maxExclusive); 
@@ -182,10 +177,6 @@ public partial class World {
 
     public float NextNeg1To1() {
         return (NextFloat() * 2) - 1f;
-    }
-    
-    public void PassTime(double seconds = 0, double milliseconds = 0) {
-        gameClock.PassTime(seconds, milliseconds); 
     }
 
     public void PassTime(WorldTime wt) {

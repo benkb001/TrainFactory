@@ -16,34 +16,6 @@ using TrainGame.Components;
 using TrainGame.Constants;
 using System.ComponentModel.DataAnnotations;
 
-public enum SceneType {
-    CartInterface,
-    CityInterface,
-    ElevatorInterface,
-    EquipmentInterface,
-    MachineInterface,
-    Map,
-    OffScreen,
-    ProgramInterface,
-    RPG,
-    TrainInterface,
-    TravelingInterface,
-    UpgradeTrainInterface,
-    VendorInterface,
-    ViewProgramInterface,
-    WriteProgramInterface,
-    None
-}
-
-public class EnterSceneMessage {
-    private SceneType type; 
-    public SceneType Type => type; 
-
-    public EnterSceneMessage(SceneType type) {
-        this.type = type; 
-    }
-}
-
 public static class SceneSystem {
     private static SceneType currentScene = SceneType.None; 
     public static SceneType CurrentScene => currentScene; 

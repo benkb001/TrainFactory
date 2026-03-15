@@ -15,25 +15,6 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-class Damage {
-    private int dmg; 
-    private int tempDMG; 
-    public int DMG => dmg + tempDMG; 
-
-    public Damage(int dmg) {
-        this.dmg = dmg; 
-        tempDMG = 0; 
-    }
-
-    public void AddTempDamage(int tempDMG) {
-        this.tempDMG += tempDMG;
-    }
-
-    public void ResetDMG() {
-        tempDMG = 0; 
-    }
-}
-
 public static class ShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {

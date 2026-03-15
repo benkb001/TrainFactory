@@ -12,15 +12,6 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-public class EmbarkedMessage {
-    private Train t; 
-    public Train GetTrain() => t; 
-
-    public EmbarkedMessage(Train t) {
-        this.t = t; 
-    }
-}
-
 public static class EmbarkClickSystem {
     public static void Register(World world) {
         Type[] ts = [typeof(EmbarkButton), typeof(Button), typeof(Frame), typeof(Active)]; 

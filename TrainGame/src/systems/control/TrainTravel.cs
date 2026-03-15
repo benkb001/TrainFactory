@@ -17,6 +17,8 @@ public class TrainTravelSystem() {
     private static Type[] ts = [typeof(Train), typeof(Data)]; 
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
+        //ICKY: I want the menu refreshing to be done manually by player, 
+        //but i want the train buttons to be grayed out if the train leaves the city
         if (t.IsArriving()) {
             if (t.HasPlayer) {
                 //if train is arriving and it has the player, draw the city the player just chose to go to
@@ -37,6 +39,7 @@ public class TrainTravelSystem() {
         world.AddSystem(ts, tf); 
     }
 
+    //ICKY: City controlling train moving, idk. 
     public static void RegisterMove(World w) {
         w.AddSystem([typeof(City), typeof(Data)], (w, e) => {
             City c = w.GetComponent<City>(e); 

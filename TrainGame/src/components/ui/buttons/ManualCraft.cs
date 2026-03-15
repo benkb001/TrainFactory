@@ -1,5 +1,6 @@
 namespace TrainGame.Components;
 
+//TODO: Remove
 public class ManualCraftButton {
     public float Completion; 
     private int pbEntity; 

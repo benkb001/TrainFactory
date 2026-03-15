@@ -41,7 +41,7 @@ public static class PurchaseClickSystem {
             };
 
             if (dest.TakeRecipe(cost)) {
-                PlayerStats.Reset(w);
+                PlayerWrap.ResetStats(w);
                 //TODO: probably should not be this given it might not be a text box in the future 
                 w.RemoveComponent<TextBox>(e);
             }

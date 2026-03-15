@@ -145,6 +145,14 @@ public static class PlayerWrap {
         return playerEntity; 
     }
 
+    public static void ResetStats(World w) {
+        int e = PlayerWrap.GetEntity(w); 
+        Health h = w.GetComponent<Health>(e); 
+        h.ResetHP(); 
+        Armor armor = w.GetComponent<Armor>(e); 
+        armor.ResetTempDefense(); 
+    }
+
     public static void AddTest(World w) {
         AddData(w);
         SetRespawn(w, CityWrap.GetTest());

@@ -41,7 +41,7 @@ public static class CollideBulletSystem {
 
                 switch (b.GetOnCollideEffect()) {
                     case OnCollideEffect.Bounce: 
-                        //need to get which side of the wall it collided with. 
+                        //TODO: need to get which side of the wall it collided with. 
                         //
                         
 

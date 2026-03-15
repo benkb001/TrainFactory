@@ -116,12 +116,6 @@ public static class EntityFactory {
         return e; 
     }
 
-    public static int AddInventory(World w, Inventory inv) {
-        int e = Add(w, setScene: false); 
-        w.SetComponent<Inventory>(e, inv); 
-        return e; 
-    }
-
     public static int GetDataEntity<T>(World w, T component) {
         List<KeyValuePair<int, T>> es = w.GetComponentArray<T>().Where(kvp => Object.ReferenceEquals(kvp.Value, component)).ToList(); 
         if (es.Count == 0) {

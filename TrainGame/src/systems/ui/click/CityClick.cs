@@ -16,7 +16,7 @@ using TrainGame.Callbacks;
 
 //required order: 
 // cityClick -> drawCityDetail 
-public class CityClickSystem() {
+public static class CityClickSystem {
     public static void Register(World world) {
         Type[] ts = [typeof(CityUI), typeof(Button), typeof(Frame), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {

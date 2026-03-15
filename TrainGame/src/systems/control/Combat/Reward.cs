@@ -46,24 +46,6 @@ public static class TempArmorInteractSystem {
     }
 }
 
-public class HealthPotion {
-    private int hp; 
-    public int HP => hp; 
-
-    public HealthPotion(int hp) {
-        this.hp = hp; 
-    }
-}
-
-public class DamagePotion {
-    private int dmg; 
-    public int DMG => dmg; 
-
-    public DamagePotion(int dmg) {
-        this.dmg = dmg; 
-    }
-}
-
 public static class HealthPotionInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<HealthPotion>(w, (w, e, interactorEntity) => {
