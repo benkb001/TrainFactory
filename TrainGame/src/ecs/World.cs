@@ -19,10 +19,10 @@ using TrainGame.Constants;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-public partial class World {
+public partial class World : IWorld {
     private EntityManager em = new(); 
     private ComponentManager cm = new(); 
-    private SystemManager sm = new(); 
+    private SystemManager<World> sm = new(); 
 
     private GraphicsDeviceManager _graphics {get;}
     private GraphicsDevice graphicsDevice; 
@@ -77,17 +77,17 @@ public partial class World {
         return e; 
     }
 
-    public _System AddSystem(Type[] ts, Action<World, int> transformer, Func<int, int> orderer = null) {
+    public _System<World> AddSystem(Type[] ts, Action<World, int> transformer, Func<int, int> orderer = null) {
         bool[] signature = cm.GetSignature(ts); 
         return sm.Register(signature, transformer, orderer);
     }
 
-    public _System AddSystem(Type[] ts, Action<World> update) {
+    public _System<World> AddSystem(Type[] ts, Action<World> update) {
         bool[] signature = cm.GetSignature(ts); 
         return sm.Register(signature, update);
     }
 
-    public _System AddSystem(Action<World> update) {
+    public _System<World> AddSystem(Action<World> update) {
         bool[] signature = cm.GetSignature([]); 
         return sm.Register(signature, update);
     }
@@ -237,7 +237,9 @@ public partial class World {
             }
         }
 
-        sm.Update(this); 
+        foreach(_System<World> s in sm.Systems) {
+            s.Update(this);
+        }
 
         if (!isTest) {
             if (targetCameraPositionIsCurrent && !tracked) {

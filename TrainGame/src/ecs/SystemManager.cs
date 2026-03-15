@@ -5,28 +5,31 @@ using System;
 
 using TrainGame.Constants; 
 
-class SystemManager {
-    private HashSet<_System> systems;
+public interface IWorld {}
+
+class SystemManager<T> where T : IWorld {
+    private HashSet<_System<T>> systems;
+    public HashSet<_System<T>> Systems => systems;
 
     public SystemManager() {
         systems = new(); 
     }
 
-    public _System Register(bool[] signature, Action<World, int> transformer, Func<int, int> orderer = null) {
-        _System s = new _System(signature, transformer, orderer); 
+    public _System<T> Register(bool[] signature, Action<T, int> transformer, Func<int, int> orderer = null) {
+        _System<T> s = new _System<T>(signature, transformer, orderer); 
         systems.Add(s); 
         return s; 
     }
 
-    public _System Register(bool[] signature, Action<World> update) {
-        _System s = new _System(signature, update); 
+    public _System<T> Register(bool[] signature, Action<T> update) {
+        _System<T> s = new _System<T>(signature, update); 
         systems.Add(s); 
         return s; 
     }
 
     public void SetEntitySignature(int entity, bool[] signature) {
 
-        foreach (_System s in systems) {
+        foreach (_System<T> s in systems) {
             bool removed = false; 
             IEnumerable<int> typesActedOn = s.TypesActedOn; 
             
@@ -45,14 +48,8 @@ class SystemManager {
     }
 
     public void RemoveEntity(int entity) {
-        foreach (_System s in systems) {
+        foreach (_System<T> s in systems) {
             s.RemoveEntity(entity); 
-        }
-    }
-
-    public void Update(World w) {
-        foreach(_System s in systems) {
-            s.Update(w);
         }
     }
 

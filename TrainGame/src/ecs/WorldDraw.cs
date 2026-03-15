@@ -21,7 +21,7 @@ using TrainGame.Utils;
 
 //this file is for the visual side of world as opposed to logic
 
-public partial class World {
+public partial class World : IWorld {
     private bool cameraLocked = false; 
     public bool CameraLocked => cameraLocked;
 

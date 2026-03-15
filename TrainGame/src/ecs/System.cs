@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System; 
 using System.Linq; 
 
-public class _System {
+public class _System<T> where T : IWorld {
     private HashSet<int> es {get;}
 
     private bool[] signature;
     private HashSet<int> typesActedOn = new(); 
 
-    private Action<World, int> transformer;
-    private Action<World> update; 
+    private Action<T, int> transformer;
+    private Action<T> update; 
     private Func<int, int> orderer; 
     public HashSet<int> TypesActedOn => typesActedOn;
 
-    public _System(bool[] s, Action<World, int> t, Func<int, int> orderer = null) {
+    public _System(bool[] s, Action<T, int> t, Func<int, int> orderer = null) {
         es = new HashSet<int>(); 
         transformer = t; 
         signature = s;
@@ -24,7 +24,7 @@ public class _System {
         this.orderer = orderer; 
     }
 
-    public _System(bool[] s, Action<World> u) {
+    public _System(bool[] s, Action<T> u) {
         es = new HashSet<int>(); 
         update = u; 
         signature = s;
@@ -55,7 +55,7 @@ public class _System {
         return signature[componentTypeIndex]; 
     }
 
-    public void Update(World w) {
+    public void Update(T w) {
         if (update != null) {
             update(w); 
         } else {
