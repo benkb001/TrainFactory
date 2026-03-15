@@ -229,7 +229,7 @@ public static class TALParser {
                 List<TALInstruction> instructions = ParseBody(ts, w, train);
                 MatchOne(TokenType.CloseCurly, ts); 
                 TALBody b = new TALBody(instructions, train); 
-                return TALInstruction.While(e1.Condition, b); 
+                return TALInstruction.While(e1, b); 
             default: 
                 throw new InvalidOperationException($"Received unxpected token when parsing a statement"); 
 

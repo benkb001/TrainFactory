@@ -24,9 +24,9 @@ public enum InstructionType {
 public class TALInstruction {
     public InstructionType Type;
     public City C; 
-    public TALConditional Condition; 
     public TALExpression E1; 
     public TALExpression E2; 
+    public TALExpression Condition;
     public TALBody Body; 
 
     public TALInstruction(InstructionType type) {
@@ -58,9 +58,10 @@ public class TALInstruction {
         return i; 
     }
 
-    public static TALInstruction While(TALConditional Condition, TALBody Body) {
+    public static TALInstruction While(TALExpression E1, TALBody Body) {
+        //ICKY: Could do some assertion that E1 evalutes to a boolean
         TALInstruction i = new TALInstruction(InstructionType.While);
-        i.Condition = Condition; 
+        i.Condition = E1; 
         i.Body = Body; 
         return i; 
     }
@@ -147,7 +148,7 @@ public class TALBody {
                     break; 
 
                 case InstructionType.While: 
-                    if (i.Condition.Evaluate()) {
+                    if ((bool)i.Condition.Evaluate()) {
                         i.Body.Execute(w); 
                         executing = false; 
                     } else {

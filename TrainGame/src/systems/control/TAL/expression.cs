@@ -5,11 +5,21 @@ using System.Linq;
 using TrainGame.Components; 
 
 public enum ExpressionType {
-    Conditional, 
+    And, 
     Access,
     Add,
-    Subtract,
+    Equal, 
+    False,
+    Greater, 
+    GreaterEqual, 
+    Less, 
+    LessEqual, 
     Multiply,
+    Not,
+    NotEqual, 
+    Or, 
+    Subtract,
+    True,
     Divide, 
     Int, 
     Float,
@@ -30,7 +40,6 @@ public class TALExpression {
     private Train train; 
     private City city; 
     private string itemID; 
-    private TALConditional condition; 
     private int i; 
     private bool b; 
     private float f; 
@@ -39,7 +48,6 @@ public class TALExpression {
 
     public ExpressionType Type => type; 
     public AccessType AcType => accessType; 
-    public TALConditional Condition => condition; 
     public int IntVal => i; 
     public bool BoolVal => b; 
     public TALExpression E1 => e1; 
@@ -66,12 +74,6 @@ public class TALExpression {
     public static TALExpression Float(float f) {
         TALExpression e = new TALExpression(ExpressionType.Float); 
         e.f = f;
-        return e; 
-    }
-
-    public static TALExpression Conditional(TALConditional c) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = c; 
         return e; 
     }
 
@@ -138,60 +140,67 @@ public class TALExpression {
     }
 
     public static TALExpression Greater(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.Greater, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.Greater); 
+        e.e1 = e1; 
+        e.e2 = e2;
         return e; 
     }
 
     public static TALExpression GreaterEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.GreaterEqual, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.GreaterEqual); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
 
     public static TALExpression Less(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.Less, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.Less); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
     public static TALExpression LessEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.LessEqual, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.LessEqual); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
     public static TALExpression Equal(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.Equal, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.Equal); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
     public static TALExpression Not(TALExpression e1) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.Not, e1); 
+        TALExpression e = new TALExpression(ExpressionType.Not); 
+        e.e1 = e1; 
         return e; 
     }
 
     public static TALExpression NotEqual(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.NotEqual, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.NotEqual); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
     public static TALExpression And(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.And, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.And); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
 
     public static TALExpression Or(TALExpression e1, TALExpression e2) {
-        TALExpression e = new TALExpression(ExpressionType.Conditional); 
-        e.condition = new TALConditional(ConditionType.Or, e1, e2); 
+        TALExpression e = new TALExpression(ExpressionType.Or); 
+        e.e1 = e1; 
+        e.e2 = e2; 
         return e; 
     }
-
 
     public object Evaluate() {
         return type switch {
@@ -204,13 +213,23 @@ public class TALExpression {
             ExpressionType.Subtract => (int)e1.Evaluate() - (int)e2.Evaluate(), 
             ExpressionType.Divide => (int)e1.Evaluate() / (int)e2.Evaluate(), 
             ExpressionType.Multiply => (int)e1.Evaluate() * (int)e2.Evaluate(), 
-            ExpressionType.Conditional => condition.Evaluate(), 
             ExpressionType.Access => accessType switch {
                 AccessType.Train => InventoryWrap.ItemCount(train.GetInventories(), itemID), 
                 AccessType.City => city.Inv.ItemCount(itemID),
                 _ => 0
             }, 
             ExpressionType.ItemID => itemID,
+            ExpressionType.And => ((bool)e1.Evaluate()) && ((bool)e2.Evaluate()), 
+            ExpressionType.Equal => e1.Evaluate().Equals(e2.Evaluate()),
+            ExpressionType.False => false, 
+            ExpressionType.Greater => (int)e1.Evaluate() > (int)e2.Evaluate(), 
+            ExpressionType.GreaterEqual => (int)e1.Evaluate() >= (int)e2.Evaluate(), 
+            ExpressionType.Less => (int)e1.Evaluate() < (int)e2.Evaluate(), 
+            ExpressionType.LessEqual => (int)e1.Evaluate() <= (int)e2.Evaluate(),  
+            ExpressionType.Not => !(bool)e1.Evaluate(), 
+            ExpressionType.NotEqual => !(e1.Evaluate().Equals(e2.Evaluate())),
+            ExpressionType.Or => (bool)e1.Evaluate() || (bool)e2.Evaluate(), 
+            ExpressionType.True => true,
             _ => 0
         };
     }

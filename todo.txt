@@ -47,6 +47,9 @@
 
 **** THIS SPRINT **** 
 
+* Remove the rest of circular dependencies
+* Catch up on tests
+
 * Fix loops to grab products if there is no space for the 
   machines to craft
   * Need to have access to city depot level/stack sizes in TAL,
