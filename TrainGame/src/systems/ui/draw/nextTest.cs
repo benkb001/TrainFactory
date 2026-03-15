@@ -414,7 +414,7 @@ public static class NextDrawTestUISystem {
                 w.SetComponent<TextBox>(cur, new TextBox($"{i}")); 
                 w.SetComponent<Outline>(cur, new Outline()); 
                 w.SetComponent<Frame>(cur, new Frame(Vector2.Zero, 50f, 50f)); 
-                llc.AddChild(cur, w); 
+                LinearLayoutWrap.AddChild(w, cur, llc);
             }
 
             AddNextTestButton(w, 20);

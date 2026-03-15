@@ -71,17 +71,17 @@ public static class DrawVendorInterfaceSystem {
                     throw new InvalidOperationException("Unimplemented purchase button type");
                 }
                 
-                vendor.AddChild(btnEnt, w); 
+                LinearLayoutWrap.AddChild(w, btnEnt, vendor); 
             }
 
-            vendor.ResizeChildren(w); 
-            outer.AddChild(vendor.GetParentEntity(), w); 
+            LinearLayoutWrap.ResizeChildren(w, vendor);
+            LinearLayoutWrap.AddChild(w, vendor.GetParentEntity(), outer); 
 
             //add city inv to bottom
             
             InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 
                 invWidth, invHeight, DrawLabel: true);
-            outer.AddChild(invView.GetParentEntity(), w); 
+            LinearLayoutWrap.AddChild(w, invView.GetParentEntity(), outer); 
 
         });
     }

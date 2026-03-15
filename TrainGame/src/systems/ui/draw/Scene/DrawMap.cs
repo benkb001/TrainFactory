@@ -100,7 +100,7 @@ public static class DrawMapSystem {
             float clockWidth = hudWidth; 
             float clockHeight = hudWidth / 5f; 
             w.SetComponent<Frame>(clockEnt, new Frame(0, 0, clockWidth, clockHeight));
-            hud.AddChild(clockEnt, w); 
+            LinearLayoutWrap.AddChild(w, clockEnt, hud);
 
             //add speed buttons to HUD
 
@@ -121,11 +121,11 @@ public static class DrawMapSystem {
                 es[i] = buttonEnt; 
                 w.SetComponent<Outline>(buttonEnt, new Outline()); 
                 w.SetComponent<Button>(buttonEnt, new Button()); 
-                speedButtonRow.AddChild(buttonEnt, w); 
+                LinearLayoutWrap.AddChild(w, buttonEnt, speedButtonRow);
             }
 
-            speedButtonRow.ResizeChildren(w); 
-            hud.AddChild(speedButtonRow.GetParentEntity(), w); 
+            LinearLayoutWrap.ResizeChildren(w, speedButtonRow);
+            LinearLayoutWrap.AddChild(w, speedButtonRow.GetParentEntity(), hud);
 
             w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
             w.SetComponent<TextBox>(es[0], new TextBox("Slow Time")); 
@@ -145,15 +145,15 @@ public static class DrawMapSystem {
                 setOutline: true, text: "Equip");
             w.SetComponent<EnterInterfaceButton<EquipmentInterfaceData>>(equipEnt,
                 new EnterInterfaceButton<EquipmentInterfaceData>(new EquipmentInterfaceData()));
-            saveRow.AddChild(equipEnt, w);
+            LinearLayoutWrap.AddChild(w, equipEnt, saveRow);
 
             int saveEnt = EntityFactory.AddUI(w, Vector2.Zero, 0f, 0f, setButton: true, 
                 text: "Save", setOutline: true);
             w.SetComponent<SaveButton>(saveEnt, new SaveButton());
-            saveRow.AddChild(saveEnt, w); 
-            saveRow.ResizeChildren(w);
+            LinearLayoutWrap.AddChild(w, saveEnt, saveRow);
+            LinearLayoutWrap.ResizeChildren(w, saveRow);
             
-            hud.AddChild(saveRow.GetParentEntity(), w); 
+            LinearLayoutWrap.AddChild(w, saveRow.GetParentEntity(), hud);
 
             //add item summary to HUD 
             float itemSumWidth = hudWidth;
@@ -175,11 +175,11 @@ public static class DrawMapSystem {
                 int iEnt = EntityFactory.Add(w); 
                 w.SetComponent<TextBox>(iEnt, new TextBox(s)); 
 
-                llc.AddChild(iEnt, w);
+                LinearLayoutWrap.AddChild(w, iEnt, llc);
             }
 
-            llc.ResizeChildren(w); 
-            hud.AddChild(llc.GetParentEntity(), w); 
+            LinearLayoutWrap.ResizeChildren(w, llc);
+            LinearLayoutWrap.AddChild(w, llc.GetParentEntity(), hud);
 
             w.RemoveEntity(e);
         }; 

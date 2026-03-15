@@ -42,7 +42,7 @@ public static class DrawSetTrainProgramInterfaceSystem {
                 ViewProgramInterfaceData data = new ViewProgramInterfaceData(programName, program, programExplanation, t); 
                 EnterInterfaceButton<ViewProgramInterfaceData> btn = new EnterInterfaceButton<ViewProgramInterfaceData>(data);
                 w.SetComponent<EnterInterfaceButton<ViewProgramInterfaceData>>(btnEnt, btn); 
-                prewrittenRow.AddChild(btnEnt, w); 
+                LinearLayoutWrap.AddChild(w, btnEnt, prewrittenRow);
             }
 
             LinearLayoutContainer playerRow =  LinearLayoutWrap.Add(w, Vector2.Zero, 0, 0, 
@@ -61,12 +61,12 @@ public static class DrawSetTrainProgramInterfaceSystem {
                     new EnterInterfaceButton<WriteProgramInterfaceData>(d));
                 w.SetComponent<Outline>(btnEnt, new Outline()); 
                 w.SetComponent<TextBox>(btnEnt, new TextBox($"{programName}"));
-                playerRow.AddChild(btnEnt, w); 
+                LinearLayoutWrap.AddChild(w, btnEnt, playerRow); 
             }
 
-            outerContainer.AddChild(prewrittenRow.GetParentEntity(), w); 
-            outerContainer.AddChild(playerRow.GetParentEntity(), w);
-            outerContainer.ResizeChildren(w, recurse: true); 
+            LinearLayoutWrap.AddChild(w, prewrittenRow.GetParentEntity(), outerContainer);
+            LinearLayoutWrap.AddChild(w, playerRow.GetParentEntity(), outerContainer);
+            LinearLayoutWrap.ResizeChildren(w, outerContainer, recurse: true);
             w.RemoveEntity(e); 
         }); 
     }

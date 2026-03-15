@@ -23,7 +23,7 @@ public static class DrawWriteProgramInterfaceSystem {
             TextInputContainer inputContainer = TextInputWrap.Add(w, Vector2.Zero, 
                 w.ScreenWidth - 30, w.ScreenHeight - 100, data.ProgramName, data.Program, editableLabel: true); 
 
-            llc.AddChild(inputContainer.GetParentEntity(), w); 
+            LinearLayoutWrap.AddChild(w, inputContainer.GetParentEntity(), llc); 
             
             int btnEnt = EntityFactory.AddUI(
                 w, 
@@ -41,7 +41,7 @@ public static class DrawWriteProgramInterfaceSystem {
                 data.Program));
             
 
-            llc.AddChild(btnEnt, w); 
+            LinearLayoutWrap.AddChild(w, btnEnt, llc); 
         });
     }
 }

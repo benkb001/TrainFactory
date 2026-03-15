@@ -28,6 +28,7 @@ public class LinearLayoutContainer {
     public int LLEnt => llEnt; 
     public int LabelEntity => labelEntity; 
     public int GetParentEntity() => parentEntity; 
+    public LinearLayout LL => ll; 
     public List<int> GetChildren() => ll.GetChildren(); 
 
     public LinearLayoutContainer(int llEnt, int parentEnt, int labelEntity, 
@@ -39,13 +40,5 @@ public class LinearLayoutContainer {
         this.llWidth = llWidth; 
         this.llHeight = llHeight; 
         this.labelEntity = labelEntity; 
-    }
-
-    public void AddChild(int e, World w) {
-        LinearLayoutWrap.AddChild(e, llEnt, ll, w);
-    }
-
-    public void ResizeChildren(World w, bool recurse = false) {
-        LinearLayoutWrap.ResizeChildren(llEnt, w, recurse); 
     }
 }

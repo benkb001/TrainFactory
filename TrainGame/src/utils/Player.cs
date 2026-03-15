@@ -110,15 +110,15 @@ public static class PlayerWrap {
         InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
             playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
         
-        playerHUD.AddChild(playerInvView.GetParentEntity(), w); 
+        LinearLayoutWrap.AddChild(w, playerInvView.GetParentEntity(), playerHUD); 
 
         int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
         w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
-        playerHUD.AddChild(hpEnt, w); 
+        LinearLayoutWrap.AddChild(w, hpEnt, playerHUD); 
 
         int ammoEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "Ammo"); 
         w.SetComponent<AmmoHUD>(ammoEnt, new AmmoHUD());
-        playerHUD.AddChild(ammoEnt, w); 
+        LinearLayoutWrap.AddChild(w, ammoEnt, playerHUD); 
         
         int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 

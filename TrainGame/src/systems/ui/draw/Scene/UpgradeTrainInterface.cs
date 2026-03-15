@@ -104,7 +104,7 @@ public static class DrawUpgradeTrainInterfaceSystem {
             
             string summary = t.GetSummary();
             int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, 200, 200, setOutline: true, text: summary);
-            outer.AddChild(sumEnt, w);
+            LinearLayoutWrap.AddChild(w, sumEnt, outer);
 
             LinearLayoutContainer row1 = LinearLayoutWrap.Add(
                 w, 
@@ -114,7 +114,7 @@ public static class DrawUpgradeTrainInterfaceSystem {
                 direction: "horizontal",
                 outline: false
             );
-            outer.AddChild(row1.GetParentEntity(), w);
+            LinearLayoutWrap.AddChild(w, row1.GetParentEntity(), outer);
 
             float btnWidth = 150; 
             float btnHeight = 100;
@@ -125,15 +125,15 @@ public static class DrawUpgradeTrainInterfaceSystem {
             }
             int addCartBtnEnt = addButton("Add Cart?");
             w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, t.ComingFrom));
-            row1.AddChild(addCartBtnEnt, w);
+            LinearLayoutWrap.AddChild(w, addCartBtnEnt, row1);
 
             int upgradeFuelEnt = addButton("Upgrade Fuel Consumption? Requires 1 Combustion Controller");
             w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelEnt, new UpgradeFuelConsumptionButton(t));
-            row1.AddChild(upgradeFuelEnt, w);
+            LinearLayoutWrap.AddChild(w, upgradeFuelEnt, row1);
 
             int upgradePowerEnt = addButton("Upgrade Speed? Requires 1 Engine");
             w.SetComponent<UpgradeTrainPowerButton>(upgradePowerEnt, new UpgradeTrainPowerButton(t));
-            row1.AddChild(upgradePowerEnt, w);
+            LinearLayoutWrap.AddChild(w, upgradePowerEnt, row1);
 
             LinearLayoutContainer row2 = LinearLayoutWrap.Add(
                 w,
@@ -143,22 +143,22 @@ public static class DrawUpgradeTrainInterfaceSystem {
                 direction: "horizontal",
                 outline: false
             );
-            outer.AddChild(row2.GetParentEntity(), w);
+            LinearLayoutWrap.AddChild(w, row2.GetParentEntity(), outer);
 
             int upgradeInvExpoEnt = addButton(
                 $"Multiply Inventory Sizes By {Constants.ExponentialInvSizeUpgradeFactor}? Requires 1 {ItemID.PocketDimension}");
             w.SetComponent<UpgradeInventoryExponentialButton>(upgradeInvExpoEnt, new UpgradeInventoryExponentialButton(train: t));
-            row2.AddChild(upgradeInvExpoEnt, w);
+            LinearLayoutWrap.AddChild(w, upgradeInvExpoEnt, row2);
 
             int upgradeFuelExpoEnt = addButton(
                 $"Multiply Miles Per Fuel By {Constants.ExponentialMilesPerFuelUpgradeFactor}? Requires 1 {ItemID.AntiGravity}");
             w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelExpoEnt, new UpgradeFuelConsumptionButton(t, exponential: true));
-            row2.AddChild(upgradeFuelExpoEnt, w);
+            LinearLayoutWrap.AddChild(w, upgradeFuelExpoEnt, row2);
 
             int upgradePowerExpoEnt = addButton(
                 $"Multiply Power by {Constants.ExponentialTrainPowerUpgradeFactor}? Requires 1 {ItemID.AirResistor}");
             w.SetComponent<UpgradeTrainPowerButton>(upgradePowerExpoEnt, new UpgradeTrainPowerButton(t, exponential: true));
-            row2.AddChild(upgradePowerExpoEnt, w);
+            LinearLayoutWrap.AddChild(w, upgradePowerExpoEnt, row2);
         });
     }
 

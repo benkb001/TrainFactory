@@ -49,14 +49,14 @@ public class DrawTravelingInterfaceSystem {
 
             
             int summaryEnt = EntityFactory.Add(w); 
-            outer.AddChild(summaryEnt, w); 
+            LinearLayoutWrap.AddChild(w, summaryEnt, outer); 
             w.SetComponent<Frame>(summaryEnt, new Frame(0, 0, w.ScreenWidth - 40f, w.ScreenHeight / 4f)); 
             string s = $"{t.Id}\nArrival Time: {t.ArrivalTime}";
             w.SetComponent<TextBox>(summaryEnt, new TextBox(s)); 
             w.SetComponent<Outline>(summaryEnt, new Outline()); 
             
             int timeEnt = EntityFactory.Add(w); 
-            outer.AddChild(timeEnt, w); 
+            LinearLayoutWrap.AddChild(w, timeEnt, outer); 
             w.SetComponent<Frame>(timeEnt, new Frame(0, 0, w.ScreenHeight / 4f, w.ScreenHeight / 4f)); 
             w.SetComponent<GameClockView>(timeEnt, GameClockView.Get());
             w.SetComponent<Outline>(timeEnt, new Outline()); 
@@ -68,13 +68,13 @@ public class DrawTravelingInterfaceSystem {
             InventoryContainer<Train> container = DrawInventoryContainerSystem.Draw<Train>(dm, w);
 
             LinearLayoutContainer row = LinearLayoutWrap.Add(w, Vector2.Zero, w.ScreenWidth - 40f, w.ScreenHeight / 4f);
-            outer.AddChild(row.GetParentEntity(), w); 
+            LinearLayoutWrap.AddChild(w, row.GetParentEntity(), outer); 
 
-            row.AddChild(container.GetParentEntity(), w);
+            LinearLayoutWrap.AddChild(w, container.GetParentEntity(), row);
 
             if (t.Executable != null) {
                 int pauseProgramBtnEnt = PauseTrainProgramButtonWrap.Add(w, t, w.ScreenHeight / 4f, w.ScreenHeight / 5f);
-                row.AddChild(pauseProgramBtnEnt, w); 
+                LinearLayoutWrap.AddChild(w, pauseProgramBtnEnt, row); 
             }
 
             w.RemoveEntity(e); 

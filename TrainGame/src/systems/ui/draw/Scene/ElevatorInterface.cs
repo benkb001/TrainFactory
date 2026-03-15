@@ -27,7 +27,7 @@ public static class DrawElevatorInterfaceSystem {
                 max: Globals.MaxFloor - (Globals.MaxFloor % 5), 
                 step: 5
             );
-            outer.AddChild(step.ContainerEnt, w); 
+            LinearLayoutWrap.AddChild(w, step.ContainerEnt, outer);
             w.SetComponent<ElevatorButton>(step.SubmitEnt, new ElevatorButton(step.Step));
         });
     }

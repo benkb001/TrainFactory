@@ -23,13 +23,13 @@ public static class DrawViewProgramInterfaceSystem {
             float eWidth = eHeight * 2; 
             w.SetComponent<Frame>(explanationEnt, new Frame(0, 0, eWidth, eHeight)); 
             w.SetComponent<TextBox>(explanationEnt, new TextBox(data.ProgramExplanation)); 
-            outer.AddChild(explanationEnt, w); 
+            LinearLayoutWrap.AddChild(w, explanationEnt, outer); 
 
             int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 160, 80, setButton: true, setOutline: true, 
                 text: $"Set to {data.ProgramName}? Requires 1 Motherboard"); 
             w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(data.ProgramName, data.GetTrain(), 
                 data.Program));
-            outer.AddChild(btnEnt, w); 
+            LinearLayoutWrap.AddChild(w, btnEnt, outer); 
         
         });
     }

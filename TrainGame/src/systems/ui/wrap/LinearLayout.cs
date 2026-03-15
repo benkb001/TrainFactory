@@ -172,6 +172,10 @@ public static class LinearLayoutWrap {
         }
     }
 
+    public static void ResizeChildren(World w, LinearLayoutContainer llc, bool recurse = false) {
+        ResizeChildren(llc.LLEnt, w, recurse);
+    }
+
     public static void AddChild(int childEntity, int linearLayoutEntity, LinearLayout ll, World w) {
         ll.AddChild(childEntity); 
         LLChild c = new LLChild(linearLayoutEntity);
@@ -182,6 +186,10 @@ public static class LinearLayoutWrap {
             resetChildrenDepth(childEntity, childLL, w); 
         }
     }
+
+    public static void AddChild(World w, int childEntity, LinearLayoutContainer llc) {
+        AddChild(childEntity, llc.LLEnt, llc.LL, w);
+    } 
 
     private static void resetChildrenDepth(int llEnt, LinearLayout ll, World w) {
         foreach (int cEnt in ll.GetChildren()) {

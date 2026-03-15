@@ -84,8 +84,8 @@ public static class DrawEquipmentInterfaceSystem {
             w.SetComponent<EquipmentSlot<Armor>>(armorInvEnt, armorSlot); 
             w.SetComponent<EquipmentUI>(armorInvEnt, new EquipmentUI());
 
-            outer.AddChild(armorInvView.GetParentEntity(), w); 
-            outer.AddChild(playerInvView.GetParentEntity(), w); 
+            LinearLayoutWrap.AddChild(w, armorInvView.GetParentEntity(), outer);
+            LinearLayoutWrap.AddChild(w, playerInvView.GetParentEntity(), outer);
         });
     }
 }
