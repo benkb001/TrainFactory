@@ -14,6 +14,7 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Constants; 
 using TrainGame.Utils; 
+using TrainGame.Systems;
 
 public class InventoryView {
     int parentEntity; 

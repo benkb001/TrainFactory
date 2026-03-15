@@ -64,14 +64,12 @@ public static class RegisterSystems {
         
         ClearLLSystem.Register(w); 
 
-        ChestInteractSystem.Register(w); 
         TrainInteractSystem.Register(w); 
         MachineInteractSystem.Register(w); 
         CityClickSystem.Register(w); 
         TrainClickSystem.Register(w); 
         EmbarkClickSystem.Register(w); 
         MachineUIClickSystem.Register(w); 
-        PlayerAccessTrainClickSystem.Register(w); 
         AddCartClickSystem.Register(w); 
         AddCartInterfaceClickSystem.Register(w); 
         UpgradeTrainClickSystem.Register(w); 
@@ -133,7 +131,6 @@ public static class RegisterSystems {
 
         DrawBackgroundSystem.Register(w); 
         DrawHPSystem.Register(w); 
-        DrawCityDetailsSystem.Register(w); 
         DrawEmbarkSystem.Register(w); 
         DrawMapSystem.Register(w); 
         TrainMapPositionSystem.Register(w);
@@ -141,8 +138,6 @@ public static class RegisterSystems {
         DrawMachineRequestSystem.Register(w);
         DrawCallbackSystem.Register(w); 
         HeldItemDrawSystem.Register(w); 
-        DrawButtonSystem.Register<AddCartInterfaceButton>(w); 
-        DrawButtonSystem.Register<UpgradeTrainButton>(w); 
         w.AddSystem(DrawAddCartInterfaceSystem.Ts, DrawAddCartInterfaceSystem.Tf); 
         DrawInventoryContainerSystem.Register<Train>(w); 
         DrawTrainInterfaceSystem.Register(w); 
@@ -159,7 +154,6 @@ public static class RegisterSystems {
         DrawLadderSystem.Register(w);
         DrawElevatorInterfaceSystem.Register(w); 
         ToastSystem.RegisterDraw(w);
-        //CameraReturnSystem.Register(w); 
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 

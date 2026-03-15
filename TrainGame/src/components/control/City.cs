@@ -90,18 +90,8 @@ public class City : IID, INode<City> {
         trains[t.Id] = t; 
     }
 
-    //todo: REMOVE, keep the one with type
-    public void AddCart(Cart c) {
-        carts[c.Type] += 1; 
-    }
-
     public void AddCart(CartType type) {
         carts[type] += 1; 
-    }
-
-    //todo: REMOVE
-    public void RemoveCart(Cart c) {
-        carts[c.Type] -= 1; 
     }
 
     public void RemoveCart(CartType type) {

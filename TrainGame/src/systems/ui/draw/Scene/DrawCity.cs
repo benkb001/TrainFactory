@@ -18,17 +18,6 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Systems;
 
-public static class DrawHPSystem {
-    public static void Register(World w) {
-        w.AddSystem([typeof(Health), typeof(TextBox), typeof(Active)], (w, e) => {
-            Health h = w.GetComponent<Health>(e); 
-            TextBox tb = w.GetComponent<TextBox>(e); 
-            
-            tb.Text = $"HP: {h.HP}";
-        });
-    }
-}
-
 public static class DrawCitySystem {
     
     private static Type[] ts = [typeof(DrawCityMessage)];

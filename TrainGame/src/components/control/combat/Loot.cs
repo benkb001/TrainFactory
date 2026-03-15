@@ -41,9 +41,9 @@ public class Loot {
     };
 
     private static List<(string, int)> getDrops(int floor) {
-        if (floor < 20) {
+        if (floor < Constants.MaxFloorLevel1) {
             return drops1;
-        } else if (floor < 40) {
+        } else if (floor < Constants.MaxFloorLevel2) {
             return drops2;
         } else {
             return drops3; 

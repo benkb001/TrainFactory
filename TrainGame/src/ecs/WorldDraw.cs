@@ -280,30 +280,6 @@ public partial class World {
             }
         }
 
-        foreach (KeyValuePair<int, Message> entry in cm.GetComponentArray<Message>().GetEntities()) {
-            
-            Message m = entry.Value; 
-            Frame f = cm.GetComponent<Frame>(entry.Key); 
-            int x = (int)f.GetX(); 
-            int y = (int)f.GetY(); 
-
-            Vector2 pos = new Vector2(x, y); 
-
-            _spriteBatch.DrawString(
-                 font,
-                 m.message, 
-                 pos, 
-                 m.color, 
-                 m.rotation, 
-                 Vector2.Zero,
-                 m.scale,
-                 SpriteEffects.None, 
-                 m.depth, 
-                 false
-            );
-
-        }
-
         foreach (int ent in GetMatchingEntities([typeof(TextBox), typeof(Frame)])) {
             
             TextBox tb = cm.GetComponent<TextBox>(ent); 

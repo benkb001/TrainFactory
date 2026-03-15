@@ -14,36 +14,35 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Components; 
 using TrainGame.Systems; 
-
-class TrainEmbarkedMessage {
-    private Train train; 
-    public Train GetTrain() => train; 
-
-    public TrainEmbarkedMessage(Train train) {
-        this.train = train; 
-    }
-}
-
-public static class ExitExpiredTrainMenuSystem {
-    public static void Register(World w) {
-        w.AddSystem([typeof(TrainEmbarkedMessage)], (w, e) => {
-            Train t = w.GetComponent<TrainEmbarkedMessage>(e).GetTrain();
-            if (SceneSystem.GetMenuEntities(w).Any(e => t.Equals(w.GetComponent<Menu>(e).GetTrain()))) {
-                CloseMenuSystem.AddMessage(w); 
-            }
-            w.RemoveEntity(e); 
-        });
-    }
-}
+using TrainGame.Constants;
 
 public static class TrainWrap {
     public static Train GetTestTrain() {
         Inventory inv = new Inventory("Test", 1, 1); 
         City c = new City("Test", inv); 
-        return new Train(inv, c); 
+        string id = ID.GetNext("Train ");
+        return new Train(inv, c, new Dictionary<CartType, Inventory>(), id); 
     }
 
-    public static int Add(World w, Train t) {
+    public static Train Assemble(City origin) {
+        Inventory inv = new Inventory(ID.GetNext("Loc"), Constants.TrainRows, Constants.TrainCols); 
+        Dictionary<CartType, Inventory> carts = new();
+
+        string id = ID.GetNext("Train ");
+
+        foreach (CartType type in Cart.AllTypes) {
+            Inventory curInv = new Inventory(Train.GetCartID(type, id), Constants.CartRows, Constants.CartCols, 0, type);
+            carts[type] = curInv; 
+        }
+
+        return new Train(inv, origin, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
+    }
+
+    public static int AssembleToWorld(World w, City c) {
+        return RegisterExisting(w, Assemble(c));
+    }
+
+    public static int RegisterExisting(World w, Train t) {
         if (EntityFactory.GetDataEntity<Inventory>(w, t.Inv) == -1) {
             InventoryWrap.Add(w, t.Inv); 
         }

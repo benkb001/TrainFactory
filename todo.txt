@@ -43,6 +43,7 @@
   component
 * Try to find places where playerWrap can be replaced
 * Deep clean
+* Remove callbacks
 
 **** THIS SPRINT **** 
 

@@ -282,10 +282,9 @@ public static class PersistentState {
                 carts[type] = inventories[Train.GetCartID(type, trainID)]; 
             }
 
-            Train t = new Train(inv, comingFrom, trainID, milesPerHour, power, mass, Carts: carts,
-                milesOfFuel: milesOfFuel); 
+            Train t = new Train(inv, comingFrom, carts, trainID, milesPerHour, power, mass, milesOfFuel: milesOfFuel); 
             t.SetPosition(x, y);
-            TrainWrap.Add(w, t); 
+            TrainWrap.RegisterExisting(w, t); 
             trains[trainID] = t; 
             string program = (string)trainData["program"];
             string programName = (string)trainData["programName"];

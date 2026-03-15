@@ -13,15 +13,6 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 using TrainGame.Utils;
 
-public class ElevatorButton {
-    private Stepper step; 
-    public int Floor => step.Value;
-
-    public ElevatorButton(Stepper step) {
-        this.step = step; 
-    }
-}
-
 public static class DrawElevatorInterfaceSystem {
     public static void Register(World w) {
         DrawInterfaceSystem.Register<ElevatorInterfaceData>(w, (w, e, data) => {

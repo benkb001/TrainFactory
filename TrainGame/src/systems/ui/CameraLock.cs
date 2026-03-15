@@ -15,7 +15,7 @@ using TrainGame.Constants;
 
 //We need to lock before we update the camera, because 
 //camera update happens after all system updates
-public class CameraLockSystem() {
+public static class CameraLockSystem {
     private static Action<World> update = (w) => {
         if (w.GetMatchingEntities([typeof(Active), typeof(Menu)]).Count > 0) {
             w.LockCamera();

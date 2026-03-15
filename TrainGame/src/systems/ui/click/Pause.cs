@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using TrainGame.ECS; 
 using TrainGame.Components; 
 
-public class PauseButtonSystem() {
+public static class PauseButtonSystem {
     private static Type[] ts = [typeof(PauseButton), typeof(Button), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         if (w.GetComponent<Button>(e).Clicked) {

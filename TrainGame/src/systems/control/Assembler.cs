@@ -26,7 +26,7 @@ public class AssemblerSystem {
 
                     //TODO: change this to make a RegisterAssembledMessage<U> 
                     if (assembled is Train t) {
-                        TrainWrap.Add(w, t); 
+                        TrainWrap.RegisterExisting(w, t); 
                     }
                 }
             }

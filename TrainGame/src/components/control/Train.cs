@@ -57,14 +57,8 @@ public class Train : IInventorySource, IID {
 
     public const string DefaultID = ""; 
 
-    public Train(Inventory Inv, City origin, string Id = DefaultID, float milesPerHour = 0f, float power = 0f, float mass = 1f,
-        Dictionary<CartType, Inventory> Carts = null, float milesOfFuel = 25f) {
-        
-        if (Id.Equals("")) {
-            Id = ID.GetNext(Constants.TrainStr); 
-        } else {
-            ID.Use(Id); 
-        }
+    public Train(Inventory Inv, City origin, Dictionary<CartType, Inventory> Carts, string Id, 
+    float milesPerHour = 0f, float power = 0f, float mass = 1f, float milesOfFuel = 25f) {
         
         this.Id = Id; 
 
@@ -86,16 +80,7 @@ public class Train : IInventorySource, IID {
         this.milesOfFuel = milesOfFuel; 
         setMPH(); 
 
-        if (Carts == null) {
-            this.Carts = new Dictionary<CartType, Inventory>(); 
-            foreach (CartType type in Cart.AllTypes) {
-                Inventory curInv = new Inventory(GetCartID(type, Id), 
-                    Constants.CartRows, Constants.CartCols, 0, type);
-                this.Carts[type] = curInv; 
-            }
-        } else {
-            this.Carts = Carts; 
-        }
+        this.Carts = Carts; 
 
         origin.AddTrain(this);
 

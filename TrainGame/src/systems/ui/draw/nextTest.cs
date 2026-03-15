@@ -44,7 +44,7 @@ public static class NextDrawTestUISystem {
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
             w.SetComponent<Outline>(label, new Outline(Color.White, 10)); 
-            w.SetComponent<Message>(label, new Message("New Game"));
+            w.SetComponent<TextBox>(label, new TextBox("New Game"));
             w.SetComponent<Button>(label, new Button());
 
             w.SetComponent<NextDrawTestButton>(label, new NextDrawTestButton(21)); 
@@ -69,7 +69,7 @@ public static class NextDrawTestUISystem {
 
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
-            w.SetComponent<Message>(label, new Message("The lower button should be drawn ontop of the higher one"));
+            w.SetComponent<TextBox>(label, new TextBox("The lower button should be drawn ontop of the higher one"));
         }, 
         [3] = (w) => {
             AddNextTestButton(w, 3); 
@@ -84,7 +84,7 @@ public static class NextDrawTestUISystem {
 
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
-            w.SetComponent<Message>(label, new Message("The left button should be twice as wide as the right"));
+            w.SetComponent<TextBox>(label, new TextBox("The left button should be twice as wide as the right"));
         }, 
         [4] = (w) => {
             AddNextTestButton(w, 4);
@@ -105,7 +105,7 @@ public static class NextDrawTestUISystem {
 
             int label = EntityFactory.Add(w); 
             w.SetComponent<Frame>(label, new Frame(300, 300, 100, 50)); 
-            w.SetComponent<Message>(label, new Message("The left button should be angled 30, right 90"));
+            w.SetComponent<TextBox>(label, new TextBox("The left button should be angled 30, right 90"));
         }, 
         [5] = (w) => {
             AddNextTestButton(w, 5); 
@@ -366,49 +366,7 @@ public static class NextDrawTestUISystem {
             AddNextTestButton(w, 16); 
         }, 
         [17] = (w) => {
-            //TODO: fix, probably we need a chest view 
-            Inventory playerInv = new Inventory("Player", 2, 3); 
-            Inventory chestInv = new Inventory("Chest", 4, 4); 
-
-            int playerInvEntity = EntityFactory.Add(w);  
-            int chestInvEntity = EntityFactory.Add(w);  
-
-            w.SetComponent<Inventory>(playerInvEntity, playerInv); 
-            w.SetComponent<Inventory>(chestInvEntity, chestInv); 
-
-            Inventory.Item apple = new Inventory.Item(ItemId: "Apple, press e to exit inv view", Count: 2); 
-            Inventory.Item banana = new Inventory.Item(ItemId: "Banana", Count: 3); 
-
-            playerInv.Add(apple); 
-            chestInv.Add(banana); 
-
-            int chestEntity = EntityFactory.Add(w); 
-
-            Chest chest = new Chest(chestInv, playerInv); 
-
-            int chestWidth = 200; 
-            int chestHeight = 200; 
-            
-            w.SetComponent<Frame>(chestEntity, new Frame(0, 0, chestWidth, chestHeight)); 
-            TextBox chestTB = new TextBox("Clicking e while player is next to me should open inventories and pause wasd movement"); 
-            chestTB.Depth = 1f; 
-
-            w.SetComponent<TextBox>(chestEntity, chestTB); 
-            w.SetComponent<Collidable>(chestEntity, Collidable.Get()); 
-            w.SetComponent<Outline>(chestEntity, new Outline(Depth: 1f)); 
-            w.SetComponent<Chest>(chestEntity, chest); 
-            w.SetComponent<Interactable>(chestEntity, new Interactable()); 
-
-            int player = EntityFactory.Add(w);  
-            w.SetComponent<Frame>(player, new Frame(chestWidth + 10, chestHeight + 5, chestWidth, chestHeight));
-
-            TextBox playerTB = new TextBox("Player. Use WASD to move"); 
-            playerTB.Depth = 1f; 
-            w.SetComponent<TextBox>(player, playerTB); 
-            w.SetComponent<Outline>(player, new Outline(Depth: 1f)); 
-            w.SetComponent<CardinalMovement>(player, new CardinalMovement(4f)); 
-            w.SetComponent<Collidable>(player, Collidable.Get());
-            w.SetComponent<Interactor>(player, Interactor.Get());  
+            //TODO: Old, remove
             AddNextTestButton(w, 17); 
         }, 
         [18] = (w) => {

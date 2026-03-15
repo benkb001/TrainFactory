@@ -41,6 +41,9 @@ namespace TrainGame.Constants
         public const int PlayerOutlineThickness = 1; 
         public const int PlayerHP = 100;
 
+        public const int MaxFloorLevel1 = 20; 
+        public const int MaxFloorLevel2 = 40;
+
         public const int ButtonOutlineThickness = 1; 
         public const int ButtonHeldOutlineThickness = 2; 
         public const int ButtonHoveredOutlineThickness = 3; 
@@ -1221,9 +1224,7 @@ namespace TrainGame.Constants
 
             (int _, City factory) = cities[CityID.Factory];
             
-            Train t = new Train(trainInv, factory, "T0", 
-                power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
-            TrainWrap.Add(w, t);
+            TrainWrap.AssembleToWorld(w, factory);
 
             //add some fuel to factory
             factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 

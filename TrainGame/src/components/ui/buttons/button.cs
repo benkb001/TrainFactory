@@ -7,13 +7,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-public enum Click {
-    Left,
-    Right,
-    Shift,
-    None
-}
-
 public class Button {
     public bool Clicked => ClickType == Click.Left; 
     public bool ShiftClicked => ClickType == Click.Shift; 
@@ -23,24 +16,16 @@ public class Button {
     public float Depth = 0f; 
     public int TicksHeld = 0; 
     public int RightTicksHeld = 0;
-    private Action onClick;
 
-    public Button(bool Clicked = false, float Depth = 0f, Action onClick = null) {
+    public Button(bool Clicked = false, float Depth = 0f) {
         if (Clicked) {
             this.ClickType = Click.Left; 
         }
 
         this.Depth = Depth; 
-        this.onClick = onClick; 
     }
 
     public Button(Click type) {
         this.ClickType = type; 
-    }
-
-    public void OnClick() {
-        if (onClick != null) {
-            onClick(); 
-        }
     }
 }

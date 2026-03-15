@@ -31,11 +31,9 @@ public static class RegisterComponents {
         r<Bullet>(); 
         r<BulletWarning>(); 
         r<Button>(); 
-        r<CameraReturn>();
         r<CardinalMovement>(); 
         r<Cart>(); 
         r<CartAssembler>();
-        r<Chest>(); 
         r<City>(); 
         r<CityUI>(); 
         r<ClearLLMessage>(); 
@@ -50,11 +48,8 @@ public static class RegisterComponents {
         r<UpgradeDepotButton>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
-        r<DrawButtonMessage<AddCartInterfaceButton>>(); 
-        r<DrawButtonMessage<UpgradeTrainButton>>(); 
         r<DrawBackgroundMessage>(); 
         r<DrawCallback>(); 
-        r<DrawCityDetailsMessage>(); 
         r<DrawCityInterfaceMessage>();
         r<DrawCityMessage>(); 
         r<DrawEmbarkMessage>();  
@@ -111,7 +106,6 @@ public static class RegisterComponents {
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
         r<Menu>(); 
-        r<Message>(); 
         r<Movement>(); 
         r<MovementBounds>();
         r<Label>(); 
@@ -128,7 +122,6 @@ public static class RegisterComponents {
         r<ParryCooldownBar>();
         r<PauseButton>(); 
         r<PauseTrainProgramButton>();
-        r<PlayerAccessTrainButton>(); 
         r<Player>(); 
         r<PlayerHUD>(); 
         r<ProgressBar>(); 

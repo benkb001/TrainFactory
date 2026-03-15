@@ -27,7 +27,7 @@ public static class PlayerStats {
 
 public static class PlayerDeathSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Player), typeof(Health), typeof(Armor), typeof(RespawnLocation), 
+        w.AddSystem([typeof(Player), typeof(Health), typeof(RespawnLocation), 
         typeof(Inventory), typeof(Active)], (w, e) => {
             Health h = w.GetComponent<Health>(e);
             if (h.HP <= 0) {

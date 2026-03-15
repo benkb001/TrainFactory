@@ -16,10 +16,10 @@ public class CartAssembler : IAssembler<Cart> {
     }
 
     public Cart Assemble() {
-        string id = ID.GetNext($"{type}Cart");
-        Cart cart = new Cart(type);
-        city.AddCart(cart); 
-        return cart; 
+        string id = ID.GetNext($"{type} Cart ");
+        city.AddCart(type);
+        //ICKY
+        return null; 
     }       
 
     public Machine GetMachine() {
@@ -30,11 +30,4 @@ public class CartAssembler : IAssembler<Cart> {
         return city; 
     }
 
-}
-
-public enum CartType {
-    Armor,
-    Liquid,
-    Freight,
-    General
 }
