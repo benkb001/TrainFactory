@@ -11,25 +11,24 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
-public class InventoryControlSystem() {
+public static class InventoryControlSystem {
     public static void RegisterOrganize(World world) {
         Type[] ts = [typeof(InventoryOrganizeMessage), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             InventoryOrganizeMessage msg = w.GetComponent<InventoryOrganizeMessage>(e); 
 
-            int targetRow = msg.TargetRow;
-            int targetCol = msg.TargetColumn; 
-            int curRow = msg.CurRow; 
-            int curCol = msg.CurColumn; 
             Inventory.Item curItem = msg.CurItem; 
             Inventory.Item targetItem = msg.TargetItem; 
-            Inventory curInv = curItem.Inv; 
-            Inventory targetInv = targetItem.Inv; 
+            Inventory curInv = msg.CurInv;
+            Inventory targetInv = msg.TargetInv;
             Draggable d = msg.CurDraggable; 
             Vector2 targetVector = msg.TargetVector; 
 
-            targetInv.Take(targetRow, targetCol);
+            (int curRow, int curCol) = curInv.GetIndices(curItem);
+            (int targetRow, int targetCol) = targetInv.GetIndices(targetItem);
+
             curInv.Take(curRow, curCol);
+            targetInv.Take(targetRow, targetCol);
 
             if (targetItem.ItemId == curItem.ItemId) {
                 curItem.Count += targetItem.Count;
@@ -83,6 +82,7 @@ public class InventoryControlSystem() {
                     
                     tb.Text = i.ToString(); 
                     w.SetComponent<Inventory.Item>(c, i);
+                    w.SetComponent<CurrentInventory>(c, new CurrentInventory(inv));
                 }
             }
         };

@@ -5,7 +5,6 @@ using System;
 public class Menu {
     private static Menu inst; 
     public static Menu Get() {
-        Console.WriteLine($"Returned singleton menu");
         if (inst is null) {
             inst = new Menu(); 
         }
@@ -24,6 +23,5 @@ public class Menu {
         this.train = train; 
         this.city = city;
         this.machine = machine; 
-        Console.WriteLine($"Made new menu, city null: {city == null}");
     } 
 }

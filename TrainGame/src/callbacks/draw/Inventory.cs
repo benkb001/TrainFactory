@@ -109,6 +109,7 @@ public static class DrawInventoryCallback {
                 w.SetComponent<Background>(cell, new Background(Colors.UIBG, Constants.InventoryCellBackgroundDepth)); 
                 Inventory.Item item = inv.Get(i, j); 
                 w.SetComponent<Inventory.Item>(cell, item); 
+                w.SetComponent<CurrentInventory>(cell, new CurrentInventory(inv));
                 TextBox tb = new TextBox(item.ToString()); 
                 tb.Depth = Constants.InventoryCellTextBoxDepth; 
                 w.SetComponent<TextBox>(cell, tb);

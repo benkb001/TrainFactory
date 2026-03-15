@@ -16,11 +16,11 @@ using TrainGame.Constants;
 
 public class InventoryFastTransferSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Inventory.Item), typeof(Active), typeof(Button)], (w, e) => {
+        w.AddSystem([typeof(Inventory.Item), typeof(CurrentInventory), typeof(Active), typeof(Button)], (w, e) => {
             if (w.GetComponent<Button>(e).ShiftClicked) {
                 Inventory.Item item = w.GetComponent<Inventory.Item>(e); 
                 string itemID = item.Id; 
-                Inventory invClicked = item.Inv; 
+                Inventory invClicked = w.GetComponent<CurrentInventory>(e).Inv;
 
                 List<int> invEntities = w.GetMatchingEntities([typeof(Inventory), typeof(Active)]); 
                 

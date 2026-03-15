@@ -14,26 +14,24 @@ public class InventoryOrganizeMessage {
     public int CurColumn; 
     public Inventory.Item TargetItem; 
     public Inventory.Item CurItem; 
+    public Inventory CurInv; 
+    public Inventory TargetInv;
     public Draggable CurDraggable; 
     public Vector2 TargetVector; 
 
     public InventoryOrganizeMessage(
-        int TargetRow,
-        int TargetColumn,
-        int CurRow,
-        int CurColumn,
-        Inventory.Item TargetItem, 
+        Inventory CurInv, 
+        Inventory TargetInv,
         Inventory.Item CurItem, 
+        Inventory.Item TargetItem, 
         Draggable CurDraggable, 
         Vector2 TargetVector
     ) {
-        this.TargetRow = TargetRow; 
-        this.TargetColumn = TargetColumn; 
-        this.CurRow = CurRow; 
-        this.CurColumn = CurColumn; 
         this.TargetItem = TargetItem; 
         this.CurItem = CurItem; 
         this.CurDraggable = CurDraggable; 
         this.TargetVector = TargetVector; 
+        this.CurInv = CurInv;
+        this.TargetInv = TargetInv;
     }
 }

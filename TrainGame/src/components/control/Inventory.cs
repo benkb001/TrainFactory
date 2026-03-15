@@ -44,7 +44,7 @@ public class Inventory : IID {
 
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                items.Add(new Item(Row: i, Column: j, Inv: this)); 
+                items.Add(new Item()); 
             }
         }
 
@@ -83,12 +83,9 @@ public class Inventory : IID {
         i.Count = num_adding; 
 
         (int row, int col) = GetRowColIndex(index); 
-        i.Row = row; 
-        i.Column = col; 
 
         items[index].ItemId = i.ItemId; 
         items[index].Count += i.Count; 
-        i.Inv = this;
         
         editItemCountMap(i.ItemId, num_adding); 
 
@@ -123,9 +120,6 @@ public class Inventory : IID {
         int idx = getIndex(row, col); 
         if (items[idx].ItemId == i.ItemId || items[idx].IsEmpty()) {
             (int num_adding, int _) = getNumToAdd(i, idx); 
-            i.Row = row; 
-            i.Column = col; 
-            i.Inv = this; 
             items[idx].ItemId = i.ItemId; 
             items[idx].Count += num_adding; 
             editItemCountMap(i.ItemId, num_adding); 
@@ -167,6 +161,17 @@ public class Inventory : IID {
         return new Item(ItemId: itemId, Count: found); 
     }
 
+    //ICKY
+    public (int, int) GetIndices(Item item) {
+        for (int i = 0; i < items.Count; i++) {
+            if (items[i] == item) {
+                return GetRowColIndex(i);
+            }
+        }
+
+        return (-1, -1);
+    }
+
     public Item TakeAll(string itemID) {
         return Take(itemID, ItemCount(itemID)); 
     }
@@ -194,9 +199,7 @@ public class Inventory : IID {
         ensureValidIndices(row, col); 
         int idx = getIndex(row, col);
         Item i = items[idx]; 
-        i.Row = -1; 
-        i.Column = -1; 
-        items[idx] = new Item(Row: row, Column: col, Inv: this); 
+        items[idx] = new Item(); 
         editItemCountMap(i.ItemId, -1 * i.Count);
         return i; 
     }
@@ -216,7 +219,7 @@ public class Inventory : IID {
         }
 
         editItemCountMap(id, -1 * taken); 
-        return new Item(Row: -1, Column: -1, Inv: this, ItemId: id, Count: taken);
+        return new Item(ItemId: id, Count: taken);
     }
 
     //todo: test
@@ -396,16 +399,10 @@ public class Inventory : IID {
         public string ID => ItemId; 
         public string ItemId; 
         public int Count; 
-        public int Row; 
-        public int Column; 
-        public Inventory Inv; 
 
-        public Item(Inventory Inv = null, string ItemId = "", int Count = 0, int Row = 0, int Column = 0) {
+        public Item(string ItemId = "", int Count = 0) {
             this.ItemId = ItemId; 
             this.Count = Count; 
-            this.Row = Row; 
-            this.Column = Column; 
-            this.Inv = Inv; 
         }
 
         public override string ToString() {

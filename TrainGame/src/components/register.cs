@@ -42,6 +42,7 @@ public static class RegisterComponents {
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
         r<ConnectCitiesButton>();
+        r<CurrentInventory>();
         r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 
