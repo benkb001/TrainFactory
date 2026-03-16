@@ -6,14 +6,17 @@ public class WriteProgramInterfaceData : IInterfaceData {
     private string programName; 
     private string program; 
     private Train train; 
+    private int trainEntity;
     public Train GetTrain() => train; 
     public string ProgramName => programName; 
     public string Program => program; 
+    public int TrainEntity => trainEntity;
     
-    public WriteProgramInterfaceData(Train train, string program, string programName) {
+    public WriteProgramInterfaceData(Train train, int trainEntity, string program, string programName) {
         this.train = train; 
         this.program = program; 
         this.programName = programName; 
+        this.trainEntity = trainEntity;
     }
 
     public Menu GetMenu() {

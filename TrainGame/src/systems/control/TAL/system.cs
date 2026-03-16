@@ -16,11 +16,8 @@ using TrainGame.Callbacks;
 
 public class TALExecutionSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Train), typeof(Data)], (w, e) => { 
-            Train t = w.GetComponent<Train>(e); 
-            if (t.Executable != null) {
-                t.Executable.Execute(new TrainWorld(w)); 
-            }
+        w.AddSystem([typeof(TALBody<Train, City>), typeof(Data)], (w, e) => { 
+            w.GetComponent<TALBody<Train, City>>(e).Execute(new TrainWorld(w)); 
         });
     }
 }
@@ -91,7 +88,7 @@ public static class TAL {
     public static Dictionary<string, string> ScriptExplanations = initScriptExplanations(); 
     public static Dictionary<string, string> Scripts = initScripts(); 
 
-    public static void BuyTrainProgram(string program, Train t, World w, string programName = "") {
+    public static void BuyTrainProgram(string program, Train t, int trainEnt, World w, string programName = "") {
         bool hasMotherboard = false; 
         Inventory inv;
 
@@ -107,7 +104,7 @@ public static class TAL {
 
         if (hasMotherboard) {
             try {
-                TAL.SetTrainProgram(program, t, w, programName: programName); 
+                TAL.SetTrainProgram(program, t, trainEnt, w, programName: programName); 
                 EntityFactory.AddToast(w, 150, 75, $"Successfully set {t.Id} program!");
                 inv.Take(ItemID.Motherboard, 1); 
             } catch (InvalidOperationException e) {
@@ -118,11 +115,11 @@ public static class TAL {
         }
     }
 
-    public static TALBody<Train, City> SetTrainProgram(string program, Train t, World w, int nextInstruction = 0, string programName = "") {
+    public static TALBody<Train, City> SetTrainProgram(string program, Train t, int trainEnt, World w, int nextInstruction = 0, string programName = "") {
+        ITrainWorld<Train, City> tw = new TrainWorld(w);
         TALBody<Train, City> body = TALParser.ParseProgram<Train, City>(
-            program, new TrainWorld(w), t, nextInstruction); 
-        t.SetProgram(program, programName); 
-        t.SetExecutable(body); 
+            program, tw, t, nextInstruction); 
+        w.SetComponent<TALBody<Train, City>>(trainEnt, body);
         return body;
     }
 

@@ -39,6 +39,22 @@ public static class ID {
         usedIDs.Add(s); 
         return !contains; 
     }
+}
+
+public static class ComponentID {
+    public static int GetEntity<T>(string id, World w) where T : IID {
+        List<int> es = w.GetMatchingEntities([typeof(T), typeof(Data)])
+        .Where(e => w.GetComponent<T>(e).GetID() == id)
+        .ToList();
+
+        if (es.Count == 0) {
+            throw new InvalidOperationException($"{id} does not match an existing {typeof(T)}");
+        } else if (es.Count > 1) {
+            throw new InvalidOperationException($"{id} matches more than one existing {typeof(T)}");
+        }
+
+        return es[0];
+    }
 
     public static T GetComponent<T>(string id, World w) where T : IID {
         T component = w.GetMatchingEntities([typeof(T), typeof(Data)]).Select(e => w.GetComponent<T>(e)).Where(

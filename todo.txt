@@ -28,22 +28,21 @@
 
 **** CLEAN UP **** 
 
-* Make code for constants => json, and load 
-  this instead of using bootstrap.initWorld
 * Make carts items
-* Clean enemySpawn and movementSystem files to split classes into individual files
 * GetByID should throw exceptions when not found, such as city.GetByID
-* Fix test directory to match some file placement changes
 * Need to add some way to prevent/deal with player forgetting to put a particular item 
   in train cuz its quite frustrating ? 
 * Test why slow on diagonal map
 * Filters should be in inventory wrap
 * Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
-* Replace playerWrap call in enemyShoot system with querying for a targetable 
-  component
-* Try to find places where playerWrap can be replaced
 * Deep clean
-* Remove callbacks
+  * Remove callbacks
+  * Fix test directory to match file changes and to compile
+  * Add test files for all classes (that have methods), 
+    and mark where things require classes that shouldn't with ICKY
+  * Remove circular dependencies
+  * Look through dependency graph and figure out which 
+    dependencies should be removed
 
 **** THIS SPRINT **** 
 

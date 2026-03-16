@@ -1228,19 +1228,19 @@ namespace TrainGame.Constants
         }
     }
 
-    public class PurchaseInfo<T> where T : IBuyable {
-        public readonly T Buyable;
+    public class PurchaseInfo {
+        public readonly IBuyable Buyable;
 
-        private PurchaseInfo(T Buyable) {
+        private PurchaseInfo(IBuyable Buyable) {
             this.Buyable = Buyable;
         }
 
-        public static PurchaseInfo<IBuyable> AddItemInfo(string ItemID, int Count, Dictionary<string, int> Cost) {
-            return new PurchaseInfo<IBuyable>(new PurchaseItem(ItemID, Count, Cost)); 
+        public static PurchaseInfo AddItemInfo(string ItemID, int Count, Dictionary<string, int> Cost) {
+            return new PurchaseInfo(new PurchaseItem(ItemID, Count, Cost)); 
         }
 
-        public static PurchaseInfo<IBuyable> AddResetHP() {
-            return new PurchaseInfo<IBuyable>(new ResetHP());
+        public static PurchaseInfo AddResetHP() {
+            return new PurchaseInfo(new ResetHP());
         }
     }
 
@@ -1253,20 +1253,20 @@ namespace TrainGame.Constants
             ArmorCraftsman, WeaponCraftsman, HPPVendor
         };
 
-        public static Dictionary<string, List<PurchaseInfo<IBuyable>>> ProductMap = new() {
+        public static Dictionary<string, List<PurchaseInfo>> ProductMap = new() {
             [ArmorCraftsman] = new () {
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor1, 1, new() {
+                PurchaseInfo.AddItemInfo(ItemID.Armor1, 1, new() {
                     [ItemID.Credit] = 50, 
                     [ItemID.Iron] = 50,
                     [ItemID.Cobalt] = 50
                 }),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor2, 1, new () {
+                PurchaseInfo.AddItemInfo(ItemID.Armor2, 1, new () {
                     [ItemID.Credit] = 1000, 
                     [ItemID.Iron] = 200, 
                     [ItemID.Cobalt] = 200,
                     [ItemID.Glass] = 100,
                 }),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Armor3, 1, new () {
+                PurchaseInfo.AddItemInfo(ItemID.Armor3, 1, new () {
                     [ItemID.Credit] = 3000,
                     [ItemID.Iron] = 2000, 
                     [ItemID.Oil] = 1000,
@@ -1274,14 +1274,14 @@ namespace TrainGame.Constants
                 }),
             },
             [WeaponCraftsman] = new () {
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun2, 1, new () {
+                PurchaseInfo.AddItemInfo(ItemID.Gun2, 1, new () {
                     [ItemID.Credit] = 1000, 
                     [ItemID.Water] = 1000,
                     [ItemID.Iron] = 500, 
                     [ItemID.Cobalt] = 500,
                     [ItemID.Fuel] = 500
                 }),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Gun3, 1, new () {
+                PurchaseInfo.AddItemInfo(ItemID.Gun3, 1, new () {
                     [ItemID.Credit] = 2000, 
                     [ItemID.Iron] = 2000,
                     [ItemID.Mythril] = 500,
@@ -1290,14 +1290,14 @@ namespace TrainGame.Constants
                 }),
             },
             [HPPVendor] = new() {
-                PurchaseInfo<IBuyable>.AddResetHP(),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Iron, 100, new() {
+                PurchaseInfo.AddResetHP(),
+                PurchaseInfo.AddItemInfo(ItemID.Iron, 100, new() {
                     [ItemID.Credit] = 100
                 }),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Sand, 100, new() {
+                PurchaseInfo.AddItemInfo(ItemID.Sand, 100, new() {
                     [ItemID.Credit] = 100
                 }),
-                PurchaseInfo<IBuyable>.AddItemInfo(ItemID.Water, 100, new() {
+                PurchaseInfo.AddItemInfo(ItemID.Water, 100, new() {
                     [ItemID.Credit] = 100
                 })
             }

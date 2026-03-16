@@ -144,6 +144,7 @@ public static class RegisterComponents {
         r<Stepper>(); 
         r<StepperButton>(); 
         r<StepperMessage>(); 
+        r<TALBody<Train, City>>();
         r<Targetable>();
         r<TempArmor>(); 
         r<TextBox>(); 
@@ -160,7 +161,6 @@ public static class RegisterComponents {
         r<UpgradeMachineButton>(); 
         r<UpgradeMachineProductCountButton>();
         r<UpgradeMachineSpeedButton>();
-        r<UpgradeTrainButton>(); 
         r<UpgradeTrainPowerButton>();
         r<Velocity>(); 
     }

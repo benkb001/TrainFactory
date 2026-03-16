@@ -13,11 +13,11 @@ public class TrainWorld : ITrainWorld<Train, City> {
     }
 
     public Train GetTrain(string id) {
-        return ID.GetComponent<Train>(id, w);
+        return ComponentID.GetComponent<Train>(id, w);
     }
 
     public City GetCity(string id) {
-        return ID.GetComponent<City>(id, w);
+        return ComponentID.GetComponent<City>(id, w);
     }
 
     public TrainState Embark(Train train, City city) {

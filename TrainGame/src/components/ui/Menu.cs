@@ -18,10 +18,12 @@ public class Menu {
     public Train GetTrain() => train; 
     public City GetCity() => city; 
     public Machine GetMachine() => machine;
+    public readonly int TrainEntity; 
 
-    public Menu(Train train = null, City city = null, Machine machine = null) {
+    public Menu(Train train = null, City city = null, Machine machine = null, int TrainEntity = -1) {
         this.train = train; 
         this.city = city;
         this.machine = machine; 
+        this.TrainEntity = TrainEntity;
     } 
 }

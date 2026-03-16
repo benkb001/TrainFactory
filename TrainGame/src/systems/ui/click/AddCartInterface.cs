@@ -20,7 +20,7 @@ public static class AddCartInterfaceClickSystem {
             int dm = EntityFactory.Add(w, setScene: false); 
             AddCartInterfaceButton btn = w.GetComponent<AddCartInterfaceButton>(e); 
             w.SetComponent<DrawAddCartInterfaceMessage>(dm, 
-                new DrawAddCartInterfaceMessage(btn.CartDest, btn.CartSource)); 
+                new DrawAddCartInterfaceMessage(btn.CartDest, btn.CartSource, btn.TrainEntity)); 
         }); 
     }
 }

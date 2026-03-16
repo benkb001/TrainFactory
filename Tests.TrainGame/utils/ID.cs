@@ -26,6 +26,6 @@ public class IDTest {
     [Fact]
     public void ID_GetComponentShouldThrowWhenUnassociatedIDIsPassed() {
         World w = WorldFactory.Build(); 
-        Assert.Throws<InvalidOperationException>(() => ID.GetComponent<Train>("Bad", w));
+        Assert.Throws<InvalidOperationException>(() => ComponentID.GetComponent<Train>("Bad", w));
     }
 }

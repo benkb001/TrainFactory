@@ -19,13 +19,15 @@ public class TravelingInterfaceData : IInterfaceData {
     private Train train; 
 
     public Train GetTrain() => train; 
+    public readonly int TrainEntity;
 
-    public TravelingInterfaceData(Train train) {
+    public TravelingInterfaceData(Train train, int TrainEntity) {
         this.train = train; 
+        this.TrainEntity = TrainEntity;
     }
 
     public Menu GetMenu() {
-        return new Menu(train: train); 
+        return new Menu(train: train, TrainEntity : TrainEntity); 
     }
 
     public SceneType GetSceneType() {
@@ -39,6 +41,7 @@ public class DrawTravelingInterfaceSystem {
         DrawInterfaceSystem.Register<TravelingInterfaceData>(w, (w, e, data) => {
             
             Train t = data.GetTrain(); 
+            int trainEnt = data.TrainEntity;
 
             Vector2 topleft = w.GetCameraTopLeft(); 
             Vector2 pos = topleft + new Vector2(10, 10); 
@@ -46,7 +49,6 @@ public class DrawTravelingInterfaceSystem {
             float height = w.ScreenHeight - 20f; 
 
             LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
-
             
             int summaryEnt = EntityFactory.Add(w); 
             LinearLayoutWrap.AddChild(w, summaryEnt, outer); 
@@ -72,8 +74,9 @@ public class DrawTravelingInterfaceSystem {
 
             LinearLayoutWrap.AddChild(w, container.GetParentEntity(), row);
 
-            if (t.Executable != null) {
-                int pauseProgramBtnEnt = PauseTrainProgramButtonWrap.Add(w, t, w.ScreenHeight / 4f, w.ScreenHeight / 5f);
+            (TALBody<Train, City> exe, bool has_exe) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
+            if (has_exe) {
+                int pauseProgramBtnEnt = PauseTrainProgramButtonWrap.Add(w, exe, w.ScreenHeight / 4f, w.ScreenHeight / 5f);
                 LinearLayoutWrap.AddChild(w, pauseProgramBtnEnt, row); 
             }
 
@@ -81,8 +84,8 @@ public class DrawTravelingInterfaceSystem {
         }); 
     }
 
-    public static void AddMessage(World w, Train train) {
+    public static void AddMessage(World w, Train train, int trainEnt) {
         MakeMessage.Add<DrawInterfaceMessage<TravelingInterfaceData>>(
-            w, new DrawInterfaceMessage<TravelingInterfaceData>(new TravelingInterfaceData(train)));
+            w, new DrawInterfaceMessage<TravelingInterfaceData>(new TravelingInterfaceData(train, trainEnt)));
     }
 }

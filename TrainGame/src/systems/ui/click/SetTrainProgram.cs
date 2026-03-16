@@ -22,7 +22,7 @@ public static class SetTrainProgramClickSystem {
             string program = btn.Program;
             string programName = btn.ProgramName; 
 
-            TAL.BuyTrainProgram(program, t, w, programName);
+            TAL.BuyTrainProgram(program, t, btn.TrainEntity, w, programName);
         });
     }
 }

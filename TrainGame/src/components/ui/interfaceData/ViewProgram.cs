@@ -7,16 +7,19 @@ public class ViewProgramInterfaceData : IInterfaceData {
     private string program; 
     private string programExplanation; 
     private Train train; 
+    private int trainEntity;
     public Train GetTrain() => train; 
     public string ProgramName => programName; 
     public string Program => program; 
     public string ProgramExplanation => programExplanation; 
+    public int TrainEntity => trainEntity;
     
-    public ViewProgramInterfaceData(string programName, string program, string programExplanation, Train train) {
+    public ViewProgramInterfaceData(string programName, string program, string programExplanation, Train train, int trainEntity) {
         this.train = train; 
         this.program = program; 
         this.programName = programName; 
         this.programExplanation = programExplanation; 
+        this.trainEntity = trainEntity;
     }
 
     public Menu GetMenu() {

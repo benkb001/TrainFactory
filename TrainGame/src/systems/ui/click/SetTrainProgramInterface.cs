@@ -10,8 +10,9 @@ public static class SetTrainProgramInterfaceClickSystem {
         ClickSystem.Register<SetTrainProgramInterfaceButton>(w, (w, e) => {
             SetTrainProgramInterfaceButton b = w.GetComponent<SetTrainProgramInterfaceButton>(e); 
             Train t = b.GetTrain(); 
+            int trainEnt = b.TrainEntity;
 
-            MakeMessage.Add<DrawSetTrainProgramInterfaceMessage>(w, new DrawSetTrainProgramInterfaceMessage(t)); 
+            MakeMessage.Add<DrawSetTrainProgramInterfaceMessage>(w, new DrawSetTrainProgramInterfaceMessage(t, trainEnt)); 
         }); 
     }
 }

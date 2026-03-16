@@ -29,7 +29,6 @@ public class Train : IInventorySource, IID, ITrain {
     private static HashSet<string> usedIDs = new(); 
     private string program; 
     private string programName = "None"; 
-    private ITALBody<Train, City> executable; 
     private Vector2 position; 
     private Vector2 journey;
     private Vector2 mapJourney;
@@ -44,6 +43,7 @@ public class Train : IInventorySource, IID, ITrain {
     public readonly Inventory Inv; 
     public Dictionary<CartType, Inventory> Carts;
     public readonly string Id; 
+    public string ID => Id;
     public bool HasPlayer = false; 
     public float MilesPerHour => milesPerHour; 
     public float Mass => mass; 
@@ -51,7 +51,6 @@ public class Train : IInventorySource, IID, ITrain {
     public string Program => program; 
     public string ProgramName => programName; 
     public float Power => power; 
-    public ITALBody<Train, City> Executable => executable; 
     public Vector2 Position => position; 
     public float MilesOfFuel => milesOfFuel;
 
@@ -267,10 +266,6 @@ public class Train : IInventorySource, IID, ITrain {
     public void SetProgram(string program, string programName = "") {
         this.program = program; 
         this.programName = programName; 
-    }
-
-    public void SetExecutable(ITALBody<Train, City> executable)  {
-        this.executable = executable;
     }
 
     public string GetSummary() {

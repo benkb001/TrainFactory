@@ -15,7 +15,7 @@ using TrainGame.Callbacks;
 
 public class DrawTrainInterfaceSystem {
 
-    private static void addButtons(LinearLayout container, int containerEnt, Train t, World w, float height) {
+    private static void addButtons(LinearLayout container, int containerEnt, Train t, int trainEnt, World w, float height) {
         //add column for buttons 
 
         LinearLayout buttonsContainer = new LinearLayout("Vertical", "alignlow"); 
@@ -44,7 +44,7 @@ public class DrawTrainInterfaceSystem {
         int upgradeTrainButtonEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight, 
             setButton: true, setOutline: true, text: "Upgrade Train"); 
         w.SetComponent<EnterInterfaceButton<UpgradeTrainInterfaceData>>(upgradeTrainButtonEnt, 
-            new EnterInterfaceButton<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t)));
+            new EnterInterfaceButton<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t, trainEnt)));
 
         LinearLayoutWrap.AddChild(upgradeTrainButtonEnt, buttonsContainerEnt, buttonsContainer, w);
 
@@ -55,7 +55,7 @@ public class DrawTrainInterfaceSystem {
         w.SetComponent<Outline>(programBtn, new Outline()); 
         w.SetComponent<TextBox>(programBtn, new TextBox("Program train")); 
         w.SetComponent<Button>(programBtn, new Button()); 
-        w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t));
+        w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t, trainEnt));
     }
 
     private static void addEmbark(LinearLayout container, int containerEnt, Train t, World w, float height) {
@@ -108,6 +108,7 @@ public class DrawTrainInterfaceSystem {
             SceneSystem.EnterScene(w, SceneType.TrainInterface); 
             DrawTrainInterfaceMessage dm = w.GetComponent<DrawTrainInterfaceMessage>(e); 
             Train t = dm.GetTrain(); 
+            int trainEnt = dm.TrainEntity;
 
             int menuEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 
@@ -124,7 +125,7 @@ public class DrawTrainInterfaceSystem {
             w.SetComponent<LinearLayout>(containerEnt, container); 
             w.SetComponent<Frame>(containerEnt, new Frame(containerPos, containerWidth, containerHeight)); 
 
-            addButtons(container, containerEnt, t, w, columnHeight); 
+            addButtons(container, containerEnt, t, trainEnt, w, columnHeight); 
             addInvs(container, containerEnt, t, w, columnHeight); 
             addEmbark(container, containerEnt, t, w, columnHeight); 
              

@@ -14,10 +14,13 @@ using TrainGame.Constants;
 using TrainGame.Callbacks; 
 
 public class DrawTrainInterfaceMessage {
-    private Train train; 
+    private Train train;
+    private int trainEntity;
+    public int TrainEntity => trainEntity; 
 
-    public DrawTrainInterfaceMessage(Train train) {
+    public DrawTrainInterfaceMessage(Train train, int trainEntity) {
         this.train = train; 
+        this.trainEntity = trainEntity;
     }
 
     public Train GetTrain() {

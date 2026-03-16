@@ -14,10 +14,12 @@ public class AddCartButton {
     public readonly Train CartDest; 
     public readonly City CartSource; 
     public readonly CartType TypeToAdd; 
+    public readonly int TrainEntity;
 
-    public AddCartButton(Train train, City source, CartType type) {
+    public AddCartButton(Train train, City source, CartType type, int trainEnt) {
         CartDest = train; 
         CartSource = source; 
         TypeToAdd = type; 
+        TrainEntity = trainEnt;
     }
 }

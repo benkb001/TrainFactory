@@ -70,7 +70,6 @@ public static class RegisterSystems {
         EmbarkClickSystem.Register(w); 
         AddCartClickSystem.Register(w); 
         AddCartInterfaceClickSystem.Register(w); 
-        UpgradeTrainClickSystem.Register(w); 
         InventoryIndexSystem.Register<Train>(w); 
         SetPlayerProgramClickSystem.Register(w); 
         SetTrainProgramClickSystem.Register(w);
@@ -95,8 +94,8 @@ public static class RegisterSystems {
         PurchaseClickSystem.RegisterResetHP(w);
         UpgradeDepotClickSystem.Register(w); 
         ConnectCitiesClickSystem.Register(w);
-        UpgradeTrainPowerClickSystem.Register(w);
-        UpgradeFuelConsumptionClickSystem.Register(w);
+        UpgradeTrainClickSystem.Register<UpgradeTrainPowerButton>(w);
+        UpgradeTrainClickSystem.Register<UpgradeFuelConsumptionButton>(w);
         UpgradeInventoryExponentialClickSystem.Register(w);
         UpgradeMachineSpeedClickSystem.Register(w);
         UpgradeMachineProductCountClickSystem.Register(w);

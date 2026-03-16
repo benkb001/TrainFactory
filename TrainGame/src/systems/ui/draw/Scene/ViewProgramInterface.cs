@@ -28,7 +28,7 @@ public static class DrawViewProgramInterfaceSystem {
             int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 160, 80, setButton: true, setOutline: true, 
                 text: $"Set to {data.ProgramName}? Requires 1 Motherboard"); 
             w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(data.ProgramName, data.GetTrain(), 
-                data.Program));
+                data.TrainEntity, data.Program));
             LinearLayoutWrap.AddChild(w, btnEnt, outer); 
         
         });

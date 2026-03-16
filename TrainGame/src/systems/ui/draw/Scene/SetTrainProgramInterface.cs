@@ -17,8 +17,10 @@ public static class DrawSetTrainProgramInterfaceSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(DrawSetTrainProgramInterfaceMessage)], (w, e) => {
             SceneSystem.EnterScene(w, SceneType.ProgramInterface); 
-            
-            Train t = w.GetComponent<DrawSetTrainProgramInterfaceMessage>(e).GetTrain(); 
+
+            DrawSetTrainProgramInterfaceMessage dm = w.GetComponent<DrawSetTrainProgramInterfaceMessage>(e);
+            Train t = dm.GetTrain(); 
+            int trainEnt = dm.TrainEntity;
 
             int menuEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 
@@ -39,7 +41,7 @@ public static class DrawSetTrainProgramInterfaceSystem {
                     setButton: true, setOutline: true, text: programName);
                 string program = kvp.Value; 
                 string programExplanation = TAL.ScriptExplanations[programName]; 
-                ViewProgramInterfaceData data = new ViewProgramInterfaceData(programName, program, programExplanation, t); 
+                ViewProgramInterfaceData data = new ViewProgramInterfaceData(programName, program, programExplanation, t, trainEnt); 
                 EnterInterfaceButton<ViewProgramInterfaceData> btn = new EnterInterfaceButton<ViewProgramInterfaceData>(data);
                 w.SetComponent<EnterInterfaceButton<ViewProgramInterfaceData>>(btnEnt, btn); 
                 LinearLayoutWrap.AddChild(w, btnEnt, prewrittenRow);
@@ -56,7 +58,7 @@ public static class DrawSetTrainProgramInterfaceSystem {
                 string program = kvp.Value; 
                 int btnEnt = EntityFactory.Add(w); 
                 w.SetComponent<Button>(btnEnt, new Button()); 
-                WriteProgramInterfaceData d = new WriteProgramInterfaceData(t, program, programName); 
+                WriteProgramInterfaceData d = new WriteProgramInterfaceData(t, trainEnt, program, programName); 
                 w.SetComponent<EnterInterfaceButton<WriteProgramInterfaceData>>(btnEnt, 
                     new EnterInterfaceButton<WriteProgramInterfaceData>(d));
                 w.SetComponent<Outline>(btnEnt, new Outline()); 

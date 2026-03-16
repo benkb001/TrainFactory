@@ -11,10 +11,9 @@ using TrainGame.ECS;
 using TrainGame.Systems;
 
 public class PauseTrainProgramButton {
-    private Train train; 
-    public Train GetTrain() => train; 
-
-    public PauseTrainProgramButton(Train train) {
-        this.train = train; 
+    public readonly TALBody<Train, City> Executable;
+    
+    public PauseTrainProgramButton(TALBody<Train, City> Executable) {
+        this.Executable = Executable;
     }
 }

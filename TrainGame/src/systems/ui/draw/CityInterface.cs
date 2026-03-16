@@ -54,7 +54,9 @@ public static class DrawCityInterfaceSystem {
             foreach (Train train in city.Trains.Values) {
                 int tEnt = EntityFactory.Add(w); 
                 LinearLayoutWrap.AddChild(w, tEnt, trainsView);
-                w.SetComponent<TrainUI>(tEnt, new TrainUI(train)); 
+                //ICKY, can we pass entity nums into drawCityInterfaceMessage?
+                int trainDataEnt = ComponentID.GetEntity<Train>(train.ID, w);
+                w.SetComponent<TrainUI>(tEnt, new TrainUI(train, trainDataEnt)); 
                 w.SetComponent<TextBox>(tEnt, new TextBox(train.Id)); 
                 w.SetComponent<Button>(tEnt, new Button());
                 w.SetComponent<Frame>(tEnt, new Frame(w.GetCameraTopLeft(), 100, 100));  

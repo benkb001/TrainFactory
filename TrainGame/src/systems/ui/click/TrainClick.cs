@@ -17,14 +17,15 @@ using TrainGame.Callbacks;
 // trainClick -> drawTrainDetail 
 public static class TrainClickSystem {
     public static void Register(World world) {
-        ClickSystem.Register<TrainUI>(world, (w, e) => {
+        ClickSystem.Register<TrainUI>(world, (w, e, btn) => {
 
-            Train t = w.GetComponent<TrainUI>(e).GetTrain(); 
+            Train t = btn.GetTrain(); 
             if (!t.IsTraveling()) {
                 int dm = EntityFactory.Add(w, setScene: false); 
-                w.SetComponent<DrawTrainInterfaceMessage>(dm, new DrawTrainInterfaceMessage(t)); 
+                w.SetComponent<DrawTrainInterfaceMessage>(dm, new DrawTrainInterfaceMessage(t, btn.TrainEntity)); 
             } else {
-                DrawTravelingInterfaceSystem.AddMessage(w, t); 
+                (TALBody<Train, City> exe, bool _) = w.GetComponentSafe<TALBody<Train, City>>(btn.TrainEntity);
+                DrawTravelingInterfaceSystem.AddMessage(w, t, btn.TrainEntity); 
             }
         });
     }

@@ -13,12 +13,14 @@ using TrainGame.ECS;
 public class AddCartInterfaceButton : IClickable {
     public readonly Train CartDest; 
     public readonly City CartSource; 
+    public readonly int TrainEntity;
     private string text; 
 
-    public AddCartInterfaceButton(Train CartDest, City CartSource) {
+    public AddCartInterfaceButton(Train CartDest, int trainEnt, City CartSource) {
         this.CartDest = CartDest; 
         this.CartSource = CartSource; 
         text = $"Add a cart to {CartDest.Id}"; 
+        TrainEntity = trainEnt;
     }
 
     public string GetText() {

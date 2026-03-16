@@ -21,7 +21,7 @@ public static class AddCartClickSystem {
             CartType type = btn.TypeToAdd; 
             btn.CartDest.AddCart(type); 
             btn.CartSource.RemoveCart(type); 
-            MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(btn.CartDest)); 
+            MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(btn.CartDest, btn.TrainEntity)); 
         }); 
     }
 }

@@ -16,28 +16,34 @@ using TrainGame.Callbacks;
 
 public class UpgradeTrainInterfaceData : IInterfaceData {
     private Train train; 
+    public readonly int TrainEntity; 
 
     public Train GetTrain() => train;
 
-    public UpgradeTrainInterfaceData(Train train) {
+    public UpgradeTrainInterfaceData(Train train, int trainEnt) {
         this.train = train;
+        TrainEntity = trainEnt;
     }
 
     public Menu GetMenu() {
-        return new Menu(train);
+        return new Menu(train, TrainEntity: TrainEntity);
     }
 
     public SceneType GetSceneType() => SceneType.UpgradeTrainInterface;
 }
 
-public class UpgradeTrainPowerButton {
+public class UpgradeTrainPowerButton : IUpgradeTrainButton {
     private Train train; 
     private bool exponential;
+    private int trainEntity;
+    
+    public int GetTrainEntity() => trainEntity;
     public Train GetTrain() => train;
 
-    public UpgradeTrainPowerButton(Train t, bool exponential = false) {
+    public UpgradeTrainPowerButton(Train t, int trainEnt, bool exponential = false) {
         this.train = t; 
         this.exponential = exponential; 
+        this.trainEntity = trainEnt;
     }
 
     public bool TryUpgrade() {
@@ -52,16 +58,19 @@ public class UpgradeTrainPowerButton {
     }
 }
 
-public class UpgradeFuelConsumptionButton {
+public class UpgradeFuelConsumptionButton : IUpgradeTrainButton {
     private Train train; 
     private bool exponential;
+    private int trainEntity;
 
     public bool Exponential => exponential;
     public Train GetTrain() => train;
+    public int GetTrainEntity() => trainEntity;
 
-    public UpgradeFuelConsumptionButton(Train t, bool exponential = false) {
+    public UpgradeFuelConsumptionButton(Train t, int trainEntity, bool exponential = false) {
         this.train = t; 
         this.exponential = exponential;
+        this.trainEntity = trainEntity;
     }
 
     public bool TryUpgrade() {
@@ -76,21 +85,17 @@ public class UpgradeFuelConsumptionButton {
     }
 }
 
-public static class UpgradeTrainPowerClickSystem {
-    public static void Register(World w) {
-        ClickSystem.Register<UpgradeTrainPowerButton>(w, (w, e, b) => {
-            if (b.TryUpgrade()) {
-                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain());
-            }
-        });
-    }
+public interface IUpgradeTrainButton {
+    bool TryUpgrade();
+    Train GetTrain();
+    int GetTrainEntity();
 }
 
-public static class UpgradeFuelConsumptionClickSystem {
-    public static void Register(World w) {
-        ClickSystem.Register<UpgradeFuelConsumptionButton>(w, (w, e, b) => {
+public static class UpgradeTrainClickSystem {
+    public static void Register<T>(World w) where T : IUpgradeTrainButton {
+        ClickSystem.Register<T>(w, (w, e, b) => {
             if (b.TryUpgrade()) {
-                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain());
+                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain(), b.GetTrainEntity());
             }
         });
     }
@@ -100,6 +105,7 @@ public static class DrawUpgradeTrainInterfaceSystem {
     public static void Register(World w) {
         DrawInterfaceSystem.Register<UpgradeTrainInterfaceData>(w, (w, e, d) => {
             Train t = d.GetTrain();
+            int trainEnt = d.TrainEntity;
             LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
             
             string summary = t.GetSummary();
@@ -124,15 +130,15 @@ public static class DrawUpgradeTrainInterfaceSystem {
                     setOutline: true, text: text);
             }
             int addCartBtnEnt = addButton("Add Cart?");
-            w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, t.ComingFrom));
+            w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, trainEnt, t.ComingFrom));
             LinearLayoutWrap.AddChild(w, addCartBtnEnt, row1);
 
             int upgradeFuelEnt = addButton("Upgrade Fuel Consumption? Requires 1 Combustion Controller");
-            w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelEnt, new UpgradeFuelConsumptionButton(t));
+            w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelEnt, new UpgradeFuelConsumptionButton(t, trainEnt));
             LinearLayoutWrap.AddChild(w, upgradeFuelEnt, row1);
 
             int upgradePowerEnt = addButton("Upgrade Speed? Requires 1 Engine");
-            w.SetComponent<UpgradeTrainPowerButton>(upgradePowerEnt, new UpgradeTrainPowerButton(t));
+            w.SetComponent<UpgradeTrainPowerButton>(upgradePowerEnt, new UpgradeTrainPowerButton(t, trainEnt));
             LinearLayoutWrap.AddChild(w, upgradePowerEnt, row1);
 
             LinearLayoutContainer row2 = LinearLayoutWrap.Add(
@@ -152,19 +158,19 @@ public static class DrawUpgradeTrainInterfaceSystem {
 
             int upgradeFuelExpoEnt = addButton(
                 $"Multiply Miles Per Fuel By {Constants.ExponentialMilesPerFuelUpgradeFactor}? Requires 1 {ItemID.AntiGravity}");
-            w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelExpoEnt, new UpgradeFuelConsumptionButton(t, exponential: true));
+            w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelExpoEnt, new UpgradeFuelConsumptionButton(t, trainEnt, exponential: true));
             LinearLayoutWrap.AddChild(w, upgradeFuelExpoEnt, row2);
 
             int upgradePowerExpoEnt = addButton(
                 $"Multiply Power by {Constants.ExponentialTrainPowerUpgradeFactor}? Requires 1 {ItemID.AirResistor}");
-            w.SetComponent<UpgradeTrainPowerButton>(upgradePowerExpoEnt, new UpgradeTrainPowerButton(t, exponential: true));
+            w.SetComponent<UpgradeTrainPowerButton>(upgradePowerExpoEnt, new UpgradeTrainPowerButton(t, trainEnt, exponential: true));
             LinearLayoutWrap.AddChild(w, upgradePowerExpoEnt, row2);
         });
     }
 
-    public static void AddMessage(World w, Train t) {
+    public static void AddMessage(World w, Train t, int trainEnt) {
         MakeMessage.Add<DrawInterfaceMessage<UpgradeTrainInterfaceData>>(w, 
-            new DrawInterfaceMessage<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t)));
+            new DrawInterfaceMessage<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t, trainEnt)));
     }
 }
 
@@ -173,10 +179,13 @@ public class UpgradeInventoryExponentialButton {
     private Train train;
     public bool IsTrainInv => train != null; 
     public Train GetTrain() => train;
+    public readonly int TrainEntity;
 
-    public UpgradeInventoryExponentialButton(Inventory inv = null, Train train = null) {
+    //ICKY: Can this just be two separate classes and an IUpgradeInventoryExponential interface ??
+    public UpgradeInventoryExponentialButton(Inventory inv = null, Train train = null, int trainEntity = -1) {
         this.inv = inv; 
         this.train = train;
+        this.TrainEntity = trainEntity;
         if (inv == null) {
             if (train != null) {
                 this.inv = train.ComingFrom.Inv;
@@ -187,7 +196,6 @@ public class UpgradeInventoryExponentialButton {
                     """
                 );
             }
-            
         }
     }
 
@@ -208,7 +216,7 @@ public static class UpgradeInventoryExponentialClickSystem {
     public static void Register(World w) {
         ClickSystem.Register<UpgradeInventoryExponentialButton>(w, (w, e, b) => {
             if (b.TryUpgrade() && b.IsTrainInv) {
-                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain());
+                DrawUpgradeTrainInterfaceSystem.AddMessage(w, b.GetTrain(), b.TrainEntity);
             }
         });
     }

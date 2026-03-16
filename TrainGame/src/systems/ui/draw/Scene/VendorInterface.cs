@@ -38,7 +38,7 @@ public static class DrawVendorInterfaceSystem {
                 childrenPerPage: 3
             );
 
-            foreach (PurchaseInfo<IBuyable> purchaseInfo in VendorID.ProductMap[vendorID]) {
+            foreach (PurchaseInfo purchaseInfo in VendorID.ProductMap[vendorID]) {
                 IBuyable buyable = purchaseInfo.Buyable; 
                 int btnEnt = -1;
                 

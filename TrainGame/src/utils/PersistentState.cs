@@ -52,6 +52,9 @@ public static class PersistentState {
         Dictionary<string, City> cities = toDict<City>(1); 
         Dictionary<string, Inventory> invs = toDict<Inventory>(2); 
         Dictionary<string, Machine> machines = toDict<Machine>(3); 
+        Dictionary<string, int> tEnts = trains
+        .Select(kvp => new KeyValuePair<string, int>(kvp.Key, ComponentID.GetEntity<Train>(kvp.Key, w)))
+        .ToDictionary();
 
         City cityWithPlayer = cities.Where(kvp => kvp.Value.HasPlayer).FirstOrDefault().Value; 
         string playerLocation = ""; 
@@ -71,7 +74,9 @@ public static class PersistentState {
         dom.Add("trains", new JsonObject(trains.Select(kvp => {
             Train t = kvp.Value; 
             string id = kvp.Key; 
-            int nextInstruction = (t.Executable == null) ? 0 : t.Executable.NextInstruction(); 
+            int trainEnt = tEnts[t.ID];
+            (TALBody<Train, City> exe, bool s) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
+            int nextInstruction = (!s) ? 0 : exe.NextInstruction(); 
             JsonObject trainJSON = new JsonObject() {
                 ["comingFromID"] = t.ComingFrom.GetID(),
                 ["goingToID"] = t.GoingTo.GetID(),
@@ -181,6 +186,7 @@ public static class PersistentState {
         Dictionary<string, int> inventoryEnts = new(); 
         Dictionary<string, City> cities = new(); 
         Dictionary<string, Train> trains = new(); 
+        Dictionary<string, int> tEnts = new();
         Dictionary<string, (int, Machine)> machines = new(); 
 
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
@@ -284,14 +290,15 @@ public static class PersistentState {
 
             Train t = new Train(inv, comingFrom, carts, trainID, milesPerHour, power, mass, milesOfFuel: milesOfFuel); 
             t.SetPosition(x, y);
-            TrainWrap.RegisterExisting(w, t); 
+            int trainEnt = TrainWrap.RegisterExisting(w, t); 
+            tEnts[t.ID] = trainEnt;
             trains[trainID] = t; 
             string program = (string)trainData["program"];
             string programName = (string)trainData["programName"];
 
             int nextInstruction = (int)trainData["nextInstruction"];
             if (!string.IsNullOrEmpty(program)) {
-                TAL.SetTrainProgram(program, t, w, nextInstruction, programName: programName);
+                TAL.SetTrainProgram(program, t, trainEnt, w, nextInstruction, programName: programName);
             }
 
             if (isTraveling) {
@@ -347,8 +354,9 @@ public static class PersistentState {
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(cities[playerLocation]));
         } else if (trains.ContainsKey(playerLocation)) {
             Train t = trains[playerLocation];
+            int tEnt = tEnts[t.ID];
             t.HasPlayer = true; 
-            DrawTravelingInterfaceSystem.AddMessage(w, t); 
+            DrawTravelingInterfaceSystem.AddMessage(w, t, tEnt); 
         } else {
             throw new InvalidOperationException("Couldn't find player"); 
         }

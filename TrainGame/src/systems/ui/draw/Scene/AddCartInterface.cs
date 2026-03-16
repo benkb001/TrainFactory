@@ -62,7 +62,7 @@ public static class DrawAddCartInterfaceSystem {
 
             if (numCarts > 0) {
                 w.SetComponent<Button>(cEntity, new Button()); 
-                w.SetComponent<AddCartButton>(cEntity, new AddCartButton(CartDest, CartSource, type)); 
+                w.SetComponent<AddCartButton>(cEntity, new AddCartButton(CartDest, CartSource, type, dm.TrainEntity)); 
             }
 
             ll.AddChild(cEntity); 

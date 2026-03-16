@@ -60,7 +60,7 @@ public static class DrawMapSystem {
                 Train train = w.GetComponent<Train>(trainDataEntity); 
                 int trainDrawnEntity = EntityFactory.Add(w); 
             
-                w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train)); 
+                w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train, trainDataEntity)); 
                 w.SetComponent<MapUIFlag>(trainDrawnEntity, MapUIFlag.Get()); 
                 Frame f = new Frame(0, 0, TrainUI.Width, TrainUI.Height); 
                 w.SetComponent<Frame>(trainDrawnEntity, f); 
