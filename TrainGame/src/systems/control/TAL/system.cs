@@ -88,18 +88,14 @@ public static class TAL {
     public static Dictionary<string, string> ScriptExplanations = initScriptExplanations(); 
     public static Dictionary<string, string> Scripts = initScripts(); 
 
-    public static void BuyTrainProgram(string program, Train t, int trainEnt, World w, string programName = "") {
+    public static void BuyTrainProgram(string program, Train t, Inventory inv, int trainEnt, World w, string programName = "") {
         bool hasMotherboard = false; 
-        Inventory inv;
 
-        if (t.ComingFrom.Inv.ItemCount(ItemID.Motherboard) >= 1) {
-            inv = t.ComingFrom.Inv; 
-            hasMotherboard = true; 
-        } else {
-            if (t.Inv.ItemCount(ItemID.Motherboard) >= 1) {
-                hasMotherboard = true; 
-            }
+        if (t.Inv.ItemCount(ItemID.Motherboard) >= 1) {
             inv = t.Inv; 
+            hasMotherboard = true; 
+        } else if (inv.ItemCount(ItemID.Motherboard) >= 1) {
+            hasMotherboard = true; 
         }
 
         if (hasMotherboard) {

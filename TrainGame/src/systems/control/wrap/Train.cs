@@ -21,7 +21,7 @@ public static class TrainWrap {
         Inventory inv = new Inventory("Test", 1, 1); 
         City c = new City("Test", inv); 
         string id = ID.GetNext("Train ");
-        return new Train(inv, c, new Dictionary<CartType, Inventory>(), id); 
+        return new Train(inv, c.RealPosition, new Dictionary<CartType, Inventory>(), id); 
     }
 
     public static Train Assemble(City origin) {
@@ -35,14 +35,14 @@ public static class TrainWrap {
             carts[type] = curInv; 
         }
 
-        return new Train(inv, origin, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
+        return new Train(inv, origin.RealPosition, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
     }
 
     public static int AssembleToWorld(World w, City c) {
-        return RegisterExisting(w, Assemble(c));
+        return RegisterExisting(w, Assemble(c), c);
     }
 
-    public static int RegisterExisting(World w, Train t) {
+    public static int RegisterExisting(World w, Train t, City c) {
         if (EntityFactory.GetDataEntity<Inventory>(w, t.Inv) == -1) {
             InventoryWrap.Add(w, t.Inv); 
         }
@@ -57,6 +57,10 @@ public static class TrainWrap {
             }
         }
 
+        w.SetComponent<ComingFromCity>(tEnt, new ComingFromCity(c));
+        w.SetComponent<GoingToCity>(tEnt, new GoingToCity(c));
+        c.AddTrain(t);
+
         return tEnt; 
     }
 
@@ -69,8 +73,21 @@ public static class TrainWrap {
         return ts.Count > 0 ? ts[0] : null; 
     }
 
-    public static void Embark(Train t, City dest, World w) {
-        t.Embark(dest, w.Time); 
-        MakeMessage.Add<TrainEmbarkedMessage>(w, new TrainEmbarkedMessage(t)); 
+    public static void Embark(Train t, int trainEnt, City dest, World w, WorldTime left = null) {
+        City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+        if (comingFrom != dest) {
+            if (left == null) {
+                left = w.Time;
+            }
+            t.Embark(dest.RealPosition, left); 
+            MakeMessage.Add<TrainEmbarkedMessage>(w, new TrainEmbarkedMessage(t)); 
+            w.SetComponent<GoingToCity>(trainEnt, new GoingToCity(dest));
+            dest.SendTrain(t, comingFrom);
+        }
+    }
+
+    public static City GetComingFrom(World w, Train t) {
+        int trainEnt = ComponentID.GetEntity<Train>(t.ID, w); 
+        return w.GetComponent<ComingFromCity>(trainEnt);
     }
 }

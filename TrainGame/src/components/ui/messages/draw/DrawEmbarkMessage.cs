@@ -16,14 +16,16 @@ public class DrawEmbarkMessage {
     public float Width;
     public float Height;
     public float Padding;
+    public readonly int TrainEntity;
 
-    public DrawEmbarkMessage(Train t, Vector2 Position, float Width = 100f, float Height = 100f, float Padding = 0f) {
+    public DrawEmbarkMessage(Train t, int TrainEntity, City comingFrom, Vector2 Position, float Width = 100f, float Height = 100f, float Padding = 0f) {
         this.Position = Position; 
         this.train = t; 
-        this.city = t.ComingFrom; 
+        this.city = comingFrom; 
         this.Width = Width; 
         this.Height = Height; 
         this.Padding = Padding; 
+        this.TrainEntity = TrainEntity;
     }
 
     public Train GetTrain() {

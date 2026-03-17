@@ -55,6 +55,6 @@ public static class WorldTimeWrap {
     }
 
     public static void SetTimePassFast(World w) {
-        w.SetMiliticksPerUpdate(3000); 
+        w.SetMiliticksPerUpdate(30000); 
     }
 }

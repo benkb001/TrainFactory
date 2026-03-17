@@ -5,6 +5,28 @@ using System.Linq;
 using TrainGame.ECS;
 using TrainGame.Utils;
 
+public class ComingFromCity {
+    private City city; 
+    public ComingFromCity(City city) {
+        this.city = city; 
+    }
+
+    public static implicit operator City(ComingFromCity c) {
+        return c.city;
+    }
+}
+
+public class GoingToCity {
+    private City city; 
+    public GoingToCity(City city) {
+        this.city = city; 
+    }
+
+    public static implicit operator City(GoingToCity c) {
+        return c.city;
+    }
+}
+
 public class TrainWorld : ITrainWorld<Train, City> {
     private World w; 
 
@@ -20,9 +42,12 @@ public class TrainWorld : ITrainWorld<Train, City> {
         return ComponentID.GetComponent<City>(id, w);
     }
 
-    public TrainState Embark(Train train, City city) {
+    public TrainState Embark(Train train, City dest) {
 
-        if (train.ComingFrom == city) {
+        int trainEnt = ComponentID.GetEntity<Train>(train.ID, w);
+        City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+
+        if (comingFrom == dest) {
             return TrainState.AtCity;
         }
 
@@ -31,12 +56,12 @@ public class TrainWorld : ITrainWorld<Train, City> {
         .Select(e => w.GetComponent<City>(e))
         .ToList();
 
-        List<City> path = Util.ShortestPathUnweighted(all, train.ComingFrom, city); 
+        List<City> path = Util.ShortestPathUnweighted(all, comingFrom, dest); 
 
         if (path != null && path.Count > 0) {
             City next = path[0]; 
-            TrainWrap.Embark(train, next, w); 
-            if (next == city) {
+            TrainWrap.Embark(train, trainEnt, next, w); 
+            if (next == dest) {
                 return TrainState.OnLastPath;
             } else {
                 return TrainState.OnMidPath;
@@ -47,12 +72,12 @@ public class TrainWorld : ITrainWorld<Train, City> {
     }
 
     public void Load(Train train, string itemID, int count) {
-        City city = train.ComingFrom; 
-        city.Inv.TransferTo(train.GetInventories(), itemID, count);
+        City at = TrainWrap.GetComingFrom(w, train);
+        at.Inv.TransferTo(train.GetInventories(), itemID, count);
     }
 
     public void Unload(Train train, string itemID, int count) {
-        City city = train.ComingFrom; 
-        city.Inv.TransferFrom(train.GetInventories(), itemID, count); 
+        City at = TrainWrap.GetComingFrom(w, train);
+        at.Inv.TransferFrom(train.GetInventories(), itemID, count); 
     }
 }

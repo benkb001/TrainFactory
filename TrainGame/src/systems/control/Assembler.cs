@@ -25,8 +25,8 @@ public class AssemblerSystem {
                     int assembledEnt = EntityFactory.AddData<U>(w, assembled); 
 
                     //ICKY: change this to make a RegisterAssembledMessage<U> 
-                    if (assembled is Train t) {
-                        TrainWrap.RegisterExisting(w, t); 
+                    if (assembled is Train t && asm is TrainAssembler tAsm) {
+                        TrainWrap.RegisterExisting(w, t, tAsm.GetCity()); 
                     }
                 }
             }

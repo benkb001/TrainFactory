@@ -41,6 +41,7 @@ public static class RegisterComponents {
         r<Collidable>(); 
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
+        r<ComingFromCity>();
         r<ConnectCitiesButton>();
         r<CurrentInventory>();
         r<Damage>(); 
@@ -86,6 +87,7 @@ public static class RegisterComponents {
         r<EquipmentUI>(); 
         r<Frame>(); 
         r<GameClockView>();
+        r<GoingToCity>();
         r<Health>(); 
         r<HeldItem>(); 
         r<HealthPotion>(); 

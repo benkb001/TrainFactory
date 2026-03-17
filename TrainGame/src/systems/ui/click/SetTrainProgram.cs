@@ -18,11 +18,13 @@ public static class SetTrainProgramClickSystem {
             SetTrainProgramButton btn = w.GetComponent<SetTrainProgramButton>(e); 
 
             Train t = btn.GetTrain(); 
-            Inventory inv = t.ComingFrom.Inv; 
+            int trainEntity = btn.TrainEntity;
+            City comingFrom = w.GetComponent<ComingFromCity>(trainEntity);
+            Inventory inv = comingFrom.Inv;
             string program = btn.Program;
             string programName = btn.ProgramName; 
 
-            TAL.BuyTrainProgram(program, t, btn.TrainEntity, w, programName);
+            TAL.BuyTrainProgram(program, t, inv, btn.TrainEntity, w, programName);
         });
     }
 }

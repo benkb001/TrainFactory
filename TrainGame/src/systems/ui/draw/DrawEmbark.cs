@@ -17,6 +17,7 @@ public class DrawEmbarkSystem {
     public static int Draw(DrawEmbarkMessage msg, World w) {
         City c = msg.GetCity(); 
         Train t = msg.GetTrain(); 
+        int trainEnt = msg.TrainEntity;
 
         float width = msg.Width; 
         float height = msg.Height; 
@@ -49,7 +50,7 @@ public class DrawEmbarkSystem {
             w.SetComponent<Outline>(cellEntity, new Outline()); 
             w.SetComponent<TextBox>(cellEntity, new TextBox(connected.CityId)); 
             w.SetComponent<Button>(cellEntity, new Button()); 
-            w.SetComponent<EmbarkButton>(cellEntity, new EmbarkButton(connected, t)); 
+            w.SetComponent<EmbarkButton>(cellEntity, new EmbarkButton(connected, t, trainEnt)); 
             w.SetComponent<Frame>(cellEntity, new Frame(0, 0, buttonWidth, buttonHeight)); 
         }
 

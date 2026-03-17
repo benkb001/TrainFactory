@@ -16,8 +16,6 @@ using TrainGame.Systems;
 
 public class Train : IInventorySource, IID, ITrain {
 
-    private City comingFrom; 
-    private City goingTo; 
     private float milesPerHour; 
     private float power; 
     private float mass; 
@@ -29,17 +27,16 @@ public class Train : IInventorySource, IID, ITrain {
     private static HashSet<string> usedIDs = new(); 
     private string program; 
     private string programName = "None"; 
+    private Vector2 origin;
+    private Vector2 destination;
     private Vector2 position; 
     private Vector2 journey;
-    private Vector2 mapJourney;
-    private Vector2 moved => position - comingFrom.Position;
+    private Vector2 moved => position - origin;
     private float milesOfFuel;
     private float massMilesPerFuel = Constants.MassMilesPerFuel;
 
     public WorldTime DepartureTime => left; 
     public WorldTime ArrivalTime => arrivalTime; 
-    public City ComingFrom => comingFrom; 
-    public City GoingTo => goingTo; 
     public readonly Inventory Inv; 
     public Dictionary<CartType, Inventory> Carts;
     public readonly string Id; 
@@ -53,18 +50,19 @@ public class Train : IInventorySource, IID, ITrain {
     public float Power => power; 
     public Vector2 Position => position; 
     public float MilesOfFuel => milesOfFuel;
+    public float JourneyCompletion => (moved.Length()) / (journey.Length());
 
     public const string DefaultID = ""; 
 
-    public Train(Inventory Inv, City origin, Dictionary<CartType, Inventory> Carts, string Id, 
+    public Train(Inventory Inv, Vector2 position, Dictionary<CartType, Inventory> Carts, string Id, 
     float milesPerHour = 0f, float power = 0f, float mass = 1f, float milesOfFuel = 25f) {
         
         this.Id = Id; 
 
         this.Inv = Inv; 
-        this.comingFrom = origin;
-        this.goingTo = origin; 
         this.isTraveling = false; 
+        this.position = position;
+        this.origin = position;
 
         if (mass <= 0f) {
             throw new InvalidOperationException($"Mass {mass} invalid, must be > 0"); 
@@ -81,57 +79,31 @@ public class Train : IInventorySource, IID, ITrain {
 
         this.Carts = Carts; 
 
-        origin.AddTrain(this);
-
         this.left = new WorldTime(); 
         this.arrivalTime = new WorldTime(); 
-
-        position = origin.Position;
     }
 
-    public void Embark(City destination, WorldTime now) {
+    public void Embark(Vector2 destination, WorldTime now) {
         this.isEmbarking = true; 
-
-        if (this.comingFrom == destination) {
-            throw new InvalidOperationException($"Train {Id} attempted to embark to the city it is at: {comingFrom.CityId}"); 
-        }
-
-        if (HasPlayer) {
-            this.comingFrom.HasPlayer = false; 
-        }
         
-        this.goingTo = destination; 
         this.left = now.Clone(); 
         this.lastMoved = now.Clone();
         this.isTraveling = true;
-        this.comingFrom.RemoveTrain(this); 
+        this.destination = destination;
 
-        journey = goingTo.RealPosition - comingFrom.RealPosition; 
-        mapJourney = goingTo.MapPosition - comingFrom.MapPosition; 
+        journey = destination - position;
         float journeyMiles = journey.Length();
         float hours = journeyMiles / milesPerHour; 
         int fuelToTake = 2 * (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / massMilesPerFuel);
         
         int taken = Inv.Take(ItemID.Fuel, fuelToTake).Count;
         taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;
-        taken += comingFrom.Inv.Take(ItemID.Fuel, fuelToTake - taken).Count;
         milesOfFuel += (massMilesPerFuel * taken) / mass; 
 
         //TODO: this maybe should be recalculated each frame, 
         //because train might slow down if it runs into another
         //train
         this.arrivalTime = now + new WorldTime(hours: hours); 
-        destination.SendTrain(this);
-    }
-    
-    public Vector2 GetMapPosition() {
-        if (!isTraveling) {
-            return comingFrom.MapPosition; 
-        }
-
-        float proportion_moved = moved.Length() / journey.Length();
-        float map_moved = mapJourney.Length() * proportion_moved; 
-        return (Vector2.Normalize(mapJourney) * map_moved) + comingFrom.MapPosition; 
     }
     
     public void Update() {
@@ -139,16 +111,13 @@ public class Train : IInventorySource, IID, ITrain {
             return; 
         }
         
-        this.goingTo.ReceiveTrain(this);
-        this.comingFrom = this.goingTo; 
         this.isTraveling = false; 
-        position = goingTo.Position;
+        position = destination;
+        origin = destination;
 
         //TODO: Test
-        if (HasPlayer) {
-            this.goingTo.HasPlayer = true; 
-            HasPlayer = false; 
-        }
+        //ICKY
+        HasPlayer = false;
     }
 
     //IsArriving MUST be called before Update or it will never be true

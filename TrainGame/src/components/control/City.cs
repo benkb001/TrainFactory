@@ -17,6 +17,7 @@ public class City : IID, ICity, INode<City> {
     private float uiX; 
     private float uiY;
 
+    //ICKY: mapPosition 
     private Vector2 mapPosition; 
     private Vector2 realPosition; 
 
@@ -28,6 +29,7 @@ public class City : IID, ICity, INode<City> {
 
     public string CityId => cityId; 
     public string Id => cityId; 
+    public string ID => cityId;
 
     public readonly Inventory Inv;
     public readonly List<City> AdjacentCities = []; 
@@ -97,8 +99,8 @@ public class City : IID, ICity, INode<City> {
         carts[type] -= 1; 
     }
 
-    public void ReceiveTrain(Train t) {
-        trainsEnRoute[t.ComingFrom].Remove(t);
+    public void ReceiveTrain(Train t, City comingFrom) {
+        trainsEnRoute[comingFrom].Remove(t);
         AddTrain(t);
     }
 
@@ -107,8 +109,9 @@ public class City : IID, ICity, INode<City> {
         trains.Remove(t.Id); 
     }
 
-    public void SendTrain(Train t) {
-        trainsEnRoute[t.ComingFrom].Add(t);
+    public void SendTrain(Train t, City comingFrom) {
+        comingFrom.RemoveTrain(t);
+        trainsEnRoute[comingFrom].Add(t);
     }
 
     public string GetID() {

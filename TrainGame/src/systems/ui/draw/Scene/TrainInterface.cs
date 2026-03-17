@@ -58,11 +58,13 @@ public class DrawTrainInterfaceSystem {
         w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t, trainEnt));
     }
 
-    private static void addEmbark(LinearLayout container, int containerEnt, Train t, World w, float height) {
+    private static void addEmbark(LinearLayout container, int containerEnt, Train t, int trainEnt, City comingFrom, World w, float height) {
         float embarkWidth = w.ScreenWidth / 5f;
         int embarkEnt = DrawEmbarkSystem.Draw(
             new DrawEmbarkMessage(
                 t,
+                trainEnt, 
+                comingFrom,
                 Vector2.Zero, 
                 embarkWidth, 
                 height,
@@ -74,9 +76,8 @@ public class DrawTrainInterfaceSystem {
         LinearLayoutWrap.AddChild(embarkEnt, containerEnt, container, w);
     }
 
-    private static void addInvs(LinearLayout container, int containerEnt, Train t, World w, float height) {
-        Inventory trainInv = t.Inv; 
-        Inventory cityInv = t.ComingFrom.Inv; 
+    private static void addInvs(LinearLayout container, int containerEnt, Train t, Inventory cityInv, World w, float height) {
+        Inventory trainInv = t.Inv;
 
         (float trainInvWidth, float trainInvHeight) = InventoryWrap.GetUI(trainInv); 
         (float cityInvWidth, float cityInvHeight) = InventoryWrap.GetUI(cityInv); 
@@ -109,6 +110,7 @@ public class DrawTrainInterfaceSystem {
             DrawTrainInterfaceMessage dm = w.GetComponent<DrawTrainInterfaceMessage>(e); 
             Train t = dm.GetTrain(); 
             int trainEnt = dm.TrainEntity;
+            City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
 
             int menuEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 
@@ -126,8 +128,8 @@ public class DrawTrainInterfaceSystem {
             w.SetComponent<Frame>(containerEnt, new Frame(containerPos, containerWidth, containerHeight)); 
 
             addButtons(container, containerEnt, t, trainEnt, w, columnHeight); 
-            addInvs(container, containerEnt, t, w, columnHeight); 
-            addEmbark(container, containerEnt, t, w, columnHeight); 
+            addInvs(container, containerEnt, t, comingFrom.Inv, w, columnHeight); 
+            addEmbark(container, containerEnt, t, trainEnt, comingFrom, w, columnHeight); 
              
             w.RemoveEntity(e); 
         }); 

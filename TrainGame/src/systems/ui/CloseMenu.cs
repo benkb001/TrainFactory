@@ -32,6 +32,11 @@ public static class CloseMenuSystem {
         Train train; 
         Machine machine; 
         int trainEnt = menu.TrainEntity;
+        //ICKY
+        if (trainEnt == -1 && menu.GetTrain() != null) {
+            trainEnt = ComponentID.GetEntity<Train>(menu.GetTrain().ID, w);
+        }
+
         (TALBody<Train, City> exe, bool _) = w.GetComponentSafe<TALBody<Train, City>>(menu.TrainEntity);
         switch (type) {
             case SceneType.CartInterface: 
@@ -50,7 +55,7 @@ public static class CloseMenuSystem {
             case SceneType.TrainInterface: 
                 train = menu.GetTrain(); 
                 if (train != null) {
-                    city = train.ComingFrom; 
+                    city = w.GetComponent<ComingFromCity>(trainEnt);
                     MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(city)); 
                 } else {
                     throw new InvalidOperationException("Found menu in train interface that did not specify train"); 
@@ -74,13 +79,13 @@ public static class CloseMenuSystem {
                 }
                 break;
             case SceneType.ProgramInterface: 
-                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), menu.TrainEntity));
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), trainEnt));
                 break;
             case SceneType.ViewProgramInterface: 
-                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), menu.TrainEntity));
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), trainEnt));
                 break;
             case SceneType.WriteProgramInterface: 
-                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), menu.TrainEntity));
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), trainEnt));
                 break;
             case SceneType.VendorInterface: 
                 SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 
@@ -92,7 +97,7 @@ public static class CloseMenuSystem {
                 MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get()); 
                 break;
             case SceneType.UpgradeTrainInterface: 
-                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), menu.TrainEntity));
+                MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(menu.GetTrain(), trainEnt));
                 break;
             case SceneType.ElevatorInterface: 
                 SceneSystem.EnterScene(w, SceneType.RPG, useOldScene: true); 

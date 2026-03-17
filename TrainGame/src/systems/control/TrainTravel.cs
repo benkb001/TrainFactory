@@ -13,23 +13,32 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Utils; 
 
-public class TrainTravelSystem() {
+public static class TrainTravelSystem {
     private static Type[] ts = [typeof(Train), typeof(Data)]; 
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
+        City goingTo = w.GetComponent<GoingToCity>(e);
         //ICKY: I want the menu refreshing to be done manually by player, 
         //but i want the train buttons to be grayed out if the train leaves the city
         if (t.IsArriving()) {
+            //ICKY: i dont want this in a UI system but whatever 
+            
+            City comingFrom = w.GetComponent<ComingFromCity>(e); 
+            if (comingFrom != goingTo) {
+                goingTo.ReceiveTrain(t, comingFrom);
+                w.SetComponent<ComingFromCity>(e, new ComingFromCity(goingTo));
+            }
+
             if (t.HasPlayer) {
                 //if train is arriving and it has the player, draw the city the player just chose to go to
-                MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(t.GoingTo)); 
+                MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(goingTo)); 
             } else if (SceneSystem.CurrentScene == SceneType.CityInterface && 
                 w.GetMatchingEntities([typeof(Menu), typeof(Active)]).Where(
-                e => w.GetComponent<Menu>(e).GetCity() == t.GoingTo).ToList().Count > 0) {
+                e => w.GetComponent<Menu>(e).GetCity() == goingTo).ToList().Count > 0) {
                 
                 //if player is in the city interface and a train arrives that is going to that city, redraw
                 //so the train will appear there 
-                MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(t.GoingTo)); 
+                MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(goingTo)); 
             }
         }
         t.Update(); 

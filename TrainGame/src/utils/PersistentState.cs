@@ -77,9 +77,12 @@ public static class PersistentState {
             int trainEnt = tEnts[t.ID];
             (TALBody<Train, City> exe, bool s) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
             int nextInstruction = (!s) ? 0 : exe.NextInstruction(); 
+            City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+            City goingTo = w.GetComponent<GoingToCity>(trainEnt);
+
             JsonObject trainJSON = new JsonObject() {
-                ["comingFromID"] = t.ComingFrom.GetID(),
-                ["goingToID"] = t.GoingTo.GetID(),
+                ["comingFromID"] = comingFrom.GetID(),
+                ["goingToID"] = goingTo.GetID(),
                 ["inventoryID"] = t.Inv.GetID(),
                 ["isTraveling"] = t.IsTraveling(),
                 ["left"] = JSONObjectFromWorldTime(t.DepartureTime),
@@ -288,9 +291,9 @@ public static class PersistentState {
                 carts[type] = inventories[Train.GetCartID(type, trainID)]; 
             }
 
-            Train t = new Train(inv, comingFrom, carts, trainID, milesPerHour, power, mass, milesOfFuel: milesOfFuel); 
+            Train t = new Train(inv, comingFrom.RealPosition, carts, trainID, milesPerHour, power, mass, milesOfFuel: milesOfFuel); 
             t.SetPosition(x, y);
-            int trainEnt = TrainWrap.RegisterExisting(w, t); 
+            int trainEnt = TrainWrap.RegisterExisting(w, t, comingFrom); 
             tEnts[t.ID] = trainEnt;
             trains[trainID] = t; 
             string program = (string)trainData["program"];
@@ -305,8 +308,7 @@ public static class PersistentState {
                 string goingToID = (string)trainData["goingToID"]; 
                 City goingTo = cities[goingToID];
                 WorldTime left = WorldTimeFromJSONObject(trainData["left"].AsObject()); 
-                
-                t.Embark(goingTo, left);
+                TrainWrap.Embark(t, trainEnt, goingTo, w, left);
             }
         }
 

@@ -20,7 +20,7 @@ public static class EmbarkClickSystem {
                 EmbarkButton eb = w.GetComponent<EmbarkButton>(e); 
                 Train t = eb.GetTrain();
                 City c = eb.GetDestination(); 
-                TrainWrap.Embark(t, c, w); 
+                TrainWrap.Embark(t, eb.TrainEntity, c, w); 
                 MakeMessage.Add<DrawMapMessage>(w, new DrawMapMessage());
                 MakeMessage.Add<EmbarkedMessage>(w, new EmbarkedMessage(t)); 
             }
