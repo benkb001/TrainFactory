@@ -113,8 +113,10 @@ public static class RegisterSystems {
         
         VendorInteractSystem.Register(w);
 
-        ShootSystem.Register(w);
+        PlayerShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
+        ShootSystem.Register<Enemy>(w);
+        ShootSystem.Register<Player>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 

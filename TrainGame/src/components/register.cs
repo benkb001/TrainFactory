@@ -140,6 +140,7 @@ public static class RegisterComponents {
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 
         r<Shooter>(); 
+        r<ShotMessage>();
         r<SlowTimeButton>();
         r<SpeedTimeButton>(); 
         r<Sprite>(); 

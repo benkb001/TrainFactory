@@ -26,20 +26,10 @@ public class EnemyWrap {
         w.SetComponent<Health>(enemyEnt, h); 
         
         Shooter shooter = new Shooter(
-            bulletDamage: e.Damage,
+            new DefaultShootPattern(),
             ticksPerShot: e.TicksPerShot,
-            bulletSpeed: e.BulletSpeed,
             ammo: e.Ammo,
-            skill: e.Skill,
-            shootPattern: e.SPattern,
-            bulletsPerShot: e.BulletsPerShot,
-            patternSize: e.PatternSize,
-            reloadTicks: e.ReloadTicks,
-            bulletType: e.BType, 
-            bulletSize: e.BulletSize,
-            bulletLifetimeTicks: e.BulletLifetimeTicks,
-            spreadDegrees: e.SpreadDegrees,
-            WarningDuration: e.WarningDuration
+            reloadTicks: e.ReloadTicks
         );
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 
@@ -58,7 +48,7 @@ public class EnemyWrap {
         Armor armor = new Armor(e.Armor);
         w.SetComponent<Armor>(enemyEnt, armor); 
         
-        return new EnemyWrap(enemyEnt, h, armor, movement, shooter);
+        return new EnemyWrap(enemyEnt, h, armor, movement);
     }
 
     public static int GetFirst(World w) {
@@ -68,7 +58,6 @@ public class EnemyWrap {
 
     private Armor armor; 
     private Movement movement; 
-    private Shooter shooter; 
     private Health health; 
     private int e; 
 
@@ -76,13 +65,11 @@ public class EnemyWrap {
     public int Entity => e; 
     public Armor GetArmor() => armor; 
     public Movement GetMovement() => movement; 
-    public Shooter GetShooter() => shooter; 
 
-    private EnemyWrap(int e, Health health, Armor armor, Movement movement, Shooter shooter) {
+    private EnemyWrap(int e, Health health, Armor armor, Movement movement) {
         this.e = e; 
         this.armor = armor; 
-        this.movement = movement; 
-        this.shooter = shooter; 
+        this.movement = movement;
         this.health = health; 
     }
 }

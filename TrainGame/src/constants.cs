@@ -89,6 +89,7 @@ namespace TrainGame.Constants
 
         public const float BulletSpeed = 8f; 
         public const int BulletSize = 5; 
+        public const float DefaultBulletSize = 5f;
 
         public const float EnemySize = 50f;
         public const int InvincibilityFrames = 60;
@@ -398,13 +399,14 @@ namespace TrainGame.Constants
     public static class EnemyID {
         public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
             [EnemyType.Artillery] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Artillery, 
                 HP: 15, 
                 TicksPerShot: 300, 
                 ReloadTicks: 100, 
                 BulletSpeed: 2f, 
                 Ammo: 4, 
-                SPattern: ShootPattern.VerticalLine, 
+                //SPattern: ShootPattern.VerticalLine, 
                 BulletsPerShot: 2, 
                 PatternSize: Constants.TileWidth * 2, 
                 Size: Constants.TileWidth * 2, 
@@ -419,6 +421,7 @@ namespace TrainGame.Constants
                 Difficulty: 2
             ),
             [EnemyType.Barbarian] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Barbarian, 
                 HP: 20, 
                 TicksPerShot: 200, 
@@ -433,12 +436,13 @@ namespace TrainGame.Constants
                 BulletsAreWarned: true, 
                 WarningDuration: new WorldTime(ticks: 45),
                 BulletSize: (int)Constants.TileWidth * 3,
-                SPattern: ShootPattern.Melee,
+                //SPattern: ShootPattern.Melee,
                 Damage: 25,
                 Difficulty: 2
             ),
-            [EnemyType.Default] = new EnemyConst(),
+            [EnemyType.Default] = new EnemyConst(new DefaultShootPattern()),
             [EnemyType.MachineGun] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.MachineGun,
                 HP: 12,
                 Ammo: 36, 
@@ -451,6 +455,7 @@ namespace TrainGame.Constants
                 Damage: 15
             ),
             [EnemyType.Ninja] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Ninja, 
                 HP: 6, 
                 TicksPerShot: 2, 
@@ -464,12 +469,13 @@ namespace TrainGame.Constants
                 Skill: 90
             ),
             [EnemyType.Robot] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Robot, 
                 HP: 8, 
                 TicksPerShot: 2,
                 BulletSpeed: 6f, 
                 Ammo: 32,
-                SPattern: ShootPattern.VerticalLine,
+                //SPattern: ShootPattern.VerticalLine,
                 BulletsPerShot: 2, 
                 TicksBetweenMovement: 60, 
                 PatternSize: Constants.TileWidth,
@@ -479,8 +485,9 @@ namespace TrainGame.Constants
                 ReloadTicks: 60
             ),
             [EnemyType.Shotgun] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Shotgun, 
-                SPattern: ShootPattern.Multi,
+                //SPattern: ShootPattern.Multi,
                 HP: 8, 
                 TicksPerShot: 120, 
                 ReloadTicks: 240, 
@@ -491,6 +498,7 @@ namespace TrainGame.Constants
                 BulletSpeed: 1.5f
             ),
             [EnemyType.Sniper] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Default, 
                 Ammo: 1, 
                 ReloadTicks: 300,
@@ -503,8 +511,9 @@ namespace TrainGame.Constants
                 Skill: 100
             ),
             [EnemyType.Volley] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Volley, 
-                SPattern: ShootPattern.Multi,
+                //SPattern: ShootPattern.Multi,
                 HP: 25, 
                 TicksPerShot: 60, 
                 ReloadTicks: 200, 
@@ -516,8 +525,9 @@ namespace TrainGame.Constants
                 Damage: 40
             ),
             [EnemyType.Warrior] = new EnemyConst(
+                new DefaultShootPattern(),
                 Type: EnemyType.Warrior, 
-                SPattern: ShootPattern.Multi, 
+                //SPattern: ShootPattern.Multi, 
                 HP: 40,
                 ReloadTicks: 480,
                 BulletSpeed: 4f,
@@ -613,10 +623,9 @@ namespace TrainGame.Constants
 
     public static class Weapons {
         public static Dictionary<string, Shooter> GunMap = new() {
-            [ItemID.Gun] = new Shooter(skill: 80, ticksPerShot: 20, ammo: 8, reloadTicks: 40),
-            [ItemID.Gun2] = new Shooter(skill: 90, ticksPerShot: 10, ammo: 16, reloadTicks: 40, bulletSpeed: 6f),
-            [ItemID.Gun3] = new Shooter(skill: 95, ticksPerShot: 5, ammo: 32, reloadTicks: 40, bulletSpeed: 12f, 
-                shootPattern: ShootPattern.Multi, bulletsPerShot: 2, spreadDegrees: 10f)
+            [ItemID.Gun] = new Shooter(new DefaultShootPattern(), ammo: 8, ticksPerShot: 30, reloadTicks: 60),
+            [ItemID.Gun2] = new Shooter(new DefaultShootPattern(), ammo: 16, ticksPerShot: 15, reloadTicks: 30),
+            [ItemID.Gun3] = new Shooter(new DefaultShootPattern(), ammo: 32, ticksPerShot: 8, reloadTicks: 16)
         };
     }
 

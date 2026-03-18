@@ -1,9 +1,14 @@
 namespace TrainGame.Components;
 
+using System.Collections.Generic;
+
 using TrainGame.Utils;
 using TrainGame.Constants;
+using TrainGame.ECS;
 
 public class EnemyConst {
+    private IShootPattern shootPattern;
+
     public EnemyType Type; 
     public float Size; 
     public int Damage; 
@@ -12,7 +17,6 @@ public class EnemyConst {
     public float BulletSpeed; 
     public int Ammo; 
     public int Skill; 
-    public ShootPattern SPattern; 
     public BulletType BType; 
     public OnExpireEffect OExpireEffect; 
     public int Armor; 
@@ -31,9 +35,11 @@ public class EnemyConst {
     public bool BulletsAreRemovedOnCollision; 
     public int Difficulty;
 
-    public EnemyConst(EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
+    IShootPattern ShootPattern => shootPattern.Clone();
+
+    public EnemyConst(IShootPattern shootPattern, EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
         int Damage = 5, int HP = 5, int TicksPerShot = 60, float BulletSpeed = 1.5f, 
-        int Ammo = 3, int Skill = 1, ShootPattern SPattern = ShootPattern.Default, 
+        int Ammo = 3, int Skill = 1, 
         BulletType BType = BulletType.Default, OnExpireEffect OExpireEffect = OnExpireEffect.Default,
         int Armor = 0, float PatternSize = 0f, float MoveSpeed = 1f, int TicksBetweenMovement = 120,
         MoveType MType = MoveType.Default, int MovePatternLength = 1, int TicksToMove = 60, int BulletsPerShot = 1,
@@ -41,6 +47,7 @@ public class EnemyConst {
         float SpreadDegrees = 10f, bool BulletsAreWarned = false, WorldTime WarningDuration = null,
         bool BulletsAreRemovedOnCollision = true, int Difficulty = 1) {
         
+        this.shootPattern = shootPattern;
         this.Type = Type; 
         this.Size = Size; 
         this.Damage = Damage; 
@@ -49,7 +56,6 @@ public class EnemyConst {
         this.BulletSpeed = BulletSpeed; 
         this.Ammo = Ammo; 
         this.Skill = Skill; 
-        this.SPattern = SPattern; 
         this.BType = BType; 
         this.OExpireEffect = OExpireEffect;
         this.Armor = Armor;

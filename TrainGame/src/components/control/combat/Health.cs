@@ -46,10 +46,19 @@ public class Health {
     }
 }
 
-public class Enemy {
+public class Enemy : IFlag<Enemy> {
+    private static Enemy e; 
+    //ICKY: don't need to use the same class for flag and type
     public readonly EnemyType Type; 
     
     public Enemy(EnemyType Type = EnemyType.Default) {
         this.Type = Type; 
+    }
+
+    public static Enemy Get() {
+        if (e == null) {
+            e = new Enemy();
+        }
+        return e;
     }
 }

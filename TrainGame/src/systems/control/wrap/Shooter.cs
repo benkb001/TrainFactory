@@ -10,8 +10,14 @@ using TrainGame.ECS;
 using TrainGame.Utils;
 using TrainGame.Constants;
 
+
 public static class ShooterWrap {
     
+    //returns the velocity needed to shoot at targetPos from pos with speed speed
+    public static Vector2 Aim(Vector2 pos, Vector2 targetPos, float speed) {
+        return (Vector2.Normalize(targetPos - pos)) * speed;
+    }
+    /*
     private static float[] ds = {-1f, 1f};
 
     private static void shootCardinal(World w, int axis, Frame f, Shooter shooter, Func<int> addBulletEnt) {
@@ -142,4 +148,7 @@ public static class ShooterWrap {
             });
         }
     }
+
+    */
 }
+

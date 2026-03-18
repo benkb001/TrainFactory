@@ -16,24 +16,32 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public static class ShootSystem {
+    public static void Register<U>(World w) 
+    where U : IFlag<U> {
+        w.AddSystem([typeof(U), typeof(ShotMessage), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
+            Shooter shooter = w.GetComponent<Shooter>(e);
+            Frame f = w.GetComponent<Frame>(e);
+            Vector2 targetPosition = w.GetComponent<ShotMessage>(e).TargetPosition;
+            IEnumerable<BulletContainer> bs = shooter.Shoot(w.Time, f.Position, targetPosition);
+
+            foreach (BulletContainer b in bs) {
+                int bulletEnt = EntityFactory.AddUI(w, b.GetPosition(), b.GetWidth(), b.GetWidth(), 
+                    setOutline: true);
+                w.SetComponent<Velocity>(bulletEnt, new Velocity(b.GetVelocity())); 
+                w.SetComponent<Bullet>(bulletEnt, b.GetBullet());
+                w.SetComponent<U>(bulletEnt, U.Get());
+            }
+
+            w.RemoveComponent<ShotMessage>(e);
+        });
+    }
+}
+
+public static class PlayerShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
-                Shooter shooter = PlayerWrap.GetShooter(w); 
-                if (shooter != null) {
-                    Vector2 mousePos = w.GetWorldMouseCoordinates(); 
-                    int itemEnt = PlayerWrap.GetHeldItemEnt(w); 
-                    (Frame f, bool s2) = w.GetComponentSafe<Frame>(itemEnt); 
-
-                    if (s2) {
-                        //for homing, we need to pass a 'target ent', for now we 
-                        //will do this. We could later have another system that 
-                        //changes the homing entity for bullets with [Homing, Bullet, Player, Active] 
-                        //to query for the closest [Enemy, Health, Frame, Active]
-                        int enemyEnt = EnemyWrap.GetFirst(w);
-                        ShooterWrap.TryShoot(w, shooter, f, mousePos, ShooterType.Player, enemyEnt);
-                    }
-                }
+                //TODO: Add back in after refactor
             }
         });
     }

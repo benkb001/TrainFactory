@@ -18,14 +18,14 @@ using TrainGame.Constants;
 public static class EnemyShootSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
-            int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame), typeof(Active)]); 
-            (Frame targetableFrame, bool s) = w.GetComponentSafe<Frame>(targetableEnt); 
+            Shooter shooter = w.GetComponent<Shooter>(e);
+            if (shooter.CanShoot(w.Time)) {
+                int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame), typeof(Active)]); 
+                (Frame targetableFrame, bool s) = w.GetComponentSafe<Frame>(targetableEnt); 
 
-            if (s) {
-                Vector2 targetablePos = targetableFrame.Position; 
-                Shooter shooter = w.GetComponent<Shooter>(e);
-                Frame enemyFrame = w.GetComponent<Frame>(e);
-                ShooterWrap.TryShoot(w, shooter, enemyFrame, targetablePos, ShooterType.Enemy, targetableEnt); 
+                if (s) {
+                    w.SetComponent<ShotMessage>(e, new ShotMessage(targetableFrame.Position));
+                }
             }
         });
     }

@@ -1,0 +1,22 @@
+namespace TrainGame.Components;
+
+using Microsoft.Xna.Framework;
+
+public class BulletContainer {
+    private Vector2 pos; 
+    private Vector2 velocity; 
+    private float width;
+    private Bullet b; 
+
+    public float GetWidth() => width;
+    public Vector2 GetVelocity() => velocity; 
+    public Vector2 GetPosition() => pos; 
+    public Bullet GetBullet() => b;
+
+    public BulletContainer(Bullet b, Vector2 pos, Vector2 vel, float w) {
+        this.b = b; 
+        this.pos = pos; 
+        this.velocity = vel; 
+        this.width = w;
+    }
+}
