@@ -25,12 +25,7 @@ public class EnemyWrap {
         Health h = new Health(e.HP);
         w.SetComponent<Health>(enemyEnt, h); 
         
-        Shooter shooter = new Shooter(
-            new DefaultShootPattern(),
-            ticksPerShot: e.TicksPerShot,
-            ammo: e.Ammo,
-            reloadTicks: e.ReloadTicks
-        );
+        Shooter shooter = e.GetShooter();
         w.SetComponent<Shooter>(enemyEnt, shooter); 
 
         w.SetComponent<Enemy>(enemyEnt, new Enemy(enemyType)); 

@@ -25,11 +25,26 @@ public static class ShootSystem {
             IEnumerable<BulletContainer> bs = shooter.Shoot(w.Time, f.Position, targetPosition);
 
             foreach (BulletContainer b in bs) {
-                int bulletEnt = EntityFactory.AddUI(w, b.GetPosition(), b.GetWidth(), b.GetWidth(), 
+                Bullet bullet = b.GetBullet();
+                int ent = EntityFactory.AddUI(w, b.GetPosition(), b.GetWidth(), b.GetWidth(), 
                     setOutline: true);
-                w.SetComponent<Velocity>(bulletEnt, new Velocity(b.GetVelocity())); 
-                w.SetComponent<Bullet>(bulletEnt, b.GetBullet());
-                w.SetComponent<U>(bulletEnt, U.Get());
+                w.SetComponent<Velocity>(ent, new Velocity(b.GetVelocity())); 
+                w.SetComponent<Bullet>(ent, bullet);
+                w.SetComponent<U>(ent, U.Get());
+
+                if (b.IsWarned) {
+                    w.RemoveComponent<Active>(ent); 
+                    int warnEnt = EntityFactory.Add(w); 
+                    Frame bulletFrame = w.GetComponent<Frame>(ent);
+                    w.SetComponent<Frame>(warnEnt, new Frame(bulletFrame));
+                    bulletFrame.SetCoordinates(SceneSystem.OffScreenPosition);
+                    BulletWarning warn = new BulletWarning(w.Time + b.WarningDuration, ent);
+                    w.SetComponent<BulletWarning>(warnEnt, warn); 
+                    w.SetComponent<Outline>(warnEnt, new Outline(Colors.Warning));
+                    TextBox tb = new TextBox("!"); 
+                    tb.TextColor = Colors.Warning;
+                    w.SetComponent<TextBox>(warnEnt, tb);
+                }
             }
 
             w.RemoveComponent<ShotMessage>(e);

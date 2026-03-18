@@ -13,6 +13,7 @@
 * An enemy clipped outside the wall on the diagonal map
 * If a machine is delivering and player saves/quits it doesn't deliver
 * Fix somehow negative items? 
+* Fix player invincibility frames shouldn't reset if they are currently invincible
   
 **** TEST **** 
 

@@ -1,5 +1,7 @@
 namespace TrainGame.Components;
 
+using Microsoft.Xna.Framework;
+
 public class ShotMessage {
     public readonly Vector2 TargetPosition;
 

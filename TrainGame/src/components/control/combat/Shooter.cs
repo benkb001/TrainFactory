@@ -1,4 +1,4 @@
-namespace TrainGame.Systems; 
+namespace TrainGame.Components; 
 
 using System.Collections.Generic;
 using System.Drawing; 
@@ -27,7 +27,7 @@ public class Shooter {
     public int MaxAmmo => maxAmmo; 
     public IShootPattern ShootPattern => shootPattern;
 
-    public Shooter(IShootPattern shootPattern, int ammo = 10, int ticksPerShot = 10, int reloadTicks = 20) {
+    public Shooter(IShootPattern shootPattern, int ammo = 6, int ticksPerShot = 30, int reloadTicks = 60) {
         this.shootPattern = shootPattern;
         this.ticksPerShot = ticksPerShot; 
         this.ammo = ammo; 
@@ -55,5 +55,9 @@ public class Shooter {
 
     public bool CanShoot(WorldTime t) {
         return t.IsAfterOrAt(canShoot); 
+    }
+
+    public Shooter Clone() {
+        return new Shooter(shootPattern.Clone(), maxAmmo, ticksPerShot, reloadTicks);
     }
 }

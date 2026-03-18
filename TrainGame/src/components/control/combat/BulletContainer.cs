@@ -1,6 +1,7 @@
 namespace TrainGame.Components;
 
 using Microsoft.Xna.Framework;
+using TrainGame.Utils;
 
 public class BulletContainer {
     private Vector2 pos; 
@@ -13,10 +14,14 @@ public class BulletContainer {
     public Vector2 GetPosition() => pos; 
     public Bullet GetBullet() => b;
 
-    public BulletContainer(Bullet b, Vector2 pos, Vector2 vel, float w) {
+    public readonly WorldTime WarningDuration;
+    public bool IsWarned => WarningDuration != null;
+
+    public BulletContainer(Bullet b, Vector2 pos, Vector2 vel, float w, WorldTime warningDuration = null) {
         this.b = b; 
         this.pos = pos; 
         this.velocity = vel; 
         this.width = w;
+        this.WarningDuration = warningDuration;
     }
 }
