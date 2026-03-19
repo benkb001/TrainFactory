@@ -39,22 +39,14 @@ public static class CollideBulletSystem {
                 Frame otherFrame = w.GetComponent<Frame>(otherEnt); 
                 Bullet b = w.GetComponent<Bullet>(e);
 
-                switch (b.GetOnCollideEffect()) {
-                    case OnCollideEffect.Bounce: 
-                        //TODO: need to get which side of the wall it collided with. 
-                        //
-                        
+                //TODO: This should register a collided message, 
+                //and then we can have systems that run when there is 
+                //a certain component as well as the collided message,
+                //so like [typeof(Collided), typeof(Bounces)]. 
+                //We will also maybe add a default component type that is to destroy 
+                //the entity when it collided. 
+                w.RemoveEntity(e); 
 
-                        break;
-                    case OnCollideEffect.None:
-                        break;
-                    default: 
-                        throw new InvalidOperationException("Unimplemented OnCollideEffect");
-                }
-
-                if (b.IsRemovedOnCollision) {
-                    w.RemoveEntity(e); 
-                }
             }
         });
     }

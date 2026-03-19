@@ -15,6 +15,12 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public static class TargetableWrap {
+    public static int GetFirst(World w) {
+        return w.GetFirstMatchingEntity([typeof(Frame), typeof(Targetable), typeof(Active)]);
+    }
+}
+
 public static class EnemyMovementSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Movement), typeof(Enemy), typeof(Frame), typeof(Active)], (w, e) => {
@@ -24,7 +30,7 @@ public static class EnemyMovementSystem {
                 move.Move(w.Time); 
                 Frame f = w.GetComponent<Frame>(e); 
 
-                int targetableEnt = w.GetFirstMatchingEntity([typeof(Frame), typeof(Targetable), typeof(Active)]);
+                int targetableEnt = TargetableWrap.GetFirst(w);
                 (Frame targetFrame, bool success) = w.GetComponentSafe<Frame>(targetableEnt);
 
                 if (!success) {

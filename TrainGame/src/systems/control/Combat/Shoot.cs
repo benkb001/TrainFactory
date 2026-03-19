@@ -32,18 +32,8 @@ public static class ShootSystem {
                 w.SetComponent<Bullet>(ent, bullet);
                 w.SetComponent<U>(ent, U.Get());
 
-                if (b.IsWarned) {
-                    w.RemoveComponent<Active>(ent); 
-                    int warnEnt = EntityFactory.Add(w); 
-                    Frame bulletFrame = w.GetComponent<Frame>(ent);
-                    w.SetComponent<Frame>(warnEnt, new Frame(bulletFrame));
-                    bulletFrame.SetCoordinates(SceneSystem.OffScreenPosition);
-                    BulletWarning warn = new BulletWarning(w.Time + b.WarningDuration, ent);
-                    w.SetComponent<BulletWarning>(warnEnt, warn); 
-                    w.SetComponent<Outline>(warnEnt, new Outline(Colors.Warning));
-                    TextBox tb = new TextBox("!"); 
-                    tb.TextColor = Colors.Warning;
-                    w.SetComponent<TextBox>(warnEnt, tb);
+                foreach (IBulletTrait trait in b.GetTraits()) {
+                    BulletTraitRegistry.AddTrait(w, trait, ent);
                 }
             }
 

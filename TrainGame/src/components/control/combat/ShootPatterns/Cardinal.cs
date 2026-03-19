@@ -22,12 +22,14 @@ public class CardinalShootPattern : IShootPattern {
     private bool left;
     private bool upLeft;
     private int numShots;
+    private BulletContainer bulletContainer;
  
-    public CardinalShootPattern(float BulletSpeed, int Damage, 
+    public CardinalShootPattern(BulletContainer bc,
     bool up = false, bool upRight = false, bool right = false, bool downRight = false, 
     bool down = false, bool downLeft = false, bool left = false, bool upLeft = false) {
-        this.Damage = Damage;
-        this.BulletSpeed = BulletSpeed;
+
+        this.bulletContainer = bc;
+        this.BulletSpeed = bc.GetBulletSpeed();
         this.up = up;
         this.upRight = upRight;
         this.right = right;
@@ -59,7 +61,7 @@ public class CardinalShootPattern : IShootPattern {
     public int GetBulletsShot() => numShots;
     
     public IShootPattern Clone() {
-        return new CardinalShootPattern(BulletSpeed, Damage, up, upRight, 
+        return new CardinalShootPattern(bulletContainer.Clone(), up, upRight, 
             right, downRight, down, downLeft, left, upLeft);
     }
 
@@ -67,7 +69,10 @@ public class CardinalShootPattern : IShootPattern {
         List<BulletContainer> bs = new(); 
 
         void addV(Vector2 v) {
-            bs.Add(new BulletContainer(new Bullet(Damage), pos, v, Constants.DefaultBulletSize));
+            BulletContainer b = bulletContainer.Clone();
+            b.SetVelocity(v);
+            b.SetPosition(pos);
+            bs.Add(b);
         }
 
         void add(float x, float y) {

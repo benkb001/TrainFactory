@@ -12,7 +12,7 @@ using TrainGame.Components;
 using TrainGame.Constants; 
 using TrainGame.Utils; 
 
-public class CardinalMovementSystem() {
+public static class CardinalMovementSystem {
     private static Type[] types = [typeof(CardinalMovement), typeof(Frame), typeof(Active)]; 
     private static Action<World, int> transformer = (w, e) => {
         Vector2 v = Vector2.Zero; 

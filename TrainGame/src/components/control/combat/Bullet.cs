@@ -21,27 +21,13 @@ public class Bullet {
     
     private int framesActive; 
     private int damage; 
-    private bool isRemovedOnCollision;
-    private BulletType bulletType; 
-    private OnExpireEffect onExpireEffect;
-    private OnCollideEffect onCollideEffect;
 
     public int Damage => damage; 
     public int FramesActive => framesActive; 
-    public bool IsRemovedOnCollision => isRemovedOnCollision; 
-    public BulletType GetBulletType() => bulletType; 
-    public OnExpireEffect GetOnExpireEffect() => onExpireEffect;
-    public OnCollideEffect GetOnCollideEffect() => onCollideEffect;
 
-    public Bullet(int damage = 1, BulletType bulletType = BulletType.Default, 
-        OnExpireEffect onExpireEffect = OnExpireEffect.Default, int maxFramesActive = 120, 
-        bool isRemovedOnCollision = true) {
+    public Bullet(int damage, int maxFramesActive = 120) {
         this.damage = damage; 
-        this.bulletType = bulletType; 
-        this.onExpireEffect = onExpireEffect;
         this.maxFramesActive = maxFramesActive;
-        this.isRemovedOnCollision = isRemovedOnCollision; 
-        this.framesActive = 0;
     }
 
     public void Decay() {
@@ -49,4 +35,8 @@ public class Bullet {
     }
 
     public bool ShouldRemove => framesActive > maxFramesActive; 
+
+    public Bullet Clone() {
+        return new Bullet(damage, maxFramesActive);
+    }
 }

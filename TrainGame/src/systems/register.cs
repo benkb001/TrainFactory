@@ -14,6 +14,7 @@ using TrainGame.Components;
 
 public static class RegisterSystems {
     public static void All(World w) {
+        RegisterBulletTraits.All();
         //CameraLockSystem.Register(w); 
 
         CardinalMovementSystem.Register(w); 
