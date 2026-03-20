@@ -26,8 +26,9 @@ public static class EnemyMovementSystem {
         w.AddSystem([typeof(Movement), typeof(Enemy), typeof(Frame), typeof(Active)], (w, e) => {
 
             Movement move = w.GetComponent<Movement>(e); 
+            
             if (move.CanMove(w.Time)) {
-                move.Move(w.Time); 
+
                 Frame f = w.GetComponent<Frame>(e); 
 
                 int targetableEnt = TargetableWrap.GetFirst(w);
@@ -37,16 +38,8 @@ public static class EnemyMovementSystem {
                     return;
                 }
 
-                Vector2 direction = move.Type switch {
-                    MoveType.Default => new Vector2(move.Speed * w.NextNeg1To1(), move.Speed * w.NextNeg1To1()),
-                    MoveType.Horizontal => new Vector2(move.Speed * (move.PatternIndex == 0 ? -1 : 1), 0f),
-                    MoveType.Vertical => new Vector2(0f, move.Speed * (move.PatternIndex == 0 ? -1 : 1)),
-                    MoveType.Chase => Vector2.Normalize(targetFrame.Position - f.Position) * move.Speed,
-                    _ => throw new InvalidOperationException("Unknown movement type")
-                };
-
-                move.SetDirection(direction);
-                w.SetComponent<Velocity>(e, new Velocity(direction));
+                Vector2 v = move.Move(w.Time, targetFrame.Position); 
+                w.SetComponent<Velocity>(e, new Velocity(v));
             }
 
             if (!move.IsMoving(w.Time)) {

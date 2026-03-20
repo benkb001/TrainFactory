@@ -30,13 +30,7 @@ public class EnemyWrap {
 
         w.SetComponent<Enemy>(enemyEnt, new Enemy(enemyType)); 
 
-        Movement movement = new Movement(
-            speed: e.MoveSpeed,
-            ticksBetweenMovement: e.TicksBetweenMovement,
-            Type: e.MType,
-            patternLength: e.MovePatternLength,
-            ticksToMove: e.TicksToMove
-        );
+        Movement movement = e.GetMovement();
         w.SetComponent<Movement>(enemyEnt, movement); 
 
         w.SetComponent<Collidable>(enemyEnt, new Collidable()); 

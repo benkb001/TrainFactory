@@ -86,4 +86,8 @@ public static partial class Util {
         int r = random.Next(maxExclusive);
         return r;
     }
+
+    public static float NextNeg1To1() {
+        return (NextFloat() * 2) - 1f;
+    }
 }
