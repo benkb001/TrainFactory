@@ -19,7 +19,7 @@ public static class DrawCityInterfaceSystem {
         w.AddSystem([typeof(DrawCityInterfaceMessage)], (w, e) => {
             SceneSystem.EnterScene(w, SceneType.CityInterface); 
 
-            LinearLayoutContainer outerContainer = LinearLayoutWrap.AddOuter(w);
+            LinearLayoutContainer outerContainer = LinearLayoutContainer.AddOuter(w);
 
             City city = w.GetComponent<DrawCityInterfaceMessage>(e).GetCity();
             Inventory inv = city.Inv;
@@ -28,7 +28,7 @@ public static class DrawCityInterfaceSystem {
             int mFlagEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(mFlagEnt, new Menu(city: city)); 
             
-            LinearLayoutContainer mainRow = LinearLayoutWrap.Add(
+            LinearLayoutContainer mainRow = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 outerContainer.LLWidth, 
@@ -37,9 +37,9 @@ public static class DrawCityInterfaceSystem {
                 outline: false
             );
 
-            LinearLayoutWrap.AddChild(w, mainRow.GetParentEntity(), outerContainer);
+            outerContainer.AddChild(mainRow.GetParentEntity(), w); 
 
-            LinearLayoutContainer trainsView = LinearLayoutWrap.Add(
+            LinearLayoutContainer trainsView = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 0, 
@@ -53,9 +53,9 @@ public static class DrawCityInterfaceSystem {
 
             foreach (Train train in city.Trains.Values) {
                 int tEnt = EntityFactory.Add(w); 
-                LinearLayoutWrap.AddChild(w, tEnt, trainsView);
                 //ICKY, can we pass entity nums into drawCityInterfaceMessage?
                 int trainDataEnt = ComponentID.GetEntity<Train>(train.ID, w);
+                trainsView.AddChild(tEnt, w); 
                 w.SetComponent<TrainUI>(tEnt, new TrainUI(train, trainDataEnt)); 
                 w.SetComponent<TextBox>(tEnt, new TextBox(train.Id)); 
                 w.SetComponent<Button>(tEnt, new Button());
@@ -63,9 +63,9 @@ public static class DrawCityInterfaceSystem {
                 w.SetComponent<Outline>(tEnt, new Outline()); 
             }
 
-            LinearLayoutWrap.AddChild(w, trainsView.GetParentEntity(), mainRow);
+            mainRow.AddChild(trainsView.GetParentEntity(), w); 
 
-            LinearLayoutContainer machinesView = LinearLayoutWrap.Add(
+            LinearLayoutContainer machinesView = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 0, 
@@ -79,7 +79,7 @@ public static class DrawCityInterfaceSystem {
 
             foreach (Machine machine in city.Machines.Values) {
                 int mEnt = EntityFactory.Add(w); 
-                LinearLayoutWrap.AddChild(w, mEnt, machinesView);
+                machinesView.AddChild(mEnt, w); 
                 w.SetComponent<EnterInterfaceButton<MachineInterfaceData>>(mEnt, 
                     new EnterInterfaceButton<MachineInterfaceData>(new MachineInterfaceData(machine, city)));
                 w.SetComponent<TextBox>(mEnt, new TextBox(machine.Id)); 
@@ -87,10 +87,10 @@ public static class DrawCityInterfaceSystem {
                 w.SetComponent<Outline>(mEnt, new Outline()); 
             }
 
-            LinearLayoutWrap.AddChild(w, machinesView.GetParentEntity(), mainRow);
-            LinearLayoutWrap.ResizeChildren(w, mainRow, recurse: true); 
-            LinearLayoutWrap.ResizeChildren(w, machinesView);
-            LinearLayoutWrap.ResizeChildren(w, trainsView);
+            mainRow.AddChild(machinesView.GetParentEntity(), w); 
+            mainRow.ResizeChildren(w, recurse: true); 
+            machinesView.ResizeChildren(w); 
+            trainsView.ResizeChildren(w); 
 
             //add inventories to bottom     
 
@@ -104,7 +104,7 @@ public static class DrawCityInterfaceSystem {
             float invRowWidth = outerContainer.LLWidth; 
             float invRowHeight = Math.Max(playerInvHeight, invHeight) + 20f; 
 
-            LinearLayoutContainer invRow = LinearLayoutWrap.Add(
+            LinearLayoutContainer invRow = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 invRowWidth, 
@@ -113,21 +113,21 @@ public static class DrawCityInterfaceSystem {
                 outline: false
             );
 
-            LinearLayoutWrap.AddChild(w, invView.GetParentEntity(), invRow); 
+            invRow.AddChild(invView.GetParentEntity(), w); 
 
             if (playerInv != null && city.HasPlayer) {
                 InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, 
                     Vector2.Zero, playerInvWidth, playerInvHeight, DrawLabel: true);
             
-                LinearLayoutWrap.AddChild(w, playerInvView.GetParentEntity(), invRow);
+                invRow.AddChild(playerInvView.GetParentEntity(), w); 
             }
 
             int upgradeDepotBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, invWidth / 2, invWidth / 4, 
                 setButton: true, setOutline: true, text: $"Upgrade {city.Id} Depot? Requires 1 Depot Upgrade");
             w.SetComponent<UpgradeDepotButton>(upgradeDepotBtnEnt, new UpgradeDepotButton(city)); 
-            LinearLayoutWrap.AddChild(w, upgradeDepotBtnEnt, invRow);
+            invRow.AddChild(upgradeDepotBtnEnt, w); 
 
-            LinearLayoutContainer connectButtons = LinearLayoutWrap.Add(
+            LinearLayoutContainer connectButtons = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 invRowWidth / 4, 
@@ -135,7 +135,7 @@ public static class DrawCityInterfaceSystem {
                 direction: "vertical", 
                 outline: false
             ); 
-            LinearLayoutWrap.AddChild(w, connectButtons.GetParentEntity(), invRow);
+            invRow.AddChild(connectButtons.GetParentEntity(), w); 
 
             List<string> connectedCities = city.AdjacentCities
             .Select(c => c.Id)
@@ -152,12 +152,12 @@ public static class DrawCityInterfaceSystem {
                     text: $"Add Railroad to {otherID}? \n{Util.FormatMap(cost)}"); 
                 City otherCity = CityWrap.GetByID(w, otherID); 
                 w.SetComponent<ConnectCitiesButton>(btnEnt, new ConnectCitiesButton(city, otherCity, cost));
-                LinearLayoutWrap.AddChild(w, btnEnt, connectButtons);  
+                connectButtons.AddChild(btnEnt, w); 
             }); 
 
-            LinearLayoutWrap.ResizeChildren(w, connectButtons);
+            connectButtons.ResizeChildren(w);
 
-            LinearLayoutWrap.AddChild(w, invRow.GetParentEntity(), outerContainer);
+            outerContainer.AddChild(invRow.GetParentEntity(), w);
 
             w.RemoveEntity(e);
         }); 

@@ -48,17 +48,17 @@ public class DrawTravelingInterfaceSystem {
             float width = w.ScreenWidth - 20f; 
             float height = w.ScreenHeight - 20f; 
 
-            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w);
             
             int summaryEnt = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(w, summaryEnt, outer); 
+            outer.AddChild(summaryEnt, w); 
             w.SetComponent<Frame>(summaryEnt, new Frame(0, 0, w.ScreenWidth - 40f, w.ScreenHeight / 4f)); 
             string s = $"{t.Id}\nArrival Time: {t.ArrivalTime}";
             w.SetComponent<TextBox>(summaryEnt, new TextBox(s)); 
             w.SetComponent<Outline>(summaryEnt, new Outline()); 
             
             int timeEnt = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(w, timeEnt, outer); 
+            outer.AddChild(timeEnt, w); 
             w.SetComponent<Frame>(timeEnt, new Frame(0, 0, w.ScreenHeight / 4f, w.ScreenHeight / 4f)); 
             w.SetComponent<GameClockView>(timeEnt, GameClockView.Get());
             w.SetComponent<Outline>(timeEnt, new Outline()); 
@@ -69,15 +69,15 @@ public class DrawTravelingInterfaceSystem {
                 t, Vector2.Zero, invWidth, invHeight); 
             InventoryContainer<Train> container = DrawInventoryContainerSystem.Draw<Train>(dm, w);
 
-            LinearLayoutContainer row = LinearLayoutWrap.Add(w, Vector2.Zero, w.ScreenWidth - 40f, w.ScreenHeight / 4f);
-            LinearLayoutWrap.AddChild(w, row.GetParentEntity(), outer); 
+            LinearLayoutContainer row = LinearLayoutContainer.Add(w, Vector2.Zero, w.ScreenWidth - 40f, w.ScreenHeight / 4f);
+            outer.AddChild(row.GetParentEntity(), w); 
 
-            LinearLayoutWrap.AddChild(w, container.GetParentEntity(), row);
+            row.AddChild(container.GetParentEntity(), w);
 
             (TALBody<Train, City> exe, bool has_exe) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
             if (has_exe) {
                 int pauseProgramBtnEnt = PauseTrainProgramButtonWrap.Add(w, exe, w.ScreenHeight / 4f, w.ScreenHeight / 5f);
-                LinearLayoutWrap.AddChild(w, pauseProgramBtnEnt, row); 
+                row.AddChild(pauseProgramBtnEnt, w);
             }
 
             w.RemoveEntity(e); 

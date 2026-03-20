@@ -27,11 +27,11 @@ public class ClearLLSystemTest {
         w.SetComponent<Frame>(parentEnt, new Frame(0, 0, 100, 100)); 
         w.SetComponent<Frame>(childEnt, new Frame(0, 0, 50, 50)); 
 
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, llParent, w); 
 
         int grandChildEnt = EntityFactory.Add(w); 
         w.SetComponent<Frame>(grandChildEnt, new Frame(0, 0, 25, 25)); 
-        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+        LinearLayoutContainer.AddChild(grandChildEnt, childEnt, llChild, w); 
 
         Assert.True(w.EntityExists(parentEnt)); 
         Assert.True(w.EntityExists(childEnt)); 

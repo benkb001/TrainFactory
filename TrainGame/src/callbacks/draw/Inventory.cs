@@ -52,7 +52,7 @@ public static class DrawInventoryCallback {
             invHeight -= Constants.LabelHeight; 
 
             headerRowLLEntity = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(headerRowLLEntity, containerEntity, container, w); 
+            LinearLayoutContainer.AddChild(headerRowLLEntity, containerEntity, container, w); 
 
             headerRowLL = new LinearLayout("horizontal", "alignlow"); 
             headerRowLL.Padding = Constants.InventoryPadding; 
@@ -60,7 +60,7 @@ public static class DrawInventoryCallback {
             w.SetComponent<Frame>(headerRowLLEntity, new Frame(0, 0, Width, Constants.LabelHeight)); 
 
             int labelEntity = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(labelEntity, headerRowLLEntity, headerRowLL, w);
+            LinearLayoutContainer.AddChild(labelEntity, headerRowLLEntity, headerRowLL, w);
             
             w.SetComponent<Frame>(labelEntity, new Frame(0, 0, labelWidth, Constants.LabelHeight));
             w.SetComponent<Outline>(labelEntity, new Outline()); 
@@ -69,7 +69,7 @@ public static class DrawInventoryCallback {
 
         int inventoryEntity = EntityFactory.Add(w); 
 
-        LinearLayoutWrap.AddChild(inventoryEntity, containerEntity, container, w); 
+        LinearLayoutContainer.AddChild(inventoryEntity, containerEntity, container, w); 
 
         w.SetComponent<Inventory>(inventoryEntity, inv); 
         
@@ -115,9 +115,9 @@ public static class DrawInventoryCallback {
                 w.SetComponent<TextBox>(cell, tb);
                 w.SetComponent<Draggable>(cell, new Draggable()); 
                 w.SetComponent<Button>(cell, new Button()); 
-                LinearLayoutWrap.AddChild(cell, row, rowLL, w);
+                LinearLayoutContainer.AddChild(cell, row, rowLL, w);
             }
-            LinearLayoutWrap.AddChild(row, inventoryEntity, ll, w); 
+            LinearLayoutContainer.AddChild(row, inventoryEntity, ll, w); 
         }
 
         return new InventoryView(containerEntity, inventoryEntity, headerRowLLEntity, 

@@ -136,7 +136,7 @@ public static class TextInputSystem {
                     int curLineEnt = EntityFactory.Add(w); 
                     w.SetComponent<Frame>(curLineEnt, new Frame(Vector2.Zero, lineWidth, lineHeight)); 
                     w.SetComponent<TextBox>(curLineEnt, new TextBox("")); 
-                    LinearLayoutWrap.AddChild(curLineEnt, e, ll, w);
+                    LinearLayoutContainer.AddChild(curLineEnt, e, ll, w);
                 }
 
                 for (int j = 0; j < lines.Count; j++) {

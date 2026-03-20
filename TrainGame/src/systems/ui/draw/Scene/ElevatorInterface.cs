@@ -16,7 +16,7 @@ using TrainGame.Utils;
 public static class DrawElevatorInterfaceSystem {
     public static void Register(World w) {
         DrawInterfaceSystem.Register<ElevatorInterfaceData>(w, (w, e, data) => {
-            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w, "Elevator"); 
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w, "Elevator"); 
             StepperContainer step = StepperWrap.Draw(
                 w,
                 100f, 
@@ -27,7 +27,7 @@ public static class DrawElevatorInterfaceSystem {
                 max: Globals.MaxFloor - (Globals.MaxFloor % 5), 
                 step: 5
             );
-            LinearLayoutWrap.AddChild(w, step.ContainerEnt, outer);
+            outer.AddChild(step.ContainerEnt, w); 
             w.SetComponent<ElevatorButton>(step.SubmitEnt, new ElevatorButton(step.Step));
         });
     }

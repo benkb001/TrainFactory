@@ -68,7 +68,7 @@ public static class DrawAddCartInterfaceSystem {
             ll.AddChild(cEntity); 
         }
 
-        LinearLayoutWrap.ResizeChildren(llEntity, w); 
+        LinearLayoutContainer.ResizeChildren(llEntity, w); 
         w.RemoveEntity(e); 
     }; 
 }

@@ -29,10 +29,10 @@ public static class DrawSetTrainProgramInterfaceSystem {
             float llWidth = w.ScreenWidth - 20f; 
             float llHeight = w.ScreenHeight - 20f; 
 
-            LinearLayoutContainer outerContainer = LinearLayoutWrap.Add(w, llPos, llWidth, llHeight, 
+            LinearLayoutContainer outerContainer = LinearLayoutContainer.Add(w, llPos, llWidth, llHeight, 
                 direction: "vertical", outline: false);
 
-            LinearLayoutContainer prewrittenRow = LinearLayoutWrap.Add(w, Vector2.Zero, 0, 0, 
+            LinearLayoutContainer prewrittenRow = LinearLayoutContainer.Add(w, Vector2.Zero, 0, 0, 
                 usePaging: true, childrenPerPage: 5, label: "Pre-Written Scripts", outline: true); 
 
             foreach (KeyValuePair<string, string> kvp in TAL.Scripts) {
@@ -44,10 +44,10 @@ public static class DrawSetTrainProgramInterfaceSystem {
                 ViewProgramInterfaceData data = new ViewProgramInterfaceData(programName, program, programExplanation, t, trainEnt); 
                 EnterInterfaceButton<ViewProgramInterfaceData> btn = new EnterInterfaceButton<ViewProgramInterfaceData>(data);
                 w.SetComponent<EnterInterfaceButton<ViewProgramInterfaceData>>(btnEnt, btn); 
-                LinearLayoutWrap.AddChild(w, btnEnt, prewrittenRow);
+                prewrittenRow.AddChild(btnEnt, w); 
             }
 
-            LinearLayoutContainer playerRow =  LinearLayoutWrap.Add(w, Vector2.Zero, 0, 0, 
+            LinearLayoutContainer playerRow =  LinearLayoutContainer.Add(w, Vector2.Zero, 0, 0, 
                 usePaging: true, childrenPerPage: 5, label: "Player-Written Scripts", outline: true); 
             
             List<KeyValuePair<string, string>> playerScripts = TAL.PlayerScripts.ToList(); 
@@ -63,12 +63,12 @@ public static class DrawSetTrainProgramInterfaceSystem {
                     new EnterInterfaceButton<WriteProgramInterfaceData>(d));
                 w.SetComponent<Outline>(btnEnt, new Outline()); 
                 w.SetComponent<TextBox>(btnEnt, new TextBox($"{programName}"));
-                LinearLayoutWrap.AddChild(w, btnEnt, playerRow); 
+                playerRow.AddChild(btnEnt, w); 
             }
 
-            LinearLayoutWrap.AddChild(w, prewrittenRow.GetParentEntity(), outerContainer);
-            LinearLayoutWrap.AddChild(w, playerRow.GetParentEntity(), outerContainer);
-            LinearLayoutWrap.ResizeChildren(w, outerContainer, recurse: true);
+            outerContainer.AddChild(prewrittenRow.GetParentEntity(), w); 
+            outerContainer.AddChild(playerRow.GetParentEntity(), w);
+            outerContainer.ResizeChildren(w, recurse: true); 
             w.RemoveEntity(e); 
         }); 
     }

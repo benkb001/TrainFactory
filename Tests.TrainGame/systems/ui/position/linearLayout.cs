@@ -58,8 +58,8 @@ public class LinearLayoutSystemTest {
         w.SetComponent<LinearLayout>(parentEnt, llParent); 
         w.SetComponent<Frame>(parentEnt, new Frame(0, 0, 100, 100)); 
 
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
-        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, llParent, w); 
+        LinearLayoutContainer.AddChild(grandChildEnt, childEnt, llChild, w); 
 
         w.SetComponent<Frame>(grandChildEnt, new Frame(1000, 100, 100, 100));
 
@@ -80,7 +80,7 @@ public class LinearLayoutSystemTest {
         for (int i = 0; i < 10; i++) {
             int e = EntityFactory.Add(w); 
             w.SetComponent<Frame>(e, new Frame(0, 0, 10, 10)); 
-            LinearLayoutWrap.AddChild(e, llEnt, ll, w); 
+            LinearLayoutContainer.AddChild(e, llEnt, ll, w); 
         }
 
         ll.Page(2); 

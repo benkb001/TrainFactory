@@ -21,7 +21,7 @@ public class DrawTrainInterfaceSystem {
         LinearLayout buttonsContainer = new LinearLayout("Vertical", "alignlow"); 
         buttonsContainer.Padding = Constants.InventoryPadding; 
         int buttonsContainerEnt = EntityFactory.Add(w); 
-        LinearLayoutWrap.AddChild(buttonsContainerEnt, containerEnt, container, w);
+        LinearLayoutContainer.AddChild(buttonsContainerEnt, containerEnt, container, w);
 
         float buttonsContainerWidth = w.ScreenWidth / 5f; 
         float buttonsContainerHeight = height; 
@@ -36,7 +36,7 @@ public class DrawTrainInterfaceSystem {
 
         int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, buttonWidth, buttonHeight * 2, setOutline: true, 
             text: summary);
-        LinearLayoutWrap.AddChild(sumEnt, buttonsContainerEnt, buttonsContainer, w);
+        LinearLayoutContainer.AddChild(sumEnt, buttonsContainerEnt, buttonsContainer, w);
 
         //draw Add Cart button 
         //TODO: this should only be clickable if there is a cart to add at the city
@@ -46,11 +46,11 @@ public class DrawTrainInterfaceSystem {
         w.SetComponent<EnterInterfaceButton<UpgradeTrainInterfaceData>>(upgradeTrainButtonEnt, 
             new EnterInterfaceButton<UpgradeTrainInterfaceData>(new UpgradeTrainInterfaceData(t, trainEnt)));
 
-        LinearLayoutWrap.AddChild(upgradeTrainButtonEnt, buttonsContainerEnt, buttonsContainer, w);
+        LinearLayoutContainer.AddChild(upgradeTrainButtonEnt, buttonsContainerEnt, buttonsContainer, w);
 
         //draw button to go to Set Train Program Interface
         int programBtn = EntityFactory.Add(w);
-        LinearLayoutWrap.AddChild(programBtn, buttonsContainerEnt, buttonsContainer, w); 
+        LinearLayoutContainer.AddChild(programBtn, buttonsContainerEnt, buttonsContainer, w); 
         w.SetComponent<Frame>(programBtn, new Frame(0, 0, buttonWidth, buttonHeight)); 
         w.SetComponent<Outline>(programBtn, new Outline()); 
         w.SetComponent<TextBox>(programBtn, new TextBox("Program train")); 
@@ -73,7 +73,7 @@ public class DrawTrainInterfaceSystem {
             w
         ); 
 
-        LinearLayoutWrap.AddChild(embarkEnt, containerEnt, container, w);
+        LinearLayoutContainer.AddChild(embarkEnt, containerEnt, container, w);
     }
 
     private static void addInvs(LinearLayout container, int containerEnt, Train t, Inventory cityInv, World w, float height) {
@@ -96,12 +96,12 @@ public class DrawTrainInterfaceSystem {
         invsContainer.Padding = Constants.InventoryPadding;
         int invsContainerEnt = EntityFactory.Add(w); 
         
-        LinearLayoutWrap.AddChild(invsContainerEnt, containerEnt, container, w);
+        LinearLayoutContainer.AddChild(invsContainerEnt, containerEnt, container, w);
 
         w.SetComponent<LinearLayout>(invsContainerEnt, invsContainer); 
         w.SetComponent<Frame>(invsContainerEnt, new Frame(0, 0, invsContainerWidth, invsContainerHeight));
-        LinearLayoutWrap.AddChild(trainInvContainer.GetParentEntity(), invsContainerEnt, invsContainer, w); 
-        LinearLayoutWrap.AddChild(cityInvView.GetParentEntity(), invsContainerEnt, invsContainer, w); 
+        LinearLayoutContainer.AddChild(trainInvContainer.GetParentEntity(), invsContainerEnt, invsContainer, w); 
+        LinearLayoutContainer.AddChild(cityInvView.GetParentEntity(), invsContainerEnt, invsContainer, w); 
     }
 
     public static void Register(World w) {

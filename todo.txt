@@ -42,7 +42,7 @@
 * Fix test directory to match file changes and to compile
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
-* I think we just merge LinearLayoutWrap and LinearLayoutContainer 
+* I think we just merge LinearLayoutContainer and LinearLayoutContainer 
   into one class.
 
 * Add back player shooting

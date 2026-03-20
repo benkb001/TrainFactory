@@ -41,11 +41,11 @@ public class InventoryView {
     }
 
     public void AddChildToHeader(int cEnt, World w) {
-        LinearLayoutWrap.AddChild(cEnt, headerEntity, headerRowLL, w);
+        LinearLayoutContainer.AddChild(cEnt, headerEntity, headerRowLL, w);
     }
 
     public void Clear(World w) {
-        LinearLayoutWrap.Clear(parentEntity, w, parentLL);
+        LinearLayoutContainer.Clear(parentEntity, w, parentLL);
     }
 
     public Vector2 GetPosition(World w) {

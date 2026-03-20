@@ -211,7 +211,7 @@ public class LinearLayoutContainer {
         
         if (success) {
             int parentEnt = llChild.ParentEntity;
-            LinearLayoutWrap.Clear(parentEnt, w); 
+            LinearLayoutContainer.Clear(parentEnt, w); 
             return parentEnt; 
         }
 
@@ -243,15 +243,14 @@ public class LinearLayoutContainer {
     public int LLEnt => llEnt; 
     public int LabelEntity => labelEntity; 
     public int GetParentEntity() => parentEntity; 
-    public LinearLayout LL => ll; 
     public List<int> GetChildren() => ll.GetChildren(); 
 
-    public void ResizeChildren(World wbool recurse = false) {
-        LinearLayoutContainer.ResizeChildren(LLEnt, w, recurse);
+    public void ResizeChildren(World w, bool recurse = false) {
+        LinearLayoutContainer.ResizeChildren(llEnt, w, recurse);
     }
 
-    public void AddChild(World w, int childEntity) {
-        AddChild(childEntity, LLEnt, LL, w);
+    public void AddChild(int childEntity, World w) {
+        LinearLayoutContainer.AddChild(childEntity, llEnt, ll, w);
     } 
 
     private LinearLayoutContainer(int llEnt, int parentEnt, int labelEntity, 

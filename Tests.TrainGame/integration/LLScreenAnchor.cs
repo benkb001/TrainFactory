@@ -26,12 +26,12 @@ public class LLScreenAnchorIntegrationTest {
         LinearLayout childLL = new LinearLayout("horizontal", "alignlow"); 
         w.SetComponent<LinearLayout>(childEnt, childLL); 
         w.SetComponent<Frame>(childEnt, new Frame(0, 0, 500, 500));
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, parent, w);
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, parent, w);
 
         int grandchildEnt = EntityFactory.Add(w); 
         Frame grandchildFrame = new Frame(0, 0, 100, 100);
         w.SetComponent<Frame>(grandchildEnt, grandchildFrame); 
-        LinearLayoutWrap.AddChild(grandchildEnt, childEnt, childLL, w);
+        LinearLayoutContainer.AddChild(grandchildEnt, childEnt, childLL, w);
 
         w.SetCameraPosition(Vector2.Zero); 
         w.Update(); 

@@ -80,7 +80,7 @@ public static class DrawMapSystem {
             //add container for hud on left
             float hudWidth = w.ScreenWidth / 3f; 
             float hudHeight = w.ScreenHeight - 20f; 
-            LinearLayoutContainer hud = LinearLayoutWrap.Add(
+            LinearLayoutContainer hud = LinearLayoutContainer.Add(
                 w, 
                 new Vector2(10, 0),
                 hudWidth, 
@@ -100,13 +100,13 @@ public static class DrawMapSystem {
             float clockWidth = hudWidth; 
             float clockHeight = hudWidth / 5f; 
             w.SetComponent<Frame>(clockEnt, new Frame(0, 0, clockWidth, clockHeight));
-            LinearLayoutWrap.AddChild(w, clockEnt, hud);
+            hud.AddChild(clockEnt, w); 
 
             //add speed buttons to HUD
 
             float speedButtonRowWidth = hudWidth; 
             float speedButtonRowHeight = speedButtonRowWidth / 5f; 
-            LinearLayoutContainer speedButtonRow = LinearLayoutWrap.Add(
+            LinearLayoutContainer speedButtonRow = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 speedButtonRowWidth, 
@@ -121,11 +121,11 @@ public static class DrawMapSystem {
                 es[i] = buttonEnt; 
                 w.SetComponent<Outline>(buttonEnt, new Outline()); 
                 w.SetComponent<Button>(buttonEnt, new Button()); 
-                LinearLayoutWrap.AddChild(w, buttonEnt, speedButtonRow);
+                speedButtonRow.AddChild(buttonEnt, w); 
             }
 
-            LinearLayoutWrap.ResizeChildren(w, speedButtonRow);
-            LinearLayoutWrap.AddChild(w, speedButtonRow.GetParentEntity(), hud);
+            speedButtonRow.ResizeChildren(w); 
+            hud.AddChild(speedButtonRow.GetParentEntity(), w); 
 
             w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
             w.SetComponent<TextBox>(es[0], new TextBox("Slow Time")); 
@@ -138,27 +138,27 @@ public static class DrawMapSystem {
 
             float saveRowWidth = clockWidth; 
             float saveRowHeight = clockHeight; 
-            LinearLayoutContainer saveRow = LinearLayoutWrap.Add(w, Vector2.Zero, saveRowWidth, saveRowHeight, 
+            LinearLayoutContainer saveRow = LinearLayoutContainer.Add(w, Vector2.Zero, saveRowWidth, saveRowHeight, 
                 direction: "horizontal", outline: true);
 
             int equipEnt = EntityFactory.AddUI(w, Vector2.Zero, 0f, 0f, setButton: true, 
                 setOutline: true, text: "Equip");
             w.SetComponent<EnterInterfaceButton<EquipmentInterfaceData>>(equipEnt,
                 new EnterInterfaceButton<EquipmentInterfaceData>(new EquipmentInterfaceData()));
-            LinearLayoutWrap.AddChild(w, equipEnt, saveRow);
+            saveRow.AddChild(equipEnt, w);
 
             int saveEnt = EntityFactory.AddUI(w, Vector2.Zero, 0f, 0f, setButton: true, 
                 text: "Save", setOutline: true);
             w.SetComponent<SaveButton>(saveEnt, new SaveButton());
-            LinearLayoutWrap.AddChild(w, saveEnt, saveRow);
-            LinearLayoutWrap.ResizeChildren(w, saveRow);
+            saveRow.AddChild(saveEnt, w); 
+            saveRow.ResizeChildren(w);
             
-            LinearLayoutWrap.AddChild(w, saveRow.GetParentEntity(), hud);
+            hud.AddChild(saveRow.GetParentEntity(), w); 
 
             //add item summary to HUD 
             float itemSumWidth = hudWidth;
             float itemSumHeight = hudHeight / 1.6f; 
-            LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, itemSumWidth, 
+            LinearLayoutContainer llc = LinearLayoutContainer.Add(w, Vector2.Zero, itemSumWidth, 
                 itemSumHeight, outline: true, usePaging: true, childrenPerPage: 4, direction: "vertical");
             
             List<Inventory> invs = w.GetMatchingEntities([typeof(Inventory), typeof(Data)]).Select(
@@ -175,11 +175,11 @@ public static class DrawMapSystem {
                 int iEnt = EntityFactory.Add(w); 
                 w.SetComponent<TextBox>(iEnt, new TextBox(s)); 
 
-                LinearLayoutWrap.AddChild(w, iEnt, llc);
+                llc.AddChild(iEnt, w);
             }
 
-            LinearLayoutWrap.ResizeChildren(w, llc);
-            LinearLayoutWrap.AddChild(w, llc.GetParentEntity(), hud);
+            llc.ResizeChildren(w); 
+            hud.AddChild(llc.GetParentEntity(), w); 
 
             w.RemoveEntity(e);
         }; 

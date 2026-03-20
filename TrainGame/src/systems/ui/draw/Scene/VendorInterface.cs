@@ -24,11 +24,11 @@ public static class DrawVendorInterfaceSystem {
             (float invWidth, float invHeight) = InventoryWrap.GetUI(inv, 0.8f);
 
             //make outer container 
-            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w);
 
             //make vendor container, a button for each product
 
-            LinearLayoutContainer vendor = LinearLayoutWrap.Add(
+            LinearLayoutContainer vendor = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero, 
                 w.ScreenWidth - 20, 
@@ -71,17 +71,17 @@ public static class DrawVendorInterfaceSystem {
                     throw new InvalidOperationException("Unimplemented purchase button type");
                 }
                 
-                LinearLayoutWrap.AddChild(w, btnEnt, vendor); 
+                vendor.AddChild(btnEnt, w); 
             }
 
-            LinearLayoutWrap.ResizeChildren(w, vendor);
-            LinearLayoutWrap.AddChild(w, vendor.GetParentEntity(), outer); 
+            vendor.ResizeChildren(w); 
+            outer.AddChild(vendor.GetParentEntity(), w); 
 
             //add city inv to bottom
             
             InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 
                 invWidth, invHeight, DrawLabel: true);
-            LinearLayoutWrap.AddChild(w, invView.GetParentEntity(), outer); 
+            outer.AddChild(invView.GetParentEntity(), w); 
 
         });
     }

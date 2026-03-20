@@ -110,14 +110,14 @@ public static class DrawUpgradeTrainInterfaceSystem {
         DrawInterfaceSystem.Register<UpgradeTrainInterfaceData>(w, (w, e, d) => {
             Train t = d.GetTrain();
             int trainEnt = d.TrainEntity;
-            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w);
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w);
             City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
             
             string summary = t.GetSummary();
             int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, 200, 200, setOutline: true, text: summary);
-            LinearLayoutWrap.AddChild(w, sumEnt, outer);
+            outer.AddChild(sumEnt, w);
 
-            LinearLayoutContainer row1 = LinearLayoutWrap.Add(
+            LinearLayoutContainer row1 = LinearLayoutContainer.Add(
                 w, 
                 Vector2.Zero,
                 outer.LLWidth,
@@ -125,7 +125,7 @@ public static class DrawUpgradeTrainInterfaceSystem {
                 direction: "horizontal",
                 outline: false
             );
-            LinearLayoutWrap.AddChild(w, row1.GetParentEntity(), outer);
+            outer.AddChild(row1.GetParentEntity(), w);
 
             float btnWidth = 150; 
             float btnHeight = 100;
@@ -135,18 +135,18 @@ public static class DrawUpgradeTrainInterfaceSystem {
                     setOutline: true, text: text);
             }
             int addCartBtnEnt = addButton("Add Cart?");
-            w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, trainEnt, comingFrom));
-            LinearLayoutWrap.AddChild(w, addCartBtnEnt, row1);
+            w.SetComponent<AddCartInterfaceButton>(addCartBtnEnt, new AddCartInterfaceButton(t, trainEnt, comingFrom));            
+            row1.AddChild(addCartBtnEnt, w);
 
             int upgradeFuelEnt = addButton("Upgrade Fuel Consumption? Requires 1 Combustion Controller");
             w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelEnt, new UpgradeFuelConsumptionButton(t, trainEnt, comingFrom.Inv));
-            LinearLayoutWrap.AddChild(w, upgradeFuelEnt, row1);
+            row1.AddChild(upgradeFuelEnt, w);
 
             int upgradePowerEnt = addButton("Upgrade Speed? Requires 1 Engine");
             w.SetComponent<UpgradeTrainPowerButton>(upgradePowerEnt, new UpgradeTrainPowerButton(t, trainEnt, comingFrom.Inv));
-            LinearLayoutWrap.AddChild(w, upgradePowerEnt, row1);
+            row1.AddChild(upgradePowerEnt, w);
 
-            LinearLayoutContainer row2 = LinearLayoutWrap.Add(
+            LinearLayoutContainer row2 = LinearLayoutContainer.Add(
                 w,
                 Vector2.Zero,
                 outer.LLWidth,
@@ -154,25 +154,25 @@ public static class DrawUpgradeTrainInterfaceSystem {
                 direction: "horizontal",
                 outline: false
             );
-            LinearLayoutWrap.AddChild(w, row2.GetParentEntity(), outer);
+            outer.AddChild(row2.GetParentEntity(), w);
 
             int upgradeInvExpoEnt = addButton(
                 $"Multiply Inventory Sizes By {Constants.ExponentialInvSizeUpgradeFactor}? Requires 1 {ItemID.PocketDimension}");
             w.SetComponent<UpgradeInventoryExponentialButton>(upgradeInvExpoEnt, 
                 new UpgradeInventoryExponentialButton(comingFrom.Inv, train: t));
-            LinearLayoutWrap.AddChild(w, upgradeInvExpoEnt, row2);
+            row2.AddChild(upgradeInvExpoEnt, w);
 
             int upgradeFuelExpoEnt = addButton(
                 $"Multiply Miles Per Fuel By {Constants.ExponentialMilesPerFuelUpgradeFactor}? Requires 1 {ItemID.AntiGravity}");
             w.SetComponent<UpgradeFuelConsumptionButton>(upgradeFuelExpoEnt, 
                 new UpgradeFuelConsumptionButton(t, trainEnt, comingFrom.Inv, exponential: true));
-            LinearLayoutWrap.AddChild(w, upgradeFuelExpoEnt, row2);
+            row2.AddChild(upgradeFuelExpoEnt, w);
 
             int upgradePowerExpoEnt = addButton(
                 $"Multiply Power by {Constants.ExponentialTrainPowerUpgradeFactor}? Requires 1 {ItemID.AirResistor}");
             w.SetComponent<UpgradeTrainPowerButton>(upgradePowerExpoEnt, 
                 new UpgradeTrainPowerButton(t, trainEnt, comingFrom.Inv, exponential: true));
-            LinearLayoutWrap.AddChild(w, upgradePowerExpoEnt, row2);
+            row2.AddChild(upgradePowerExpoEnt, w);
         });
     }
 

@@ -11,9 +11,9 @@ using TrainGame.Systems;
 using TrainGame.Utils; 
 
 [Collection("Sequential")]
-public class LinearLayoutWrapTest {
+public class LinearLayoutContainerTest {
     [Fact]
-    public void LinearLayoutWrap_ClearShouldRemoveAllNestedEntitiesFromWorld() {
+    public void LinearLayoutContainer_ClearShouldRemoveAllNestedEntitiesFromWorld() {
         World w = WorldFactory.Build(); 
 
         LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
@@ -28,24 +28,24 @@ public class LinearLayoutWrapTest {
         w.SetComponent<Frame>(parentEnt, new Frame(0, 0, 100, 100)); 
         w.SetComponent<Frame>(childEnt, new Frame(0, 0, 50, 50)); 
 
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, llParent, w); 
 
         int grandChildEnt = EntityFactory.Add(w); 
         w.SetComponent<Frame>(grandChildEnt, new Frame(0, 0, 25, 25)); 
-        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+        LinearLayoutContainer.AddChild(grandChildEnt, childEnt, llChild, w); 
 
         Assert.True(w.EntityExists(parentEnt)); 
         Assert.True(w.EntityExists(childEnt)); 
         Assert.True(w.EntityExists(grandChildEnt)); 
 
-        LinearLayoutWrap.Clear(parentEnt, w); 
+        LinearLayoutContainer.Clear(parentEnt, w); 
 
         Assert.False(w.EntityExists(childEnt)); 
         Assert.False(w.EntityExists(grandChildEnt)); 
     }
 
     [Fact]
-    public void LinearLayoutWrap_AddChildShouldAddAnLLChlidToChildEntityWithCorrectParentEntity() {
+    public void LinearLayoutContainer_AddChildShouldAddAnLLChlidToChildEntityWithCorrectParentEntity() {
         World w = WorldFactory.Build(); 
 
         LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
@@ -55,12 +55,12 @@ public class LinearLayoutWrapTest {
 
         w.SetComponent<LinearLayout>(parentEnt, llParent); 
 
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, llParent, w); 
         Assert.Equal(parentEnt, w.GetComponent<LLChild>(childEnt).ParentEntity);
     }
 
     [Fact]
-    public void LinearLayoutWrap_GetDepthShouldReturnNumberOfParentLLsAnEntityHas() {
+    public void LinearLayoutContainer_GetDepthShouldReturnNumberOfParentLLsAnEntityHas() {
         World w = WorldFactory.Build(); 
 
         LinearLayout llParent = new LinearLayout("Horizontal", "alignlow"); 
@@ -72,11 +72,11 @@ public class LinearLayoutWrapTest {
         w.SetComponent<LinearLayout>(parentEnt, llParent); 
         w.SetComponent<LinearLayout>(childEnt, llChild); 
 
-        LinearLayoutWrap.AddChild(childEnt, parentEnt, llParent, w); 
+        LinearLayoutContainer.AddChild(childEnt, parentEnt, llParent, w); 
 
         int grandChildEnt = EntityFactory.Add(w); 
 
-        LinearLayoutWrap.AddChild(grandChildEnt, childEnt, llChild, w); 
+        LinearLayoutContainer.AddChild(grandChildEnt, childEnt, llChild, w); 
 
         Assert.Equal(2, w.GetComponent<LLChild>(grandChildEnt).Depth); 
         Assert.Equal(1, w.GetComponent<LLChild>(childEnt).Depth); 
@@ -84,7 +84,7 @@ public class LinearLayoutWrapTest {
     }
 
     [Fact]
-    public void LinearLayoutWrap_ResizeChildrenShouldSizeCorrectly() {
+    public void LinearLayoutContainer_ResizeChildrenShouldSizeCorrectly() {
         World w = WorldFactory.Build(); 
         int llEntity = EntityFactory.Add(w); 
         LinearLayout ll = new LinearLayout("horizontal", "alignlow"); 
@@ -96,7 +96,7 @@ public class LinearLayoutWrapTest {
         int c2 = EntityFactory.Add(w); 
         ll.AddChild(c1); 
         ll.AddChild(c2); 
-        LinearLayoutWrap.ResizeChildren(llEntity, w);
+        LinearLayoutContainer.ResizeChildren(llEntity, w);
 
         Frame f1 = w.GetComponent<Frame>(c1); 
         Frame f2 = w.GetComponent<Frame>(c2); 
@@ -107,11 +107,11 @@ public class LinearLayoutWrapTest {
     }
 
     [Fact]
-    public void LinearLayoutWrap_ScrollingShouldPage() {
+    public void LinearLayoutContainer_ScrollingShouldPage() {
         VirtualMouse.Reset(); 
 
         World w = WorldFactory.Build(); 
-        LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f, usePaging: true, childrenPerPage: 1);
+        LinearLayoutContainer llc = LinearLayoutContainer.Add(w, Vector2.Zero, 100f, 100f, usePaging: true, childrenPerPage: 1);
         int e1 = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         int e2 = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
         llc.AddChild(e1, w); 
@@ -128,14 +128,14 @@ public class LinearLayoutWrapTest {
     }
 
     [Fact]
-    public void LinearLayoutWrap_AddChildShouldIncreaseTheDepthOfGrandChildren() {
+    public void LinearLayoutContainer_AddChildShouldIncreaseTheDepthOfGrandChildren() {
         World w = WorldFactory.Build(); 
-        LinearLayoutContainer llc = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f);
+        LinearLayoutContainer llc = LinearLayoutContainer.Add(w, Vector2.Zero, 100f, 100f);
         int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         llc.AddChild(e, w); 
-        int prevDepth = LinearLayoutWrap.GetDepth(e, w); 
-        LinearLayoutContainer outer = LinearLayoutWrap.Add(w, Vector2.Zero, 100f, 100f); 
+        int prevDepth = LinearLayoutContainer.GetDepth(e, w); 
+        LinearLayoutContainer outer = LinearLayoutContainer.Add(w, Vector2.Zero, 100f, 100f); 
         outer.AddChild(llc.GetParentEntity(), w); 
-        Assert.Equal(prevDepth * 2, LinearLayoutWrap.GetDepth(e, w));
+        Assert.Equal(prevDepth * 2, LinearLayoutContainer.GetDepth(e, w));
     }
 }

@@ -40,7 +40,7 @@ public static class DrawMachineInterfaceSystem {
 
             int invEnt = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
                 Padding: Constants.InventoryPadding, DrawLabel: true).GetInventoryEntity(); 
-            int invContainerEnt = LinearLayoutWrap.GetParent(invEnt, w); 
+            int invContainerEnt = LinearLayoutContainer.GetParent(invEnt, w); 
 
             //draw left column and add machine inv to it
             int leftColEnt = EntityFactory.Add(w); 
@@ -49,12 +49,12 @@ public static class DrawMachineInterfaceSystem {
             w.SetComponent<LinearLayout>(leftColEnt, leftCol); 
             w.SetComponent<Frame>(leftColEnt, new Frame(Vector2.Zero, leftColWidth, llHeight - 10f)); 
             w.SetComponent<Outline>(leftColEnt, new Outline()); 
-            LinearLayoutWrap.AddChild(leftColEnt, containerEnt, ll, w); 
+            LinearLayoutContainer.AddChild(leftColEnt, containerEnt, ll, w); 
 
             //draw header
             
             int headerEntity = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(headerEntity, leftColEnt, leftCol, w);
+            LinearLayoutContainer.AddChild(headerEntity, leftColEnt, leftCol, w);
             float headerWidth = invWidth;
             float headerHeight = w.ScreenHeight - invHeight - Constants.LabelHeight - 20f; 
 
@@ -64,7 +64,7 @@ public static class DrawMachineInterfaceSystem {
             w.SetComponent<Outline>(headerEntity, new Outline());
 
             //add inv to left col under header 
-            LinearLayoutWrap.AddChild(invContainerEnt, leftColEnt, leftCol, w); 
+            LinearLayoutContainer.AddChild(invContainerEnt, leftColEnt, leftCol, w); 
 
             //draw steppers for priority and storage
             int midColEnt = EntityFactory.Add(w); 
@@ -75,7 +75,7 @@ public static class DrawMachineInterfaceSystem {
             w.SetComponent<LinearLayout>(midColEnt, midCol); 
             w.SetComponent<Frame>(midColEnt, new Frame(Vector2.Zero, midColWidth, midColHeight)); 
             w.SetComponent<Outline>(midColEnt, new Outline()); 
-            LinearLayoutWrap.AddChild(midColEnt, containerEnt, ll, w); 
+            LinearLayoutContainer.AddChild(midColEnt, containerEnt, ll, w); 
 
             float stepperWidth = midColWidth - 10f;
             float stepperHeight = (midColHeight / 2f) - 20f;
@@ -83,13 +83,13 @@ public static class DrawMachineInterfaceSystem {
                 stepperHeight, $"Set {m.Id} priority?", defaultVal: m.Priority);
             w.SetComponent<MachinePriorityStepper>(setPrioStepper.SubmitEnt, 
                 new MachinePriorityStepper(m, setPrioStepper.Step));
-            LinearLayoutWrap.AddChild(setPrioStepper.ContainerEnt, midColEnt, midCol, w); 
+            LinearLayoutContainer.AddChild(setPrioStepper.ContainerEnt, midColEnt, midCol, w); 
 
             StepperContainer setSizeStepper = StepperWrap.Draw(w, stepperWidth, stepperHeight, 
                 $"Set {m.Id} storage size?", defaultVal: m.NumRecipeToStore);
             w.SetComponent<MachineStorageStepper>(setSizeStepper.SubmitEnt, 
                 new MachineStorageStepper(m, setSizeStepper.Step));
-            LinearLayoutWrap.AddChild(setSizeStepper.ContainerEnt, midColEnt, midCol, w); 
+            LinearLayoutContainer.AddChild(setSizeStepper.ContainerEnt, midColEnt, midCol, w); 
 
             //Draw progress bar
 
@@ -130,29 +130,29 @@ public static class DrawMachineInterfaceSystem {
             LinearLayout col = new LinearLayout("vertical", "alignlow"); 
             col.Padding = 5f; 
             int colEnt = EntityFactory.Add(w); 
-            LinearLayoutWrap.AddChild(colEnt, containerEnt, ll, w); 
+            LinearLayoutContainer.AddChild(colEnt, containerEnt, ll, w); 
             w.SetComponent<LinearLayout>(colEnt, col); 
             w.SetComponent<Frame>(colEnt, new Frame(Vector2.Zero, pbWidth + 10f, w.ScreenHeight - 20f));
             w.SetComponent<Outline>(colEnt, new Outline()); 
 
-            LinearLayoutWrap.AddChild(pbEntity, colEnt, col, w);
-            LinearLayoutWrap.AddChild(upgradeEntity, colEnt, col, w); 
+            LinearLayoutContainer.AddChild(pbEntity, colEnt, col, w);
+            LinearLayoutContainer.AddChild(upgradeEntity, colEnt, col, w); 
             if (drawManualCraft) {
-                LinearLayoutWrap.AddChild(manualPbEnt, colEnt, col, w);
-                LinearLayoutWrap.AddChild(manualCraftButtonEnt, colEnt, col, w); 
+                LinearLayoutContainer.AddChild(manualPbEnt, colEnt, col, w);
+                LinearLayoutContainer.AddChild(manualCraftButtonEnt, colEnt, col, w); 
             }
 
             int upgradeSpeedBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
                 setOutline: true, text: $"Increase Craft Speed? Requires 1 {ItemID.Accelerator}",
                 setButton: true);
             w.SetComponent<UpgradeMachineSpeedButton>(upgradeSpeedBtnEnt, new UpgradeMachineSpeedButton(m, city));
-            LinearLayoutWrap.AddChild(upgradeSpeedBtnEnt, colEnt, col, w);
+            LinearLayoutContainer.AddChild(upgradeSpeedBtnEnt, colEnt, col, w);
 
             int upgradeRatioBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, pbWidth, pbWidth / 4f, 
                 setOutline: true, text: $"Increase Product Count? Requires 1 {ItemID.Duplicator}",
                 setButton: true);
             w.SetComponent<UpgradeMachineProductCountButton>(upgradeRatioBtnEnt, new UpgradeMachineProductCountButton(m, city));
-            LinearLayoutWrap.AddChild(upgradeRatioBtnEnt, colEnt, col, w);
+            LinearLayoutContainer.AddChild(upgradeRatioBtnEnt, colEnt, col, w);
 
             w.RemoveEntity(e); 
         });

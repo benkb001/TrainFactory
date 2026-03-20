@@ -16,7 +16,7 @@ public static class TextInputWrap {
         string label = "", string defaultText = "", bool editableLabel = false) {
 
         int childrenPerPage = GetChildrenPerPage(w, height); 
-        LinearLayoutContainer llc = LinearLayoutWrap.Add(w, position, width, height, usePaging: true, 
+        LinearLayoutContainer llc = LinearLayoutContainer.Add(w, position, width, height, usePaging: true, 
             childrenPerPage: childrenPerPage, direction: "vertical", align: "alignlow", padding: 0f, 
             outline: true, label: label);
         int cursorEnt = addCursor(w); 

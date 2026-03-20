@@ -17,13 +17,13 @@ public static class DrawWriteProgramInterfaceSystem {
         DrawInterfaceSystem.Register<WriteProgramInterfaceData>(w, (w, e) => {
             WriteProgramInterfaceData data = w.GetComponent<DrawInterfaceMessage<WriteProgramInterfaceData>>(e).Data; 
             
-            LinearLayoutContainer llc = LinearLayoutWrap.Add(w, w.GetCameraTopLeft() + new Vector2(10, 10),
+            LinearLayoutContainer llc = LinearLayoutContainer.Add(w, w.GetCameraTopLeft() + new Vector2(10, 10),
                 w.ScreenWidth - 20, w.ScreenHeight - 20, direction: "vertical", align: "alignlow");
             
             TextInputContainer inputContainer = TextInputWrap.Add(w, Vector2.Zero, 
                 w.ScreenWidth - 30, w.ScreenHeight - 100, data.ProgramName, data.Program, editableLabel: true); 
 
-            LinearLayoutWrap.AddChild(w, inputContainer.GetParentEntity(), llc); 
+            llc.AddChild(inputContainer.GetParentEntity(), w); 
             
             int btnEnt = EntityFactory.AddUI(
                 w, 
@@ -41,7 +41,7 @@ public static class DrawWriteProgramInterfaceSystem {
                 data.TrainEntity, data.Program));
             
 
-            LinearLayoutWrap.AddChild(w, btnEnt, llc); 
+            llc.AddChild(btnEnt, w); 
         });
     }
 }

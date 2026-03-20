@@ -59,7 +59,7 @@ public static class DrawEquipmentInterfaceSystem {
             EquipmentSlot<Armor> armorSlot = w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt); 
             Inventory armorInv = armorSlot.GetInventory(); 
 
-            LinearLayoutContainer outer = LinearLayoutWrap.AddOuter(w); 
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w); 
 
             (float invWidth, float invHeight) = InventoryWrap.GetUI(playerInv);
             InventoryView playerInvView = DrawInventoryCallback.Draw(
@@ -84,8 +84,8 @@ public static class DrawEquipmentInterfaceSystem {
             w.SetComponent<EquipmentSlot<Armor>>(armorInvEnt, armorSlot); 
             w.SetComponent<EquipmentUI>(armorInvEnt, new EquipmentUI());
 
-            LinearLayoutWrap.AddChild(w, armorInvView.GetParentEntity(), outer);
-            LinearLayoutWrap.AddChild(w, playerInvView.GetParentEntity(), outer);
+            outer.AddChild(armorInvView.GetParentEntity(), w); 
+            outer.AddChild(playerInvView.GetParentEntity(), w); 
         });
     }
 }

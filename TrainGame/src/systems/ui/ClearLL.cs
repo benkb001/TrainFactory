@@ -24,7 +24,7 @@ public class ClearLLSystem {
             [typeof(ClearLLMessage)], 
             (w, e) => {
                 int llEntity = w.GetComponent<ClearLLMessage>(e).Entity; 
-                LinearLayoutWrap.Clear(llEntity, w);
+                LinearLayoutContainer.Clear(llEntity, w);
 
                 w.RemoveEntity(e); 
             }
