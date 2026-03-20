@@ -36,14 +36,12 @@ public class InventoryControlSystemTest {
         
         int msg = EntityFactory.Add(w); 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
-            TargetRow: 0, 
-            TargetColumn: 1, 
-            CurRow: 1, 
-            CurColumn: 1, 
-            TargetItem: banana, 
-            CurItem: apple, 
-            CurDraggable: d, 
-            TargetVector: targetVector
+            inv1, 
+            inv2,
+            apple,
+            banana,
+            d,
+            targetVector
         ); 
 
         w.SetComponent<InventoryOrganizeMessage>(msg, organize); 
@@ -112,14 +110,12 @@ public class InventoryControlSystemTest {
         Draggable d = new Draggable();
 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
-            TargetRow: 0, 
-            TargetColumn: 0, 
-            CurRow: 0, 
-            CurColumn: 0, 
-            TargetItem: woodLarge, 
-            CurItem: woodSmall, 
-            CurDraggable: d, 
-            TargetVector: Vector2.Zero
+            inv1, 
+            inv2,
+            woodLarge,
+            woodSmall,
+            d,
+            Vector2.Zero
         ); 
 
         int msg = EntityFactory.Add(w); 
@@ -130,14 +126,12 @@ public class InventoryControlSystemTest {
         Assert.Equal(1, inv2.ItemCount(ItemID.Wood)); 
 
         InventoryOrganizeMessage organize2 = new InventoryOrganizeMessage(
-            TargetRow: 0, 
-            TargetColumn: 0, 
-            CurRow: 0, 
-            CurColumn: 0, 
-            TargetItem: woodSmall, 
-            CurItem: woodLarge, 
-            CurDraggable: d, 
-            TargetVector: Vector2.Zero
+            inv2,
+            inv1,
+            woodSmall,
+            woodLarge,
+            d,
+            Vector2.Zero
         ); 
 
         int msg2 = EntityFactory.Add(w); 

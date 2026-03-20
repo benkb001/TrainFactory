@@ -19,17 +19,19 @@ public class EmbarkClickSystemTest {
         City cStart = new City("start", inv, 100f, 100f);
         City cEnd = new City("end", inv, 100f, 100f);
         cStart.AddConnection(cEnd);
-        Train t = new Train(inv, cStart);
-        Assert.Equal(cStart, t.GoingTo);
+        Train t = TrainWrap.GetTest();
+        int trainEnt = EntityFactory.AddData<Train>(w, t);
+        w.SetComponent<ComingFromCity>(trainEnt, new ComingFromCity(cStart));
+        
         Assert.False(t.IsTraveling()); 
 
         int embarkEntity = EntityFactory.Add(w); 
         w.SetComponent<Frame>(embarkEntity, new Frame(0, 0, 100, 100)); 
         w.SetComponent<Button>(embarkEntity, new Button(true)); 
-        w.SetComponent<EmbarkButton>(embarkEntity, new EmbarkButton(cEnd, t));
+        w.SetComponent<EmbarkButton>(embarkEntity, new EmbarkButton(cEnd, t, trainEnt));
 
         w.Update(); 
-        Assert.Equal(cEnd, t.GoingTo); 
+        Assert.Equal(cEnd, w.GetComponent<GoingToCity>(trainEnt)); 
         Assert.True(t.IsTraveling()); 
     }
 }

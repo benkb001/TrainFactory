@@ -5,17 +5,22 @@ using TrainGame.ECS;
 public class MachineUIClickSystemTest {
     [Fact]
     public void MachineUIClickSystem_ShouldMakeADrawMessageWithItsMachine() {
-        World w = new World(); 
-        RegisterComponents.All(w); 
-        MachineUIClickSystem.Register(w); 
+        World w = WorldFactory.Build();
+        
         int e = EntityFactory.Add(w);
 
         w.SetComponent<Button>(e, new Button(true)); 
         Machine m = Machine.GetDefault(); 
-        w.SetComponent<MachineUI>(e, new MachineUI(m)); 
+        City c = CityWrap.GetTest();
+        w.SetComponent<EnterInterfaceButton<MachineInterfaceData>>(e, 
+            new EnterInterfaceButton<MachineInterfaceData>(
+                new MachineInterfaceData(m, c)
+            )
+        ); 
         w.Update(); 
 
-        DrawMachineInterfaceMessage dm = w.GetComponentArray<DrawMachineInterfaceMessage>().FirstOrDefault().Value; 
-        Assert.Equal(m, dm.GetMachine()); 
+        DrawInterfaceMessage<MachineInterfaceData> dm = 
+            w.GetComponentArray<DrawInterfaceMessage<MachineInterfaceData>>().FirstOrDefault().Value; 
+        Assert.Equal(m, dm.Data.GetMachine()); 
     }
 }

@@ -42,12 +42,6 @@
 * Fix test directory to match file changes and to compile
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
-* I think we just merge LinearLayoutContainer and LinearLayoutContainer 
-  into one class.
-
-* Add back player shooting
-* Add back chase and cardinal movement for enemies 
-* Add back shotgun shoot pattern
 
 * Fix randomly unlocking zoom
 * Make railroad purchase button a 1x1 paged layout
@@ -57,6 +51,30 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
+  * Add back player shooting
+  * Add back chase and cardinal movement for enemies 
+  * Add back shotgun shoot pattern
+  * Add new move patterns: 
+    * Parametric curves and switching between them
+    * Move to a certain tile w/ pathfinding
+      * We can start by having ground tiles which store 
+        their position and their neighboring tiles. 
+      * We need some way to query world state before moving. 
+        I think keeping the IMovePatterns
+        out of world is good, so we could use another registry, 
+        which maps types to functions that basically 'set up' the 
+        component for what it will need
+      * Before moving, we can query for a ground tile that overlaps 
+        with the enemy frame, and then we can use 
+  * Add new shoot patterns: 
+    * Random shotgun w/ different bullet types possible
+  * Add new bullet traits: 
+    * Parametric curves 
+    * bounce
+    * Pierce
+    * explodes
+    * Vampiric 
+  * Add new bullet traits
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Enemies should wait a random amount of time before they start to shoot the player

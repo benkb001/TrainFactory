@@ -9,13 +9,14 @@ public class DrawAddCartInterfaceSystemTest {
 
         Inventory inv = new Inventory("Test", 2, 2); 
         City city = new City("Test", inv); 
-        Train train = new Train(inv, city); 
+        Train train = TrainWrap.Assemble(city);
+        int trainEnt = TrainWrap.RegisterExisting(w, train, city);
 
-        city.AddCart(new Cart(CartType.Freight)); 
+        city.AddCart(CartType.Freight); 
         int btn = w.AddEntity(); 
         w.SetComponent<Button>(btn, new Button(true)); 
         w.SetComponent<AddCartInterfaceButton>(btn, new AddCartInterfaceButton(
-            train, city
+            train, trainEnt, city
         )); 
         w.SetComponent<Active>(btn, Active.Get()); 
 

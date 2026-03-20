@@ -11,12 +11,13 @@ public class AddCartInterfaceClickSystemTest {
 
         Inventory inv = new Inventory("Test", 2, 2); 
         City city = new City("Test", inv); 
-        Train train = new Train(inv, city); 
+        Train train = TrainWrap.GetTest();
+        int trainEnt = EntityFactory.AddData<Train>(w, train);
 
         int btn = w.AddEntity(); 
         w.SetComponent<Button>(btn, new Button(true)); 
         w.SetComponent<AddCartInterfaceButton>(btn, new AddCartInterfaceButton(
-            train, city
+            train, trainEnt, city
         )); 
         w.SetComponent<Active>(btn, Active.Get()); 
 

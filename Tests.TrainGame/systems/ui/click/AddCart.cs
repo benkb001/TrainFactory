@@ -9,11 +9,12 @@ public class AddCartClickSystemTest {
     
         Inventory inv = new Inventory("T", 1, 1); 
         City city = new City("T", inv); 
-        Train t = new Train(inv, city); 
+        Train t = TrainWrap.GetTest();
+        int trainEnt = EntityFactory.AddData<Train>(w, t); 
 
         int btnEntity = EntityFactory.Add(w); 
         w.SetComponent<Button>(btnEntity, new Button(true)); 
-        w.SetComponent<AddCartButton>(btnEntity, new AddCartButton(t, city, CartType.Freight)); 
+        w.SetComponent<AddCartButton>(btnEntity, new AddCartButton(t, city, CartType.Freight, trainEnt)); 
 
         w.Update(); 
 

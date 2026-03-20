@@ -1,8 +1,11 @@
+using System.IO; 
+
+using Microsoft.Xna.Framework;
+
 using TrainGame.Systems; 
 using TrainGame.Constants; 
 using TrainGame.ECS; 
 using TrainGame.Components;
-using System.IO; 
 
 public class TALParserTest {
 
@@ -10,7 +13,7 @@ public class TALParserTest {
         World w = WorldFactory.Build(); 
         Inventory inv = new Inventory("Test", 1, 1); 
         City c = new City(CityID.Factory, inv); 
-        Train t = new Train(inv, c, Id: "TestTrain");
+        Train t = new Train(inv, Vector2.Zero, new Dictionary<CartType, Inventory>(), "TestTrain");
         City mine = new City(CityID.Mine, inv); 
         
         
@@ -29,66 +32,53 @@ public class TALParserTest {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
 
         List<TALToken> tokens = TALLexer.Tokenize("10"); 
-        TALExpression e = TALParser.ParseIntExp(tokens, w, t); 
-        Assert.Equal(ExpressionType.Int, e.Type);
-        Assert.Equal(10, e.IntVal);
+        ITALExpression e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALIntExpression intExp = Assert.IsType<TALIntExpression>(e);
+        Assert.Equal(10, (int)intExp.Evaluate());
         
         tokens = TALLexer.Tokenize("10 + 20"); 
-        e = TALParser.ParseIntExp(tokens, w, t); 
-        Assert.Equal(ExpressionType.Add, e.Type);
-        Assert.Equal(10, e.E1.IntVal); 
-        Assert.Equal(20, e.E2.IntVal); 
-        Assert.Equal(ExpressionType.Int, e.E1.Type);
-        Assert.Equal(ExpressionType.Int, e.E2.Type);
+        e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALAddExpression addExp = Assert.IsType<TALAddExpression>(e);
+        Assert.Equal(30, (int)addExp.Evaluate());
 
+        int ironCount = 10;
+        t.Inv.Add(ItemID.Iron, ironCount);
         tokens = TALLexer.Tokenize($"{t.Id}.Iron"); 
-        e = TALParser.ParseIntExp(tokens, w, t); 
-        Assert.Equal(AccessType.Train, e.AcType); 
-        Assert.Equal(ExpressionType.Access, e.Type); 
-        Assert.Equal(t, e.GetTrain());
-        Assert.Equal("Iron", e.GetItemID()); 
+        e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALAccessTrainExpression<Train> accTrainExp = Assert.IsType<TALAccessTrainExpression<Train>>(e);
+        Assert.Equal(ironCount, (int)accTrainExp.Evaluate());
         
+        int woodCount = 20; 
+        c.Inv.Add(ItemID.Wood, woodCount);
         tokens = TALLexer.Tokenize($"{CityID.Factory}.Wood"); 
-        e = TALParser.ParseIntExp(tokens, w, t); 
-        Assert.Equal(AccessType.City, e.AcType); 
-        Assert.Equal(ExpressionType.Access, e.Type); 
-        Assert.Equal(c, e.GetCity());
-        Assert.Equal("Wood", e.GetItemID()); 
+        e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALAccessCityExpression<City> accCityExp = Assert.IsType<TALAccessCityExpression<City>>(e);
+        Assert.Equal(woodCount, (int)accCityExp.Evaluate());
     }
 
     [Fact]
     public void TALParser_ParseIntExpressionShouldHandleNestedOperations() {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
-        List<TALToken> tokens = TALLexer.Tokenize($"{t.Id}.{ItemID.Iron} + {c.Id}.{ItemID.Wood} * 10 - 100 / 2"); 
-        TALExpression e = TALParser.ParseIntExp(tokens, w, t); 
-        Assert.Equal(ExpressionType.Add, e.Type);
-        Assert.Equal(ExpressionType.Access, e.E1.Type); 
-        Assert.Equal(ExpressionType.Multiply, e.E2.Type); 
-        Assert.Equal(ExpressionType.Access, e.E2.E1.Type); 
-        Assert.Equal(ExpressionType.Subtract, e.E2.E2.Type); 
-        Assert.Equal(ExpressionType.Int, e.E2.E2.E1.Type); 
-        Assert.Equal(ExpressionType.Divide, e.E2.E2.E2.Type);
-        Assert.Equal(ExpressionType.Int, e.E2.E2.E2.E1.Type); 
-        Assert.Equal(ExpressionType.Int, e.E2.E2.E2.E2.Type); 
+        t.Inv.Add(ItemID.Iron, 10); 
+        c.Inv.Add(ItemID.Wood, 20);
+        List<TALToken> tokens = TALLexer.Tokenize($"({t.Id}.{ItemID.Iron} + {c.Id}.{ItemID.Wood}) * (10 - (100 / 2))"); 
+        ITALExpression e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALMultiplyExpression multExp = Assert.IsType<TALMultiplyExpression>(e);
+        Assert.Equal(-120, (int)multExp.Evaluate());
     }
 
     [Fact]
     public void TALParser_ParseBooleanShouldReturnBooleanExpressionType() {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
         List<TALToken> tokens = TALLexer.Tokenize($"true"); 
-        TALExpression e = TALParser.ParseBooleanExp(tokens, w, t); 
-
-        Assert.Equal(ExpressionType.Bool, e.Type); 
-        Assert.True(e.BoolVal); 
+        ITALExpression e = TALParser.ParseBooleanExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALBoolExpression boolExp = Assert.IsType<TALBoolExpression>(e);
+        Assert.True((bool)boolExp.Evaluate());
 
         tokens = TALLexer.Tokenize($"10 > 20"); 
-        e = TALParser.ParseBooleanExp(tokens, w, t); 
-        Assert.Equal(ExpressionType.Conditional, e.Type);
-        Assert.Equal(ConditionType.Greater, e.Condition.Type);
-        Assert.Equal(ExpressionType.Int, e.Condition.E1.Type); 
-        Assert.Equal(10, e.Condition.E1.IntVal); 
-        Assert.Equal(ExpressionType.Int, e.Condition.E2.Type); 
-        Assert.Equal(20, e.Condition.E2.IntVal); 
+        e = TALParser.ParseBooleanExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALGreaterExpression greaterExp = Assert.IsType<TALGreaterExpression>(e);
+        Assert.False((bool)greaterExp.Evaluate());
     }
 
     [Fact]
@@ -96,10 +86,9 @@ public class TALParserTest {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
         List<TALToken> tokens = TALLexer.Tokenize($"true AND false"); 
 
-        TALExpression e = TALParser.ParseConditionalExp(tokens, w, t); 
-
-        Assert.Equal(ExpressionType.Conditional, e.Type); 
-        Assert.Equal(ConditionType.And, e.Condition.Type);
+        ITALExpression e = TALParser.ParseConditionalExp<Train, City>(tokens, new TrainWorld(w), t); 
+        TALAndExpression andExp = Assert.IsType<TALAndExpression>(e);
+        Assert.False((bool)andExp.Evaluate());
     }
 
     [Fact]
@@ -126,7 +115,7 @@ public class TALParserTest {
         
         "; 
         List<TALToken> tokens = TALLexer.Tokenize(program); 
-        TALBody ast = TALParser.ParseProgram(tokens, w, t); 
+        TALParser.ParseProgram<Train, City>(tokens, new TrainWorld(w), t); 
         Assert.Empty(tokens); 
     }
 
@@ -144,16 +133,21 @@ public class TALParserTest {
             GO TO Factory; 
             UNLOAD TestTrain.Iron Iron; 
         ";
-        TALBody ast = TALParser.ParseProgram(program, w, t); 
+        TALBody<Train, City> ast = TALParser.ParseProgram<Train, City>(program, new TrainWorld(w), t); 
         Assert.Equal(7, ast.InstructionCount); 
     }
 
     [Fact]
     public void TALParser_ConditionalsWithParenthesesShouldEvaluateFirst() {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
-        string program = @"(Factory.Fuel > 10) OR (Mine.Glass < 100)";
+        c.Inv.Add(ItemID.Glass, 100);
+        c.Inv.TakeAll(ItemID.Fuel);
+        string program = $"({c.ID}.Fuel > 10) OR ({c.ID}.Glass < 100)";
         List<TALToken> toks = TALLexer.Tokenize(program);
-        TALExpression e = TALParser.ParseConditionalExp(toks, w, t);
-        Assert.Equal(ConditionType.Or, e.Condition.Type);
+        ITALExpression e = TALParser.ParseConditionalExp<Train, City>(toks, new TrainWorld(w), t);
+        TALOrExpression orExp = Assert.IsType<TALOrExpression>(e);
+        Assert.False((bool)orExp.Evaluate());
+        c.Inv.TakeAll(ItemID.Glass);
+        Assert.True((bool)orExp.Evaluate());
     }
 }

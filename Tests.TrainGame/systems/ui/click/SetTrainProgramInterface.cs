@@ -14,7 +14,8 @@ public class SetTrainProgramInterfaceClickSystemTest {
         int e = EntityFactory.Add(w); 
         w.SetComponent<Button>(e, new Button(true)); 
         Train t = TrainWrap.GetTestTrain(); 
-        w.SetComponent<SetTrainProgramInterfaceButton>(e, new SetTrainProgramInterfaceButton(t));
+        int trainEnt = EntityFactory.AddData<Train>(w, t);
+        w.SetComponent<SetTrainProgramInterfaceButton>(e, new SetTrainProgramInterfaceButton(t, trainEnt));
         w.Update(); 
         DrawSetTrainProgramInterfaceMessage dm = w.GetComponentArray<DrawSetTrainProgramInterfaceMessage>(
         ).FirstOrDefault().Value; 

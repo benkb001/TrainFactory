@@ -19,9 +19,7 @@ public class TrainFlagUpdateSystemTest {
         Train t = TrainWrap.GetTestTrain(); 
         int e = EntityFactory.Add(w, setData: true); 
         w.SetComponent<Train>(e, t); 
-        City c = CityWrap.GetTest();
-        t.ComingFrom.AddConnection(c);
-        t.Embark(c, w.Time);
+        t.Embark(Vector2.Zero, w.Time);
         Assert.True(t.IsEmbarking); 
         w.Update(); 
         Assert.False(t.IsEmbarking); 

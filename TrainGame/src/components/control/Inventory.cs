@@ -57,8 +57,6 @@ public class Inventory : IID {
         filter = type; 
     }
 
-    //todo: need to re-factor in other places because it might add a portion of the items but not all
-    //returns the number of items it added to the inventory
     public int Add(Item i, bool newCell = false) {
 
         if (filtered && !whitelist.Contains(i.ItemId)) {
@@ -89,7 +87,7 @@ public class Inventory : IID {
         
         editItemCountMap(i.ItemId, num_adding); 
 
-        if (num_remaining > 0) {
+        if (num_adding > 0 && num_remaining > 0) {
             return num_adding + Add(new Item(ItemId: i.ItemId, Count: num_remaining)); 
         }
 

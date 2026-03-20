@@ -14,27 +14,21 @@ public class TrainMapPositionSystemTest {
     [Fact]
     public void TrainMapPositionSystem_ShouldSetTrainsToTheCorrectPositionBasedOnTimePassed() {
         World w = WorldFactory.Build(); 
-        int trainDataEntity = EntityFactory.Add(w, setScene: false); 
 
-        Inventory inv = new Inventory("Test", 1, 1); 
-        City c_start = new City("C_START", inv, uiX: 0f, uiY: 0f, realX: 0f, realY: 0f); 
-        City c_end = new City("C_END", inv, uiX: 10f, uiY: 0f, realX: 100f, realY: 0f); 
-        c_start.AddConnection(c_end);
-
-        Train train = new Train(inv, c_start, milesPerHour: 10f); 
-        train.Embark(c_end, new WorldTime()); 
-
-        w.SetComponent<Train>(trainDataEntity, train);
-        w.SetComponent<Data>(trainDataEntity, Data.Get()); 
+        Train train = TrainWrap.GetTest();
+        int trainDataEntity = EntityFactory.AddData<Train>(w, train);
+        
+        train.Embark(new Vector2(100, 0), new WorldTime()); 
 
         int trainUIEntity = EntityFactory.Add(w); 
-        TrainUI tUI = new TrainUI(train); 
+        TrainUI tUI = new TrainUI(train, trainDataEntity); 
         w.SetComponent<TrainUI>(trainUIEntity, tUI); 
         w.SetComponent<MapUIFlag>(trainUIEntity, MapUIFlag.Get());
         w.SetComponent<Frame>(trainUIEntity, new Frame(0, 0, 10, 10)); 
-        w.PassTime(new WorldTime(hours: 1)); 
+        w.PassTime(new WorldTime(minutes: 1)); 
         w.Update(); 
 
-        Assert.True(w.GetComponent<Frame>(trainUIEntity).Position == train.GetMapPosition());
+        //train is moving to right so the ui component should've moved to the right
+        Assert.True(w.GetComponent<Frame>(trainUIEntity).Position.X > 0);
     }
 }

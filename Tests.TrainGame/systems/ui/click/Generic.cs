@@ -12,6 +12,10 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
+public class TestButton {
+    public bool Clicked = false;
+}
+
 //todo: fix
 public class ClickSystemTest {
     [Fact]

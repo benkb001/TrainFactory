@@ -20,7 +20,8 @@ public class DrawInventoryContainerSystemTest {
 
         Inventory inv = new Inventory("TrainInv", 1, 1); 
         City city = new City("City", inv); 
-        Train t = new Train(inv, city); 
+        Train t = TrainWrap.Assemble(city);
+        TrainWrap.RegisterExisting(w, t, city);
 
         DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(
             t, Vector2.Zero, 100, 100
@@ -30,7 +31,7 @@ public class DrawInventoryContainerSystemTest {
     }
 
     [Fact]
-    public void DrawInventoryContaierSystem_ShouldDrawAnInventoryContainer() {
+    public void DrawInventoryContainerSystem_ShouldDrawAnInventoryContainer() {
         (World w, Inventory inv, City c, Train t, DrawInventoryContainerMessage<Train> dm) = init(); 
     
         int dmEnt = EntityFactory.Add(w); 

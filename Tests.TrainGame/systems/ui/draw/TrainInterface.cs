@@ -20,12 +20,14 @@ public class DrawTrainInterfaceSystemTest {
         City c1 = new City("C1", inv); 
         City c2 = new City("C2", inv); 
         City c3 = new City("C3", inv); 
-        Train t = new Train(inv, c1); 
+        c1.AddConnection(c2);
+        c1.AddConnection(c3);
 
-        c1.AddConnection(c2); 
-        c1.AddConnection(c3); 
+        Train t = TrainWrap.GetTest();
+        int e = EntityFactory.AddData<Train>(w, t);
+        w.SetComponent<ComingFromCity>(e, new ComingFromCity(c1));
 
-        MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t)); 
+        MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(t, e)); 
         w.Update(); 
 
         Assert.Equal(2, w.GetMatchingEntities([typeof(EmbarkButton), typeof(Button)]).Count); 

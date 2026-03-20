@@ -21,7 +21,7 @@ public class RemoveBulletSystemTest {
         World w = WorldFactory.Build(); 
 
         int bulletEnt = EntityFactory.Add(w); 
-        Bullet b = new Bullet(); 
+        Bullet b = new Bullet(1); 
 
         w.SetComponent<Bullet>(bulletEnt, b); 
 
@@ -40,7 +40,7 @@ public class RemoveBulletSystemTest {
 
         int wallEnt = EntityFactory.AddUI(w, Vector2.Zero, 100, 100); 
         int bulletEnt = EntityFactory.AddUI(w, new Vector2(1, 1), 10, 10); 
-        w.SetComponent<Bullet>(bulletEnt, new Bullet()); 
+        w.SetComponent<Bullet>(bulletEnt, new Bullet(1)); 
         w.SetComponent<Collidable>(wallEnt, new Collidable()); 
 
         w.Update(); 

@@ -4,17 +4,6 @@ using System;
 using System.Linq;
 using TrainGame.Components; 
 
-public enum ExpressionType {
-    Train, 
-    City, 
-    ItemID
-}
-
-public enum AccessType {
-    Train, 
-    City
-}
-
 public interface ITALExpression {
     object Evaluate();
 }

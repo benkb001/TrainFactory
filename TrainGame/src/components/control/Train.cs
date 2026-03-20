@@ -49,6 +49,7 @@ public class Train : IInventorySource, IID, ITrain {
     public string ProgramName => programName; 
     public float Power => power; 
     public Vector2 Position => position; 
+    public Vector2 Destination => destination;
     public float MilesOfFuel => milesOfFuel;
     public float JourneyCompletion => (moved.Length()) / (journey.Length());
 
@@ -122,19 +123,11 @@ public class Train : IInventorySource, IID, ITrain {
 
     //IsArriving MUST be called before Update or it will never be true
     public bool IsArriving() {
-        bool arriving = isTraveling && moved.Length() >= journey.Length();
-        return arriving; 
+        return isTraveling && (moved.Length() >= journey.Length());
     }
 
     public bool IsTraveling() {
         return isTraveling; 
-    }
-
-    //TODO: REMOVE, keep the one that just takes type
-    public void AddCart(Cart cart) {
-        mass += Constants.CartMass[cart.Type]; 
-        Carts[cart.Type].Upgrade();
-        setMPH(); 
     }
 
     public void AddCart(CartType type) {
@@ -177,6 +170,11 @@ public class Train : IInventorySource, IID, ITrain {
         }
 
         position = newPosition; 
+
+        if (this.moved.Length() >= this.journey.Length()) {
+            position = destination;
+        }
+        
         lastMoved = now.Clone();
     }
     

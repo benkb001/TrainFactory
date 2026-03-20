@@ -24,6 +24,8 @@ public static class TrainWrap {
         return new Train(inv, c.RealPosition, new Dictionary<CartType, Inventory>(), id); 
     }
 
+    public static Train GetTest() => GetTestTrain();
+
     public static Train Assemble(City origin) {
         Inventory inv = new Inventory(ID.GetNext("Loc"), Constants.TrainRows, Constants.TrainCols); 
         Dictionary<CartType, Inventory> carts = new();

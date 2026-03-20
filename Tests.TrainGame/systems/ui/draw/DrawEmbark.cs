@@ -25,13 +25,17 @@ public class DrawEmbarkSystemTest {
         City c1 = new City("C1", inv, 0f, 0f); 
         City c2 = new City("C2", inv , 0f, 0f);
 
-        Train t = new Train(inv, c); 
+        Train t = TrainWrap.GetTest();
+        int trainEntity = EntityFactory.AddData<Train>(w, t);
 
+        w.SetComponent<ComingFromCity>(trainEntity, new ComingFromCity(c));
         c.AddConnections([c1, c2]); 
 
         int msg = EntityFactory.Add(w); 
         w.SetComponent<DrawEmbarkMessage>(msg, new DrawEmbarkMessage(
             t, 
+            trainEntity,
+            c,
             Vector2.Zero
         )); 
         w.Update(); 

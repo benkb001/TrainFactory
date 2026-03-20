@@ -21,10 +21,10 @@ public class InventoryIndexSystemTest {
         
         Inventory inv = new Inventory("TrainInv", 1, 1); 
         City city = new City("City", inv); 
-        Train t = new Train(inv, city); 
+        Train t = TrainWrap.Assemble(city);
 
         for (int i = 0; i < 3; i++) {
-            t.AddCart(new Cart(CartType.Freight));
+            t.AddCart(CartType.Freight);
         }
 
         DrawInventoryContainerMessage<Train> dm = new DrawInventoryContainerMessage<Train>(
