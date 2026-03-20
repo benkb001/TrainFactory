@@ -31,7 +31,7 @@
 
 * Make carts items
 * GetByID should throw exceptions when not found, such as city.GetByID
-* Test why slow on diagonal map
+* Test why slow on diagonal map, add exit to this map
 * Filters should be in inventory wrap
 * Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
 * Remove callbacks
@@ -42,17 +42,13 @@
 * Fix test directory to match file changes and to compile
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
+* I think we just merge LinearLayoutWrap and LinearLayoutContainer 
+  into one class.
 
 * Add back player shooting
 * Add back chase and cardinal movement for enemies 
 * Add back shotgun shoot pattern
 
-* Fix loops to grab products if there is no space for the 
-  machines to craft
-  * Need to have access to city depot level/stack sizes in TAL,
-    or just a way to check the number of empty slots in an inv
-  * Could also make WAIT accept a time in game-seconds for the 
-    train to wait before leaving and pass as an OR. 
 * Fix randomly unlocking zoom
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
@@ -89,6 +85,12 @@
 
 **** FUTURE FEATURES **** 
 
+* Fix loops to grab products if there is no space for the 
+  machines to craft
+  * Need to have access to city depot level/stack sizes in TAL,
+    or just a way to check the number of empty slots in an inv
+  * Could also make WAIT accept a time in game-seconds for the 
+    train to wait before leaving and pass as an OR. 
 * Make it so player has to refresh the city interface to see which trains 
   have arrived, but when trains leave the button gets grayed out to 
   show the train isn't there anymore, and if refreshed the button will disappear

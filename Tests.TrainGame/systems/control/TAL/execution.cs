@@ -15,7 +15,7 @@ using TrainGame.Utils;
 public class TALExecutionTest {
 
     
-    private (World, TALBody, Train, City, City, City) init(string program) {
+    private (World, TALBody<Train, City>, Train, City, City, City) init(string program) {
         World w = WorldFactory.Build(); 
         Inventory trainInv = new Inventory("Train", 2, 2); 
         Inventory cInv1 = new Inventory("City1", 2, 2); 
@@ -35,7 +35,7 @@ public class TALExecutionTest {
         factory.AddConnection(mine);
 
         Train t = new Train(trainInv, factory); 
-        TALBody ast = TAL.SetTrainProgram(program, t, w); 
+        TALBody<Train, City> ast = TAL.SetTrainProgram(program, t, w); 
 
         return (w, ast, t, factory, mine, coast);
     }
@@ -43,7 +43,7 @@ public class TALExecutionTest {
 
     [Fact]
     public void TALExecution_ExecutingGoShouldMakeTrainEmbarkTowardsDestination() {
-        (World w, TALBody ast, Train t, City factory, City mine, City coast) = init(@"
+        (World w, TALBody<Train, City> ast, Train t, City factory, City mine, City coast) = init(@"
             GO TO Mine;
         ");
 
@@ -54,7 +54,7 @@ public class TALExecutionTest {
 
     [Fact]
     public void TALExecution_ExecutingGoShouldDoNothingIfCitiesAreNotConnected() {
-        (World w, TALBody ast, Train t, City factory, City mine, City coast) = init(@"
+        (World w, TALBody<Train, City> ast, Train t, City factory, City mine, City coast) = init(@"
             GO TO Coast;
         ");
 
@@ -64,7 +64,7 @@ public class TALExecutionTest {
 
     [Fact]
     public void TALExecution_LoadShouldTakeItemsFromCityInventory() {
-        (World w, TALBody ast, Train t, City factory, City mine, City coast) = init(@"
+        (World w, TALBody<Train, City> ast, Train t, City factory, City mine, City coast) = init(@"
             LOAD 3 Iron;
         ");
 
@@ -76,7 +76,7 @@ public class TALExecutionTest {
 
     [Fact]
     public void TALExecution_UnloadShouldPlaceItemsAtCityInventory() {
-        (World w, TALBody ast, Train t, City factory, City mine, City coast) = init(@"
+        (World w, TALBody<Train, City> ast, Train t, City factory, City mine, City coast) = init(@"
             UNLOAD 3 Iron;
         ");
 
@@ -88,7 +88,7 @@ public class TALExecutionTest {
 
     [Fact]
     public void TALExecution_WhileShouldRunUntilConditionIsFalse() {
-        (World w, TALBody ast, Train t, City factory, City mine, City coast) = init(@"
+        (World w, TALBody<Train, City> ast, Train t, City factory, City mine, City coast) = init(@"
             WHILE Factory.Iron >= 1 {
                 WAIT;
             }

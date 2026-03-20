@@ -23,7 +23,15 @@ public class EnemyShootSystemTest {
         for (int i = 0; i < num_enemies; i++) {
             int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
             w.SetComponent<Enemy>(e, new Enemy()); 
-            w.SetComponent<Shooter>(e, new Shooter());
+            w.SetComponent<Shooter>(e, 
+                new Shooter(
+                    new DefaultShootPattern(
+                        new BulletContainer(
+                            new Bullet(1)
+                        )
+                    )
+                )
+            );
         }
         int playerEnt = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         w.SetComponent<Player>(playerEnt, new Player());

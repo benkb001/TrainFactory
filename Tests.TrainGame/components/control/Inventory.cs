@@ -20,17 +20,6 @@ public class InventoryTest {
     }
 
     [Fact] 
-    public void InventoryItem_ShouldRespectConstructorArguments() {
-        Inventory i = new Inventory("Test", 2, 2); 
-        Inventory.Item item = new Inventory.Item(Inv: i, Row: 1, Column: 2, ItemId: "Orange", Count: 3); 
-        Assert.Equal("Test", item.Inv.GetId()); 
-        Assert.Equal(1, item.Row); 
-        Assert.Equal(2, item.Column); 
-        Assert.Equal("Orange", item.ItemId); 
-        Assert.Equal(3, item.Count); 
-    }
-
-    [Fact] 
     public void InventoryItem_ShouldKnowIfSomethingIsEmpty() {
         Inventory.Item item = new Inventory.Item(ItemId: "Apple", Count: 1);
         Assert.False(item.IsEmpty()); 

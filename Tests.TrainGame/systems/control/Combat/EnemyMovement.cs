@@ -24,7 +24,7 @@ public class EnemyMovementSystemTest {
         PlayerWrap.AddTest(w);
 
         w.SetComponent<Enemy>(e, new Enemy()); 
-        w.SetComponent<Movement>(e, new Movement()); 
+        w.SetComponent<Movement>(e, new Movement(new DefaultMovePattern())); 
         w.Update(); 
         Assert.True(w.ComponentContainsEntity<Velocity>(e));
         Assert.NotEqual(Vector2.Zero, w.GetComponent<Velocity>(e).Vector);

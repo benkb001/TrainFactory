@@ -65,7 +65,7 @@ public class ECSTest
             cur.t++; 
         }; 
 
-        _System s = w.AddSystem([typeof(Test)], transform); 
+        _System<World> s = w.AddSystem([typeof(Test)], transform); 
         int e = EntityFactory.Add(w); 
 
         Assert.Equal(0, e); 
@@ -107,7 +107,7 @@ public class ECSTest
             //noop
         }; 
 
-        _System s = w.AddSystem(types, transformer);
+        _System<World> s = w.AddSystem(types, transformer);
 
         int s1 = w.GetComponentIndex<Test1>(); 
         int s2 = w.GetComponentIndex<Test2>(); 
@@ -156,7 +156,7 @@ public class ECSTest
         Action<World, int> transformer = (w, e) => {
             w.RemoveEntity(e); 
         };
-        _System s = w.AddSystem(types, transformer); 
+        _System<World> s = w.AddSystem(types, transformer); 
 
         for (int i = 0; i < 999; i++) {
             int e = EntityFactory.Add(w);
@@ -182,7 +182,7 @@ public class ECSTest
             w.RemoveComponent<Garbage>(e); 
         };
 
-        _System s = w.AddSystem(types, transformer); 
+        _System<World> s = w.AddSystem(types, transformer); 
 
         int numEntities = 999;
 
@@ -244,7 +244,7 @@ public class ECSTest
             w.SetComponent<Test2>(e, new Test2()); 
         }; 
 
-        _System s = w.AddSystem([typeof(Test1)], transform); 
+        _System<World> s = w.AddSystem([typeof(Test1)], transform); 
         int e = EntityFactory.Add(w); 
 
         w.SetComponent<Test1>(e, new Test1()); 
@@ -268,7 +268,7 @@ public class ECSTest
             w.RemoveEntity(e); 
         };
 
-        _System s = w.AddSystem(types, transformer); 
+        _System<World> s = w.AddSystem(types, transformer); 
 
         int e1 = EntityFactory.Add(w); 
 
@@ -356,7 +356,7 @@ public class ECSTest
                 //noop
             }; 
 
-            _System s = w.AddSystem(types, transformer);
+            _System<World> s = w.AddSystem(types, transformer);
         });
     }
 
