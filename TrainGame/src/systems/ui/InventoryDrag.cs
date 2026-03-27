@@ -21,14 +21,13 @@ public class CurrentInventory {
 
 public static class InventoryDragSystem {
     public const float Threshold = 30f; 
-    private static Type[] types = [typeof(Frame), typeof(Draggable), typeof(Inventory.Item), 
-    typeof(CurrentInventory), typeof(Active)]; 
+    private static Type[] types = [typeof(Frame), typeof(Draggable), typeof(InventoryPosition), 
+        typeof(CurrentInventory), typeof(Active)]; 
 
     private static Action<World, int> transformer = (w, e) => {
         Draggable d = w.GetComponent<Draggable>(e); 
         if (d.IsBeingDropped()) {
-            Inventory.Item curItem = w.GetComponent<Inventory.Item>(e); 
-            Inventory.Item targetItem = curItem; 
+            (int curRow, int curCol) = w.GetComponent<InventoryPosition>(e); 
 
             Inventory curInv = w.GetComponent<CurrentInventory>(e).Inv;
             Inventory targetInv = curInv;
@@ -36,6 +35,8 @@ public static class InventoryDragSystem {
             Vector2 closest = new Vector2(float.PositiveInfinity, float.PositiveInfinity); 
             Vector2 heldPosition = w.GetComponent<Frame>(e).Position; 
             Vector2 targetVector = d.SnapPosition; 
+            int targetRow = -1; 
+            int targetColumn = -1;
 
             List<int> itemEntities = w.GetMatchingEntities(types); 
             
@@ -45,7 +46,7 @@ public static class InventoryDragSystem {
                     continue; 
                 }
 
-                Inventory.Item potentialTargetItem = w.GetComponent<Inventory.Item>(itemEntity); 
+                (int potentialTargetRow, int potentialTargetColumn) = w.GetComponent<InventoryPosition>(itemEntity); 
                 
                 Vector2 potentialTargetVector = w.GetComponent<Frame>(itemEntity).Position;
                 Vector2 dist = potentialTargetVector - heldPosition; 
@@ -53,7 +54,8 @@ public static class InventoryDragSystem {
                 if (closest.Length() > dist.Length()) {
                     closest = dist; 
                     targetInv = w.GetComponent<CurrentInventory>(itemEntity).Inv;
-                    targetItem = potentialTargetItem; 
+                    targetRow = potentialTargetRow; 
+                    targetColumn = potentialTargetColumn;
                     targetVector = potentialTargetVector; 
                 } 
             }
@@ -62,10 +64,12 @@ public static class InventoryDragSystem {
                 int invOrganizeMsgEntity = EntityFactory.Add(w); 
 
                 w.SetComponent<InventoryOrganizeMessage>(invOrganizeMsgEntity, new InventoryOrganizeMessage(
+                    curRow,
+                    curCol,
+                    targetRow,
+                    targetColumn,
                     curInv,
                     targetInv,
-                    curItem, 
-                    targetItem, 
                     d, 
                     targetVector
                 )); 

@@ -413,12 +413,10 @@ namespace TrainGame.Constants
                     ticksPerShot: 100, 
                     reloadTicks: 300
                 ),
-                new Movement(
-                    new DefaultMovePattern(
-                        ticksToMove: 60, 
-                        ticksToWait: 60,
-                        speed: 0.5f
-                    )
+                new DefaultMovePattern(
+                    ticksToMove: 60, 
+                    ticksToWait: 60,
+                    speed: 0.5f
                 ),
                 Type: EnemyType.Artillery, 
                 HP: 15, 
@@ -441,12 +439,10 @@ namespace TrainGame.Constants
                     reloadTicks: 200, 
                     ammo: 1
                 ),
-                new Movement(
-                    new DefaultMovePattern(
-                        ticksToMove: 60,
-                        ticksToWait: 200,
-                        speed: Constants.PlayerSpeed / 3f
-                    )
+                new DefaultMovePattern(
+                    ticksToMove: 60,
+                    ticksToWait: 200,
+                    speed: Constants.PlayerSpeed / 3f
                 ),
                 Type: EnemyType.Barbarian, 
                 HP: 20, 
@@ -462,9 +458,7 @@ namespace TrainGame.Constants
                         )
                     )
                 ),
-                new Movement(
-                    new DefaultMovePattern()
-                )
+                new DefaultMovePattern()
             ),
             [EnemyType.MachineGun] = new EnemyConst(
                 new Shooter(
@@ -477,12 +471,8 @@ namespace TrainGame.Constants
                     ammo: 36, 
                     reloadTicks: 120
                 ),
-                new Movement(
-                    new DefaultMovePattern(
-                        ticksToMove: 10,
-                        ticksToWait: 0,
-                        speed: Constants.PlayerSpeed / 2f
-                    )
+                new ChaseMovePattern(
+                    Constants.PlayerSpeed / 2f
                 ),
                 Type: EnemyType.MachineGun,
                 HP: 12
@@ -500,12 +490,10 @@ namespace TrainGame.Constants
                     ammo: 2, 
                     reloadTicks: 120
                 ),
-                new Movement(
-                    new DefaultMovePattern(
-                        ticksToMove: 20,
-                        ticksToWait: 15,
-                        speed: Constants.PlayerSpeed / 1.5f
-                    )
+                new DefaultMovePattern(
+                    ticksToMove: 20,
+                    ticksToWait: 15,
+                    speed: Constants.PlayerSpeed / 1.5f
                 ),
                 Type: EnemyType.Ninja, 
                 HP: 6
@@ -524,11 +512,9 @@ namespace TrainGame.Constants
                     ticksPerShot: 4, 
                     reloadTicks: 60
                 ),
-                new Movement(
-                    new DefaultMovePattern(
-                        ticksToMove: 360, 
-                        ticksToWait: 60
-                    )
+                new DefaultMovePattern(
+                    ticksToMove: 360, 
+                    ticksToWait: 60
                 ),
                 Type: EnemyType.Robot, 
                 HP: 8
@@ -545,9 +531,7 @@ namespace TrainGame.Constants
                     ticksPerShot: 120, 
                     reloadTicks: 240
                 ),
-                new Movement(
-                    new DefaultMovePattern()
-                ),
+                new DefaultMovePattern(),
                 Type: EnemyType.Shotgun, 
                 //SPattern: ShootPattern.Multi,
                 HP: 8
@@ -568,9 +552,7 @@ namespace TrainGame.Constants
                     ammo: 1, 
                     reloadTicks: 300
                 ),
-                new Movement(
-                    new DefaultMovePattern()
-                ),
+                new DefaultMovePattern(),
                 Type: EnemyType.Sniper, 
                 HP: 25
             ),
@@ -586,9 +568,7 @@ namespace TrainGame.Constants
                     reloadTicks: 200, 
                     ticksPerShot: 60
                 ),
-                new Movement(
-                    new DefaultMovePattern()
-                ),
+                new DefaultMovePattern(),
                 Type: EnemyType.Volley, 
                 //SPattern: ShootPattern.Multi,
                 HP: 25
@@ -610,9 +590,7 @@ namespace TrainGame.Constants
                     ammo: 20, 
                     reloadTicks: 480
                 ),
-                new Movement(
-                    new DefaultMovePattern()
-                ),
+                new DefaultMovePattern(),
                 Type: EnemyType.Warrior, 
                 //SPattern: ShootPattern.Multi, 
                 HP: 40,

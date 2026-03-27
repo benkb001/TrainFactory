@@ -11,44 +11,51 @@ using TrainGame.ECS;
 using TrainGame.Components; 
 using TrainGame.Utils; 
 
+public class InventoryPosition {
+    public int Row; 
+    public int Column; 
+
+    public InventoryPosition(int Row, int Column) {
+        this.Row = Row; 
+        this.Column = Column; 
+    }
+
+    public void Deconstruct(out int row, out int column) {
+        row = Row;
+        column = Column;
+    }
+}
+
 public static class InventoryControlSystem {
     public static void RegisterOrganize(World world) {
         Type[] ts = [typeof(InventoryOrganizeMessage), typeof(Active)]; 
         Action<World, int> tf = (w, e) => {
             InventoryOrganizeMessage msg = w.GetComponent<InventoryOrganizeMessage>(e); 
 
-            Inventory.Item curItem = msg.CurItem; 
-            Inventory.Item targetItem = msg.TargetItem; 
             Inventory curInv = msg.CurInv;
             Inventory targetInv = msg.TargetInv;
             Draggable d = msg.CurDraggable; 
             Vector2 targetVector = msg.TargetVector; 
 
-            (int curRow, int curCol) = curInv.GetIndices(curItem);
-            (int targetRow, int targetCol) = targetInv.GetIndices(targetItem);
+            int curRow = msg.CurRow; 
+            int curCol = msg.CurColumn; 
+            int targetRow = msg.TargetRow; 
+            int targetCol = msg.TargetColumn;
 
-            curInv.Take(curRow, curCol);
-            targetInv.Take(targetRow, targetCol);
-
-            if (targetItem.ItemId == curItem.ItemId) {
-                curItem.Count += targetItem.Count;
-                targetItem.Count = 0; 
-                targetItem.ItemId = "";
-            }
-            
-            int addedToTarget = targetInv.Add(curItem, targetRow, targetCol); 
-            int addedToCur = curInv.Add(targetItem, curRow, curCol);
-
-            curInv.Add(new Inventory.Item(ItemId: curItem.ItemId, Count: curItem.Count - addedToTarget)); 
-            targetInv.Add(new Inventory.Item(ItemId: targetItem.ItemId, Count: targetItem.Count - addedToCur));
-            
             d.SnapPosition = targetVector; 
 
+            if (!(curInv.AreValidIndices(curRow, curCol) && targetInv.AreValidIndices(targetRow, targetCol))) {
+                w.RemoveEntity(e); 
+                Console.WriteLine($"Invalid InvOrganizeMessage {curInv.ID}, {targetInv.ID}");
+                return;
+            }
+
+            curInv.AddItemTo(targetInv, curRow, curCol, targetRow, targetCol);
             Inventory[] invs = {targetInv, curInv}; 
 
             foreach (Inventory inv in invs) {
                 int invEnt = InventoryWrap.GetEntity(inv.ID, w);
-                w.SetComponent<InventoryUpdatedFlag>(invEnt, InventoryUpdatedFlag.Get());
+                w.SetComponentSafe<InventoryUpdatedFlag>(invEnt, InventoryUpdatedFlag.Get());
             }
 
             w.RemoveEntity(e); 
@@ -82,6 +89,7 @@ public static class InventoryControlSystem {
                     
                     tb.Text = i.ToString(); 
                     w.SetComponent<Inventory.Item>(c, i);
+                    w.SetComponent<InventoryPosition>(c, new InventoryPosition(row_index, j));
                     w.SetComponent<CurrentInventory>(c, new CurrentInventory(inv));
                 }
             }

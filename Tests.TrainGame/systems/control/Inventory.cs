@@ -36,10 +36,10 @@ public class InventoryControlSystemTest {
         
         int msg = EntityFactory.Add(w); 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
+            1, 1,
+            0, 1,
             inv1, 
             inv2,
-            apple,
-            banana,
             d,
             targetVector
         ); 
@@ -100,20 +100,20 @@ public class InventoryControlSystemTest {
     public void InventoryControlSystem_ShouldReturnExcessItemsToOriginalInventories() {
         World w = WorldFactory.Build(); 
 
-        Inventory inv1 = new Inventory("Test1", 1, 2); 
-        Inventory inv2 = new Inventory("Test2", 1, 2); 
+        Inventory inv1 = new Inventory("Excess1", 1, 2); 
+        Inventory inv2 = new Inventory("Excess2", 1, 2); 
 
         Inventory.Item woodLarge = new Inventory.Item(ItemId: ItemID.Wood, Count: Constants.ItemStackSize(ItemID.Wood) - 1); 
         Inventory.Item woodSmall = new Inventory.Item(ItemId: ItemID.Wood, Count: 2); 
-        inv1.Add(woodLarge, 0, 0);
-        inv2.Add(woodSmall, 0, 0);
+        inv1.Add(woodLarge);
+        inv2.Add(woodSmall);
         Draggable d = new Draggable();
 
         InventoryOrganizeMessage organize = new InventoryOrganizeMessage(
-            inv1, 
-            inv2,
-            woodLarge,
-            woodSmall,
+            0, 0,
+            0, 0,
+            inv2, 
+            inv1,
             d,
             Vector2.Zero
         ); 
@@ -126,10 +126,10 @@ public class InventoryControlSystemTest {
         Assert.Equal(1, inv2.ItemCount(ItemID.Wood)); 
 
         InventoryOrganizeMessage organize2 = new InventoryOrganizeMessage(
+            0, 0,
+            0, 0,
             inv2,
             inv1,
-            woodSmall,
-            woodLarge,
             d,
             Vector2.Zero
         ); 

@@ -17,13 +17,19 @@ public static class TrainTravelSystem {
     private static Type[] ts = [typeof(Train), typeof(Data)]; 
     private static Action<World, int> tf = (w, e) => {
         Train t = w.GetComponent<Train>(e); 
-        City goingTo = w.GetComponent<GoingToCity>(e);
         //ICKY: I want the menu refreshing to be done manually by player, 
         //but i want the train buttons to be grayed out if the train leaves the city
         if (t.IsArriving()) {
             //ICKY: i dont want this in a UI system but whatever 
             
-            City comingFrom = w.GetComponent<ComingFromCity>(e); 
+            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, e); 
+            (City goingTo, bool hasGoingTo) = TrainWrap.GetGoingTo(w, e); 
+            
+            if (!hasComingFrom || !hasGoingTo) {
+                throw new InvalidOperationException(
+                    $"Train {t.ID} travel system cannot update as it is missing a ComingFrom or GoingTo");
+            }
+
             if (comingFrom != goingTo) {
                 goingTo.ReceiveTrain(t, comingFrom);
                 w.SetComponent<ComingFromCity>(e, new ComingFromCity(goingTo));

@@ -8,27 +8,29 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 public class InventoryOrganizeMessage {
-    public int TargetRow; 
-    public int TargetColumn; 
     public int CurRow; 
     public int CurColumn; 
-    public Inventory.Item TargetItem; 
-    public Inventory.Item CurItem; 
+    public int TargetRow; 
+    public int TargetColumn; 
     public Inventory CurInv; 
     public Inventory TargetInv;
     public Draggable CurDraggable; 
     public Vector2 TargetVector; 
 
     public InventoryOrganizeMessage(
+        int CurRow, 
+        int CurColumn, 
+        int TargetRow, 
+        int TargetColumn,
         Inventory CurInv, 
         Inventory TargetInv,
-        Inventory.Item CurItem, 
-        Inventory.Item TargetItem, 
         Draggable CurDraggable, 
         Vector2 TargetVector
     ) {
-        this.TargetItem = TargetItem; 
-        this.CurItem = CurItem; 
+        this.TargetRow = TargetRow; 
+        this.TargetColumn = TargetColumn;
+        this.CurRow = CurRow; 
+        this.CurColumn = CurColumn;
         this.CurDraggable = CurDraggable; 
         this.TargetVector = TargetVector; 
         this.CurInv = CurInv;

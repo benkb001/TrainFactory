@@ -76,7 +76,13 @@ public static class TrainWrap {
     }
 
     public static void Embark(Train t, int trainEnt, City dest, World w, WorldTime left = null) {
-        City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+        (City comingFrom, bool hasComingFrom) = GetComingFrom(w, trainEnt);
+
+        if (!hasComingFrom) {
+            throw new InvalidOperationException(
+                $"Train {t.ID} tried to embark but ent {trainEnt} has no ComingFromCity");
+        }
+
         if (comingFrom != dest) {
             if (left == null) {
                 left = w.Time;
@@ -92,4 +98,17 @@ public static class TrainWrap {
         int trainEnt = ComponentID.GetEntity<Train>(t.ID, w); 
         return w.GetComponent<ComingFromCity>(trainEnt);
     }
+
+    public static (City, bool) GetComingFrom(World w, int trainEnt) {
+        (ComingFromCity c, bool hasComingFrom) = w.GetComponentSafe<ComingFromCity>(trainEnt, warn: true);
+        City comingFrom = hasComingFrom ? c : default(City);
+        return (comingFrom, hasComingFrom);
+    }
+
+    public static (City, bool) GetGoingTo(World w, int trainEnt) {
+        (GoingToCity c, bool hasGoingTo) = w.GetComponentSafe<GoingToCity>(trainEnt, warn: true);
+        City goingTo = hasGoingTo ? c : default(City);
+        return (goingTo, hasGoingTo);
+    }
+
 }

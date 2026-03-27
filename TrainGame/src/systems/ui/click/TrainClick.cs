@@ -24,7 +24,6 @@ public static class TrainClickSystem {
                 int dm = EntityFactory.Add(w, setScene: false); 
                 w.SetComponent<DrawTrainInterfaceMessage>(dm, new DrawTrainInterfaceMessage(t, btn.TrainEntity)); 
             } else {
-                (TALBody<Train, City> exe, bool _) = w.GetComponentSafe<TALBody<Train, City>>(btn.TrainEntity);
                 DrawTravelingInterfaceSystem.AddMessage(w, t, btn.TrainEntity); 
             }
         });

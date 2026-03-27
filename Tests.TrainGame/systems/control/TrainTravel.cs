@@ -4,7 +4,7 @@ using TrainGame.Utils;
 using TrainGame.ECS; 
 using TrainGame.Systems; 
 
-public class TrainTravelSystemTest() {
+public class TrainTravelSystemTest {
     [Fact]
     public void TrainTravelSystem_ShouldMakeTrainsArriveAfterTheCorrectAmountOfTime() {
         World w = WorldFactory.Build(); 
@@ -18,9 +18,9 @@ public class TrainTravelSystemTest() {
         c_start.AddConnection(c_end);
         Train t = new Train(inv, c_start.RealPosition, new Dictionary<CartType, Inventory>(), "TestTrain", milesPerHour: 10f);
         int trainEntity = EntityFactory.AddData<Train>(w, t);
-
-        t.Embark(c_end.RealPosition, w.Time); 
-        w.SetComponent<GoingToCity>(trainEntity, new GoingToCity(c_end));
+        w.SetComponent<ComingFromCity>(trainEntity, new ComingFromCity(c_start));
+        
+        TrainWrap.Embark(t, trainEntity, c_end, w);
 
         w.PassTime(new WorldTime(hours: 9, minutes: 59)); 
         w.Update(); 

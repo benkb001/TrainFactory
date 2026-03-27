@@ -125,8 +125,11 @@ public partial class World : IWorld {
         return cm.GetComponent<T>(entity); 
     }
 
-    public (T, bool) GetComponentSafe<T>(int entity) {
+    public (T, bool) GetComponentSafe<T>(int entity, bool warn = false) {
         if (!EntityExists(entity) || !cm.ComponentContainsEntity<T>(entity)) {
+            if (warn) {
+                Console.WriteLine($"Entity {entity} has no {typeof(T)}");
+            }
             return (default(T), false); 
         }
         return (cm.GetComponent<T>(entity), true); 
@@ -210,6 +213,17 @@ public partial class World : IWorld {
         return e; 
     }
 
+    public bool SetComponentSafe<T>(int e, T c) {
+        if (EntityExists(e)) {
+            bool[] signature = em.GetSignature(e); 
+            signature = cm.AddComponent<T>(e, signature, c);
+            SetSignature(e, signature); 
+            return true;
+        }
+        
+        return false;
+    }
+
     public void SetTargetCameraPosition(Vector2 v) {
         targetCameraPosition = v; 
         targetCameraPositionIsCurrent = true; 
@@ -258,18 +272,4 @@ public partial class World : IWorld {
     public void SetMiliticksPerUpdate(int t) {
         wt.SetMiliticksPerUpdate(t);
     }
-
-    /*
-    TODO: low-prio Write
-    public string ToString() {
-        string res = ""; 
-        foreach (int e in em.GetEntities()) {
-            res = $"{res}Entity {e}: "; 
-            bool[] signature = em.GetSignature(e); 
-            foreach (bool b in signature) {
-
-            }
-        }
-    }
-    */
 }

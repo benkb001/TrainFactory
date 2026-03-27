@@ -50,7 +50,7 @@ public class TALParserTest {
         
         int woodCount = 20; 
         c.Inv.Add(ItemID.Wood, woodCount);
-        tokens = TALLexer.Tokenize($"{CityID.Factory}.Wood"); 
+        tokens = TALLexer.Tokenize($"{CityID.Factory}.{ItemID.Wood}"); 
         e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
         TALAccessCityExpression<City> accCityExp = Assert.IsType<TALAccessCityExpression<City>>(e);
         Assert.Equal(woodCount, (int)accCityExp.Evaluate());

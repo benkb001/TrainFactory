@@ -34,6 +34,7 @@ public class TextInputSystemTest {
         Assert.True(input.Active); 
         VirtualMouse.LeftClick(new Vector2(-100, -100));
         w.Update(); 
+        w.Update();
         Assert.False(input.Active); 
     }
 

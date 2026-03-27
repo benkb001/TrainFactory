@@ -8,62 +8,71 @@ using Microsoft.Xna.Framework.Graphics;
 
 using TrainGame.Utils;
 using TrainGame.Constants;
+using TrainGame.Systems;
 
-public interface IMovePattern {
-    Vector2 Move(Vector2 targetPosition);
-    int GetTicksTillNextMovement();
-    int GetTicksToMove();
-    IMovePattern Clone();
+public interface IMovementType {
+    IMovementType Clone(); 
 }
 
-public class DefaultMovePattern : IMovePattern {
-    private float speed; 
-    private int ticksToMove; 
-    private int ticksToWait;
+public class DefaultMovePattern : IMovementType {
+
+    public float Speed; 
+    public WorldTime TimeToMove; 
+    public WorldTime TimeToWait; 
 
     public DefaultMovePattern(int ticksToMove = 45, int ticksToWait = 120, float speed = Constants.DefaultEnemySpeed) {
-        this.ticksToMove = ticksToMove; 
-        this.ticksToWait = ticksToWait; 
-        this.speed = speed; 
+        this.Speed = speed; 
+        this.TimeToMove = new WorldTime(ticks: ticksToMove); 
+        this.TimeToWait = new WorldTime(ticks: ticksToWait); 
     }
 
-    public Vector2 Move(Vector2 _) => Vector2.Normalize(new Vector2(Util.NextNeg1To1(), Util.NextNeg1To1())) * speed;
-    public int GetTicksTillNextMovement() => ticksToMove + ticksToWait;
-    public int GetTicksToMove() => ticksToMove;
-    public IMovePattern Clone() => new DefaultMovePattern(ticksToMove, ticksToWait, speed);
+    public IMovementType Clone() => new DefaultMovePattern(TimeToMove.InTicks(), TimeToWait.InTicks(), Speed);
 }
 
-public class Movement {
+public class ChaseMovePattern : IMovementType {
+    public float Speed; 
+    public int TargetEntity; 
 
-    private WorldTime canMove; 
-    private WorldTime stopMove;
-    private IMovePattern pattern;
-
-    public Movement(IMovePattern pattern) {
-        canMove = new WorldTime(); 
-        stopMove = new WorldTime();
-        this.pattern = pattern.Clone();
+    public ChaseMovePattern(float Speed) {
+        this.Speed = Speed; 
     }
 
-    public bool CanMove(WorldTime t) {
-        return t.IsAfterOrAt(canMove); 
-    }  
+    public IMovementType Clone() => new ChaseMovePattern(Speed);
+}
 
-    public bool IsMoving(WorldTime t) {
-        return !t.IsAfterOrAt(stopMove); 
+public class MoveTiming {
+
+    public WorldTime CanMove; 
+    public WorldTime StopMove; 
+
+    public MoveTiming(WorldTime now) {
+        CanMove = now + new WorldTime(ticks: 20 + Util.NextInt(60));
+        StopMove = new WorldTime();
     }
+}
 
-    public Vector2 Move(WorldTime t, Vector2 targetPosition) {
-        if (CanMove(t)) {
-            canMove = t + new WorldTime(ticks: pattern.GetTicksTillNextMovement()); 
-            stopMove = t + new WorldTime(ticks: pattern.GetTicksToMove());
-            return pattern.Move(targetPosition);
-        } 
-        
-        return Vector2.Zero;
-    } 
+public static class RegisterDefaultMovementType {
+    public static void Register() {
+        MovementRegistry.Register<DefaultMovePattern>((w, m, e) => {
+            w.SetComponent<DefaultMovePattern>(e, m);
+            w.SetComponent<MoveTiming>(e, new MoveTiming(w.Time));
+        });
+    }
+}
 
-    public Movement Clone() {
-        return new Movement(pattern);
+public static class RegisterChaseMovementType {
+    public static void Register() {
+        MovementRegistry.Register<ChaseMovePattern>((w, m, e) => {
+            m.TargetEntity = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame)]);
+            w.SetComponent<ChaseMovePattern>(e, m); 
+            Console.WriteLine($"added");
+        });
+    }
+}
+
+public static class RegisterMovementTypes {
+    public static void All() {
+        RegisterDefaultMovementType.Register();
+        RegisterChaseMovementType.Register();
     }
 }

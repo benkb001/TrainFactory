@@ -111,7 +111,12 @@ public static class DrawUpgradeTrainInterfaceSystem {
             Train t = d.GetTrain();
             int trainEnt = d.TrainEntity;
             LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w);
-            City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt);
+
+            if (!hasComingFrom) {
+                throw new InvalidOperationException(
+                    $"Tried to draw upgrade train interface but {trainEnt} has no ComingFromCity");
+            }
             
             string summary = t.GetSummary();
             int sumEnt = EntityFactory.AddUI(w, Vector2.Zero, 200, 200, setOutline: true, text: summary);

@@ -15,10 +15,12 @@ using TrainGame.Components;
 public static class RegisterSystems {
     public static void All(World w) {
         RegisterBulletTraits.All();
+        RegisterMovementTypes.All();
         //CameraLockSystem.Register(w); 
 
         CardinalMovementSystem.Register(w); 
-        EnemyMovementSystem.Register(w); 
+        DefaultEnemyMovementSystem.Register(w); 
+        ChaseMovementSystem.Register(w);
         
         MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w);

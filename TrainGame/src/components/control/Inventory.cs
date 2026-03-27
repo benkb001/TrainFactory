@@ -272,6 +272,28 @@ public class Inventory : IID {
         return added; 
     }
 
+    public void AddItemTo(Inventory targetInv, int curRow, int curCol, int targetRow, int targetCol) {
+        Item curItem = this.Take(curRow, curCol);
+        Item targetItem = targetInv.Take(targetRow, targetCol);
+
+        if (targetItem.ItemId == curItem.ItemId) {
+            if (targetItem.Count == stackSize(targetItem.ID)) {
+                this.Add(targetItem, curRow, curCol); 
+                targetInv.Add(curItem, targetRow, targetCol);
+                return;
+            }
+            curItem.Count += targetItem.Count;
+            targetItem.Count = 0; 
+            targetItem.ItemId = "";
+        }
+
+        int addedToTarget = targetInv.Add(curItem, targetRow, targetCol); 
+        int addedToCur = this.Add(targetItem, curRow, curCol);
+
+        this.Add(curItem.ID, curItem.Count - addedToTarget); 
+        targetInv.Add(targetItem.ID, targetItem.Count - addedToCur);
+    }
+
     public Item Get(int index) {
         (int row, int col) = GetRowColIndex(index); 
         return Get(row, col); 
@@ -385,6 +407,15 @@ public class Inventory : IID {
 
     public void EnsureValidIndices(int row, int col) {
         ensureValidIndices(row, col); 
+    }
+
+    public bool AreValidIndices(int row, int col) {
+        try {
+            ensureValidIndices(row, col); 
+            return true; 
+        } catch {
+            return false;
+        }
     }
 
     private int stackSize(string itemId) {

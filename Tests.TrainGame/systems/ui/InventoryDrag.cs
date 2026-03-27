@@ -127,8 +127,6 @@ public class InventoryDragSystemTest {
         Assert.Equal(curCol, msg.CurColumn); 
         Assert.Equal(targetRow, msg.TargetRow); 
         Assert.Equal(targetCol, msg.TargetColumn); 
-        Assert.Equal(curItem.ItemId, msg.CurItem.ItemId);
-        Assert.Equal(targetItem.ItemId, msg.TargetItem.ItemId);
         Assert.Equal(curDraggable, msg.CurDraggable);
         Assert.Equal(targetVector, msg.TargetVector);
         VirtualMouse.Reset(); 

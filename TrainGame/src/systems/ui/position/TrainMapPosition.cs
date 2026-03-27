@@ -20,8 +20,15 @@ public static class TrainMapPositionSystem {
             int trainEnt = tUI.TrainEntity;
 
             float completion = t.JourneyCompletion;
-            City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
-            City goingTo = w.GetComponent<GoingToCity>(trainEnt);
+
+            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt); 
+            (City goingTo, bool hasGoingTo) = TrainWrap.GetGoingTo(w, trainEnt);
+
+            if (!hasComingFrom || !hasGoingTo) {
+                w.RemoveEntity(e);
+                return;
+            }
+
             Vector2 comingFromMapPosition = comingFrom.MapPosition;
             Vector2 goingToMapPosition = goingTo.MapPosition;
             Vector2 pos = comingFromMapPosition + ((goingToMapPosition - comingFromMapPosition) * completion);
@@ -30,6 +37,7 @@ public static class TrainMapPositionSystem {
             if (!t.IsTraveling()) {
                 w.RemoveEntity(e); 
             }
+
         }; 
         world.AddSystem(ts, tf); 
     }

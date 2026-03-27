@@ -35,6 +35,7 @@ public class TALExecutionTest {
 
         Train t = new Train(trainInv, factory.RealPosition, new Dictionary<CartType, Inventory>(), "TestTrain"); 
         int trainEnt = EntityFactory.AddData<Train>(w, t);
+        w.SetComponent<ComingFromCity>(trainEnt, new ComingFromCity(factory));
         TALBody<Train, City> ast = TAL.SetTrainProgram(program, t, trainEnt, w); 
 
         return (w, ast, t, factory, mine, coast, trainEnt);

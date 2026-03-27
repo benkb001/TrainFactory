@@ -2,7 +2,7 @@
 
 *** BUGS **** 
 
-* randomly zooming in ? 
+* Fix randomly unlocking zoom
 * Camera lag when teleporting, exiting interfaces, basically entity tracking is
   a bit wonky
 * Not decreasing received damage after picking up +1 armor
@@ -36,14 +36,11 @@
 * Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
 * Remove callbacks
 * Split constants into a few files
-
-**** THIS SPRINT **** 
-
-* Fix test directory to match file changes and to compile
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
 
-* Fix randomly unlocking zoom
+**** THIS SPRINT **** 
+
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
 * Add an exit ladder to the diagonal map 
@@ -58,14 +55,18 @@
     * Parametric curves and switching between them
     * Move to a certain tile w/ pathfinding
       * We can start by having ground tiles which store 
-        their position and their neighboring tiles. 
+        their position and their neighboring tiles, and a 
+        shared reference to a list containing all tiles
       * We need some way to query world state before moving. 
         I think keeping the IMovePatterns
         out of world is good, so we could use another registry, 
         which maps types to functions that basically 'set up' the 
         component for what it will need
       * Before moving, we can query for a ground tile that overlaps 
-        with the enemy frame, and then we can use 
+        with the enemy frame, and then we can use djikstra's to find 
+        a random tile and from the path store a list of positions to go to, 
+        then we check once player has gotten close enough to the next tile 
+        and update target position to the next position, etc. 
   * Add new shoot patterns: 
     * Random shotgun w/ different bullet types possible
   * Add new bullet traits: 
@@ -74,7 +75,6 @@
     * Pierce
     * explodes
     * Vampiric 
-  * Add new bullet traits
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Enemies should wait a random amount of time before they start to shoot the player

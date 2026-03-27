@@ -1,5 +1,6 @@
 namespace TrainGame.Components;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainGame.ECS;
@@ -45,7 +46,12 @@ public class TrainWorld : ITrainWorld<Train, City> {
     public TrainState Embark(Train train, City dest) {
 
         int trainEnt = ComponentID.GetEntity<Train>(train.ID, w);
-        City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+        (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt); 
+
+        if (!hasComingFrom) {
+            throw new InvalidOperationException(
+                $"Train {train.ID} cannot continue program because it has no ComingFromCity");
+        }
 
         if (comingFrom == dest) {
             return TrainState.AtCity;

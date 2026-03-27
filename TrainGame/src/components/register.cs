@@ -36,6 +36,7 @@ public static class RegisterComponents {
         r<CartAssembler>();
         r<City>(); 
         r<CityUI>(); 
+        r<ChaseMovePattern>();
         r<ClearLLMessage>(); 
         r<CloseMenuMessage>(); 
         r<Collidable>(); 
@@ -47,6 +48,7 @@ public static class RegisterComponents {
         r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 
+        r<DefaultMovePattern>();
         r<UpgradeDepotButton>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
@@ -99,6 +101,7 @@ public static class RegisterComponents {
         r<InventoryIndexer<Train>>(); 
         r<Inventory.Item>();
         r<InventoryOrganizeMessage>();
+        r<InventoryPosition>();
         r<InventoryUpdatedFlag>();
         r<Ladder>();
         r<Machine>(); 
@@ -109,8 +112,8 @@ public static class RegisterComponents {
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
         r<Menu>(); 
-        r<Movement>(); 
         r<MovementBounds>();
+        r<MoveTiming>(); 
         r<Label>(); 
         r<LinearLayout>(); 
         r<Lines>(); 

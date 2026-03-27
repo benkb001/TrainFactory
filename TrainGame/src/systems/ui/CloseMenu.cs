@@ -53,13 +53,14 @@ public static class CloseMenuSystem {
                 WorldTimeWrap.SetTimePassSlow(w); 
                 break;
             case SceneType.TrainInterface: 
-                train = menu.GetTrain(); 
-                if (train != null) {
-                    city = w.GetComponent<ComingFromCity>(trainEnt);
-                    MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(city)); 
-                } else {
-                    throw new InvalidOperationException("Found menu in train interface that did not specify train"); 
+                (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt); 
+
+                if (!hasComingFrom) {
+                    throw new InvalidOperationException(
+                        $"Tried to close TrainInterface but menu's trainEnt {trainEnt} has no ComingFromCity");
                 }
+
+                MakeMessage.Add<DrawCityInterfaceMessage>(w, new DrawCityInterfaceMessage(comingFrom)); 
                 break;
             case SceneType.CityInterface: 
                 MakeMessage.Add<DrawMapMessage>(w, DrawMapMessage.Get());

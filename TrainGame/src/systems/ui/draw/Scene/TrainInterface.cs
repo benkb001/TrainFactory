@@ -110,7 +110,12 @@ public class DrawTrainInterfaceSystem {
             DrawTrainInterfaceMessage dm = w.GetComponent<DrawTrainInterfaceMessage>(e); 
             Train t = dm.GetTrain(); 
             int trainEnt = dm.TrainEntity;
-            City comingFrom = w.GetComponent<ComingFromCity>(trainEnt);
+            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt);
+            
+            if (!hasComingFrom) {
+                throw new InvalidOperationException(
+                    $"Tried to draw train interface but {trainEnt} has no comingFromCity");
+            }
 
             int menuEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(menuEnt, new Menu(train: t)); 

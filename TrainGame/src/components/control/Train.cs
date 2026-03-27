@@ -98,7 +98,11 @@ public class Train : IInventorySource, IID, ITrain {
         int fuelToTake = 2 * (int)Math.Ceiling(((journeyMiles - milesOfFuel) * mass) / massMilesPerFuel);
         
         int taken = Inv.Take(ItemID.Fuel, fuelToTake).Count;
-        taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;
+        
+        if (Carts.ContainsKey(CartType.Freight)) {
+            taken += Carts[CartType.Freight].Take(ItemID.Fuel, fuelToTake - taken).Count;
+        }
+        
         milesOfFuel += (massMilesPerFuel * taken) / mass; 
 
         //TODO: this maybe should be recalculated each frame, 

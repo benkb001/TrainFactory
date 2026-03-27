@@ -19,7 +19,12 @@ public static class SetTrainProgramClickSystem {
 
             Train t = btn.GetTrain(); 
             int trainEntity = btn.TrainEntity;
-            City comingFrom = w.GetComponent<ComingFromCity>(trainEntity);
+            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEntity);
+            
+            if (!hasComingFrom) {
+                return;
+            }
+
             Inventory inv = comingFrom.Inv;
             string program = btn.Program;
             string programName = btn.ProgramName; 

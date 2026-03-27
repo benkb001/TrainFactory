@@ -30,14 +30,14 @@ public class EnemyWrap {
 
         w.SetComponent<Enemy>(enemyEnt, new Enemy(enemyType)); 
 
-        Movement movement = e.GetMovement();
-        w.SetComponent<Movement>(enemyEnt, movement); 
+        IMovementType movement = e.GetMovement();
+        MovementRegistry.AddMovement(w, movement, enemyEnt);
 
         w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
         Armor armor = new Armor(e.Armor);
         w.SetComponent<Armor>(enemyEnt, armor); 
         
-        return new EnemyWrap(enemyEnt, h, armor, movement);
+        return new EnemyWrap(enemyEnt, h, armor);
     }
 
     public static int GetFirst(World w) {
@@ -46,19 +46,16 @@ public class EnemyWrap {
     }
 
     private Armor armor; 
-    private Movement movement; 
     private Health health; 
     private int e; 
 
     public Health GetHealth() => health; 
     public int Entity => e; 
     public Armor GetArmor() => armor; 
-    public Movement GetMovement() => movement; 
 
-    private EnemyWrap(int e, Health health, Armor armor, Movement movement) {
+    private EnemyWrap(int e, Health health, Armor armor) {
         this.e = e; 
         this.armor = armor; 
-        this.movement = movement;
         this.health = health; 
     }
 }

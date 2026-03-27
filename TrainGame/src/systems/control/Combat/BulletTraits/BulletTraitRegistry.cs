@@ -2,29 +2,52 @@ namespace TrainGame.Systems;
 
 using System;
 using System.Collections.Generic;
-
+using Microsoft.Xna.Framework;
 using TrainGame.Components;
 using TrainGame.ECS;
 
-public static class BulletTraitRegistry {
+public class CallbackRegistry<CONTEXT, INTERFACE, OBJECT> {
+    private Dictionary<Type, Action<CONTEXT, INTERFACE, OBJECT>> callbacks = new(); 
 
-    private static Dictionary<Type, Action<World, IBulletTrait, int>> callbacks = new();
+    public void Register<IMPLEMENTING>(Action<CONTEXT, IMPLEMENTING, OBJECT> callback) where IMPLEMENTING : INTERFACE {
+        Type x = typeof(IMPLEMENTING); 
 
-    public static void Register<T>(Action<World, T, int> callback) where T : IBulletTrait {
-        Type t = typeof(T); 
-        callbacks[t] = (World w, IBulletTrait trait, int e) => {
-            if (trait is T component) {
-                callback(w, component, e); 
+        callbacks[x] = (CONTEXT w, INTERFACE inter, OBJECT obj) => {
+            if (inter is IMPLEMENTING imp) {
+                callback(w, imp, obj);
             }
         };
     }
 
-    public static void AddTrait(World w, IBulletTrait trait, int bulletEnt) {
-        Type t = trait.GetType();
-        if (callbacks.ContainsKey(t)) {
-            callbacks[t](w, trait, bulletEnt);
-        } else {
-            throw new InvalidOperationException($"{t} has not been registered with BulletTraitRegistry");
+    public void Callback(CONTEXT w, INTERFACE t, OBJECT obj) {
+        Type type = t.GetType(); 
+
+        if (callbacks.ContainsKey(type)) {
+            callbacks[type](w, t, obj);
         }
+    }
+}
+
+public static class BulletTraitRegistry {
+    private static CallbackRegistry<World, IBulletTrait, int> registry = new(); 
+
+    public static void Register<T>(Action<World, T, int> callback) where T : IBulletTrait {
+        registry.Register<T>(callback); 
+    }
+
+    public static void AddTrait(World w, IBulletTrait trait, int bulletEnt) {
+        registry.Callback(w, trait, bulletEnt);
+    }
+}
+
+public static class MovementRegistry {
+    private static CallbackRegistry<World, IMovementType, int> registry = new(); 
+
+    public static void Register<T>(Action<World, T, int> callback) where T : IMovementType {
+        registry.Register<T>(callback); 
+    }
+
+    public static void AddMovement(World w, IMovementType t, int e) {
+        registry.Callback(w, t, e);
     }
 }

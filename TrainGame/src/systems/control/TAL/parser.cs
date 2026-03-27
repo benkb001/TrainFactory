@@ -49,6 +49,11 @@ public static class TALParser {
         TALToken tokItem; 
         
         switch (t1.Type) {
+            case TokenType.OpenParen: 
+                MatchOne(TokenType.OpenParen, ts); 
+                e1 = ParseIntExp<T, C>(ts, w, train); 
+                MatchOne(TokenType.CloseParen, ts); 
+                break;
             case TokenType.Int: 
                 MatchOne(TokenType.Int, ts); 
                 e1 = new TALIntExpression(t1.IntVal);

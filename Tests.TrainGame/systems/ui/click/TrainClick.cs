@@ -27,6 +27,7 @@ public class TrainClickSystemTest {
         w.SetComponent<Frame>(tUIEntity, new Frame(0, 0, 100, 100)); 
         w.SetComponent<Button>(tUIEntity, new Button(true)); 
         w.SetComponent<TrainUI>(tUIEntity, new TrainUI(t, trainEnt)); 
+        w.SetComponent<ComingFromCity>(trainEnt, new ComingFromCity(c));
         
         w.Update(); 
 
