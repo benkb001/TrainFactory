@@ -78,6 +78,14 @@ public class WorldTime {
         (days >= other.days && hours >= other.hours && minutes >= other.minutes && ticks >= other.ticks); 
     }
 
+    public bool IsAt(WorldTime other) {
+        return 
+        days == other.days && 
+        hours == other.hours && 
+        minutes == other.minutes &&
+        ticks == other.ticks; 
+    }
+
     public static WorldTime operator -(WorldTime a, WorldTime b) {
         int ticks = a.ticks - b.ticks; 
         int minutes = a.minutes - b.minutes;

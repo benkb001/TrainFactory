@@ -16,11 +16,12 @@ public static class RegisterSystems {
     public static void All(World w) {
         RegisterBulletTraits.All();
         RegisterMovementTypes.All();
-        //CameraLockSystem.Register(w); 
+        RegisterShootPatterns.All();
 
         CardinalMovementSystem.Register(w); 
         DefaultEnemyMovementSystem.Register(w); 
         ChaseMovementSystem.Register(w);
+        CyclicalMoveSystem.Register(w);
         
         MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w);
@@ -118,8 +119,12 @@ public static class RegisterSystems {
 
         PlayerShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
-        ShootSystem.Register<Enemy>(w);
-        ShootSystem.Register<Player>(w);
+        DefaultShootSystem.Register<Enemy>(w);
+        DefaultShootSystem.Register<Player>(w);
+        MeleeShootSystem.Register<Enemy>(w);
+        MeleeShootSystem.Register<Player>(w);
+        RadialShootSystem.Register<Enemy>(w);
+        RadialShootSystem.Register<Player>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 
@@ -127,8 +132,6 @@ public static class RegisterSystems {
         RewardInteractSystem.RegisterRemove(w); 
 
         CloseMenuSystem.Register(w); 
-        
-        //OpenMapSystem.Register(w); 
 
         RedrawMapSystem.Register(w);
 
@@ -172,7 +175,7 @@ public static class RegisterSystems {
         PlayerHUDPositionSystem.Register(w); 
         DrawAmmoHUDSystem.Register(w); 
         
-        ScreenAnchorSystem.Register(w); //***
+        ScreenAnchorSystem.Register(w);
         LinearLayoutSystem.Register(w);
         LabelPositionSystem.Register(w); 
 
@@ -197,5 +200,6 @@ public static class RegisterSystems {
         TrainFlagUpdateSystem.Register(w); 
         MachineUpdateSystem.RegisterEndFrame(w); 
         RemoveInventoryUpdatedFlagSystem.Register(w);
+        RemoveShotMessageSystem.Register(w);
     }
 }

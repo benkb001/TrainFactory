@@ -401,18 +401,18 @@ namespace TrainGame.Constants
         public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
             [EnemyType.Artillery] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(15, maxFramesActive: 600),
-                            traits: new List<IBulletTrait>(){
-                                new Homing()
-                            }
-                        )
-                    ), 
                     ammo: 4, 
                     ticksPerShot: 100, 
                     reloadTicks: 300
                 ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(15, maxFramesActive: 600),
+                        traits: new List<IBulletTrait>(){
+                            new Homing()
+                        }
+                    )
+                ), 
                 new DefaultMovePattern(
                     ticksToMove: 60, 
                     ticksToWait: 60,
@@ -425,20 +425,19 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Barbarian] = new EnemyConst(
                 new Shooter(
-                    new MeleeShootPattern(
-                        new BulletContainer(
-                            new Bullet(1, maxFramesActive: 10),
-                            width: Constants.TileWidth * 3,
-                            traits: new List<IBulletTrait>(){
-                                new Warned(new WorldTime(ticks: 45))
-                            }
-                        ), 
-                        ShooterWidth: Constants.TileWidth
-                    ), 
                     ticksPerShot: 200, 
                     reloadTicks: 200, 
                     ammo: 1
                 ),
+                new MeleeShootPattern(
+                    new BulletContainer(
+                        new Bullet(1, maxFramesActive: 10),
+                        width: Constants.TileWidth * 3,
+                        traits: new List<IBulletTrait>(){
+                            new Warned(new WorldTime(ticks: 45))
+                        }
+                    )
+                ), 
                 new DefaultMovePattern(
                     ticksToMove: 60,
                     ticksToWait: 200,
@@ -451,25 +450,24 @@ namespace TrainGame.Constants
                 Difficulty: 2
             ),
             [EnemyType.Default] = new EnemyConst(
-                new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(5)
-                        )
+                new Shooter(),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(5)
                     )
                 ),
                 new DefaultMovePattern()
             ),
             [EnemyType.MachineGun] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(15)
-                        ),
-                        Inaccuracy: 10
-                    ),
                     ammo: 36, 
                     reloadTicks: 120
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(15)
+                    ),
+                    Inaccuracy: 10
                 ),
                 new ChaseMovePattern(
                     Constants.PlayerSpeed / 2f
@@ -480,15 +478,15 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Ninja] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(5)
-                        ),
-                        Inaccuracy: 10
-                    ),
                     ticksPerShot: 10, 
                     ammo: 2, 
                     reloadTicks: 120
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(5)
+                    ),
+                    Inaccuracy: 10
                 ),
                 new DefaultMovePattern(
                     ticksToMove: 20,
@@ -501,35 +499,36 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Robot] = new EnemyConst(
                 new Shooter(
-                    new CardinalShootPattern(
-                        new BulletContainer(
-                            new Bullet(10)
-                        ), 
-                    up: true, 
-                    down: true
-                    ),
                     ammo: 32, 
                     ticksPerShot: 4, 
                     reloadTicks: 60
                 ),
-                new DefaultMovePattern(
-                    ticksToMove: 360, 
-                    ticksToWait: 60
+                new RadialShootPattern(
+                    2,
+                    new BulletContainer(
+                        new Bullet(10)
+                    ), 
+                    Math.PI / 2
+                ),
+                new CyclicalMovePattern(
+                    new List<Vector2>() { new Vector2(1, 0), new Vector2(-1, 0) },
+                    new List<WorldTime>() { new WorldTime(ticks: 60 ) },
+                    new WorldTime(ticks: 360),
+                    1f
                 ),
                 Type: EnemyType.Robot, 
                 HP: 8
-                //MType: MoveType.Horizontal,
             ),
             [EnemyType.Shotgun] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(10, maxFramesActive: 180)
-                        )
-                    ),
                     ammo: 12, 
                     ticksPerShot: 120, 
                     reloadTicks: 240
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(10, maxFramesActive: 180)
+                    )
                 ),
                 new DefaultMovePattern(),
                 Type: EnemyType.Shotgun, 
@@ -540,17 +539,17 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Sniper] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(40, maxFramesActive: 240),
-                            BulletSpeed: 10f,
-                            traits: new List<IBulletTrait>(){
-                                new Warned(new WorldTime(ticks: 20))
-                            }
-                        )
-                    ),
                     ammo: 1, 
                     reloadTicks: 300
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(40, maxFramesActive: 240),
+                        BulletSpeed: 10f,
+                        traits: new List<IBulletTrait>(){
+                            new Warned(new WorldTime(ticks: 20))
+                        }
+                    )
                 ),
                 new DefaultMovePattern(),
                 Type: EnemyType.Sniper, 
@@ -558,15 +557,15 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Volley] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(40),
-                            BulletSpeed: 3f
-                        )
-                    ),
                     ammo: 24, 
                     reloadTicks: 200, 
                     ticksPerShot: 60
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(40),
+                        BulletSpeed: 3f
+                    )
                 ),
                 new DefaultMovePattern(),
                 Type: EnemyType.Volley, 
@@ -578,17 +577,17 @@ namespace TrainGame.Constants
             ),
             [EnemyType.Warrior] = new EnemyConst(
                 new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(60, maxFramesActive: 240),
-                            BulletSpeed: 4f,
-                            traits: new List<IBulletTrait>(){
-                                new Warned(new WorldTime(ticks: 30))
-                            }
-                        )
-                    ),
                     ammo: 20, 
                     reloadTicks: 480
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(60, maxFramesActive: 240),
+                        BulletSpeed: 4f,
+                        traits: new List<IBulletTrait>(){
+                            new Warned(new WorldTime(ticks: 30))
+                        }
+                    )
                 ),
                 new DefaultMovePattern(),
                 Type: EnemyType.Warrior, 
@@ -681,34 +680,16 @@ namespace TrainGame.Constants
     public static class Weapons {
         public static Dictionary<string, Shooter> GunMap = new() {
             [ItemID.Gun] = new Shooter(
-                new DefaultShootPattern(
-                    new BulletContainer(
-                        new Bullet(1),
-                        Constants.DefaultBulletSize
-                    )
-                ), 
                 ammo: 8, 
                 ticksPerShot: 30, 
                 reloadTicks: 60
             ),
             [ItemID.Gun2] = new Shooter(
-                new DefaultShootPattern(
-                    new BulletContainer(
-                        new Bullet(1),
-                        Constants.DefaultBulletSize
-                    )
-                ), 
                 ammo: 16, 
                 ticksPerShot: 15, 
                 reloadTicks: 30
             ),
             [ItemID.Gun3] = new Shooter(
-                new DefaultShootPattern(
-                    new BulletContainer(
-                        new Bullet(1),
-                        Constants.DefaultBulletSize
-                    )
-                ), 
                 ammo: 32, 
                 ticksPerShot: 8, 
                 reloadTicks: 16

@@ -9,6 +9,7 @@ using TrainGame.ECS;
 public class EnemyConst {
     private Shooter shooter; 
     private IMovementType movement;
+    private IShootPattern shoot;
 
     public EnemyType Type; 
     public float Size; 
@@ -18,12 +19,14 @@ public class EnemyConst {
 
     public Shooter GetShooter() => shooter.Clone();
     public IMovementType GetMovement() => movement.Clone();
+    public IShootPattern GetShootPattern() => shoot.Clone();
 
-    public EnemyConst(Shooter shooter, IMovementType movement, EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
+    public EnemyConst(Shooter shooter, IShootPattern shoot, IMovementType movement, EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
         int HP = 5, int Armor = 0, int Difficulty = 1) {
         
         this.shooter = shooter;
         this.movement = movement; 
+        this.shoot = shoot;
         
         this.Type = Type; 
         this.Size = Size; 

@@ -45,10 +45,12 @@ public static class RegisterComponents {
         r<ComingFromCity>();
         r<ConnectCitiesButton>();
         r<CurrentInventory>();
+        r<CyclicalMovePattern>();
         r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 
         r<DefaultMovePattern>();
+        r<DefaultShootPattern>();
         r<UpgradeDepotButton>(); 
         r<Draggable>(); 
         r<DrawAddCartInterfaceMessage>(); 
@@ -111,6 +113,7 @@ public static class RegisterComponents {
         r<MachineStorageStepper>();
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
+        r<MeleeShootPattern>();
         r<Menu>(); 
         r<MovementBounds>();
         r<MoveTiming>(); 
@@ -133,6 +136,7 @@ public static class RegisterComponents {
         r<ProgressBar>(); 
         r<PurchaseButton<PurchaseItem>>();
         r<PurchaseButton<ResetHP>>();
+        r<RadialShootPattern>();
         r<ReceiveDamageMessage>(); 
         r<RespawnLocation>(); 
         r<SaveButton>(); 

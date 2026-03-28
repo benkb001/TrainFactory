@@ -160,6 +160,7 @@ public partial class World : IWorld {
         return em.GetMatchingEntities(sig); 
     }
 
+    //returns -1 if none
     public int GetFirstMatchingEntity(Type[] ts) {
         bool[] sig = cm.GetSignature(ts); 
         return em.GetFirstMatchingEntity(sig);

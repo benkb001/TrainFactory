@@ -19,7 +19,7 @@ public static class EnemyShootSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
             Shooter shooter = w.GetComponent<Shooter>(e);
-            if (shooter.CanShoot(w.Time)) {
+            if (w.Time.IsAfterOrAt(shooter.CanShoot)) {
                 int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame), typeof(Active)]); 
                 (Frame targetableFrame, bool s) = w.GetComponentSafe<Frame>(targetableEnt); 
 

@@ -35,7 +35,7 @@ public static class BulletTraitRegistry {
         registry.Register<T>(callback); 
     }
 
-    public static void AddTrait(World w, IBulletTrait trait, int bulletEnt) {
+    public static void Add(World w, IBulletTrait trait, int bulletEnt) {
         registry.Callback(w, trait, bulletEnt);
     }
 }
@@ -49,5 +49,17 @@ public static class MovementRegistry {
 
     public static void AddMovement(World w, IMovementType t, int e) {
         registry.Callback(w, t, e);
+    }
+}
+
+public static class ShootPatternRegistry {
+    private static CallbackRegistry<World, IShootPattern, int> registry = new(); 
+
+    public static void Register<T>(Action<World, T, int> callback) where T : IShootPattern {
+        registry.Register<T>(callback);
+    }
+
+    public static void Add(World w, IShootPattern p, int e) {
+        registry.Callback(w, p, e);
     }
 }

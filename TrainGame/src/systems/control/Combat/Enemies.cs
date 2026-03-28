@@ -31,7 +31,9 @@ public class EnemyWrap {
         w.SetComponent<Enemy>(enemyEnt, new Enemy(enemyType)); 
 
         IMovementType movement = e.GetMovement();
+        IShootPattern sp = e.GetShootPattern();
         MovementRegistry.AddMovement(w, movement, enemyEnt);
+        ShootPatternRegistry.Add(w, sp, enemyEnt);
 
         w.SetComponent<Collidable>(enemyEnt, new Collidable()); 
         Armor armor = new Armor(e.Armor);

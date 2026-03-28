@@ -17,4 +17,20 @@ public static class ShooterWrap {
     public static Vector2 Aim(Vector2 pos, Vector2 targetPos, float speed) {
         return (Vector2.Normalize(targetPos - pos)) * speed;
     }
+
+    public static int Add<U>(World w, Vector2 pos, Vector2 targetPos, BulletContainer bc) 
+    where U : IFlag<U> {
+        float width = bc.Width;
+        
+        int e = EntityFactory.AddUI(w, pos, width, width, setOutline: true);
+        w.SetComponent<Velocity>(e, new Velocity(Aim(pos, targetPos, bc.Speed)));
+        w.SetComponent<Bullet>(e, bc.GetBullet());
+        w.SetComponent<U>(e, U.Get());
+
+        foreach (IBulletTrait bt in bc.GetBulletTraits()) {
+            BulletTraitRegistry.Add(w, bt, e);
+        }
+
+        return e; 
+    }
 }

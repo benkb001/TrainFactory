@@ -16,48 +16,33 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class Shooter {
-    private WorldTime canShoot; 
-    private int ticksPerShot; 
-    private int ammo; 
-    private int maxAmmo; 
-    private int reloadTicks; 
-    private IShootPattern shootPattern;
+    public WorldTime TimeBetweenShots;
+    public WorldTime ReloadTime; 
+    public WorldTime CanShoot; 
 
-    public int Ammo => ammo; 
-    public int MaxAmmo => maxAmmo; 
-    public IShootPattern ShootPattern => shootPattern;
+    public int Ammo; 
+    public readonly int MaxAmmo; 
 
-    public Shooter(IShootPattern shootPattern, int ammo = 6, int ticksPerShot = 30, int reloadTicks = 60) {
-        this.shootPattern = shootPattern;
-        this.ticksPerShot = ticksPerShot; 
-        this.ammo = ammo; 
-        this.maxAmmo = ammo; 
-        canShoot = new WorldTime(); 
-        this.reloadTicks = reloadTicks;
+    public Shooter(int ammo = 6, int ticksPerShot = 30, int reloadTicks = 60) {
+        this.Ammo = ammo; 
+        this.MaxAmmo = ammo;
+        this.TimeBetweenShots = new WorldTime(ticks: ticksPerShot); 
+        this.ReloadTime = new WorldTime(ticks: reloadTicks);
+        this.CanShoot = new WorldTime();
     }
 
-    public IEnumerable<BulletContainer> Shoot(WorldTime now, Vector2 position, Vector2 targetPosition) {
-        if (CanShoot(now)) {
-            ammo -= shootPattern.GetBulletsShot(); 
+    public void Update(WorldTime now, int shot = 1) {
+        Ammo-= shot; 
 
-            if (ammo <= 0) {
-                ammo = maxAmmo; 
-                canShoot = now + new WorldTime(ticks: reloadTicks);
-            } else {
-                canShoot = now + new WorldTime(ticks: ticksPerShot);
-            }
-
-            return shootPattern.Shoot(position, targetPosition);
+        if (Ammo <= 0) {
+            Ammo = MaxAmmo; 
+            CanShoot = now + ReloadTime;
+        } else {
+            CanShoot = now + TimeBetweenShots;
         }
-
-        return new List<BulletContainer>();
-    }
-
-    public bool CanShoot(WorldTime t) {
-        return t.IsAfterOrAt(canShoot); 
     }
 
     public Shooter Clone() {
-        return new Shooter(shootPattern.Clone(), maxAmmo, ticksPerShot, reloadTicks);
+        return new Shooter( MaxAmmo, TimeBetweenShots.InTicks(), ReloadTime.InTicks());
     }
 }

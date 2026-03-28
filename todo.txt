@@ -29,13 +29,10 @@
 
 **** CLEAN UP **** 
 
-* Make carts items
-* GetByID should throw exceptions when not found, such as city.GetByID
 * Test why slow on diagonal map, add exit to this map
 * Filters should be in inventory wrap
-* Add an abstraction so that all inventory updates set the inventoryUpdatedFlag? 
-* Remove callbacks
 * Split constants into a few files
+* Remove querying world-state from ui systems
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
 
@@ -48,20 +45,14 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
-  * Add back player shooting
-  * Add back chase and cardinal movement for enemies 
   * Add back shotgun shoot pattern
+  * Add back player shooting
   * Add new move patterns: 
     * Parametric curves and switching between them
     * Move to a certain tile w/ pathfinding
       * We can start by having ground tiles which store 
         their position and their neighboring tiles, and a 
         shared reference to a list containing all tiles
-      * We need some way to query world state before moving. 
-        I think keeping the IMovePatterns
-        out of world is good, so we could use another registry, 
-        which maps types to functions that basically 'set up' the 
-        component for what it will need
       * Before moving, we can query for a ground tile that overlaps 
         with the enemy frame, and then we can use djikstra's to find 
         a random tile and from the path store a list of positions to go to, 
@@ -103,6 +94,9 @@
 
 **** FUTURE FEATURES **** 
 
+* In Layout, add a registry that allows us to specify certain fields for 
+  certain movement types, ie maybe we want one robot to start going left 
+  and another to start going right 
 * Fix loops to grab products if there is no space for the 
   machines to craft
   * Need to have access to city depot level/stack sizes in TAL,
