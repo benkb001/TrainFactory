@@ -18,7 +18,7 @@ public static class RadialShootSystem {
             for (int i = 0; i < bullets; i++) {
                 float dx = (float)(Math.Cos((radiansPerShot * i) + offset) * speed);
                 float dy = (float)(Math.Sin((radiansPerShot * i) + offset) * speed);
-                int bulletEnt = ShooterWrap.Add<U>(w, pos, pos, sp.Bullet); 
+                int bulletEnt = ShooterWrap.Add<U>(w, pos, pos, sp.Bullet, e); 
                 w.SetComponent<Velocity>(bulletEnt, new Velocity(new Vector2(dx, dy)));
             }
 

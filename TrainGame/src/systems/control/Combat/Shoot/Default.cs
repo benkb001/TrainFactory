@@ -11,7 +11,7 @@ public static class DefaultShootSystem {
         ShootSystem.Register<DefaultShootPattern, U>(w, (w, sp, f, targetPosition, e) => {
             float offset = (float)(sp.Inaccuracy * Util.NextDouble()); 
             targetPosition += new Vector2(offset, offset); 
-            ShooterWrap.Add<U>(w, f.Position, targetPosition, sp.Bullet);
+            ShooterWrap.Add<U>(w, f.Position, targetPosition, sp.Bullet, e);
             return 1; 
         });
     }

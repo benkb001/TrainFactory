@@ -13,7 +13,7 @@ public static class MeleeShootSystem {
 
             float delta = (width - shooterWidth) / 2f; 
             Vector2 bulletPos = new Vector2(position.X - delta, position.Y - delta);
-            ShooterWrap.Add<U>(w, bulletPos, bulletPos, sp.Bullet);
+            ShooterWrap.Add<U>(w, bulletPos, bulletPos, sp.Bullet, e);
             return 1; 
         });
     }

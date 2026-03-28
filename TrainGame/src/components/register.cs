@@ -40,6 +40,7 @@ public static class RegisterComponents {
         r<ClearLLMessage>(); 
         r<CloseMenuMessage>(); 
         r<Collidable>(); 
+        r<Collided>();
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
         r<ComingFromCity>();
@@ -95,6 +96,7 @@ public static class RegisterComponents {
         r<Health>(); 
         r<HeldItem>(); 
         r<HealthPotion>(); 
+        r<HitMessage>();
         r<Homing>();
         r<Interactable>(); 
         r<Interactor>();  
@@ -139,6 +141,7 @@ public static class RegisterComponents {
         r<PurchaseButton<ResetHP>>();
         r<RadialShootPattern>();
         r<ReceiveDamageMessage>(); 
+        r<RemoveOnCollision>();
         r<RespawnLocation>(); 
         r<SaveButton>(); 
         r<Scene>(); 
@@ -149,6 +152,7 @@ public static class RegisterComponents {
         r<SetTrainProgramInterfaceButton>(); 
         r<Shooter>(); 
         r<ShotgunShootPattern>();
+        r<ShotBy>();
         r<ShotMessage>();
         r<SlowTimeButton>();
         r<SpeedTimeButton>(); 
@@ -174,6 +178,8 @@ public static class RegisterComponents {
         r<UpgradeMachineProductCountButton>();
         r<UpgradeMachineSpeedButton>();
         r<UpgradeTrainPowerButton>();
+        r<Vampired>();
+        r<Vampiric>();
         r<Velocity>(); 
     }
 }

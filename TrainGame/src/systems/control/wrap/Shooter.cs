@@ -10,6 +10,12 @@ using TrainGame.ECS;
 using TrainGame.Utils;
 using TrainGame.Constants;
 
+public class ShotBy {
+    public int Entity; 
+    public ShotBy(int e) {
+        this.Entity = e; 
+    }
+}
 
 public static class ShooterWrap {
     
@@ -18,7 +24,7 @@ public static class ShooterWrap {
         return (Vector2.Normalize(targetPos - pos)) * speed;
     }
 
-    public static int Add<U>(World w, Vector2 pos, Vector2 targetPos, BulletContainer bc) 
+    public static int Add<U>(World w, Vector2 pos, Vector2 targetPos, BulletContainer bc, int shooterEnt) 
     where U : IFlag<U> {
         float width = bc.Width;
         
@@ -26,6 +32,7 @@ public static class ShooterWrap {
         w.SetComponent<Velocity>(e, new Velocity(Aim(pos, targetPos, bc.Speed)));
         w.SetComponent<Bullet>(e, bc.GetBullet());
         w.SetComponent<U>(e, U.Get());
+        w.SetComponent<ShotBy>(e, new ShotBy(shooterEnt));
 
         foreach (IBulletTrait bt in bc.GetBulletTraits()) {
             BulletTraitRegistry.Add(w, bt, e);

@@ -32,6 +32,7 @@ public static class RegisterSystems {
         ParrySystem.RegisterEndParry(w); 
         DamageSystem.RegisterShoot<Player, Enemy>(w); 
         DamageSystem.RegisterShoot<Enemy, Player>(w); 
+        VampireDamageSystem.Register(w);
         DamageSystem.RegisterArmor(w); 
         DamageSystem.RegisterParry(w); 
         DamageSystem.RegisterAddInvincibleMessage(w);
@@ -43,6 +44,10 @@ public static class RegisterSystems {
         DeathSystem.Register(w); 
         EnemySpawnSystem.Register(w); 
         CollideBulletSystem.Register(w); 
+        ApplyVampiredSystem.Register(w);
+        RemoveVampiredSystem.Register(w);
+        RemoveOnCollisionSystem.Register(w);
+        RemoveOnHitSystem.Register(w);
         
         TALExecutionSystem.Register(w);
         TrainTravelSystem.RegisterMove(w);
@@ -139,6 +144,7 @@ public static class RegisterSystems {
 
         RedrawMapSystem.Register(w);
 
+        DrawVampiredSystem.Register(w);
         DrawBackgroundSystem.Register(w); 
         DrawHPSystem.Register(w); 
         DrawEmbarkSystem.Register(w); 

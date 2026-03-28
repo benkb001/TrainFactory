@@ -13,5 +13,7 @@ public static class RegisterBulletTraits {
         HomingWrap.RegisterTrait(); 
         WarnedWrap.RegisterTrait();
         RegisterParametricBullet.Register();
+        VampiricBulletTrait.Register();
+        register<RemoveOnCollision>();
     }
 }
