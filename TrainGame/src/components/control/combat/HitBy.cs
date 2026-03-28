@@ -1,0 +1,9 @@
+namespace TrainGame.Components;
+
+//This is a message to the entity it's applied to that that entity hit the entity e
+public class HitMessage {
+    public int Entity; 
+    public HitMessage(int e) {
+        this.Entity = e; 
+    }
+}

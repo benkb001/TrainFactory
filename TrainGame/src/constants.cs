@@ -596,11 +596,11 @@ namespace TrainGame.Constants
                 new DefaultShootPattern(
                     new BulletContainer(
                         new Bullet(10, maxFramesActive: 600),
-                        BulletSpeed: Constants.PlayerSpeed / 1.5f,
+                        width: Constants.TileWidth / 2f,
                         traits: new List<IBulletTrait>(){
                             new RemoveOnCollision(),
                             new Vampiric(5),
-                            new Homing()
+                            new Homing(Speed: Constants.PlayerSpeed / 1.2f)
                         }
                     )
                 ),
@@ -721,7 +721,6 @@ namespace TrainGame.Constants
         public const string Gun = "Gun"; 
         public const string Gun2 = "Gun2"; 
         public const string Gun3 = "Gun3"; 
-        public const string GunUpgrade = "Gun Upgrade"; 
         public const string Iron = "Iron"; 
         public const string Kiln = "Kiln"; 
         public const string Lubricant = "Lubricant";
@@ -746,7 +745,7 @@ namespace TrainGame.Constants
             Accelerator, Adamantite, AdamantiteDrill, AirResistor, AntiGravity, Armor1, Armor2, 
             Armor3, Assembler, Cobalt, CobaltDrill, Credit, DepotUpgrade,
             Drill, Duplicator, Engine, Excavator, Fuel, Gasifier, Greenhouse,
-            Glass, Gun, Gun2, Gun3, GunUpgrade, Iron, 
+            Glass, Gun, Gun2, Gun3, Iron, 
             Kiln, Lubricant, MachineUpgrade, Motherboard, Mythril, MythrilDrill, Oil, 
             OilRig, Petroleum, PocketDimension, Pump, Rail, Refinery, Sand, 
             SmartAssembler, TimeCrystal, Water, Wood
@@ -810,13 +809,16 @@ namespace TrainGame.Constants
                     ticksPerShot: 8, 
                     reloadTicks: 16
                 ),
-                new DefaultShootPattern(
+                new ShotgunShootPattern(
                     new BulletContainer(
                         new Bullet(1),
                         traits: new List<IBulletTrait>(){
                             new RemoveOnCollision()
-                        }
-                    )
+                        },
+                        BulletSpeed: 8f
+                    ),
+                    2,
+                    Math.PI / 20
                 )
             )
         };
@@ -845,7 +847,6 @@ namespace TrainGame.Constants
         public const string GasifierAssembler = "Gasifier Assembler"; 
         public const string Greenhouse = "Greenhouse"; 
         public const string GreenhouseAssembler = "Greenhouse Assembler";
-        public const string GunUpgradeAssembler = "Gun Upgrade Assembler"; 
         public const string Kiln = "Kiln"; 
         public const string KilnAssembler = "Kiln Assembler"; 
         public const string LiquidWagonAssembler = "Liquid Wagon Assembler"; 
@@ -870,7 +871,7 @@ namespace TrainGame.Constants
             CombustionControllerAssembler,
             DepotUpgradeAssembler, Drill, DrillAssembler, DuplicatorAssembler,
             EngineAssembler, Excavator, ExcavatorAssembler, FuelRefinery, Gasifier, 
-            GasifierAssembler, Greenhouse, GreenhouseAssembler, GunUpgradeAssembler, 
+            GasifierAssembler, Greenhouse, GreenhouseAssembler, 
             Kiln, KilnAssembler, LiquidWagonAssembler, LocomotiveAssembler, 
             LubricantRefinery, MotherboardAssembler, MythrilDrill, MythrilDrillAssembler, 
             OilRig, OilRigAssembler, 

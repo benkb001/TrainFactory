@@ -26,3 +26,11 @@ public static class RemoveBulletSystem {
         });
     }
 }
+
+public static class RemoveOnHitSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Active), typeof(HitMessage), typeof(RemoveOnCollision)], (w, e) => {
+            w.RemoveEntity(e);
+        });
+    }
+}

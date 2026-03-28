@@ -78,6 +78,7 @@ public static class RegisterComponents {
         r<ElevatorButton>();
         r<EmbarkButton>(); 
         r<EmbarkedMessage>();
+        r<EndVampired>();
         r<Enemy>(); 
         r<EnemySpawner>(); 
         r<EnterInterfaceButton<EquipmentInterfaceData>>(); 

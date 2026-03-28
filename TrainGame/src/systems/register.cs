@@ -170,6 +170,7 @@ public static class RegisterSystems {
         DrawLadderSystem.Register(w);
         DrawElevatorInterfaceSystem.Register(w); 
         ToastSystem.RegisterDraw(w);
+        StopDrawingVampiredSystem.Register(w);
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 
@@ -211,5 +212,6 @@ public static class RegisterSystems {
         MachineUpdateSystem.RegisterEndFrame(w); 
         RemoveInventoryUpdatedFlagSystem.Register(w);
         RemoveShotMessageSystem.Register(w);
+        RemoveEndVampiredSystem.Register(w);
     }
 }

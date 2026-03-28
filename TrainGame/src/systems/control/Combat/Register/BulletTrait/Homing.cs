@@ -9,7 +9,7 @@ using TrainGame.Utils;
 
 public static class HomingWrap {
     public static void RegisterTrait() {
-        BulletTraitRegistry.Register<Homing>((w, _, e) => {
+        BulletTraitRegistry.Register<Homing>((w, sp, e) => {
             //ICKY: we could have a component that returns a targetable 
             //entity
 
@@ -20,7 +20,8 @@ public static class HomingWrap {
                 trackedEntity = TargetableWrap.GetFirst(w);
             }
 
-            w.SetComponent<Homing>(e, new Homing(trackedEntity));
+            sp.TrackedEntity = trackedEntity;
+            w.SetComponent<Homing>(e, sp);
         });
     }
 }
