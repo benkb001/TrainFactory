@@ -19,7 +19,17 @@ public static class PlayerShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
-                //TODO: Add back in after refactor
+                int playerEnt = w.GetFirstMatchingEntity([typeof(Player), typeof(Shooter), typeof(Active)]);
+                Console.WriteLine($"found: {playerEnt}");
+                if (playerEnt != -1) {
+                    Shooter shooter = w.GetComponent<Shooter>(playerEnt);
+                    if (w.Time.IsAfterOrAt(shooter.CanShoot)) {
+                        Vector2 mousePos = w.GetWorldMouseCoordinates(); 
+                        w.SetComponent<ShotMessage>(playerEnt, new ShotMessage(mousePos));
+                    }
+                } else {
+                    Console.WriteLine($"couldnt find player shooter");
+                }
             }
         });
     }

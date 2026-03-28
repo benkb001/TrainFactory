@@ -45,8 +45,6 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
-  * Add back shotgun shoot pattern
-  * Add back player shooting
   * Add new move patterns: 
     * Parametric curves and switching between them
     * Move to a certain tile w/ pathfinding

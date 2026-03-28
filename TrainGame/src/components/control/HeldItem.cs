@@ -16,6 +16,7 @@ public class HeldItem {
     public int InvSize => invSize; 
     public string ItemId => item.ItemId; 
     public string ItemID => item.ItemId;
+    public string ID => item.ItemId;
     public int Count => item.Count; 
     public int ItemCount => item.Count; 
     public int LabelEntity; 

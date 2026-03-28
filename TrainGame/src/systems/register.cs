@@ -116,6 +116,7 @@ public static class RegisterSystems {
         LadderInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
+        ToolSystem.Register(w);
 
         PlayerShootSystem.Register(w);
         EnemyShootSystem.Register(w); 

@@ -15,13 +15,17 @@ using TrainGame.Components;
 using TrainGame.Utils; 
 using TrainGame.Constants; 
 
-public class HeldItemDrawSystem() {
+public static class HeldItemDrawSystem {
     private static Type[] ts = [typeof(HeldItem), typeof(Frame), typeof(Active)]; 
     private static Action<World, int> tf = (w, e) => {
         HeldItem held = w.GetComponent<HeldItem>(e);
 
         int rowEntity = w.GetComponent<LinearLayout>(held.InventoryEntity).GetChildren()[0]; 
         List<int> cells = w.GetComponent<LinearLayout>(rowEntity).GetChildren(); 
+
+        void setInvUpdatedFlag() {
+            w.SetComponentSafe<InventoryUpdatedFlag>(held.InventoryEntity, InventoryUpdatedFlag.Get());
+        }
 
         w.GetComponent<Outline>(cells[held.InvIndex]).SetColor(Colors.InventoryNotHeld); 
         if (VirtualMouse.IsScrollingDown()) {
@@ -30,11 +34,13 @@ public class HeldItemDrawSystem() {
                 index = held.InvSize - 1; 
             }
             held.SetItem(index); 
+            setInvUpdatedFlag();
         }
 
         if (VirtualMouse.IsScrollingUp()) {
             int index = (held.InvIndex + 1) % held.InvSize; 
             held.SetItem(index);
+            setInvUpdatedFlag();
         }
 
         if (held.ItemId != "" && held.Count > 0) {

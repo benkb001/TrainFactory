@@ -82,8 +82,8 @@ public static class PlayerWrap {
     public static Shooter GetShooter(World w) {
         string itemID = GetHeldItemID(w);
 
-        if (Weapons.GunMap.ContainsKey(itemID)) {
-            return Weapons.GunMap[itemID];
+        if (Weapons.PlayerGunMap.ContainsKey(itemID)) {
+            return Weapons.PlayerGunMap[itemID].GetShooter();
         }
         
         return null; 

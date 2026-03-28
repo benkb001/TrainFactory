@@ -45,6 +45,28 @@ public static class EquipSystem {
     }
 }
 
+public static class ToolSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Player), typeof(Active), typeof(HeldItem)], (w, e) => {
+            HeldItem h = w.GetComponent<HeldItem>(e);
+            
+            if (Weapons.PlayerGunMap.ContainsKey(h.ID)) {
+
+                PlayerGun pg = Weapons.PlayerGunMap[h.ID];
+                Shooter shooter = pg.GetShooter(); 
+                IShootPattern sp = pg.GetShootPattern();
+
+                if (w.EntityExists(h.LabelEntity)) {
+                    int gunEnt = h.LabelEntity;
+                    w.SetComponent<Shooter>(gunEnt, shooter);
+                    w.SetComponent<Player>(gunEnt, Player.Get());
+                    ShootPatternRegistry.Add(w, sp, gunEnt);
+                }
+            } 
+        });
+    }
+}
+
 public class EquipmentInterfaceData : IInterfaceData {
 
     public SceneType GetSceneType() => SceneType.EquipmentInterface; 
