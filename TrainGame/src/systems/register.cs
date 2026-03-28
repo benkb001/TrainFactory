@@ -125,6 +125,8 @@ public static class RegisterSystems {
         MeleeShootSystem.Register<Player>(w);
         RadialShootSystem.Register<Enemy>(w);
         RadialShootSystem.Register<Player>(w);
+        ShotgunShootSystem.Register<Player>(w);
+        ShotgunShootSystem.Register<Enemy>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 

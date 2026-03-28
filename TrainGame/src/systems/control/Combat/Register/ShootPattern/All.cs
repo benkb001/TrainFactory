@@ -1,6 +1,21 @@
 namespace TrainGame.Systems;
 
+using System;
 using TrainGame.Components;
+using TrainGame.ECS;
+using TrainGame.Utils;
+
+public static class ShootPatternRegistry {
+    private static CallbackRegistry<World, IShootPattern, int> registry = new(); 
+
+    public static void Register<T>(Action<World, T, int> callback) where T : IShootPattern {
+        registry.Register<T>(callback);
+    }
+
+    public static void Add(World w, IShootPattern p, int e) {
+        registry.Callback(w, p, e);
+    }
+}
 
 public static class RegisterShootPattern {
     public static void Default<T>() where T : IShootPattern {
@@ -15,5 +30,6 @@ public static class RegisterShootPatterns {
         RegisterShootPattern.Default<DefaultShootPattern>();
         RegisterShootPattern.Default<RadialShootPattern>();
         RegisterShootPattern.Default<MeleeShootPattern>();
+        RegisterShootPattern.Default<ShotgunShootPattern>();
     }
 }
