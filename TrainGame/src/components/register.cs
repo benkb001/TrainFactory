@@ -127,6 +127,7 @@ public static class RegisterComponents {
         r<NextDrawTestButton>();
         r<NextDrawTestControl>(); 
         r<Outline>(); 
+        r<ParametricCurve>();
         r<Parrier>();
         r<ParryCooldownBar>();
         r<PauseButton>(); 

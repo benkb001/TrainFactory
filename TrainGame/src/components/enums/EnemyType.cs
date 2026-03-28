@@ -10,5 +10,6 @@ public enum EnemyType {
     Shotgun, //Shoots in a small spread
     Sniper, //bullets are warned, travel far and fast and hit hard 
     Volley, //Shoots in a large spread
-    Warrior //Shoots in a very wide spread, has high hp and damage, high reload time
+    Warrior, //Shoots in a very wide spread, has high hp and damage, high reload time
+    Wizard //Shoots in a parametric curve 
 }

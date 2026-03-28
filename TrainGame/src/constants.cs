@@ -587,6 +587,39 @@ namespace TrainGame.Constants
                 Type: EnemyType.Warrior, 
                 HP: 40,
                 Size: Constants.TileWidth * 2
+            ),
+            [EnemyType.Wizard] = new EnemyConst(
+                new Shooter(
+                    ammo: 10,
+                    ticksPerShot: 12,
+                    reloadTicks: 120
+                ),
+                new DefaultShootPattern(
+                    new BulletContainer(
+                        new Bullet(60, maxFramesActive: 3600),
+                        traits: new List<IBulletTrait>(){
+                            new ParametricCurve(
+                                //spiral
+                                (t) => {
+                                    t = t + 1; 
+                                    float r = 10 + (t * 0.3f);
+                                    float theta = MathF.Log(1 + t*5) * 5.0f;
+                                    return (float)(r * MathF.Cos(theta));
+                                },
+                                (t) => {
+                                    t = t + 1; 
+                                    float r = 10 + (t * 0.3f);
+                                    float theta =  MathF.Log(1 + t*5) * 5.0f;
+                                    return (float)(r * MathF.Sin(theta));
+                                }
+                            )
+                        }
+                    )
+                ),
+                new DefaultMovePattern(0),
+                Type: EnemyType.Wizard,
+                HP: 40,
+                Size: Constants.TileWidth
             )
         };
     }

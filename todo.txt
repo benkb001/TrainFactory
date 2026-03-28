@@ -59,7 +59,6 @@
   * Add new shoot patterns: 
     * Random shotgun w/ different bullet types possible
   * Add new bullet traits: 
-    * Parametric curves 
     * bounce
     * Pierce
     * explodes

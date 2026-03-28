@@ -19,6 +19,7 @@ public static class RegisterSystems {
         RegisterShootPatterns.All();
 
         CardinalMovementSystem.Register(w); 
+        ParametricMovementSystem.Register(w);
         DefaultEnemyMovementSystem.Register(w); 
         ChaseMovementSystem.Register(w);
         CyclicalMoveSystem.Register(w);
