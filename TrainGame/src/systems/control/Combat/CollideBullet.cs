@@ -12,16 +12,6 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public class Collided {
-    public readonly int CollidedEntity;
-    public readonly Frame CollidedFrame;
-
-    public Collided(int c, Frame f) {
-        this.CollidedEntity = c; 
-        this.CollidedFrame = f;
-    }
-}
-
 public static class CollideBulletSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Bullet), typeof(Frame), typeof(Active)], (w, e) => {

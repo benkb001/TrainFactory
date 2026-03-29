@@ -15,5 +15,6 @@ public static class RegisterBulletTraits {
         RegisterParametricBullet.Register();
         VampiricBulletTrait.Register();
         register<RemoveOnCollision>();
+        register<Split>();
     }
 }

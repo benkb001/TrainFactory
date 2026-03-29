@@ -46,8 +46,7 @@ public static class RegisterSystems {
         CollideBulletSystem.Register(w); 
         ApplyVampiredSystem.Register(w);
         RemoveVampiredSystem.Register(w);
-        RemoveOnCollisionSystem.Register(w);
-        RemoveOnHitSystem.Register(w);
+        SplitBulletSystem.Register(w);
         
         TALExecutionSystem.Register(w);
         TrainTravelSystem.RegisterMove(w);
@@ -137,6 +136,8 @@ public static class RegisterSystems {
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 
+        RemoveOnCollisionSystem.Register(w);
+        RemoveOnHitSystem.Register(w);
         
         RewardInteractSystem.RegisterRemove(w); 
 

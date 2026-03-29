@@ -157,6 +157,7 @@ public static class RegisterComponents {
         r<ShotMessage>();
         r<SlowTimeButton>();
         r<SpeedTimeButton>(); 
+        r<Split>();
         r<Sprite>(); 
         r<Stepper>(); 
         r<StepperButton>(); 

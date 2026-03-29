@@ -62,7 +62,7 @@
     * bounce
     * Pierce
     * explodes
-    * Vampiric 
+    * splits
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Enemies should wait a random amount of time before they start to shoot the player
