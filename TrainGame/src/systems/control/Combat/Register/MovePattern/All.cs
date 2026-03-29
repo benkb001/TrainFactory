@@ -18,9 +18,12 @@ public static class MovementRegistry {
 }
 
 public static class RegisterMovementTypes {
+    private static void register<T>() where T : IMovementType {
+        MovementRegistry.Register<T>((w, mt, e) => w.SetComponent<T>(e, mt));
+    }
     public static void All() {
         RegisterDefaultMovementType.Register();
-        RegisterChaseMovementType.Register();
         RegisterCyclicalMovement.Register();
+        register<ChaseMovePattern>();
     }
 }

@@ -23,13 +23,16 @@ public static class ParrySystem {
     public static void RegisterStartParry(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.RightPressed()) {
+                List<int> es = w.GetMatchingEntities([typeof(Player), 
+                typeof(CardinalMovement), typeof(Parrier), typeof(Background), typeof(Active)]);
 
-                foreach(int e in w.GetMatchingEntities([typeof(Parrier), typeof(Active)])) {
-
+                foreach(int e in es) {
                     Parrier p = w.GetComponent<Parrier>(e); 
-                    if (p.CanParry(w.Time)) {
-                        p.StartParry(w.Time); 
+                    if (p.HP > 0) {
+                        p.Parrying = true;
+                        w.GetComponent<CardinalMovement>(e).Speed = Constants.ParryingSpeed;
 
+                        //ICKY: This should be in a separate ui system
                         w.GetComponent<Background>(e).BackgroundColor = Color.Yellow; 
 
                         Frame f = w.GetComponent<Frame>(e); 
@@ -38,7 +41,7 @@ public static class ParrySystem {
                         
                         int pbEnt = DrawProgressBarCallback.Draw(w, Vector2.Zero, pbWidth, pbHeight);
                         w.SetComponent<Label>(pbEnt, new Label(e)); 
-                        w.SetComponent<ParryCooldownBar>(pbEnt, new ParryCooldownBar(p)); 
+                        w.SetComponent<ParryHPBar>(pbEnt, new ParryHPBar(p)); 
                     }
                 }
             }
@@ -46,10 +49,18 @@ public static class ParrySystem {
     }
 
     public static void RegisterEndParry(World w) {
-        w.AddSystem([typeof(Parrier), typeof(Background), typeof(Active)], (w, e) => {
-            Parrier p = w.GetComponent<Parrier>(e); 
-            if (p.ParryEnded(w.Time)) {
+        w.AddSystem([typeof(Player), typeof(Parrier), 
+        typeof(CardinalMovement), typeof(Background), typeof(Active)], (w, e) => {
+            Parrier p = w.GetComponent<Parrier>(e);
+            if (p.HP < 1 || !VirtualMouse.RightPressed()) {
+                p.Parrying = false; 
+                w.GetComponent<CardinalMovement>(e).Speed = Constants.PlayerSpeed;
+                //ICKY: Should be in separate ui system
                 w.GetComponent<Background>(e).BackgroundColor = Color.White;
+                foreach (int barEnt in w.GetMatchingEntities([typeof(ParryHPBar), typeof(Active)])
+                .Where(ent => w.GetComponent<Label>(ent).BodyEntity == e)) {
+                    w.RemoveEntity(barEnt);
+                }
             }
         });
     }

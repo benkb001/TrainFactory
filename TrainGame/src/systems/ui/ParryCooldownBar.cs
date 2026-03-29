@@ -6,15 +6,13 @@ using TrainGame.Components;
 using TrainGame.ECS;
 using TrainGame.Utils;
 
-public static class ParryCooldownBarSystem {
+public static class ParryHPBarSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(ParryCooldownBar), typeof(ProgressBar), typeof(Active)], (w, e) => {
-            ParryCooldownBar cb = w.GetComponent<ParryCooldownBar>(e); 
+        w.AddSystem([typeof(ParryHPBar), typeof(ProgressBar), typeof(Active)], (w, e) => {
+            ParryHPBar cb = w.GetComponent<ParryHPBar>(e); 
             ProgressBar pb = w.GetComponent<ProgressBar>(e); 
-            pb.Completion = cb.Completion(w.Time); 
-            if (pb.Completion >= 1f) {
-                w.RemoveEntity(e); 
-            }
+            Parrier p = cb.GetParrier();
+            pb.Completion = p.HP / (float)p.MaxHP; 
         });
     }
 }

@@ -6,6 +6,22 @@ using Microsoft.Xna.Framework;
 using TrainGame.Components;
 using TrainGame.Utils;
 
+public enum EnemyType {
+    Artillery, //Big, Shoots vertically, homing bullets
+    Barbarian, //Melee attacks around it
+    Default,
+    MachineGun, //Shoots a lot of bullets
+    Ninja, //Dashes around, shoots occasionally
+    Robot, //moves left to right and shoots up/down in bursts
+    Shotgun, //Shoots in a small spread
+    Sniper, //bullets are warned, travel far and fast and hit hard 
+    Splitter, //bullets split when they collide
+    Vampire, //player gets slowly damaged until vampire is killed
+    Volley, //Shoots in a large spread
+    Warrior, //Shoots in a very wide spread, has high hp and damage, high reload time
+    Wizard //Shoots in a parametric curve 
+}
+
 public static class EnemyID {
     public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
         [EnemyType.Artillery] = new EnemyConst(
@@ -18,7 +34,8 @@ public static class EnemyID {
                 new BulletContainer(
                     new Bullet(15, maxFramesActive: 600),
                     traits: new List<IBulletTrait>(){
-                        new Homing()
+                        new Homing(Speed: Constants.PlayerSpeed / 2f),
+                        new RemoveOnCollision()
                     }
                 )
             ), 
@@ -106,7 +123,8 @@ public static class EnemyID {
                 Inaccuracy: 10
             ),
             new ChaseMovePattern(
-                Constants.PlayerSpeed / 1.5f
+                Constants.PlayerSpeed / 2.5f,
+                SecondsToChase: 4
             ),
             Type: EnemyType.Ninja, 
             HP: 6
@@ -121,6 +139,7 @@ public static class EnemyID {
                 2,
                 new BulletContainer(
                     new Bullet(10),
+                    BulletSpeed: 8f,
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -130,7 +149,7 @@ public static class EnemyID {
             new CyclicalMovePattern(
                 new List<Vector2>() { new Vector2(1, 0), new Vector2(-1, 0) },
                 new List<WorldTime>() { new WorldTime(ticks: 60 ) },
-                new WorldTime(ticks: 360),
+                new WorldTime(ticks: 300),
                 1f
             ),
             Type: EnemyType.Robot, 
@@ -174,6 +193,40 @@ public static class EnemyID {
             new DefaultMovePattern(),
             Type: EnemyType.Sniper, 
             HP: 25
+        ),
+        [EnemyType.Splitter] = new EnemyConst(
+            new Shooter(
+                ammo: 1,
+                reloadTicks: 700,
+                ticksPerShot: 700
+            ),
+            new DefaultShootPattern(
+                new BulletContainer(
+                    new Bullet(50, maxFramesActive: 300),
+                    width: Constants.TileWidth / 1.25f,
+                    BulletSpeed: Constants.TileWidth / 10f,
+                    traits: new List<IBulletTrait>(){
+                        new Warned(new WorldTime(ticks: 45)),
+                        new RemoveOnCollision(),
+                        new Split(
+                            new RadialShootPattern(
+                                20,
+                                new BulletContainer(
+                                    new Bullet(25, maxFramesActive: 300),
+                                    width: Constants.TileWidth / 8f,
+                                    BulletSpeed: Constants.TileWidth / 10f,
+                                    traits: new List<IBulletTrait>(){
+                                        new RemoveOnCollision()
+                                    }
+                                )
+                            )
+                        )
+                    }
+                )
+            ),
+            new DefaultMovePattern(),
+            Type: EnemyType.Splitter,
+            HP: 60
         ),
         [EnemyType.Volley] = new EnemyConst(
             new Shooter(

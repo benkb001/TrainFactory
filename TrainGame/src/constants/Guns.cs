@@ -28,6 +28,7 @@ public static class Weapons {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(1),
+                    BulletSpeed: 4f,
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -43,6 +44,7 @@ public static class Weapons {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(1),
+                    BulletSpeed: 6f,
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }

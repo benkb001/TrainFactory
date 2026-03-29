@@ -37,6 +37,7 @@ public static class RegisterSystems {
         DamageSystem.RegisterParry(w); 
         DamageSystem.RegisterAddInvincibleMessage(w);
         DamageSystem.RegisterReceive(w); 
+        DamageSystem.RegisterHealShield(w);
         DamageSystem.RegisterSetInvincible(w);
         DamageSystem.RegisterDecayInvincibility(w);
         LootSystem.Register(w); 
@@ -202,7 +203,7 @@ public static class RegisterSystems {
         InventoryFastTransferSystem.Register(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
-        ParryCooldownBarSystem.Register(w); 
+        ParryHPBarSystem.Register(w); 
         ManualCraftUpdateSystem.Register(w); 
         ProgressBarUpdateSystem.Register(w); 
         

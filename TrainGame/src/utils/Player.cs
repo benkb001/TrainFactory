@@ -16,7 +16,7 @@ using TrainGame.Systems;
 
 public static class PlayerWrap {
     public static int GetEntity(World w) {
-        return w.GetMatchingEntities([typeof(Player), typeof(Data)])[0];
+        return w.GetMatchingEntities([typeof(Player), typeof(Health), typeof(Parrier), typeof(Data)])[0];
     }
 
     public static int GetRPGEntity(World w) {
@@ -27,18 +27,24 @@ public static class PlayerWrap {
         Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
 
-        int playerInvDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
-
-        w.SetComponent<Inventory>(playerInvDataEnt, playerInv); 
-        w.SetComponent<Player>(playerInvDataEnt, new Player()); 
-        w.SetComponent<Health>(playerInvDataEnt, new Health(Constants.PlayerHP)); 
-        w.SetComponent<Armor>(playerInvDataEnt, new Armor(0));
-        
-        (int armorInvEnt, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
-        armorInv.SetArmor();
-        w.SetComponent<EquipmentSlot<Armor>>(playerInvDataEnt, new EquipmentSlot<Armor>(armorInv)); 
-
+        Health h = new Health(Constants.PlayerHP);
+        Parrier p = new Parrier(100);
+        (int _, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
         playerInv.Add(ItemID.Gun, 1); 
+        AddData(w, playerInv, armorInv, h, p);
+    }
+    
+    //inv doesn't need to be registered as data yet, but armorInv does
+    public static int AddData(World w, Inventory inv, Inventory armorInv, Health h, Parrier p) {
+        int playerDataEnt = EntityFactory.AddData<Inventory>(w, inv); 
+        w.SetComponent<Player>(playerDataEnt, new Player()); 
+        w.SetComponent<Health>(playerDataEnt, h); 
+        w.SetComponent<Parrier>(playerDataEnt, p);
+        armorInv.SetArmor();
+        w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, new EquipmentSlot<Armor>(armorInv)); 
+        Armor armor = new Armor(0); 
+        w.SetComponent<Armor>(playerDataEnt, armor);
+        return playerDataEnt;
     }
 
     public static void SetRespawn(World w, City c) {
@@ -66,6 +72,10 @@ public static class PlayerWrap {
 
     public static Health GetHP(World w) {
         return w.GetComponent<Health>(GetEntity(w));
+    }
+
+    public static Parrier GetParrier(World w) {
+        return w.GetComponent<Parrier>(GetEntity(w));
     }
 
     public static string GetHeldItemID(World w) {
@@ -114,6 +124,9 @@ public static class PlayerWrap {
 
         int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
         w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
+        //TODO: we should store the parrier hp in the data ent. 
+        Parrier parrier = w.GetComponent<Parrier>(playerDataEnt);
+        w.SetComponent<Parrier>(hpEnt, parrier);
         playerHUD.AddChild(hpEnt, w); 
 
         int ammoEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "Ammo"); 
@@ -134,7 +147,7 @@ public static class PlayerWrap {
         w.SetComponent<RespawnLocation>(playerEntity, w.GetComponent<RespawnLocation>(playerDataEnt));
         w.SetComponent<Inventory>(playerEntity, playerInv); 
 
-        w.SetComponent<Parrier>(playerEntity, new Parrier());
+        w.SetComponent<Parrier>(playerEntity, parrier);
         w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerDataEnt)); 
         w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt)); 
         w.SetComponent<Damage>(playerEntity, new Damage(0)); 

@@ -2,14 +2,11 @@ namespace TrainGame.Components;
 
 using TrainGame.Utils;
 
-public class ParryCooldownBar {
+public class ParryHPBar {
     private Parrier parrier; 
+    public Parrier GetParrier() => parrier;
 
-    public ParryCooldownBar(Parrier p) {
+    public ParryHPBar(Parrier p) {
         parrier = p; 
-    }
-
-    public float Completion(WorldTime now) {
-        return parrier.PercentCooldownComplete(now); 
     }
 }

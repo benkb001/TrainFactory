@@ -132,7 +132,7 @@ public static class RegisterComponents {
         r<Outline>(); 
         r<ParametricCurve>();
         r<Parrier>();
-        r<ParryCooldownBar>();
+        r<ParryHPBar>();
         r<PauseButton>(); 
         r<PauseTrainProgramButton>();
         r<Player>(); 

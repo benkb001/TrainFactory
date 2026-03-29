@@ -118,7 +118,7 @@ public static class Machines {
             ProductItemId: ItemID.AdamantiteDrill,
             ProductCount: 1,
             Recipe: new Dictionary<string, int>() {
-                [ItemID.Adamantite] = 10000
+                [ItemID.Adamantite] = 15000
             },
             MinTicks: 3, 
             SlowFactor: 6000,
@@ -179,7 +179,7 @@ public static class Machines {
             ProductItemId: ItemID.CobaltDrill,
             ProductCount: 1,
             Recipe: new Dictionary<string, int>() {
-                [ItemID.Cobalt] = 10000
+                [ItemID.Cobalt] = 5000
             },
             MinTicks: 3,
             SlowFactor: 6000, 

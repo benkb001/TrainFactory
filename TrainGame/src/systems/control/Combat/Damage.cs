@@ -64,8 +64,13 @@ public static class DamageSystem {
 
     public static void RegisterParry(World w) {
         w.AddSystem([typeof(ReceiveDamageMessage), typeof(Parrier), typeof(Active)], (w, e) => {
-            if (w.GetComponent<Parrier>(e).Parrying) {
-                w.GetComponent<ReceiveDamageMessage>(e).SetDamage(0); 
+            Parrier p = w.GetComponent<Parrier>(e);
+            ReceiveDamageMessage msg = w.GetComponent<ReceiveDamageMessage>(e);
+            if (p.Parrying) {
+                p.HP = Math.Max(0, p.HP - msg.DMG);
+                msg.SetDamage(0); 
+            } else {
+                msg.SetDamage(1);
             }
         });
     }
@@ -84,6 +89,19 @@ public static class DamageSystem {
         w.AddSystem([typeof(Health), typeof(SetInvincibleMessage)], (w, e) => {
             w.GetComponent<Health>(e).InvincibleFrames = Constants.InvincibilityFrames;
             w.RemoveComponent<SetInvincibleMessage>(e);
+        });
+    }
+
+    public static void RegisterHealShield(World w) {
+        w.AddSystem([typeof(HitMessage), typeof(ShotBy), typeof(Active), typeof(Player)], (w, e) => {
+            int hitEntity = w.GetComponent<HitMessage>(e).Entity; 
+            int shotByEntity = w.GetComponent<ShotBy>(e).Entity; 
+            (Health h, bool hasHealth) = w.GetComponentSafe<Health>(hitEntity); 
+            (Parrier p, bool hasParrier) = w.GetComponentSafe<Parrier>(shotByEntity); 
+            
+            if (hasHealth && hasParrier && h.HP < 1) {
+                p.HP = Math.Min(p.MaxHP, p.HP + h.MaxHP);
+            }
         });
     }
 

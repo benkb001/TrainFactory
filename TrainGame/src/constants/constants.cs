@@ -23,8 +23,9 @@ public static class Constants {
     public const float PlayerWidth = 45f; 
     public const float PlayerHeight = TileWidth; 
     public const float PlayerSpeed = 5f; 
+    public const float ParryingSpeed = 2f;
     public const int PlayerOutlineThickness = 1; 
-    public const int PlayerHP = 100;
+    public const int PlayerHP = 3;
 
     public const int MaxFloorLevel1 = 20; 
     public const int MaxFloorLevel2 = 40;

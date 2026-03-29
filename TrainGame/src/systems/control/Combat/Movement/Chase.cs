@@ -19,7 +19,9 @@ public static class ChaseMovementSystem {
             int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Active), typeof(Frame)]);
             (Frame targetFrame, bool hasFrame) = w.GetComponentSafe<Frame>(targetableEnt); 
 
-            if (hasFrame) {
+            if ((w.Time.Minutes % (m.SecondsToChase + 1)) == 0) {
+                w.SetComponent<Velocity>(e, new Velocity(Vector2.Zero));
+            } else if (hasFrame) {
                 Vector2 v = Vector2.Normalize(targetFrame.Position - enemyFrame.Position) * m.Speed; 
                 w.SetComponent<Velocity>(e, new Velocity(v));
             }

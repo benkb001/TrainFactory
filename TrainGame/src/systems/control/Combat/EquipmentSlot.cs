@@ -57,10 +57,8 @@ public static class ToolSystem {
                 IShootPattern sp = pg.GetShootPattern();
 
                 if (w.EntityExists(h.LabelEntity)) {
-                    int gunEnt = h.LabelEntity;
-                    w.SetComponent<Shooter>(gunEnt, shooter);
-                    w.SetComponent<Player>(gunEnt, Player.Get());
-                    ShootPatternRegistry.Add(w, sp, gunEnt);
+                    w.SetComponent<Shooter>(e, shooter);
+                    ShootPatternRegistry.Add(w, sp, e);
                 }
             } 
         });

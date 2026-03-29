@@ -135,14 +135,20 @@ public static class PersistentState {
         Inventory armorInv = PlayerWrap.GetArmorInventory(w);
 
         Health playerHealth = PlayerWrap.GetHP(w);
+        Parrier playerParrier = PlayerWrap.GetParrier(w);
+
         int maxHP = playerHealth.MaxHP; 
         int hp = playerHealth.HP;
+        int parryHP = playerParrier.HP; 
+        int maxParryHP = playerParrier.MaxHP; 
 
         dom.Add("player", new JsonObject() {
             ["armorInventoryID"] = armorInv.Id,
             ["inventoryID"] = playerInv.Id, 
             ["maxHP"] = maxHP,
-            ["HP"] = hp
+            ["HP"] = hp,
+            ["parryHP"] = parryHP,
+            ["maxParryHP"] = maxParryHP
         });
 
         dom.Add("cities", new JsonObject(cities.Select(kvp => {
@@ -324,18 +330,16 @@ public static class PersistentState {
 
         int maxHP = (int)playerJSON["maxHP"];
         int hp = (int)playerJSON["HP"];
+        int parryHP = (int)playerJSON["parryHP"];
+        int maxParryHP = (int)playerJSON["maxParryHP"];
+
+        Parrier playerParrier = new Parrier(maxParryHP, parryHP);
 
         Health playerHealth = new Health(maxHP); 
         playerHealth.SetHP(hp);
-        
-        int playerDataEnt = EntityFactory.AddData<Inventory>(w, playerInv); 
 
-        w.SetComponent<Player>(playerDataEnt, new Player()); 
-        w.SetComponent<Inventory>(playerDataEnt, playerInv); 
-        w.SetComponent<Health>(playerDataEnt, playerHealth); 
-        w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, armorSlot); 
+        int playerDataEnt = PlayerWrap.AddData(w, playerInv, armorInv, playerHealth, playerParrier);
         w.SetComponent<RespawnLocation>(playerDataEnt, new RespawnLocation(cities[CityID.Factory]));
-        w.SetComponent<Armor>(playerDataEnt, new Armor(0));
 
         string playerLocation = (string)dom["playerLocation"];
 

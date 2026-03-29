@@ -22,16 +22,22 @@
 * Train.Move()
 * Train fuel consumption
 * Upgrade train fuel consumption/power
-* New train programs aren't too cpu intensive
 * ExitExpired 
-* Armor decreasing damage received
 * Elevator
+* Combat
+  * I'm still not sure how much to test because 
+    a lot of it is feel-y instead of hard rules, 
+    will need to look into this a bit more
+* Test loading
+  * I think we could do a BootStrap, save, and then load, and then 
+    make some assertions about things working and being registered,
+    like there being a valid player data entity, city entities, 
+    train, etc
 
 **** CLEAN UP **** 
 
 * Test why slow on diagonal map, add exit to this map
 * Filters should be in inventory wrap
-* Split constants into a few files
 * Remove querying world-state from ui systems
 * Add test files for all classes (that have methods), 
   and mark any ICKY dependencies
@@ -45,6 +51,19 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
+  * Change armor that you can purchase from vendor to either 
+    be parriers with more hp, or to increase your actual hp, 
+    or both, and remove the current armor system. 
+  * Add parrying, if you stop blocking at the right moment it
+    will clear bullets in a small area around you. 
+      * This is kinda tricky because of bullets not being 
+        registered in the spatial hash, for now though 
+        I think we can just have one entity that 
+        queries for all the bullets and checks if any of 
+        them intersect.
+      * Also need to show this visually in some way, 
+        could make a larger yellow box around you that 
+        clears the bullets 
   * Add new move patterns: 
     * Parametric curves and switching between them
     * Move to a certain tile w/ pathfinding
@@ -61,8 +80,6 @@
   * Add new bullet traits: 
     * bounce
     * Pierce
-    * explodes
-    * splits
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * Enemies should wait a random amount of time before they start to shoot the player
