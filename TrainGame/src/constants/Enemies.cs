@@ -14,6 +14,7 @@ public enum EnemyType {
     Ninja, //Dashes around, shoots occasionally
     Robot, //moves left to right and shoots up/down in bursts
     Shotgun, //Shoots in a small spread
+    Skeleton, //Spawns a moving grid 
     Sniper, //bullets are warned, travel far and fast and hit hard 
     Splitter, //bullets split when they collide
     Vampire, //player gets slowly damaged until vampire is killed
@@ -23,6 +24,8 @@ public enum EnemyType {
 }
 
 public static class EnemyID {
+    private static Frame bFrame() => new Frame(Constants.DefaultBulletSize, Constants.DefaultBulletSize);
+
     public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
         [EnemyType.Artillery] = new EnemyConst(
             new Shooter(
@@ -33,6 +36,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(15, maxFramesActive: 600),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new Homing(Speed: Constants.PlayerSpeed / 2f),
                         new RemoveOnCollision()
@@ -58,7 +62,7 @@ public static class EnemyID {
             new MeleeShootPattern(
                 new BulletContainer(
                     new Bullet(1, maxFramesActive: 10),
-                    width: Constants.TileWidth * 3,
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 45)),
                         new RemoveOnCollision()
@@ -80,6 +84,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(5),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -95,6 +100,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(15),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -116,6 +122,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(5),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -139,6 +146,7 @@ public static class EnemyID {
                 2,
                 new BulletContainer(
                     new Bullet(10),
+                    bFrame(),
                     BulletSpeed: 8f,
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
@@ -155,6 +163,40 @@ public static class EnemyID {
             Type: EnemyType.Robot, 
             HP: 8
         ),
+        [EnemyType.Skeleton] = new EnemyConst(
+            new Shooter(
+                ammo: 45,
+                ticksPerShot: 240,
+                reloadTicks: 720
+            ),
+            new GridShootPattern(
+                new BulletContainer(
+                    new Bullet(10, maxFramesActive: 10),
+                    new Frame(Constants.TileWidth / 4f, Constants.TileWidth * 25),
+                    BulletSpeed: 0f,
+                    traits: new List<IBulletTrait>(){
+                        new Warned(new WorldTime(ticks: 120))
+                    }
+                ),
+                new BulletContainer(
+                    new Bullet(10, maxFramesActive: 10),
+                    new Frame(Constants.TileWidth * 25, Constants.TileWidth / 4f),
+                    BulletSpeed: 0f,
+                    traits: new List<IBulletTrait>(){
+                        new Warned(new WorldTime(ticks: 120))
+                    }
+                ),
+                Constants.TileWidth * 2.5f,
+                Constants.TileWidth * 2.5f,
+                10,
+                5,
+                new Vector2(Constants.TileWidth / 2, 0),
+                3
+            ),
+            new DefaultMovePattern(speed: 0f),
+            Type: EnemyType.Skeleton,
+            HP: 100
+        ),
         [EnemyType.Shotgun] = new EnemyConst(
             new Shooter(
                 ammo: 12, 
@@ -164,6 +206,7 @@ public static class EnemyID {
             new ShotgunShootPattern(
                 new BulletContainer(
                     new Bullet(10, maxFramesActive: 180),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
                     }
@@ -183,6 +226,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(40, maxFramesActive: 240),
+                    bFrame(),
                     BulletSpeed: 10f,
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 20)),
@@ -203,7 +247,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(50, maxFramesActive: 300),
-                    width: Constants.TileWidth / 1.25f,
+                    new Frame(Constants.TileWidth / 1.25f, Constants.TileWidth / 1.25f),
                     BulletSpeed: Constants.TileWidth / 10f,
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 45)),
@@ -213,7 +257,7 @@ public static class EnemyID {
                                 20,
                                 new BulletContainer(
                                     new Bullet(25, maxFramesActive: 300),
-                                    width: Constants.TileWidth / 8f,
+                                    new Frame(Constants.TileWidth / 8f, Constants.TileWidth / 8f),
                                     BulletSpeed: Constants.TileWidth / 10f,
                                     traits: new List<IBulletTrait>(){
                                         new RemoveOnCollision()
@@ -237,6 +281,7 @@ public static class EnemyID {
             new ShotgunShootPattern(
                 new BulletContainer(
                     new Bullet(40, maxFramesActive: 60),
+                    bFrame(),
                     BulletSpeed: 3f,
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
@@ -257,7 +302,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(10, maxFramesActive: 600),
-                    width: Constants.TileWidth / 2f,
+                    new Frame(Constants.TileWidth / 2f),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision(),
                         new Vampiric(5),
@@ -291,6 +336,7 @@ public static class EnemyID {
             new ShotgunShootPattern(
                 new BulletContainer(
                     new Bullet(60, maxFramesActive: 240),
+                    bFrame(),
                     BulletSpeed: 4f,
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 30)),
@@ -314,6 +360,7 @@ public static class EnemyID {
             new DefaultShootPattern(
                 new BulletContainer(
                     new Bullet(60, maxFramesActive: 3600),
+                    bFrame(),
                     traits: new List<IBulletTrait>(){
                         new ParametricCurve(
                             //spiral

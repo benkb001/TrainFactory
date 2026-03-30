@@ -164,6 +164,7 @@ public static class PlayerWrap {
         h.ResetHP(); 
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
+        w.GetComponent<Parrier>(e).Reset();
     }
 
     public static void AddTest(World w) {

@@ -39,6 +39,9 @@ public class Frame {
         p = new Polygon(points);
     }
 
+    public Frame(float width, float height, float rotation = 0f) : this(0f, 0f, width, height, rotation) {}
+    public Frame(float width) : this(width, width, 0f) {}
+
     public Frame(Vector2 pos, float width, float height, float rotation = 0f) : 
         this(pos.X, pos.Y, width, height, rotation) {}
 

@@ -17,6 +17,10 @@ public class V2 {
     public V2(float x, float y) {
         this.Vec = new Vector2(x, y);
     }
+
+    public V2() {
+        this.Vec = Vector2.Zero; 
+    }
     
     public float this[int i] {
         get {

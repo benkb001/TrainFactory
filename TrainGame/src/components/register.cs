@@ -94,6 +94,7 @@ public static class RegisterComponents {
         r<Frame>(); 
         r<GameClockView>();
         r<GoingToCity>();
+        r<GridShootPattern>();
         r<Health>(); 
         r<HeldItem>(); 
         r<HealthPotion>(); 

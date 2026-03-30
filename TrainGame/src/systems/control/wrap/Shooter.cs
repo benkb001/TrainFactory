@@ -27,8 +27,10 @@ public static class ShooterWrap {
     public static int Add<U>(World w, Vector2 pos, Vector2 targetPos, BulletContainer bc, int shooterEnt) 
     where U : IFlag<U> {
         float width = bc.Width;
+        float height = bc.Height;
+        Console.WriteLine($"pos: {pos}, width: {width}, height: {height}");
         
-        int e = EntityFactory.AddUI(w, pos, width, width, setOutline: true);
+        int e = EntityFactory.AddUI(w, pos, width, height, setOutline: true);
         w.SetComponent<Velocity>(e, new Velocity(Aim(pos, targetPos, bc.Speed)));
         w.SetComponent<Bullet>(e, bc.GetBullet());
         w.SetComponent<U>(e, U.Get());

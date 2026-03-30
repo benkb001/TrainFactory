@@ -11,4 +11,8 @@ public class Parrier {
         this.MaxHP = MaxHP; 
         this.HP = HP == -1 ? MaxHP : HP; 
     }
+
+    public void Reset() {
+        this.HP = this.MaxHP; 
+    }
 }

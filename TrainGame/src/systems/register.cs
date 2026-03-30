@@ -134,6 +134,8 @@ public static class RegisterSystems {
         RadialShootSystem.Register<Player>(w);
         ShotgunShootSystem.Register<Player>(w);
         ShotgunShootSystem.Register<Enemy>(w);
+        GridShootSystem.Register<Enemy>(w); 
+        GridShootSystem.Register<Player>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         RemoveBulletSystem.Register(w); 
