@@ -15,14 +15,22 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public static class RemoveBulletSystem {
+public static class DecayBulletSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Bullet), typeof(Active)], (w, e) => {
             Bullet b = w.GetComponent<Bullet>(e); 
             b.Decay(); 
             if (b.ShouldRemove) {
-                w.RemoveEntity(e); 
+                w.SetComponent<Expired>(e, new Expired()); 
             }
+        });
+    }
+}
+
+public static class RemoveExpiredSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(Expired), typeof(Active)], (w, e) => {
+            w.RemoveEntity(e);
         });
     }
 }

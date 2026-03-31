@@ -67,6 +67,7 @@ public static class Layout {
     private static Tile warr = new Tile(TileType.Enemy, EnemyType.Warrior); 
     private static Tile wizz = new Tile(TileType.Enemy, EnemyType.Wizard);
     private static Tile skel = new Tile(TileType.Enemy, EnemyType.Skeleton);
+    private static Tile expl = new Tile(TileType.Enemy, EnemyType.ExplodeOnDeath);
 
     private static Tile elevator = new Tile(TileType.Elevator); 
 
@@ -370,6 +371,26 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
     };
 
+    public static List<List<Tile>> LExpl = new() {
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, p, g, g, g, g, g, ld, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, sp, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, expl, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w}
+    };
+
+
     //Cities
 
     public static List<List<Tile>> Factory = new() {
@@ -398,7 +419,7 @@ public static class Layout {
         new() { L5, L6, LM },
         new() { LV, LS, LW },
         new() { L7, L8, L9 },
-        new() { LSkeleton } //LWizz, LVamp, LSplit should go here
+        new() { LExpl } //LWizz, LVamp, LSkeleton, LSplit, LExpl should go here
     };
 
     public static void Draw(World w, List<List<Tile>> tss) {

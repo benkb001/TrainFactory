@@ -10,6 +10,7 @@ public enum EnemyType {
     Artillery, //Big, Shoots vertically, homing bullets
     Barbarian, //Melee attacks around it
     Default,
+    ExplodeOnDeath,
     MachineGun, //Shoots a lot of bullets
     Ninja, //Dashes around, shoots occasionally
     Robot, //moves left to right and shoots up/down in bursts
@@ -91,6 +92,56 @@ public static class EnemyID {
                 )
             ),
             new DefaultMovePattern()
+        ),
+        [EnemyType.ExplodeOnDeath] = new EnemyConst(
+            new Shooter(
+                ammo: 24,
+                reloadTicks: 240,
+                ticksPerShot: 40
+            ),
+            new RandomShotgunShootPattern(
+                new BulletContainer(
+                    new Bullet(50, maxFramesActive: 180),
+                    new Frame(Constants.TileWidth, Constants.TileWidth),
+                    BulletSpeed: 1f,
+                    traits: new List<IBulletTrait>(){
+                        new Split(
+                            new MeleeShootPattern(
+                                new BulletContainer(
+                                    new Bullet(50),
+                                    new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2),
+                                    traits: new List<IBulletTrait>(){
+                                        new Warned(new WorldTime(ticks: 15))
+                                    }
+                                )
+                            )
+                        )
+                    }
+                ),
+                new BulletContainer(
+                    new Bullet(20, maxFramesActive: 140),
+                    BulletSpeed: 4f
+                ),
+                Math.PI / 8,
+                1,
+                7
+            ),
+            new DefaultMovePattern(),
+            Type: EnemyType.ExplodeOnDeath,
+            HP: 20,
+            traits: new List<IEnemyTrait>(){
+                new Split(
+                    new MeleeShootPattern(
+                        new BulletContainer(
+                            new Bullet(50),
+                            new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2),
+                            traits: new List<IBulletTrait>(){
+                                new Warned(new WorldTime(ticks: 30))
+                            }
+                        )
+                    )
+                )
+            }
         ),
         [EnemyType.MachineGun] = new EnemyConst(
             new Shooter(
@@ -246,7 +297,7 @@ public static class EnemyID {
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(50, maxFramesActive: 300),
+                    new Bullet(50, maxFramesActive: 120),
                     new Frame(Constants.TileWidth / 1.25f, Constants.TileWidth / 1.25f),
                     BulletSpeed: Constants.TileWidth / 10f,
                     traits: new List<IBulletTrait>(){

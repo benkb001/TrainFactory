@@ -28,6 +28,12 @@
   * I'm still not sure how much to test because 
     a lot of it is feel-y instead of hard rules, 
     will need to look into this a bit more
+  * One thing that is helpful is that things shoot when they are supposed to,
+    this can be a bit tricky because we also have systems that will remove entities. 
+    So for splitting we can assert that when bullet expires, it gets shot before that 
+    entity is removed.
+  * In general, integration tests on systems are nice to validate your expectations of 
+    what the system should do under certain easily simulated scenarios.  
 * Loading
   * I think we could do a BootStrap, save, and then load, and then 
     make some assertions about things working and being registered,
@@ -51,6 +57,7 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
+  * Fix reload time on player gun
   * Change armor that you can purchase from vendor to either 
     be parriers with more hp, or to increase your actual hp, 
     or both, and remove the current armor system. 
@@ -66,19 +73,18 @@
         then we check once player has gotten close enough to the next tile 
         and update target position to the next position, etc. 
   * Add new shoot patterns: 
-    * Random shotgun w/ different bullet types possible
     * Vine, goes in a parametric curve, velocity is zero, 
       and has a small chance to set shooter onto any of the 
       spawned bullets but with an exponentially smaller 
       chance to split
+    * Shoot a square/circle/triangle/whatever
   * Add new bullet traits: 
     * bounce
     * remove on hit (for bullets that aren't removed on collision ie grid)
-    * Pierce
-    * explode
+    * Pierce (mostly for player guns, will need to tack a list of hit entities onto bullet 
+      to make sure that it doesn't hit something it just hit )
   * Add OnDeath traits
     * Enemy that splits a couple of times, like slime 
-    * Shoots something on death
   * Add a few harder enemies and layouts for floors 25-60
   * There should be a significant chance (1/3 - 2/3?) that an enemy doesn't drop anything
   * There should be a slightly randomized amount of time enemy takes to spawn 
@@ -182,6 +188,7 @@
   * Add expression to get time since arrival/time since departure
   * Add comments
   * Add parentheses
+* Increase world efficiency either w/ sorted set intersections or set-trie 
 
 **** NOT SURE WE WANT BUT MAYBE **** 
 

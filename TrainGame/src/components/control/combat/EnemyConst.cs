@@ -20,9 +20,10 @@ public class EnemyConst {
     public Shooter GetShooter() => shooter.Clone();
     public IMovementType GetMovement() => movement.Clone();
     public IShootPattern GetShootPattern() => shoot.Clone();
+    public List<IEnemyTrait> Traits;
 
     public EnemyConst(Shooter shooter, IShootPattern shoot, IMovementType movement, EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
-        int HP = 5, int Armor = 0, int Difficulty = 1) {
+        int HP = 5, int Armor = 0, int Difficulty = 1, List<IEnemyTrait> traits = null) {
         
         this.shooter = shooter;
         this.movement = movement; 
@@ -33,5 +34,11 @@ public class EnemyConst {
         this.HP = HP; 
         this.Armor = Armor;
         this.Difficulty = Difficulty; 
+
+        if (traits == null) {
+            traits = new List<IEnemyTrait>();
+        }
+        
+        this.Traits = traits; 
     }
 }

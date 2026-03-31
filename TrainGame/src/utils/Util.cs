@@ -82,6 +82,10 @@ public static partial class Util {
         return random.NextDouble(); 
     }
 
+    public static double NextBetweenRange(double min, double max) {
+        return min + ((max - min) * random.NextDouble());
+    }
+
     public static int NextInt(int maxExclusive) {
         int r = random.Next(maxExclusive);
         return r;

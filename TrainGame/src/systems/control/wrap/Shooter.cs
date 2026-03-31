@@ -28,7 +28,6 @@ public static class ShooterWrap {
     where U : IFlag<U> {
         float width = bc.Width;
         float height = bc.Height;
-        Console.WriteLine($"pos: {pos}, width: {width}, height: {height}");
         
         int e = EntityFactory.AddUI(w, pos, width, height, setOutline: true);
         w.SetComponent<Velocity>(e, new Velocity(Aim(pos, targetPos, bc.Speed)));

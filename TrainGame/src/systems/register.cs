@@ -17,6 +17,7 @@ public static class RegisterSystems {
         RegisterBulletTraits.All();
         RegisterMovementTypes.All();
         RegisterShootPatterns.All();
+        RegisterEnemyTraits.All();
 
         CardinalMovementSystem.Register(w); 
         ParametricMovementSystem.Register(w);
@@ -44,10 +45,32 @@ public static class RegisterSystems {
         PlayerDeathSystem.Register(w); 
         DeathSystem.Register(w); 
         EnemySpawnSystem.Register(w); 
-        CollideBulletSystem.Register(w); 
+        CollideBulletSystem.Register(w);
         ApplyVampiredSystem.Register(w);
         RemoveVampiredSystem.Register(w);
+        DecayBulletSystem.Register(w); 
+        
         SplitBulletSystem.Register(w);
+        PlayerShootSystem.Register(w);
+        EnemyShootSystem.Register(w); 
+        DefaultShootSystem.Register<Enemy>(w);
+        DefaultShootSystem.Register<Player>(w);
+        MeleeShootSystem.Register<Enemy>(w);
+        MeleeShootSystem.Register<Player>(w);
+        RadialShootSystem.Register<Enemy>(w);
+        RadialShootSystem.Register<Player>(w);
+        ShotgunShootSystem.Register<Player>(w);
+        ShotgunShootSystem.Register<Enemy>(w);
+        GridShootSystem.Register<Enemy>(w); 
+        GridShootSystem.Register<Player>(w);
+        RandomShotgunShootSystem.Register<Player>(w);
+        RandomShotgunShootSystem.Register<Enemy>(w);
+        BulletWarningShootSystem.Register(w); 
+        HomingSystem.Register(w);
+
+        RemoveExpiredSystem.Register(w);
+        RemoveOnCollisionSystem.Register(w);
+        RemoveOnHitSystem.Register(w);
         
         TALExecutionSystem.Register(w);
         TrainTravelSystem.RegisterMove(w);
@@ -123,24 +146,6 @@ public static class RegisterSystems {
         
         VendorInteractSystem.Register(w);
         ToolSystem.Register(w);
-
-        PlayerShootSystem.Register(w);
-        EnemyShootSystem.Register(w); 
-        DefaultShootSystem.Register<Enemy>(w);
-        DefaultShootSystem.Register<Player>(w);
-        MeleeShootSystem.Register<Enemy>(w);
-        MeleeShootSystem.Register<Player>(w);
-        RadialShootSystem.Register<Enemy>(w);
-        RadialShootSystem.Register<Player>(w);
-        ShotgunShootSystem.Register<Player>(w);
-        ShotgunShootSystem.Register<Enemy>(w);
-        GridShootSystem.Register<Enemy>(w); 
-        GridShootSystem.Register<Player>(w);
-        BulletWarningShootSystem.Register(w); 
-        HomingSystem.Register(w);
-        RemoveBulletSystem.Register(w); 
-        RemoveOnCollisionSystem.Register(w);
-        RemoveOnHitSystem.Register(w);
         
         RewardInteractSystem.RegisterRemove(w); 
 

@@ -91,6 +91,7 @@ public static class RegisterComponents {
         r<EquipmentData>();
         r<EquipmentSlot<Armor>>();
         r<EquipmentUI>(); 
+        r<Expired>();
         r<Frame>(); 
         r<GameClockView>();
         r<GoingToCity>();
@@ -142,6 +143,7 @@ public static class RegisterComponents {
         r<PurchaseButton<PurchaseItem>>();
         r<PurchaseButton<ResetHP>>();
         r<RadialShootPattern>();
+        r<RandomShotgunShootPattern>();
         r<ReceiveDamageMessage>(); 
         r<RemoveOnCollision>();
         r<RespawnLocation>(); 

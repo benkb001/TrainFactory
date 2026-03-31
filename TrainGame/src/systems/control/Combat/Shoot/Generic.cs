@@ -10,19 +10,6 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public static class SplitBulletSystem {
-    public static void Register(World w) {
-        w.AddSystem([typeof(Collided), typeof(Split), typeof(Active)], (w, e) => {
-            IShootPattern sp = w.GetComponent<Split>(e).Pattern;
-            //ICKY, but we add Shooter so that it passes the check for ShootSystem
-            w.SetComponent<Shooter>(e, new Shooter());
-            w.SetComponent<ShotMessage>(e, new ShotMessage(Vector2.Zero));
-            ShootPatternRegistry.Add(w, sp, e);
-            w.RemoveComponent<Split>(e);
-        });
-    }
-}
-
 public static class ShootSystem {
     //tf should return the number of bullets shot
     public static void Register<T, U>(World w, Func<World, T, Frame, Vector2, int, int> tf) 

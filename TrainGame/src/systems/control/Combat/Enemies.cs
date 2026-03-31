@@ -39,6 +39,10 @@ public class EnemyWrap {
         Armor armor = new Armor(e.Armor);
         w.SetComponent<Armor>(enemyEnt, armor); 
         
+        foreach (IEnemyTrait trait in e.Traits) {
+            EnemyTraitRegistry.Add(w, trait, enemyEnt);
+        }
+        
         return new EnemyWrap(enemyEnt, h, armor);
     }
 
