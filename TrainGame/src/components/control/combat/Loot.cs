@@ -15,52 +15,53 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public class LootDistribution {
+    private int dropChanceTotal; 
+    private Dictionary<string, int> dropChances; 
+    private Dictionary<string, int> dropCounts; 
+
+    public LootDistribution(Dictionary<string, int> dropChances, Dictionary<string, int> dropCounts) {
+        if (dropChances.Count != dropCounts.Count) {
+            throw new InvalidOperationException($"A loot distribution must have the same number of dropChance and dropCount");
+        }
+
+        foreach (string itemID in dropChances.Keys) {
+            if (!dropCounts.ContainsKey(itemID)) {
+                throw new InvalidOperationException("A loot distribution must have all itemIDs match in drop chance and drop count");
+            }
+        }
+
+        this.dropChances = dropChances;
+        this.dropCounts = dropCounts;
+        this.dropChanceTotal = dropChances.Aggregate(0, (acc, cur) => acc + cur.Value);
+    }
+
+    public (string, int) GetRandom() {
+        int max = dropChanceTotal;
+        int rand = Util.NextInt(max); 
+        int sum = 0; 
+
+        foreach (KeyValuePair<string, int> dropChance in dropChances) {
+            string itemID = dropChance.Key; 
+            int chance = dropChance.Value; 
+
+            sum += chance; 
+
+            if (sum > rand) {
+                int count = dropCounts[itemID];
+                return (itemID, count); 
+            }
+        }
+
+        throw new InvalidOperationException("Error in LootDistribution.GetRandom");
+    }
+}
+
 public class Loot {
     private string itemID; 
     private int count; 
     private Inventory destination; 
     public int Count => count;
-
-    //TODO: drop chances should also shift with floor? 
-    private static List<(string, int)> drops1 = new() {
-        (ItemID.Cobalt, 39),
-        (ItemID.Credit, 69), 
-        (ItemID.TimeCrystal, 1)
-    };
-
-    private static List<(string, int)> drops2 = new() {
-        (ItemID.Mythril, 28),
-        (ItemID.Credit, 70),
-        (ItemID.TimeCrystal, 2)
-    };
-
-    private static List<(string, int)> drops3 = new() {
-        (ItemID.Adamantite, 17), 
-        (ItemID.Credit, 80),
-        (ItemID.TimeCrystal, 3)
-    };
-
-    private static List<(string, int)> getDrops(int floor) {
-        if (floor < Constants.MaxFloorLevel1) {
-            return drops1;
-        } else if (floor < Constants.MaxFloorLevel2) {
-            return drops2;
-        } else {
-            return drops3; 
-        }
-    }
-
-    private static int maxDrop(List<(string, int)> drops) {
-        return drops.Aggregate(0, (acc, cur) => acc + cur.Item2);
-    }
-
-    private static Dictionary<string, Func<int, int>> dropCounts = new() {
-        [ItemID.Cobalt] = (f) => f + (int)(f * 3 * Util.NextDoublePositive()), 
-        [ItemID.Credit] = (f) => f + (int)((double)(f * f) * Util.NextDoublePositive() * Util.NextDoublePositive()), 
-        [ItemID.Mythril] = (f) => f + (int)(f * 2 * Util.NextDoublePositive()),
-        [ItemID.Adamantite] = (f) => f + (int)(f * Util.NextDoublePositive()),
-        [ItemID.TimeCrystal] = (f) => 10
-    };
 
     public string GetItemID() => itemID; 
 
@@ -72,24 +73,6 @@ public class Loot {
         this.itemID = itemID; 
         this.count = count; 
         this.destination = destination; 
-    }
-
-    public static Loot GetRandom(int floor, Inventory destination, World w, int difficulty = 1) {
-        List<(string, int)> drops = getDrops(floor);
-
-        int max = maxDrop(drops); 
-        int rand = w.NextInt(max); 
-        int sum = 0; 
-
-        foreach ((string itemID, int chance) in drops) {
-            sum += chance; 
-            if (sum > rand) {
-                int count = dropCounts[itemID](floor);
-                return new Loot(itemID, count * difficulty, destination);
-            }
-        }
-
-        throw new InvalidOperationException($"Loot randomization error, maxDrop: {maxDrop}, rand: {rand}");
     }
 }
 

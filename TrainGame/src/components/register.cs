@@ -92,6 +92,7 @@ public static class RegisterComponents {
         r<EquipmentSlot<Armor>>();
         r<EquipmentUI>(); 
         r<Expired>();
+        r<Floor>();
         r<Frame>(); 
         r<GameClockView>();
         r<GoingToCity>();

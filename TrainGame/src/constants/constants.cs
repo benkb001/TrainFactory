@@ -73,10 +73,10 @@ public static class Constants {
 
     public const string DefaultSaveFile = "game"; 
 
-    public const float DefaultBulletSpeed = 2f; 
     public const int BulletSize = 5; 
     public const float DefaultBulletSize = 5f;
-    public const float DefaultEnemySpeed = PlayerSpeed / 2f;
+    public const float DefaultEnemySpeed = PlayerSpeed / 1.75f;
+    public const float DefaultBulletSpeed = PlayerSpeed / 1.25f;
 
     public const float EnemySize = 50f;
     public const int InvincibilityFrames = 60;

@@ -124,10 +124,10 @@ public partial class World : IWorld {
     }
 
     public void SetCameraBounds(float top, float right, float bottom, float left) {
-        // top += ScreenHeight / 2; 
-        // right += ScreenWidth / 2; 
-        // bottom += ScreenHeight / 2; 
-        // left += ScreenWidth / 2; 
+        top += ScreenHeight / 2; 
+        right -= ScreenWidth / 2; 
+        bottom -= ScreenHeight / 2; 
+        left += ScreenWidth / 2; 
         if (!isTest) {
             camera.SetBounds(top, right, bottom, left); 
         }

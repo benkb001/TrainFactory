@@ -27,7 +27,7 @@ public static class PlayerDeathSystem {
                 string[] toTake = {ItemID.Credit, ItemID.Cobalt, ItemID.Mythril, ItemID.Adamantite};
 
                 foreach (string itemID in toTake) {
-                    int lost = inv.ItemCount(ItemID.Credit) / 2; 
+                    int lost = inv.ItemCount(itemID) / 2; 
                     if (lost > 0) {
                         inv.Take(itemID, lost); 
                         taken[itemID] = lost;

@@ -15,54 +15,35 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public static class EnemySpawnSystem {
-    private const float armorThresh = 0.01f;
-    private const float damageThresh = 0.02f; 
-    private const float healthThresh = 0.07f; 
-    private const float itemThresh = 1f;
-    private const int numRewards = 1;
-
+public static class LadderInteractSystem {
     public static void Register(World w) {
-        Vector2 dx(int i) {
-            return new Vector2((i * 110f) + 10f, 10f); 
-        }
+        InteractSystem.Register<Ladder>(w, (w, _) => {
+            FloorSystem.GoToFloor(w, 1); 
+        });
+    }
+}
 
-        w.AddSystem([typeof(EnemySpawner), typeof(Frame), typeof(Active)], (w, e) => {
-            EnemySpawner spawner = w.GetComponent<EnemySpawner>(e); 
-            Frame f = w.GetComponent<Frame>(e); 
-            spawner.Update(w.Time); 
-            int round = spawner.Round; 
-
-            if (spawner.CanReward()) {
-
-                for (int i = 0; i < numRewards; i++) {
-                    Vector2 pos = f.Position + dx(i);
-
-                    int rewardEnt = EntityFactory.AddUI(w, pos, Constants.TileWidth, 
-                        Constants.TileWidth, setOutline: true, setInteractable: true);
-
-                    CombatReward reward = new CombatReward(); 
-                    w.SetComponent<CombatReward>(rewardEnt, reward); 
-                    spawner.AddReward(reward); 
-
-                    Loot loot = Loot.GetRandom(spawner.FloorDest, CityWrap.GetCityWithPlayer(w).Inv, w, difficulty: 3);
-                    w.SetComponent<Loot>(rewardEnt, loot);
-                    string rewardStr = $"{loot.GetItemID()}: {loot.Count}";
-
-                    w.SetComponent<TextBox>(rewardEnt, new TextBox(rewardStr)); 
+public static class ReturnToSurfaceSystem {
+    public static void Register(World w) {
+        w.AddSystem((w) => {
+            if (VirtualKeyboard.IsClicked(KeyBinds.ReturnToSurface)) {
+                (Floor f, bool exists) = w.GetFirst<Floor>();
+                if (exists && f > 0) {
+                    FloorSystem.GoToFloor(w, 0); 
                 }
-
-                LadderWrap.Draw(w, f.Position + dx(numRewards), spawner.FloorDest);
             }
         });
     }
 }
 
-public static class LadderInteractSystem {
-    public static void Register(World w) {
-        InteractSystem.Register<Ladder>(w, (w, _, ladder) => {
-            FloorSystem.GoToFloor(w, ladder.FloorDest); 
-        });
+public class Floor {
+    public int Value; 
+    public Floor(int Value = 0) {
+        this.Value = Value; 
+    }
+
+    public static implicit operator int(Floor f) {
+        return f.Value; 
     }
 }
 
@@ -71,20 +52,46 @@ public static class FloorSystem {
         if (floor == 0) {
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
         } else {
-            Layout.DrawRandom(w, floor);
+            Layout.DrawCombat(w);
         }
 
-        Inventory inv = LootWrap.GetDestination(w);
-        
-        foreach (int e in w.GetMatchingEntities(EnemyWrap.EnemySignature)) {
-            int difficulty = EnemyID.Enemies[w.GetComponent<Enemy>(e).Type].Difficulty; 
-            w.SetComponent<Loot>(e, Loot.GetRandom(floor, inv, w, difficulty: difficulty));
-        }
+        PlayerWrap.SetFloor(w, floor); 
+        int spawnEnt = EntityFactory.Add(w); 
+        w.SetComponent<EnemySpawner>(spawnEnt, new EnemySpawner(floor));
+    }
+}
 
-        foreach (int e in w.GetMatchingEntities([typeof(EnemySpawner), typeof(Active)])) {
-            w.GetComponent<EnemySpawner>(e).FloorDest = floor + 1; 
-        }
+public static class EnemySpawnSystem {
+    public static void Register(World w) {
+        w.AddSystem([typeof(EnemySpawner), typeof(Active)], (w, e) => {
+            EnemySpawner spawn = w.GetComponent<EnemySpawner>(e); 
 
-        Globals.MaxFloor = Math.Max(Globals.MaxFloor, floor); 
+            if (w.Time.IsAfterOrAt(spawn.NextSpawn)) {
+                int sumDifficulties = spawn.Difficulty; 
+                int maxDifficulty = (int)Math.Cbrt(sumDifficulties); 
+
+                double difficultyD = 1d + (maxDifficulty - 1d)*Math.Pow(Util.NextDoublePositive(), 1d/maxDifficulty);
+                int difficulty = Math.Min(12, (int)difficultyD); 
+                
+                EnemyType enemyType = EnemyID.GetRandomWithDifficulty(difficulty); 
+                Vector2 topleft = w.GetCameraTopLeft(); 
+                float cameraWidth = w.ScreenWidth; 
+                float cameraHeight = w.ScreenHeight;
+                
+                float addX = Util.NextInt(2) == 1 ? 0f : cameraWidth; 
+                float addY = Util.NextInt(2) == 1 ? 0f : cameraHeight; 
+                addX += Util.NextFloat() * Constants.TileWidth;
+                addY += Util.NextFloat() * Constants.TileWidth; 
+
+                EnemyWrap.Draw(w, topleft + new Vector2(addX, addY), enemyType, LootWrap.GetDestination(w));
+
+                spawn.Difficulty += difficulty; 
+                Globals.MaxFloor = Math.Max(Globals.MaxFloor, spawn.Difficulty); 
+
+                float secondsToSpawnF = (float)(1f + 60f*(1f/(1f + .005*sumDifficulties))*((difficulty)/12f));
+                int secondsToSpawn = (int)secondsToSpawnF;
+                spawn.NextSpawn = w.Time + new WorldTime(minutes: secondsToSpawn);
+            }
+        });
     }
 }

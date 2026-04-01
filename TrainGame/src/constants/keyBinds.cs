@@ -14,6 +14,7 @@ public static class KeyBinds {
     public static readonly Keys MoveRight = Keys.D;
     public static readonly Keys Interact = Keys.E; 
     public static readonly Keys OpenMap = Keys.M; 
+    public static readonly Keys ReturnToSurface = Keys.Q; 
 
     public static readonly Keys[] AlphaList = {
         Keys.A, Keys.B, Keys.C, Keys.D, Keys.E,

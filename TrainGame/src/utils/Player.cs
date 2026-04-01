@@ -44,7 +44,12 @@ public static class PlayerWrap {
         w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, new EquipmentSlot<Armor>(armorInv)); 
         Armor armor = new Armor(0); 
         w.SetComponent<Armor>(playerDataEnt, armor);
+        w.SetComponent<Floor>(playerDataEnt, new Floor()); 
         return playerDataEnt;
+    }
+
+    public static void SetFloor(World w, int f) {
+        w.SetComponent<Floor>(GetEntity(w), new Floor(f)); 
     }
 
     public static void SetRespawn(World w, City c) {

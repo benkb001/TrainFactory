@@ -22,8 +22,8 @@ public static class Weapons {
         [ItemID.Gun] = new PlayerGun(
             new Shooter(
                 ammo: 8, 
-                ticksPerShot: 30, 
-                reloadTicks: 60
+                ticksPerShot: 15, 
+                reloadTicks: 120
             ), 
             new DefaultShootPattern(
                 new BulletContainer(

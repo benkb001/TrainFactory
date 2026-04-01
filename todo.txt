@@ -57,7 +57,9 @@
   in the city view (maybe we just make gun equipped)
 
 * Combat: 
-  * Fix reload time on player gun
+  * Fix reload time on player gun3
+  * If player is doing well, should increase the difficulty faster
+    * Maybe add a multiplier on the time since they last got hit? 
   * Change armor that you can purchase from vendor to either 
     be parriers with more hp, or to increase your actual hp, 
     or both, and remove the current armor system. 
@@ -108,6 +110,10 @@
     track of quest completion status or is able to query for it, depending on 
     the quest, for those that can have progress completed before the player 
     accepts it. Quests will have some associated reward.
+    * Bullet character quests should involve doing well with different guns, 
+      can give them early to allow player to grind out the earlier floors while 
+      still working towards getting the quest rewards and learning some of the basic 
+      gun patterns. 
   * Need to add some way to prevent/deal with player forgetting to put a particular item 
   in train cuz its quite frustrating ? 
 

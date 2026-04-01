@@ -135,6 +135,7 @@ public static class RegisterSystems {
         CloseMenuClickSystem.Register(w); 
         PauseTrainProgramButtonClickSystem.Register(w); 
         ElevatorSystem.Register(w); 
+        ReturnToSurfaceSystem.Register(w); 
 
         EquipSystem.Register<Armor>(w); 
         
