@@ -49,6 +49,7 @@ public static class RegisterSystems {
         ApplyVampiredSystem.Register(w);
         RemoveVampiredSystem.Register(w);
         DecayBulletSystem.Register(w); 
+        RewardSpawnSystem.Register(w);
         
         SplitBulletSystem.Register(w);
         PlayerShootSystem.Register(w);
@@ -144,6 +145,7 @@ public static class RegisterSystems {
         LootInteractSystem.Register(w); 
         DamagePotionInteractSystem.Register(w); 
         LadderInteractSystem.Register(w);
+        MaxAmmoInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
         ToolSystem.Register(w);

@@ -10,5 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using TrainGame.Systems;
 
 public interface IShootPattern {
+    IEnumerable<BulletContainer> GetBulletContainers(); 
     IShootPattern Clone();
 }

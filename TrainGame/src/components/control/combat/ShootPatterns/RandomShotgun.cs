@@ -1,5 +1,7 @@
 namespace TrainGame.Components; 
 
+using System.Collections.Generic;
+
 public class RandomShotgunShootPattern : IShootPattern {
     public readonly double Radians; 
     public readonly BulletContainer BulletStrong; 
@@ -19,4 +21,5 @@ public class RandomShotgunShootPattern : IShootPattern {
     public IShootPattern Clone() {
         return new RandomShotgunShootPattern(BulletStrong, BulletWeak, Radians, NumStrongBullets, NumWeakBullets);
     }
+    public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ BulletStrong, BulletWeak };
 }

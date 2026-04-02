@@ -1,5 +1,6 @@
 namespace TrainGame.Components;
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 public class GridShootPattern : IShootPattern {
@@ -22,9 +23,11 @@ public class GridShootPattern : IShootPattern {
         this.PatternLength = patternLength; 
         this.BulletX = BulletX; 
         this.BulletY = BulletY; 
-        this.Direction = Direction; 
+        this.Direction = direction;
     }
 
     public IShootPattern Clone() => new GridShootPattern(BulletX, BulletY, Dx, Dy, 
         NumBulletsX, NumBulletsY, Direction, PatternLength);
+
+    public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ BulletX, BulletY };
 }

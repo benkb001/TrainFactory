@@ -170,6 +170,12 @@ public static class PlayerWrap {
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
         w.GetComponent<Parrier>(e).Reset();
+                
+        foreach (BulletContainer bc in w.GetComponent<IShootPattern>(e).GetBulletContainers()) {
+            bc.Reset();
+        }
+        w.GetComponent<Shooter>(e).Reset(); 
+        
     }
 
     public static void AddTest(World w) {

@@ -58,6 +58,9 @@ public static class ToolSystem {
 
                 if (w.EntityExists(h.LabelEntity)) {
                     w.SetComponent<Shooter>(e, shooter);
+                    int dataEnt = PlayerWrap.GetEntity(w);
+                    w.SetComponent<IShootPattern>(dataEnt, sp); 
+                    w.SetComponent<Shooter>(dataEnt, shooter);
                     ShootPatternRegistry.Add(w, sp, e);
                 }
             } 

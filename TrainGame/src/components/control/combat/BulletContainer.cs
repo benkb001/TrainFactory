@@ -37,6 +37,14 @@ public class BulletContainer {
         this.traits = traits;
     }
 
+    public void AddTempDamage(int dmg) {
+        b.TempDMG += dmg; 
+    }
+
+    public void Reset() {
+        b.TempDMG = 0;
+    }
+
     public BulletContainer Clone() {
         return new BulletContainer(b.Clone(), frame, Speed, traits);
     }

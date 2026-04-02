@@ -15,45 +15,59 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public class LootDistribution {
-    private int dropChanceTotal; 
-    private Dictionary<string, int> dropChances; 
-    private Dictionary<string, int> dropCounts; 
+public class MaxAmmo {}
 
-    public LootDistribution(Dictionary<string, int> dropChances, Dictionary<string, int> dropCounts) {
-        if (dropChances.Count != dropCounts.Count) {
-            throw new InvalidOperationException($"A loot distribution must have the same number of dropChance and dropCount");
+public class Distribution<T, U> {
+    private int chanceTotal; 
+    private Dictionary<T, int> chances; 
+    private Dictionary<T, U> events; 
+
+    public Distribution(Dictionary<T, int> chances, Dictionary<T, U> events) {
+        if (chances.Count != events.Count) {
+            throw new InvalidOperationException($"A  distribution must have the same number of chance and event");
         }
 
-        foreach (string itemID in dropChances.Keys) {
-            if (!dropCounts.ContainsKey(itemID)) {
-                throw new InvalidOperationException("A loot distribution must have all itemIDs match in drop chance and drop count");
+        foreach (T key in chances.Keys) {
+            if (!events.ContainsKey(key)) {
+                throw new InvalidOperationException("A distribution must have all keys match in chances and events");
             }
         }
 
-        this.dropChances = dropChances;
-        this.dropCounts = dropCounts;
-        this.dropChanceTotal = dropChances.Aggregate(0, (acc, cur) => acc + cur.Value);
+        this.chances = chances;
+        this.events = events;
+        this.chanceTotal = chances.Aggregate(0, (acc, cur) => acc + cur.Value);
     }
 
-    public (string, int) GetRandom() {
-        int max = dropChanceTotal;
-        int rand = Util.NextInt(max); 
-        int sum = 0; 
+    public (T, U) GetRandom() {
+        int r = Util.NextInt(chanceTotal); 
+        int total = 0; 
 
-        foreach (KeyValuePair<string, int> dropChance in dropChances) {
-            string itemID = dropChance.Key; 
-            int chance = dropChance.Value; 
+        foreach (KeyValuePair<T, int> chance in chances) {
+            T key = chance.Key;
+            int c = chance.Value; 
 
-            sum += chance; 
+            total += c; 
 
-            if (sum > rand) {
-                int count = dropCounts[itemID];
-                return (itemID, count); 
+            
+            if (total > r) {
+                U eve = events[key]; 
+                return (key, eve); 
             }
         }
 
         throw new InvalidOperationException("Error in LootDistribution.GetRandom");
+    }
+}
+
+public class LootDistribution {
+    private Distribution<string, int> dist; 
+
+    public LootDistribution(Dictionary<string, int> dropChances, Dictionary<string, int> dropCounts) {
+        this.dist = new Distribution<string, int>(dropChances, dropCounts); 
+    }
+
+    public (string, int) GetRandom() {
+        return dist.GetRandom(); 
     }
 }
 

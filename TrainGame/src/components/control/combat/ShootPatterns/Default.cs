@@ -21,4 +21,6 @@ public class DefaultShootPattern : IShootPattern {
     public IShootPattern Clone() {
         return new DefaultShootPattern(Bullet, Inaccuracy);
     }
+
+    public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ Bullet };
 }

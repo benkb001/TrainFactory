@@ -85,6 +85,8 @@ public static class Constants {
     public const float ExponentialMilesPerFuelUpgradeFactor = 1.1f;
     public const float ExponentialTrainPowerUpgradeFactor = 1.1f; 
     public const float ExponentialProductCountUpgradeFactor = 1.1f; 
+    public const float RewardChance = 1f;//0.075f
+    public const int RewardLifetimeSeconds = 60;
 
     public static int ItemStackSize(string itemId) {
         return itemId switch {

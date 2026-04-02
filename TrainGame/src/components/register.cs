@@ -111,6 +111,7 @@ public static class RegisterComponents {
         r<InventoryOrganizeMessage>();
         r<InventoryPosition>();
         r<InventoryUpdatedFlag>();
+        r<IShootPattern>();
         r<Ladder>();
         r<Machine>(); 
         r<MachineHeader>();
@@ -119,6 +120,7 @@ public static class RegisterComponents {
         r<MachineStorageStepper>();
         r<ManualCraftButton>(); 
         r<MapUIFlag>();
+        r<MaxAmmo>();
         r<MeleeShootPattern>();
         r<Menu>(); 
         r<MovementBounds>();

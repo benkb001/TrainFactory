@@ -23,4 +23,5 @@ public class RadialShootPattern : IShootPattern {
     public IShootPattern Clone() {
         return new RadialShootPattern(BulletsPerShot, Bullet, OffsetRadians);
     }
+    public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ Bullet };
 }

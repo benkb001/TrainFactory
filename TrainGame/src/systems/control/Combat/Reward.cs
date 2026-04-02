@@ -25,10 +25,15 @@ public static class RewardInteractSystem {
     }
 
     public static void RegisterRemove(World w) {
+        w.AddSystem([typeof(CombatReward), typeof(Active)], (w, e) => {
+            if (w.Time.IsAfterOrAt(w.GetComponent<CombatReward>(e).Expire)) {
+                w.RemoveEntity(e);
+            }
+        });
+
         w.AddSystem([typeof(CombatRewardCollectedMessage)], (w, e) => {
             List<int> rewardEnts = w.GetMatchingEntities([typeof(CombatReward)]); 
             rewardEnts.ForEach(ent => {
-                w.GetComponent<CombatReward>(ent).Active = false; 
                 w.RemoveEntity(ent);
             }); 
             w.RemoveEntity(e); 
@@ -68,9 +73,25 @@ public static class LootInteractSystem {
 public static class DamagePotionInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<DamagePotion>(w, (w, e, interactorEntity) => {
-            Damage playerDMG = w.GetComponent<Damage>(interactorEntity); 
-            DamagePotion dmgPot = w.GetComponent<DamagePotion>(e); 
-            playerDMG.AddTempDamage(dmgPot.DMG); 
+            (IShootPattern p, bool hasSP) = w.GetComponentSafe<IShootPattern>(interactorEntity);
+            if (hasSP) {
+                int dmg = w.GetComponent<DamagePotion>(e).DMG;
+            
+                foreach (BulletContainer bc in p.GetBulletContainers()) {
+                    bc.AddTempDamage(dmg);
+                }
+            }
+        });
+    }
+}
+
+public static class MaxAmmoInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<MaxAmmo>(w, (w, e, interactorEntity) => {
+            (Shooter s, bool hasShooter) = w.GetComponentSafe<Shooter>(interactorEntity); 
+            if (hasShooter) {
+                s.TempMaxAmmo += s.BaseMaxAmmo;
+            }
         });
     }
 }
