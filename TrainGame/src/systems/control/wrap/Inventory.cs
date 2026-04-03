@@ -17,7 +17,7 @@ using TrainGame.Systems;
 using TrainGame.Constants;
 
 public static class InventoryWrap {
-    public static (int, Inventory) Add(World w, string id, int rows, int cols, int level = 0, CartType filter = CartType.General) {
+    public static (int, Inventory) Add(World w, string id, int rows, int cols, int level = 1, CartType filter = CartType.General) {
         ID.Use(id);
         Inventory inv = new Inventory(id, rows, cols, level, filter);
         int e = EntityFactory.AddData<Inventory>(w, inv); 

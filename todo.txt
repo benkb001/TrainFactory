@@ -53,11 +53,28 @@
 
 * Combat: 
   * Fix reload time on player gun3
-  * If player is doing well, should increase the difficulty faster
-    * Maybe add a multiplier on the time since they last got hit? 
   * Change armor that you can purchase from vendor to either 
     be parriers with more hp, or to increase your actual hp, 
     or both, and remove the current armor system. 
+  * Add other temporary combat rewards
+    * Bullet size increase
+    * Bullet speed increase 
+    * Ticks per shot decrease
+    * reload time decrease 
+    * max shield increase 
+    * add piercing 
+    * add knockback 
+    * add explosion 
+    * add homing 
+    * add splitting (can we cleanly combine this with explosion?)
+  * Add a system that kicks player out after the first 'boss' 
+    and an interface for them to return to the first floor 
+    or to the same difficulty if they've paid the unlcok price
+  * Add an interface for them to pay said unlock price 
+  * Add a system to save game-state of temporary combat rewards if player 
+    saves between rounds 
+  * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
+    look at Hades for other ideas. 
   * Add new shoot patterns: 
     * Vine, goes in a parametric curve, velocity is zero, 
       and has a small chance to set shooter onto any of the 
@@ -144,6 +161,8 @@
     clears the bullets 
   * This should probably be something the player unlocks
     after beating the first boss
+* Add in-combat upgrades that are specific to certain guns, 
+  ie increasing number of bullets on shotgun or radial 
 
 **** FAR FUTURE FEATURES **** 
 

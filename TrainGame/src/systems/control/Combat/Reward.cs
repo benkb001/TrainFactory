@@ -56,7 +56,7 @@ public static class HealthPotionInteractSystem {
         RewardInteractSystem.Register<HealthPotion>(w, (w, e, interactorEntity) => {
             Health playerHealth = w.GetComponent<Health>(interactorEntity); 
             HealthPotion potion = w.GetComponent<HealthPotion>(e);
-            playerHealth.AddHP(potion.HP); 
+            playerHealth.TempHP += potion.HP; 
         });
     }
 }
@@ -78,7 +78,7 @@ public static class DamagePotionInteractSystem {
                 int dmg = w.GetComponent<DamagePotion>(e).DMG;
             
                 foreach (BulletContainer bc in p.GetBulletContainers()) {
-                    bc.AddTempDamage(dmg);
+                    bc.AddDamage(dmg); 
                 }
             }
         });

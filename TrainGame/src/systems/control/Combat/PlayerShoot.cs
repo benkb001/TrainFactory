@@ -23,7 +23,7 @@ public static class PlayerShootSystem {
 
                 if (playerEnt != -1) {
                     Shooter shooter = w.GetComponent<Shooter>(playerEnt);
-                    if (w.Time.IsAfterOrAt(shooter.CanShoot)) {
+                    if (shooter.Ammo > 0 && w.Time.IsAfterOrAt(shooter.CanShoot)) {
                         Vector2 mousePos = w.GetWorldMouseCoordinates(); 
                         w.SetComponent<ShotMessage>(playerEnt, new ShotMessage(mousePos));
                     }

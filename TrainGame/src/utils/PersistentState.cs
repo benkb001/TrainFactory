@@ -132,8 +132,6 @@ public static class PersistentState {
         })));
 
         Inventory playerInv = PlayerWrap.GetInventory(w); 
-        Inventory armorInv = PlayerWrap.GetArmorInventory(w);
-
         Health playerHealth = PlayerWrap.GetHP(w);
         Parrier playerParrier = PlayerWrap.GetParrier(w);
 
@@ -143,7 +141,6 @@ public static class PersistentState {
         int maxParryHP = playerParrier.MaxHP; 
 
         dom.Add("player", new JsonObject() {
-            ["armorInventoryID"] = armorInv.Id,
             ["inventoryID"] = playerInv.Id, 
             ["maxHP"] = maxHP,
             ["HP"] = hp,
@@ -321,12 +318,6 @@ public static class PersistentState {
         JsonObject playerJSON = dom["player"].AsObject(); 
 
         Inventory playerInv = inventories[(string)playerJSON["inventoryID"]];
-        Inventory armorInv = inventories[(string)playerJSON["armorInventoryID"]];
-
-        EquipmentSlot<Armor> armorSlot = new EquipmentSlot<Armor>(armorInv); 
-        int armorInvEnt = inventoryEnts[armorInv.ID];
-        w.SetComponent<EquipmentData>(armorInvEnt, new EquipmentData());
-        w.SetComponent<EquipmentSlot<Armor>>(armorInvEnt, armorSlot);
 
         int maxHP = (int)playerJSON["maxHP"];
         int hp = (int)playerJSON["HP"];
@@ -338,7 +329,15 @@ public static class PersistentState {
         Health playerHealth = new Health(maxHP); 
         playerHealth.SetHP(hp);
 
-        int playerDataEnt = PlayerWrap.AddData(w, playerInv, armorInv, playerHealth, playerParrier);
+        int playerDataEnt = PlayerWrap.AddData(w, playerInv, playerHealth, playerParrier);
+
+        void registerEquipmentSlot<T>() where T : IEquippable {
+            Inventory inv = inventories[(string)playerJSON[Constants.EquipmentInvID<T>()]];
+            int equipInvEnt = inventoryEnts[inv.ID];
+            EquipmentSlotWrap.Add<T>(w, inv, equipInvEnt);
+        }
+
+        registerEquipmentSlot<PlayerGun>();
         w.SetComponent<RespawnLocation>(playerDataEnt, new RespawnLocation(cities[CityID.Factory]));
 
         string playerLocation = (string)dom["playerLocation"];

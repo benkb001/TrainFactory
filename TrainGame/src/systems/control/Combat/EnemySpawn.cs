@@ -15,6 +15,8 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
+public class BulletSizeIncrease {}
+
 public static class LadderInteractSystem {
     public static void Register(World w) {
         InteractSystem.Register<Ladder>(w, (w, _) => {
@@ -133,14 +135,30 @@ public static class RewardSpawnSystem {
         return typeof(MaxAmmo); 
     };
 
+    private static Func<World, int, Type> setHealthPotion = (w, e) => {
+        w.SetComponent<HealthPotion>(e, new HealthPotion(1)); 
+        w.SetComponent<TextBox>(e, new TextBox("+1 HP"));
+        return typeof(HealthPotion); 
+    };
+
+    private static Func<World, int, Type> setDamagePotion = (w, e) => {
+        w.SetComponent<DamagePotion>(e, new DamagePotion(1)); 
+        w.SetComponent<TextBox>(e, new TextBox("+1 DMG"));
+        return typeof(DamagePotion); 
+    };
+
     private static Distribution<Type, Func<World, int, Type>> rewardDist = new Distribution<Type, Func<World, int, Type>>(
         new Dictionary<Type, int>(){
-            [typeof(Loot)] = 50,
-            [typeof(MaxAmmo)] = 50
+            [typeof(Loot)] = 33,
+            [typeof(MaxAmmo)] = 33,
+            [typeof(HealthPotion)] = 33,
+            [typeof(DamagePotion)] = 25
         },
         new Dictionary<Type, Func<World, int, Type>>(){
             [typeof(Loot)] = setLoot,
-            [typeof(MaxAmmo)] = setMaxAmmo
+            [typeof(MaxAmmo)] = setMaxAmmo,
+            [typeof(HealthPotion)] = setHealthPotion,
+            [typeof(DamagePotion)] = setDamagePotion
         }
     );
 

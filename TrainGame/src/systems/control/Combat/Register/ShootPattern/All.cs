@@ -7,13 +7,21 @@ using TrainGame.Utils;
 
 public static class ShootPatternRegistry {
     private static CallbackRegistry<World, IShootPattern, int> registry = new(); 
+    private static CallbackRegistry<World, IShootPattern, int> remove = new(); 
 
     public static void Register<T>(Action<World, T, int> callback) where T : IShootPattern {
         registry.Register<T>(callback);
+        remove.Register<T>((w, sp, e) => {
+            w.RemoveComponent<T>(e); 
+        });
     }
 
     public static void Add(World w, IShootPattern p, int e) {
-        registry.Callback(w, p, e);
+        registry.Callback(w, p.Clone(), e);
+    }
+
+    public static void Remove(World w, IShootPattern p, int e) {
+        remove.Callback(w, p, e); 
     }
 }
 

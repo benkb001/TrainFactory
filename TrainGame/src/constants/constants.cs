@@ -77,6 +77,7 @@ public static class Constants {
     public const float DefaultBulletSize = 5f;
     public const float DefaultEnemySpeed = PlayerSpeed / 1.75f;
     public const float DefaultBulletSpeed = PlayerSpeed / 1.25f;
+    public const int BulletSizeIncrease = 1; 
 
     public const float EnemySize = 50f;
     public const int InvincibilityFrames = 60;
@@ -87,6 +88,15 @@ public static class Constants {
     public const float ExponentialProductCountUpgradeFactor = 1.1f; 
     public const float RewardChance = 1f;//0.075f
     public const int RewardLifetimeSeconds = 60;
+    
+    public static string EquipmentInvID<T>() where T : IEquippable {
+        string s = $"{typeof(T)}";
+        string pref = "TrainGame.Components.";
+        if (s.StartsWith(pref)) {
+            s = s.Substring(pref.Length);
+        }
+        return s; 
+    }
 
     public static int ItemStackSize(string itemId) {
         return itemId switch {

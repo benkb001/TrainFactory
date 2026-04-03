@@ -55,7 +55,7 @@ public static class InventoryControlSystem {
 
             foreach (Inventory inv in invs) {
                 int invEnt = InventoryWrap.GetEntity(inv.ID, w);
-                w.SetComponentSafe<InventoryUpdatedFlag>(invEnt, InventoryUpdatedFlag.Get());
+                bool updated = w.SetComponentSafe<InventoryUpdatedFlag>(invEnt, InventoryUpdatedFlag.Get());
             }
 
             w.RemoveEntity(e); 

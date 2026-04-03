@@ -18,8 +18,9 @@ using TrainGame.Constants;
 public class Health {
     private int hp; 
     private int maxHP; 
+    public int TempHP = 0; 
     public int InvincibleFrames = 0;
-    public int HP => hp; 
+    public int HP => hp + TempHP; 
     public int MaxHP => maxHP; 
 
     public Health(int maxHP) {
@@ -34,10 +35,12 @@ public class Health {
 
     public void AddHP(int increase) {
         hp += increase; 
+        hp = Math.Min(hp, maxHP); 
     }
 
     public void ResetHP() {
         hp = maxHP; 
+        TempHP = 0; 
     }
 
     public void SetHP(int hp) {

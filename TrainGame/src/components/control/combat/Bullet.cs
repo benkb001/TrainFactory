@@ -20,16 +20,13 @@ public class Bullet {
     public int MaxFramesActive => maxFramesActive; 
     
     private int framesActive; 
-    private int damage; 
 
-    public int TempDMG; 
-    public int Damage => damage + TempDMG; 
+    public int Damage;
     public int FramesActive => framesActive; 
 
-    public Bullet(int damage, int maxFramesActive = 120, int tempDMG = 0) {
-        this.damage = damage; 
+    public Bullet(int damage, int maxFramesActive = 120) {
+        this.Damage = damage;
         this.maxFramesActive = maxFramesActive;
-        this.TempDMG = tempDMG;
     }
 
     public void Decay() {
@@ -39,6 +36,6 @@ public class Bullet {
     public bool ShouldRemove => framesActive > maxFramesActive; 
 
     public Bullet Clone() {
-        return new Bullet(damage, maxFramesActive, TempDMG);
+        return new Bullet(Damage, maxFramesActive);
     }
 }

@@ -17,10 +17,14 @@ public class CallbackRegistry<CONTEXT, INTERFACE, OBJECT> {
     }
 
     public void Callback(CONTEXT w, INTERFACE t, OBJECT obj) {
-        Type type = t.GetType(); 
-
-        if (callbacks.ContainsKey(type)) {
-            callbacks[type](w, t, obj);
+        Type type; 
+        if (t != null && w != null && obj != null) {
+            type = t.GetType(); 
+            if (callbacks.ContainsKey(type)) {
+                callbacks[type](w, t, obj);
+            }
+        } else {
+            throw new InvalidOperationException("Will not do a callback on null objects");
         }
     }
 }

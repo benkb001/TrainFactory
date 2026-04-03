@@ -337,10 +337,10 @@ public class Inventory : IID {
         whitelist.Add(itemId); 
     }
 
-    public void SetArmor() {
-        filter = CartType.Armor; 
-        foreach (string s in EquipmentID.Armor) {
-            Whitelist(s); 
+    public void Whitelist(IEnumerable<string> strings) {
+        filtered = true; 
+        foreach (string s in strings) {
+            whitelist.Add(s); 
         }
     }
 
@@ -424,8 +424,8 @@ public class Inventory : IID {
 
     public class Item {
         //TODO: Make private idk 
-        public string Id => ItemId; 
-        public string ID => ItemId; 
+        public string Id => ID; 
+        public string ID => Count == 0 ? "" : ItemId; 
         public string ItemId; 
         public int Count; 
 

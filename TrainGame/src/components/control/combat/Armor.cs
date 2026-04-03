@@ -2,7 +2,7 @@ namespace TrainGame.Components;
 
 using TrainGame.Constants; 
 
-public class Armor {
+public class Armor : IEquippable {
     private int defense; 
     private int tempDefense; 
     public int Defense => defense + tempDefense; 

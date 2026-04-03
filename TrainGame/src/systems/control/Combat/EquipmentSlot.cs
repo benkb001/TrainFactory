@@ -16,55 +16,63 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 using TrainGame.Callbacks;
 
-public class EquipmentUI {}
-
 public static class EquipSystem {
-    public static void Register<T>(World w) {
-        Type[] ts = {
-            typeof(Inventory), typeof(EquipmentSlot<T>), typeof(InventoryUpdatedFlag), 
-            typeof(EquipmentData), typeof(Data)
-        };
+    public static void Register<T>(World w) where T : IEquippable {
+        Type[] ts = { typeof(EquipmentSlot<T>), typeof(EquipmentData), typeof(Data), typeof(InventoryUpdatedFlag) };
         
         w.AddSystem(ts, (w, e) => {
-            
-            Inventory inv = w.GetComponent<Inventory>(e); 
             EquipmentSlot<T> slot = w.GetComponent<EquipmentSlot<T>>(e); 
-            Inventory.Item item = inv.Get(0); 
-            string itemID = item.ID; 
-            int itemCount = item.Count; 
-
-            if (itemID != "" && itemID != slot.ItemID && itemCount > 0) {
-                slot.SetEquipped(itemID); 
-                T equip = slot.GetEquipment();
-                w.GetMatchingEntities([typeof(EquipmentSlot<T>)])
-                .Where(ent => w.GetComponent<EquipmentSlot<T>>(ent).Equals(slot))
-                .ToList()
-                .ForEach(ent => w.SetComponent<T>(ent, equip));
-            }
+            slot.Equip();
+            T equip = slot.GetEquipment();
+            w.GetMatchingEntities([typeof(EquipmentSlot<T>)])
+            .Where(ent => w.GetComponent<EquipmentSlot<T>>(ent).Equals(slot))
+            .ToList()
+            .ForEach(ent => EquipmentRegistry.Add(w, equip, ent));
         });
     }
 }
 
-public static class ToolSystem {
-    public static void Register(World w) {
-        w.AddSystem([typeof(Player), typeof(Active), typeof(HeldItem)], (w, e) => {
-            HeldItem h = w.GetComponent<HeldItem>(e);
+public static class EquipPlayerGunSystem {
+    public static void Register() {
+        EquipmentRegistry.Register<PlayerGun>((w, playerGun, e) => {
+            (IShootPattern spPrev, bool hadSP) = w.GetComponentSafe<IShootPattern>(e); 
+
+            if (hadSP) {
+                ShootPatternRegistry.Remove(w, spPrev, e); 
+            }
             
-            if (Weapons.PlayerGunMap.ContainsKey(h.ID)) {
+            w.SetComponent<Shooter>(e, playerGun.GetShooter().Clone()); 
+            IShootPattern sp = playerGun.GetShootPattern().Clone();
+            w.SetComponent<IShootPattern>(e, sp); 
+            ShootPatternRegistry.Add(w, sp, e); 
+        }); 
+    }
+}
 
-                PlayerGun pg = Weapons.PlayerGunMap[h.ID];
-                Shooter shooter = pg.GetShooter(); 
-                IShootPattern sp = pg.GetShootPattern();
-
-                if (w.EntityExists(h.LabelEntity)) {
-                    w.SetComponent<Shooter>(e, shooter);
-                    int dataEnt = PlayerWrap.GetEntity(w);
-                    w.SetComponent<IShootPattern>(dataEnt, sp); 
-                    w.SetComponent<Shooter>(dataEnt, shooter);
-                    ShootPatternRegistry.Add(w, sp, e);
-                }
-            } 
+public static class EquipArmorSystem {
+    public static void Register() {
+        EquipmentRegistry.Register<Armor>((w, armor, e) => {
+            w.SetComponent<Armor>(e, armor); 
         });
+    }
+}
+
+public static class RegisterEquipmentCallbacks {
+    public static void All() {
+        EquipArmorSystem.Register();
+        EquipPlayerGunSystem.Register(); 
+    }
+}
+
+public static class EquipmentRegistry {
+    private static CallbackRegistry<World, IEquippable, int> registry = new(); 
+
+    public static void Register<T>(Action<World, T, int> callback) where T : IEquippable {
+        registry.Register<T>(callback); 
+    }
+
+    public static void Add(World w, IEquippable equip, int e) {
+        registry.Callback(w, equip, e);
     }
 }
 
@@ -79,36 +87,37 @@ public static class DrawEquipmentInterfaceSystem {
         DrawInterfaceSystem.Register<EquipmentInterfaceData>(w, (w, e) => {
             int playerDataEnt = PlayerWrap.GetEntity(w); 
             Inventory playerInv = w.GetComponent<Inventory>(playerDataEnt); 
-            EquipmentSlot<Armor> armorSlot = w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt); 
-            Inventory armorInv = armorSlot.GetInventory(); 
+            (EquipmentSlot<PlayerGun> gunSlot, bool hasGunSlot) = w.GetComponentSafe<EquipmentSlot<PlayerGun>>(playerDataEnt); 
+            if (hasGunSlot) {
+                Inventory gunInv = gunSlot.GetInventory(); 
+                LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w); 
 
-            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w); 
+                (float invWidth, float invHeight) = InventoryWrap.GetUI(playerInv);
+                InventoryView playerInvView = DrawInventoryCallback.Draw(
+                    w, 
+                    playerInv,
+                    Vector2.Zero, 
+                    invWidth, 
+                    invHeight
+                ); 
 
-            (float invWidth, float invHeight) = InventoryWrap.GetUI(playerInv);
-            InventoryView playerInvView = DrawInventoryCallback.Draw(
-                w, 
-                playerInv,
-                Vector2.Zero, 
-                invWidth, 
-                invHeight
-            ); 
+                (float armorWidth, float armorHeight) = InventoryWrap.GetUI(gunInv); 
+                InventoryView gunInvView = DrawInventoryCallback.Draw(
+                    w, 
+                    gunInv, 
+                    Vector2.Zero,
+                    armorWidth, 
+                    armorHeight,
+                    DrawLabel: true
+                );
 
-            (float armorWidth, float armorHeight) = InventoryWrap.GetUI(armorInv); 
-            InventoryView armorInvView = DrawInventoryCallback.Draw(
-                w, 
-                armorInv, 
-                Vector2.Zero,
-                armorWidth, 
-                armorHeight,
-                DrawLabel: true
-            );
+                int gunInvEnt = gunInvView.GetInventoryEntity();
+                w.SetComponent<EquipmentSlot<PlayerGun>>(gunInvEnt, gunSlot); 
+                w.SetComponent<EquipmentData>(gunInvEnt, new EquipmentData()); 
 
-            int armorInvEnt = armorInvView.GetInventoryEntity();
-            w.SetComponent<EquipmentSlot<Armor>>(armorInvEnt, armorSlot); 
-            w.SetComponent<EquipmentUI>(armorInvEnt, new EquipmentUI());
-
-            outer.AddChild(armorInvView.GetParentEntity(), w); 
-            outer.AddChild(playerInvView.GetParentEntity(), w); 
+                outer.AddChild(gunInvView.GetParentEntity(), w); 
+                outer.AddChild(playerInvView.GetParentEntity(), w); 
+            }
         });
     }
 }

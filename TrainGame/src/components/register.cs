@@ -29,6 +29,7 @@ public static class RegisterComponents {
         r<Backgrounds>(); 
         r<Body>();
         r<Bullet>(); 
+        r<BulletSizeIncrease>();
         r<BulletWarning>(); 
         r<Button>(); 
         r<CardinalMovement>(); 
@@ -89,8 +90,7 @@ public static class RegisterComponents {
         r<EnterInterfaceInteractable<VendorInterfaceData>>();
         r<EnterInterfaceInteractable<ElevatorInterfaceData>>();
         r<EquipmentData>();
-        r<EquipmentSlot<Armor>>();
-        r<EquipmentUI>(); 
+        r<EquipmentSlot<PlayerGun>>();
         r<Expired>();
         r<Floor>();
         r<Frame>(); 

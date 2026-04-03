@@ -15,7 +15,14 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public class EquipmentSlot<T> {
+/*
+In order to have a new equipmentslot we have to: 
+1. Register a callback to EquipmentRegistry
+2. include the <T> in equipment slot generic load and save
+3. include the map in EquipmentID.InitMaps()
+4. Add EquipSystem.Register<T> in world
+*/
+public class EquipmentSlot<T> where T : IEquippable {
     private string itemID; 
     private Inventory inv;
     private T equipment; 
@@ -27,14 +34,28 @@ public class EquipmentSlot<T> {
     public static Dictionary<string, T> EquipmentMap;
 
     public EquipmentSlot(Inventory inv, string itemID = "") {
+        inv.Whitelist(EquipmentMap.Keys);
         this.inv = inv; 
         this.itemID = itemID; 
+        this.equipment = EquipmentMap[itemID];
     }
 
-    public void SetEquipped(string itemID) {
-        this.itemID = itemID; 
+    public void Equip() {
+        itemID = inv.Get(0).ID; 
+        Console.WriteLine($"Equipping {itemID}");
         if (EquipmentMap.ContainsKey(itemID)) {
             equipment = EquipmentMap[itemID]; 
         }
     }
 }
+
+public class EquipmentSlotWrap {
+    public static EquipmentSlot<T> Add<T>(World w, Inventory inv, int e) where T : IEquippable {
+        EquipmentSlot<T> equip = new EquipmentSlot<T>(inv);
+        w.SetComponent<EquipmentData>(e, new EquipmentData()); 
+        w.SetComponent<EquipmentSlot<T>>(e, equip); 
+        return equip;
+    }
+}
+
+public class EquipmentData {}

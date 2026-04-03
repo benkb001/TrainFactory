@@ -15,6 +15,12 @@ using TrainGame.Callbacks;
 using TrainGame.Systems;
 
 public static class PlayerWrap {
+    private static void addEquipSlot<T>(World w, int dataEnt) where T : IEquippable {
+        (int invEnt, Inventory equipInv) = InventoryWrap.Add(w, Constants.EquipmentInvID<T>(), 1, 1);
+        EquipmentSlot<T> equip = EquipmentSlotWrap.Add<T>(w, equipInv, invEnt);
+        w.SetComponent<EquipmentSlot<T>>(dataEnt, equip); 
+    }
+
     public static int GetEntity(World w) {
         return w.GetMatchingEntities([typeof(Player), typeof(Health), typeof(Parrier), typeof(Data)])[0];
     }
@@ -23,25 +29,28 @@ public static class PlayerWrap {
         return w.GetMatchingEntities([typeof(Player), typeof(Frame), typeof(Health), typeof(Active)])[0];
     }
 
+    //This code runs when we build world form scratch
+    //We need to handle equip slots here to build them for 
+    //the first time
     public static void AddData(World w) {
         Inventory playerInv = new Inventory(Constants.PlayerInvID, 
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
 
         Health h = new Health(Constants.PlayerHP);
         Parrier p = new Parrier(100);
-        (int _, Inventory armorInv) = InventoryWrap.Add(w, "Armor", 1, 1);
         playerInv.Add(ItemID.Gun, 1); 
-        AddData(w, playerInv, armorInv, h, p);
+        int e = AddData(w, playerInv, h, p);
+        addEquipSlot<PlayerGun>(w, e); 
     }
     
-    //inv doesn't need to be registered as data yet, but armorInv does
-    public static int AddData(World w, Inventory inv, Inventory armorInv, Health h, Parrier p) {
+    //This code runs when we load from persistent state
+    //which handles adding the equipment slots. 
+    public static int AddData(World w, Inventory inv, Health h, Parrier p) {
         int playerDataEnt = EntityFactory.AddData<Inventory>(w, inv); 
         w.SetComponent<Player>(playerDataEnt, new Player()); 
         w.SetComponent<Health>(playerDataEnt, h); 
         w.SetComponent<Parrier>(playerDataEnt, p);
-        armorInv.SetArmor();
-        w.SetComponent<EquipmentSlot<Armor>>(playerDataEnt, new EquipmentSlot<Armor>(armorInv)); 
+
         Armor armor = new Armor(0); 
         w.SetComponent<Armor>(playerDataEnt, armor);
         w.SetComponent<Floor>(playerDataEnt, new Floor()); 
@@ -70,9 +79,9 @@ public static class PlayerWrap {
         return w.GetComponent<Inventory>(GetEntity(w)); 
     }
 
-    public static Inventory GetArmorInventory(World w) {
+    public static Inventory GetEquipmentInventory<T>(World w) where T : IEquippable {
         int playerEnt = PlayerWrap.GetEntity(w); 
-        return w.GetComponent<EquipmentSlot<Armor>>(playerEnt).GetInventory();
+        return w.GetComponent<EquipmentSlot<T>>(playerEnt).GetInventory();
     }
 
     public static Health GetHP(World w) {
@@ -95,13 +104,8 @@ public static class PlayerWrap {
     }
 
     public static Shooter GetShooter(World w) {
-        string itemID = GetHeldItemID(w);
-
-        if (Weapons.PlayerGunMap.ContainsKey(itemID)) {
-            return Weapons.PlayerGunMap[itemID].GetShooter();
-        }
-        
-        return null; 
+        (Shooter s, bool has) = w.GetComponentSafe<Shooter>(GetEntity(w));
+        return has ? s : null; 
     }
 
     public static int Draw(Vector2 position, World w) {
@@ -153,8 +157,7 @@ public static class PlayerWrap {
         w.SetComponent<Inventory>(playerEntity, playerInv); 
 
         w.SetComponent<Parrier>(playerEntity, parrier);
-        w.SetComponent<Armor>(playerEntity, w.GetComponent<Armor>(playerDataEnt)); 
-        w.SetComponent<EquipmentSlot<Armor>>(playerEntity, w.GetComponent<EquipmentSlot<Armor>>(playerDataEnt)); 
+        w.SetComponent<EquipmentSlot<PlayerGun>>(playerEntity, w.GetComponent<EquipmentSlot<PlayerGun>>(playerDataEnt)); 
         w.SetComponent<Damage>(playerEntity, new Damage(0)); 
         w.SetComponent<Targetable>(playerEntity, new Targetable());
 
@@ -170,10 +173,6 @@ public static class PlayerWrap {
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
         w.GetComponent<Parrier>(e).Reset();
-                
-        foreach (BulletContainer bc in w.GetComponent<IShootPattern>(e).GetBulletContainers()) {
-            bc.Reset();
-        }
         w.GetComponent<Shooter>(e).Reset(); 
         
     }

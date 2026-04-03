@@ -21,7 +21,6 @@ public static class RegisterEnemyTraits {
     public static void register<T>() where T : IEnemyTrait {
         EnemyTraitRegistry.Register<T>((w, et, e) => {
             w.SetComponent<T>(e, et);
-            Console.WriteLine($"registered {typeof(T)}");
         });
     }
 

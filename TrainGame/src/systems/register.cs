@@ -18,6 +18,7 @@ public static class RegisterSystems {
         RegisterMovementTypes.All();
         RegisterShootPatterns.All();
         RegisterEnemyTraits.All();
+        RegisterEquipmentCallbacks.All();
 
         CardinalMovementSystem.Register(w); 
         ParametricMovementSystem.Register(w);
@@ -137,8 +138,6 @@ public static class RegisterSystems {
         PauseTrainProgramButtonClickSystem.Register(w); 
         ElevatorSystem.Register(w); 
         ReturnToSurfaceSystem.Register(w); 
-
-        EquipSystem.Register<Armor>(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 
@@ -148,7 +147,6 @@ public static class RegisterSystems {
         MaxAmmoInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
-        ToolSystem.Register(w);
         
         RewardInteractSystem.RegisterRemove(w); 
 
@@ -193,7 +191,7 @@ public static class RegisterSystems {
 
         ExitExpiredTrainMenuSystem.Register(w); 
 
-        InventoryControlSystem.RegisterUpdate(w); 
+        InventoryControlSystem.RegisterUpdate(w); //
         
         PlayerHUDPositionSystem.Register(w); 
         DrawAmmoHUDSystem.Register(w); 
@@ -211,6 +209,8 @@ public static class RegisterSystems {
         InventoryControlSystem.RegisterOrganize(w); 
         InventorySplitSystem.Register(w); 
         InventoryFastTransferSystem.Register(w); 
+
+        EquipSystem.Register<PlayerGun>(w); 
 
         CraftProgressBarUpdateSystem.Register(w); 
         ParryHPBarSystem.Register(w); 
