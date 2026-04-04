@@ -53,20 +53,13 @@
 
 * Combat: 
   * Fix reload time on player gun3
-  * Change armor that you can purchase from vendor to either 
-    be parriers with more hp, or to increase your actual hp, 
-    or both, and remove the current armor system. 
-  * Add other temporary combat rewards
-    * Bullet size increase
-    * Bullet speed increase 
-    * Ticks per shot decrease
-    * reload time decrease 
+  * Fix at some point player stops taking any damage? Some of the bullets are getting collided with,
+    but none are damaging player
+  * Add other temporary upgrades
     * max shield increase 
     * add piercing 
     * add knockback 
-    * add explosion 
     * add homing 
-    * add splitting (can we cleanly combine this with explosion?)
   * Add a system that kicks player out after the first 'boss' 
     and an interface for them to return to the first floor 
     or to the same difficulty if they've paid the unlcok price
@@ -81,6 +74,7 @@
       spawned bullets but with an exponentially smaller 
       chance to split
     * Shoot a square/circle/triangle/whatever
+    * 1->3->9 split
   * Add new bullet traits: 
     * remove on hit (for bullets that aren't removed on collision ie grid)
     * Pierce (mostly for player guns, will need to tack a list of hit entities onto bullet 

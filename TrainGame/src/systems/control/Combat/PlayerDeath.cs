@@ -17,11 +17,11 @@ using TrainGame.Constants;
 
 public static class PlayerDeathSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Player), typeof(Health), typeof(RespawnLocation), 
-        typeof(Inventory), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Player), typeof(Health), typeof(RespawnLocation), typeof(Active)], (w, e) => {
             Health h = w.GetComponent<Health>(e);
             if (h.HP <= 0) {
                 PlayerWrap.ResetStats(w); 
+                MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(w.GetComponent<RespawnLocation>(e).GetCity()));
             }
         });
     }

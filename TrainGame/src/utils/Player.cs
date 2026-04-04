@@ -38,7 +38,7 @@ public static class PlayerWrap {
 
         Health h = new Health(Constants.PlayerHP);
         Parrier p = new Parrier(100);
-        playerInv.Add(ItemID.Gun, 1); 
+        playerInv.Add(ItemID.Pistol, 1); 
         int e = AddData(w, playerInv, h, p);
         addEquipSlot<PlayerGun>(w, e); 
     }
@@ -158,6 +158,18 @@ public static class PlayerWrap {
 
         w.SetComponent<Parrier>(playerEntity, parrier);
         w.SetComponent<EquipmentSlot<PlayerGun>>(playerEntity, w.GetComponent<EquipmentSlot<PlayerGun>>(playerDataEnt)); 
+        (Shooter shooter, bool hasShooter) = w.GetComponentSafe<Shooter>(playerDataEnt); 
+        (IShootPattern sp, bool hasSP) = w.GetComponentSafe<IShootPattern>(playerDataEnt); 
+
+        if (hasShooter) {
+            w.SetComponent<Shooter>(playerEntity, shooter); 
+        }
+
+        if (hasSP) {
+            w.SetComponent<IShootPattern>(playerEntity, sp); 
+            ShootPatternRegistry.Add(w, sp, playerEntity); 
+        }
+
         w.SetComponent<Damage>(playerEntity, new Damage(0)); 
         w.SetComponent<Targetable>(playerEntity, new Targetable());
 
@@ -173,8 +185,8 @@ public static class PlayerWrap {
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
         w.GetComponent<Parrier>(e).Reset();
-        w.GetComponent<Shooter>(e).Reset(); 
-        
+        //TODO: We will need to reset shooter and ishootpattern here, 
+        //which will involve plugging into or making modular the equipment slot code        
     }
 
     public static void AddTest(World w) {

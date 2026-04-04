@@ -332,9 +332,9 @@ public static class PersistentState {
         int playerDataEnt = PlayerWrap.AddData(w, playerInv, playerHealth, playerParrier);
 
         void registerEquipmentSlot<T>() where T : IEquippable {
-            Inventory inv = inventories[(string)playerJSON[Constants.EquipmentInvID<T>()]];
+            Inventory inv = inventories[Constants.EquipmentInvID<T>()];
             int equipInvEnt = inventoryEnts[inv.ID];
-            EquipmentSlotWrap.Add<T>(w, inv, equipInvEnt);
+            w.SetComponent<EquipmentSlot<T>>(playerDataEnt, EquipmentSlotWrap.Add<T>(w, inv, equipInvEnt));
         }
 
         registerEquipmentSlot<PlayerGun>();

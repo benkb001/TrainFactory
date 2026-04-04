@@ -3,6 +3,7 @@ namespace TrainGame.Constants;
 using System;
 using System.Collections.Generic;
 using TrainGame.Components;
+using TrainGame.Utils;
 
 public static class Constants {
     public static readonly int MaxComponents = 1024; 
@@ -25,7 +26,7 @@ public static class Constants {
     public const float PlayerSpeed = 5f; 
     public const float ParryingSpeed = 2f;
     public const int PlayerOutlineThickness = 1; 
-    public const int PlayerHP = 3;
+    public const int PlayerHP = 5;
 
     public const int MaxFloorLevel1 = 20; 
     public const int MaxFloorLevel2 = 40;
@@ -78,6 +79,7 @@ public static class Constants {
     public const float DefaultEnemySpeed = PlayerSpeed / 1.75f;
     public const float DefaultBulletSpeed = PlayerSpeed / 1.25f;
     public const int BulletSizeIncrease = 1; 
+    public const float BulletSpeedIncrease = 1f;
 
     public const float EnemySize = 50f;
     public const int InvincibilityFrames = 60;
@@ -88,6 +90,8 @@ public static class Constants {
     public const float ExponentialProductCountUpgradeFactor = 1.1f; 
     public const float RewardChance = 1f;//0.075f
     public const int RewardLifetimeSeconds = 60;
+    public static WorldTime TicksBetweenShotDecrement = new WorldTime(ticks: 5);
+    public static WorldTime ReloadTicksDecrement = new WorldTime(ticks: 10); 
     
     public static string EquipmentInvID<T>() where T : IEquippable {
         string s = $"{typeof(T)}";

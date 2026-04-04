@@ -21,14 +21,13 @@ public class Shooter {
     public WorldTime CanShoot; 
 
     public int Ammo; 
-    private int maxAmmo; 
-    public int MaxAmmo => maxAmmo + TempMaxAmmo; 
-    public int TempMaxAmmo; 
-    public int BaseMaxAmmo => maxAmmo; 
+    public int MaxAmmo;
+    public readonly int BaseMaxAmmo;
 
     public Shooter(int ammo = 6, int ticksPerShot = 30, int reloadTicks = 60) {
         this.Ammo = ammo; 
-        this.maxAmmo = ammo;
+        this.MaxAmmo = ammo;
+        this.BaseMaxAmmo = ammo;
         this.TimeBetweenShots = new WorldTime(ticks: ticksPerShot); 
         this.ReloadTime = new WorldTime(ticks: reloadTicks);
         this.CanShoot = new WorldTime();
@@ -43,10 +42,6 @@ public class Shooter {
         } else {
             CanShoot = now + TimeBetweenShots;
         }
-    }
-
-    public void Reset() {
-        TempMaxAmmo = 0;
     }
 
     public Shooter Clone() {

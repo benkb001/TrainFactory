@@ -1,11 +1,11 @@
 namespace TrainGame.Systems;
-
+using System;
 using Microsoft.Xna.Framework;
 using TrainGame.Components;
 using TrainGame.ECS;
-
 public static class MeleeShootSystem {
     public static void Register<U>(World w) where U : IFlag<U> {
+
         ShootSystem.Register<MeleeShootPattern, U>(w, (w, sp, f, targetPosition, e) => {
             float width = sp.Bullet.Width;
             float shooterWidth = f.GetWidth();

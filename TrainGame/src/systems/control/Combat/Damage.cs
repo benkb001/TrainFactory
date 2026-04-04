@@ -35,6 +35,7 @@ public static class DamageSystem {
 
                 foreach (int iEnt in intersectingEnts) {
                     if (potentialReceivers.Contains(iEnt)) {
+                        Console.WriteLine($"tried to damage {iEnt}");
                         w.SetComponent<HitMessage>(e, new HitMessage(iEnt));
                         //TODO: should enemies be able to be hit multiple times in the same frame? 
                         //for now probably doesn't matter but if we add a gun that has a 

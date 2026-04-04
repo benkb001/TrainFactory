@@ -19,10 +19,10 @@ public static class RegisterComponents {
         void r<T>() {
             w.AddComponentType<T>(); 
         }
-
         r<Active>(); 
         r<AddCartButton>(); 
         r<AddCartInterfaceButton>(); 
+        r<AddExplosion>();
         r<AmmoHUD>(); 
         r<Armor>();
         r<Background>(); 
@@ -30,6 +30,7 @@ public static class RegisterComponents {
         r<Body>();
         r<Bullet>(); 
         r<BulletSizeIncrease>();
+        r<BulletSpeedIncrease>();
         r<BulletWarning>(); 
         r<Button>(); 
         r<CardinalMovement>(); 
@@ -148,6 +149,7 @@ public static class RegisterComponents {
         r<RadialShootPattern>();
         r<RandomShotgunShootPattern>();
         r<ReceiveDamageMessage>(); 
+        r<ReloadSpeedIncrease>();
         r<RemoveOnCollision>();
         r<RespawnLocation>(); 
         r<SaveButton>(); 
@@ -179,6 +181,7 @@ public static class RegisterComponents {
         r<TrainEmbarkedMessage>(); 
         r<TrainUI>(); 
         r<TrainYard>(); 
+        r<UnloadSpeedIncrease>();
         r<UnpauseButton>(); 
         r<UpgradeFuelConsumptionButton>();
         r<UpgradeInventoryExponentialButton>();

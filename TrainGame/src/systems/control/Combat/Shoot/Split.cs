@@ -22,5 +22,6 @@ public static class SplitBulletSystem {
     public static void Register(World w) {
         register<Collided, Split>(w);
         register<Expired, Split>(w);
+        register<HitMessage, Split>(w);
     }
 }

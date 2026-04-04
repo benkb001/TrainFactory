@@ -24,42 +24,28 @@ public static class EquipSystem {
             EquipmentSlot<T> slot = w.GetComponent<EquipmentSlot<T>>(e); 
             slot.Equip();
             T equip = slot.GetEquipment();
-            w.GetMatchingEntities([typeof(EquipmentSlot<T>)])
-            .Where(ent => w.GetComponent<EquipmentSlot<T>>(ent).Equals(slot))
-            .ToList()
-            .ForEach(ent => EquipmentRegistry.Add(w, equip, ent));
+            EquipmentRegistry.Add(w, equip, e);
         });
     }
 }
 
 public static class EquipPlayerGunSystem {
     public static void Register() {
-        EquipmentRegistry.Register<PlayerGun>((w, playerGun, e) => {
-            (IShootPattern spPrev, bool hadSP) = w.GetComponentSafe<IShootPattern>(e); 
+        EquipmentRegistry.Register<PlayerGun>((w, playerGun, _) => {
+            Shooter shooter = playerGun.InstantiateShooter(); 
+            IShootPattern sp = playerGun.InstantiateShootPattern(); 
 
-            if (hadSP) {
-                ShootPatternRegistry.Remove(w, spPrev, e); 
+            foreach (int e in w.GetMatchingEntities([typeof(EquipmentSlot<PlayerGun>)])) {
+                w.SetComponent<Shooter>(e, shooter);
+                w.SetComponent<IShootPattern>(e, sp); 
+                ShootPatternRegistry.Add(w, sp, e); 
             }
-            
-            w.SetComponent<Shooter>(e, playerGun.GetShooter().Clone()); 
-            IShootPattern sp = playerGun.GetShootPattern().Clone();
-            w.SetComponent<IShootPattern>(e, sp); 
-            ShootPatternRegistry.Add(w, sp, e); 
         }); 
-    }
-}
-
-public static class EquipArmorSystem {
-    public static void Register() {
-        EquipmentRegistry.Register<Armor>((w, armor, e) => {
-            w.SetComponent<Armor>(e, armor); 
-        });
     }
 }
 
 public static class RegisterEquipmentCallbacks {
     public static void All() {
-        EquipArmorSystem.Register();
         EquipPlayerGunSystem.Register(); 
     }
 }

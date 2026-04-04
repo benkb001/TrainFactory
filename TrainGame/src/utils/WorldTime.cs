@@ -107,6 +107,10 @@ public class WorldTime {
             days--; 
         }
 
+        if (days < 0) {
+            return new WorldTime(0, 0, 0, 0); 
+        }
+
         return new WorldTime(days, hours, minutes, ticks); 
     }
 

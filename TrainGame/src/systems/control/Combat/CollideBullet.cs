@@ -32,6 +32,7 @@ public static class CollideBulletSystem {
 public static class RemoveOnCollisionSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Collided), typeof(RemoveOnCollision), typeof(Active)], (w, e) => {
+            Console.WriteLine($"Removed on collision");
             w.RemoveEntity(e);
         });
     }

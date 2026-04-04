@@ -22,7 +22,7 @@ class ComponentManager {
 
         if (components.ContainsKey(typeof(T))) {
             throw new InvalidOperationException(
-                $"ComponnentManager has already registered {typeof(T).Name}"
+                $"ComponentManager has already registered {typeof(T).Name}"
             );
         }
 

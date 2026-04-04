@@ -145,6 +145,11 @@ public static class RegisterSystems {
         DamagePotionInteractSystem.Register(w); 
         LadderInteractSystem.Register(w);
         MaxAmmoInteractSystem.Register(w);
+        BulletSizeIncreaseInteractSystem.Register(w); 
+        BulletSpeedIncreaseInteractSystem.Register(w);
+        UnloadSpeedIncreaseInteractSystem.Register(w);
+        ReloadSpeedIncreaseInteractSystem.Register(w);
+        AddExplosionInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
         

@@ -30,6 +30,7 @@ public static class DecayBulletSystem {
 public static class RemoveExpiredSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Expired), typeof(Active)], (w, e) => {
+            Console.WriteLine($"removed on expired");
             w.RemoveEntity(e);
         });
     }
@@ -38,6 +39,7 @@ public static class RemoveExpiredSystem {
 public static class RemoveOnHitSystem {
     public static void Register(World w) {
         w.AddSystem([typeof(Active), typeof(HitMessage), typeof(RemoveOnCollision)], (w, e) => {
+            Console.WriteLine($"removed on hit"); 
             w.RemoveEntity(e);
         });
     }

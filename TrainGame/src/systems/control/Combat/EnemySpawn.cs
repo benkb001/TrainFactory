@@ -15,8 +15,6 @@ using TrainGame.ECS;
 using TrainGame.Utils; 
 using TrainGame.Constants;
 
-public class BulletSizeIncrease {}
-
 public static class LadderInteractSystem {
     public static void Register(World w) {
         InteractSystem.Register<Ladder>(w, (w, _) => {
@@ -105,93 +103,6 @@ public static class EnemySpawnSystem {
             (EnemySpawner spawner, bool spawnExists) = w.GetFirst<EnemySpawner>(); 
             spawner.NumActive--;
             spawn(w, spawner);
-        });
-    }
-}
-
-public static class RewardSpawnSystem {
-    
-    private static LootDistribution lootDist = new LootDistribution(
-        new Dictionary<string, int>(){
-            [ItemID.Credit] = 50,
-            [ItemID.Cobalt] = 50
-        },
-        new Dictionary<string, int>(){
-            [ItemID.Credit] = 100,
-            [ItemID.Cobalt] = 100
-        }
-    );
-
-    private static Func<World, int, Type> setLoot = (w, e) => {
-        (string itemID, int count) = lootDist.GetRandom(); 
-        w.SetComponent<TextBox>(e, new TextBox($"+{count} {itemID}"));
-        w.SetComponent<Loot>(e, new Loot(itemID, count, LootWrap.GetDestination(w)));
-        return typeof(Loot); 
-    };
-
-    private static Func<World, int, Type> setMaxAmmo = (w, e) => {
-        w.SetComponent<MaxAmmo>(e, new MaxAmmo());
-        w.SetComponent<TextBox>(e, new TextBox("+Max Ammo"));
-        return typeof(MaxAmmo); 
-    };
-
-    private static Func<World, int, Type> setHealthPotion = (w, e) => {
-        w.SetComponent<HealthPotion>(e, new HealthPotion(1)); 
-        w.SetComponent<TextBox>(e, new TextBox("+1 HP"));
-        return typeof(HealthPotion); 
-    };
-
-    private static Func<World, int, Type> setDamagePotion = (w, e) => {
-        w.SetComponent<DamagePotion>(e, new DamagePotion(1)); 
-        w.SetComponent<TextBox>(e, new TextBox("+1 DMG"));
-        return typeof(DamagePotion); 
-    };
-
-    private static Distribution<Type, Func<World, int, Type>> rewardDist = new Distribution<Type, Func<World, int, Type>>(
-        new Dictionary<Type, int>(){
-            [typeof(Loot)] = 33,
-            [typeof(MaxAmmo)] = 33,
-            [typeof(HealthPotion)] = 33,
-            [typeof(DamagePotion)] = 25
-        },
-        new Dictionary<Type, Func<World, int, Type>>(){
-            [typeof(Loot)] = setLoot,
-            [typeof(MaxAmmo)] = setMaxAmmo,
-            [typeof(HealthPotion)] = setHealthPotion,
-            [typeof(DamagePotion)] = setDamagePotion
-        }
-    );
-
-    private static Type setReward(World w, int e) {
-        (Type t, Func<World, int, Type> setter) = rewardDist.GetRandom(); 
-        return setter(w, e); 
-    }
-
-    public static void Register(World w) {
-        w.AddSystem([typeof(Enemy), typeof(Health), typeof(Expired), typeof(Frame), typeof(Active)], (w, e) => {
-            bool rewardOnGround = w.GetMatchingEntities([typeof(CombatReward), typeof(Active)]).Count > 0; 
-            if (!rewardOnGround && Util.NextFloat() < Constants.RewardChance) {
-                int[] es = {-1, -1};
-                List<Type> ts = new();
-                Vector2 pos = w.GetComponent<Frame>(e).Position;
-
-                for (int i = 0; i < 2; i++) {
-                    Vector2 curPos = pos + new Vector2(i * 2 * Constants.TileWidth, 0f);
-                    int rewardEnt = EntityFactory.AddUI(w, curPos, Constants.TileWidth, Constants.TileWidth, 
-                    setOutline: true, setInteractable: true);
-                    w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
-                    es[i] = rewardEnt;
-                    ts.Add(setReward(w, rewardEnt)); 
-                }
-
-                if (ts[0] == ts[1]) {
-                    if (ts[0] != typeof(Loot)) {
-                        setLoot(w, es[0]); 
-                    } else {
-                        setMaxAmmo(w, es[0]);
-                    }
-                }
-            }
         });
     }
 }

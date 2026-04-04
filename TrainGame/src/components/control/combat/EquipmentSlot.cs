@@ -42,7 +42,6 @@ public class EquipmentSlot<T> where T : IEquippable {
 
     public void Equip() {
         itemID = inv.Get(0).ID; 
-        Console.WriteLine($"Equipping {itemID}");
         if (EquipmentMap.ContainsKey(itemID)) {
             equipment = EquipmentMap[itemID]; 
         }

@@ -83,14 +83,14 @@ public static class VendorID {
             }),
         },
         [WeaponCraftsman] = new () {
-            PurchaseInfo.AddItemInfo(ItemID.Gun2, 1, new () {
+            PurchaseInfo.AddItemInfo(ItemID.Shotgun, 1, new () {
                 [ItemID.Credit] = 1000, 
                 [ItemID.Water] = 1000,
                 [ItemID.Iron] = 500, 
                 [ItemID.Cobalt] = 500,
                 [ItemID.Fuel] = 500
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Gun3, 1, new () {
+            PurchaseInfo.AddItemInfo(ItemID.Ring, 1, new () {
                 [ItemID.Credit] = 2000, 
                 [ItemID.Iron] = 2000,
                 [ItemID.Mythril] = 500,

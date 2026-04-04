@@ -21,7 +21,7 @@ public static class ShooterWrap {
     
     //returns the velocity needed to shoot at targetPos from pos with speed speed
     public static Vector2 Aim(Vector2 pos, Vector2 targetPos, float speed) {
-        return (Vector2.Normalize(targetPos - pos)) * speed;
+        return targetPos == pos ? Vector2.Zero : (Vector2.Normalize(targetPos - pos)) * speed;
     }
 
     public static int Add<U>(World w, Vector2 pos, Vector2 targetPos, BulletContainer bc, int shooterEnt) 

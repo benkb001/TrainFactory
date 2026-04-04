@@ -6,29 +6,28 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class BulletContainer {
-    public float Width => frame.GetWidth();
-    public float Height => frame.GetHeight(); 
-    public float Rotation => frame.GetRotation(); 
-    public readonly float Speed; 
-    public Frame GetFrame() => frame; 
-    private Frame frame; 
+    public float Width;
+    public float Height;
+    public float Speed; 
     private Bullet b; 
-    private IEnumerable<IBulletTrait> traits;
+    private List<IBulletTrait> traits;
 
     public Bullet GetBullet() => b.Clone();
-    public IEnumerable<IBulletTrait> GetTraits() => traits;
+    public List<IBulletTrait> GetTraits() => traits;
 
     public BulletContainer(Bullet b, Frame f = null, float BulletSpeed = Constants.DefaultBulletSpeed, 
-        IEnumerable<IBulletTrait> traits = null) {
+        List<IBulletTrait> traits = null) {
         
         this.b = b; 
         this.Speed = BulletSpeed; 
         
         if (f == null) {
-            f = new Frame(Constants.DefaultBulletSize, Constants.DefaultBulletSize); 
+            Width = Constants.DefaultBulletSize;
+            Height = Constants.DefaultBulletSize;
+        } else {
+            Width = f.GetWidth(); 
+            Height = f.GetHeight();
         }
-
-        this.frame = f; 
 
         if (traits == null) {
             traits = new List<IBulletTrait>();
@@ -42,10 +41,14 @@ public class BulletContainer {
     }
 
     public BulletContainer Clone() {
-        return new BulletContainer(b.Clone(), frame, Speed, traits);
+        return new BulletContainer(b.Clone(), new Frame(Width, Height), Speed, traits);
     }
 
-    public IEnumerable<IBulletTrait> GetBulletTraits() {
+    public List<IBulletTrait> GetBulletTraits() {
         return traits;
+    }
+
+    public void AddTrait(IBulletTrait t) {
+        traits.Add(t);
     }
 }
