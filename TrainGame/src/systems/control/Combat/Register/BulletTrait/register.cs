@@ -14,6 +14,7 @@ public static class RegisterBulletTraits {
         WarnedWrap.RegisterTrait();
         RegisterParametricBullet.Register();
         VampiricBulletTrait.Register();
+        AppliesKnockbackBulletTrait.Register();
         register<RemoveOnCollision>();
         register<Split>();
     }

@@ -29,7 +29,7 @@ public static class EquipmentID {
                 ), 
                 new DefaultShootPattern(
                     new BulletContainer(
-                        new Bullet(2, maxFramesActive: 30),
+                        new Bullet(2, maxFramesActive: 45),
                         BulletSpeed: 6f,
                         traits: new List<IBulletTrait>(){
                             new RemoveOnCollision()

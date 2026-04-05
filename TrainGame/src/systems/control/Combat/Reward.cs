@@ -20,6 +20,9 @@ public class BulletSpeedIncrease {}
 public class UnloadSpeedIncrease {}
 public class ReloadSpeedIncrease {}
 public class AddExplosion {}
+public class AddHoming {}
+public class AddShield {}
+public class AddKnockback {}
 
 public static class RewardInteractSystem {
     public static void Register<T>(World w, Action<World, int, int> tf) {
@@ -189,6 +192,48 @@ public static class AddExplosionInteractSystem {
     }
 }
 
+public static class AddHomingInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<AddHoming, IShootPattern>(w, (w, _, sp, _) => {
+            foreach (BulletContainer bc in sp.GetBulletContainers()) {
+                if (!bc.GetTraits().Any(t => t.GetType() == typeof(Homing))) {
+                    bc.AddTrait(new Homing(Speed: bc.Speed));
+                }
+            }
+        });
+    }
+}
+
+public static class AddShieldInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<AddShield, Parrier>(w, (w, _, parrier, _) => {
+            Health h = parrier.GetHealth();
+            h.TempMaxHP += Constants.ShieldIncrement; 
+            h.AddHP(Constants.ShieldIncrement);
+        });
+    }
+}
+
+public static class AddKnockbackInteractSystem {
+    public static void Register(World w) {
+        RewardInteractSystem.Register<AddKnockback, IShootPattern>(w, (w, _, sp, _) => {
+            
+            foreach (BulletContainer bc in sp.GetBulletContainers()) {
+                bool hasKnockback = false;
+                foreach (IBulletTrait t in bc.GetTraits()) {
+                    if (t is AppliesKnockback applies) {
+                        applies.Multiplier += 1f; 
+                        hasKnockback = true;
+                    }
+                }
+                if (!hasKnockback) {
+                    bc.AddTrait(new AppliesKnockback());
+                }
+            }
+        });
+    }
+}
+
 public static class RewardSpawnSystem {
     
     private static LootDistribution lootDist = new LootDistribution(
@@ -249,6 +294,21 @@ public static class RewardSpawnSystem {
         w.SetComponent<TextBox>(e, new TextBox("Add Explosion"));
     };
 
+    private static Action<World, int> setAddHoming = (w, e) => {
+        w.SetComponent<AddHoming>(e, new AddHoming()); 
+        w.SetComponent<TextBox>(e, new TextBox("Add Homing"));
+    };
+
+    private static Action<World, int> setAddShield = (w, e) => {
+        w.SetComponent<AddShield>(e, new AddShield()); 
+        w.SetComponent<TextBox>(e, new TextBox($"+{Constants.ShieldIncrement} Shield"));
+    };
+
+    private static Action<World, int> setAddKnockback = (w, e) => {
+        w.SetComponent<AddKnockback>(e, new AddKnockback()); 
+        w.SetComponent<TextBox>(e, new TextBox($"+1 Knockback"));
+    };
+
     private static Distribution<Type, Action<World, int>> rewardDist = new Distribution<Type, Action<World, int>>(
         new Dictionary<Type, int>(){
             [typeof(Loot)] = 10,
@@ -259,7 +319,10 @@ public static class RewardSpawnSystem {
             [typeof(BulletSpeedIncrease)] = 10,
             [typeof(UnloadSpeedIncrease)] = 10,
             [typeof(ReloadSpeedIncrease)] = 10,
-            [typeof(AddExplosion)] = 10
+            [typeof(AddExplosion)] = 10,
+            [typeof(AddHoming)] = 10,
+            [typeof(AddShield)] = 10,
+            [typeof(AddKnockback)] = 1000
         },
         new Dictionary<Type, Action<World, int>>(){
             [typeof(Loot)] = setLoot,
@@ -270,7 +333,10 @@ public static class RewardSpawnSystem {
             [typeof(BulletSpeedIncrease)] = setBulletSpeedIncrease,
             [typeof(UnloadSpeedIncrease)] = setUnloadSpeedIncrease,
             [typeof(ReloadSpeedIncrease)] = setReloadSpeedIncrease,
-            [typeof(AddExplosion)] = setAddExplosion
+            [typeof(AddExplosion)] = setAddExplosion,
+            [typeof(AddHoming)] = setAddHoming,
+            [typeof(AddShield)] = setAddShield,
+            [typeof(AddKnockback)] = setAddKnockback
         }
     );
 

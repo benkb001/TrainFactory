@@ -188,9 +188,9 @@ public static class PlayerWrap {
         //which will involve plugging into or making modular the equipment slot code        
     }
 
-    public static void AddTest(World w) {
+    public static int AddTest(World w) {
         AddData(w);
         SetRespawn(w, CityWrap.GetTest());
-        Draw(new Vector2(-10, -10), w);
+        return Draw(Vector2.Zero, w);
     }
 }

@@ -26,10 +26,13 @@ public static class RegisterSystems {
         DefaultEnemyMovementSystem.Register(w); 
         ChaseMovementSystem.Register(w);
         CyclicalMoveSystem.Register(w);
+        KnockbackSystem.RegisterAdd(w);
         
         MovementSystem.RegisterPartition(w);
         MovementSystem.RegisterCollision(w);
         MovementSystem.Register(w);
+
+        KnockbackSystem.RegisterRemove(w);
 
         ParrySystem.RegisterStartParry(w); 
         ParrySystem.RegisterEndParry(w); 
@@ -70,6 +73,8 @@ public static class RegisterSystems {
         RandomShotgunShootSystem.Register<Enemy>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
+        
+        ApplyKnockbackSystem.Register(w);
 
         RemoveExpiredSystem.Register(w);
         RemoveOnCollisionSystem.Register(w);
@@ -151,6 +156,9 @@ public static class RegisterSystems {
         UnloadSpeedIncreaseInteractSystem.Register(w);
         ReloadSpeedIncreaseInteractSystem.Register(w);
         AddExplosionInteractSystem.Register(w);
+        AddHomingInteractSystem.Register(w);
+        AddShieldInteractSystem.Register(w);
+        AddKnockbackInteractSystem.Register(w);
         
         VendorInteractSystem.Register(w);
         

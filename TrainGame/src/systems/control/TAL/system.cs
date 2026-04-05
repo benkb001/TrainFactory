@@ -101,10 +101,13 @@ public static class TAL {
         if (hasMotherboard) {
             try {
                 TAL.SetTrainProgram(program, t, trainEnt, w, programName: programName); 
-                EntityFactory.AddToast(w, 150, 75, $"Successfully set {t.Id} program!");
+                string msg = $"Successfully set {t.Id} program!";
+                EntityFactory.AddToast(w, 150, 75, msg);
                 inv.Take(ItemID.Motherboard, 1); 
             } catch (InvalidOperationException e) {
-                EntityFactory.AddToast(w, 150, 75, $"Failed to compile program for {t.Id}, {e}");
+                string msg = $"Failed to compile program for {t.Id}, {e}";
+                Console.WriteLine(msg);
+                EntityFactory.AddToast(w, 150, 75, msg);
             }
         } else {
             EntityFactory.AddToast(w, 150, 75, $"You must place a Motherboard in {t.Id}'s inventory to program it!");
@@ -116,6 +119,7 @@ public static class TAL {
         TALBody<Train, City> body = TALParser.ParseProgram<Train, City>(
             program, tw, t, nextInstruction); 
         w.SetComponent<TALBody<Train, City>>(trainEnt, body);
+        t.SetProgram(program, programName);
         return body;
     }
 

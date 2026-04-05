@@ -28,6 +28,7 @@ public static class Constants {
     public const int PlayerOutlineThickness = 1; 
     public const int PlayerHP = 5;
     public const int PlayerParrierHP = 100;
+    public const int ShieldIncrement = 50;
 
     public const int MaxFloorLevel1 = 20; 
     public const int MaxFloorLevel2 = 40;

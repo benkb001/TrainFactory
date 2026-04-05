@@ -68,6 +68,14 @@ public static class VirtualMouse {
             vm.XButton2, vm.HorizontalScrollWheelValue); 
     }
 
+    public static void RightPress() {
+        UseVirtualMouse(); 
+        vm = new MouseState(vm.X, vm.Y, vm.ScrollWheelValue,
+            vm.LeftButton, vm.MiddleButton, 
+            ButtonState.Pressed, vm.XButton1, 
+            vm.XButton2, vm.HorizontalScrollWheelValue); 
+    }
+
     public static void LeftClick() {
         UseVirtualMouse();
         prev_mouse = new MouseState(prev_mouse.X, prev_mouse.Y, prev_mouse.ScrollWheelValue,

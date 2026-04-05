@@ -19,7 +19,7 @@ public static class PlayerShootSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
             if (VirtualMouse.LeftPressed()) {
-                int playerEnt = w.GetFirstMatchingEntity([typeof(Player), typeof(Shooter), typeof(Active)]);
+                int playerEnt = w.GetFirstMatchingEntity([typeof(Player), typeof(Health), typeof(Shooter), typeof(Active)]);
 
                 if (playerEnt != -1) {
                     Shooter shooter = w.GetComponent<Shooter>(playerEnt);

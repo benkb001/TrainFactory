@@ -23,7 +23,11 @@ public static class RegisterComponents {
         r<AddCartButton>(); 
         r<AddCartInterfaceButton>(); 
         r<AddExplosion>();
+        r<AddHoming>();
+        r<AddKnockback>();
+        r<AddShield>();
         r<AmmoHUD>(); 
+        r<AppliesKnockback>();
         r<Armor>();
         r<Background>(); 
         r<Backgrounds>(); 
@@ -114,6 +118,7 @@ public static class RegisterComponents {
         r<IShootPattern>();
         r<ItemTransaction>();
         r<Ladder>();
+        r<Knockback>();
         r<Machine>(); 
         r<MachineHeader>();
         r<MachinePriorityStepper>();

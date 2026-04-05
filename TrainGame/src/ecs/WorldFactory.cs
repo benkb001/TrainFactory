@@ -8,7 +8,6 @@ public static class WorldFactory {
         World w = new World(); 
         RegisterComponents.All(w); 
         RegisterSystems.All(w); 
-        EquipmentID.InitMaps();
         return w; 
     }
 }

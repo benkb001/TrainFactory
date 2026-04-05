@@ -10,7 +10,7 @@ public class MachineUIClickSystemTest {
         int e = EntityFactory.Add(w);
 
         w.SetComponent<Button>(e, new Button(true)); 
-        Machine m = Machine.GetDefault(); 
+        Machine m = MachineWrap.GetTest(); 
         City c = CityWrap.GetTest();
         w.SetComponent<EnterInterfaceButton<MachineInterfaceData>>(e, 
             new EnterInterfaceButton<MachineInterfaceData>(
@@ -21,6 +21,6 @@ public class MachineUIClickSystemTest {
 
         DrawInterfaceMessage<MachineInterfaceData> dm = 
             w.GetComponentArray<DrawInterfaceMessage<MachineInterfaceData>>().FirstOrDefault().Value; 
-        Assert.Equal(m, dm.Data.GetMachine()); 
+        Assert.Equal(SceneType.MachineInterface, SceneSystem.CurrentScene); 
     }
 }

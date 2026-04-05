@@ -35,6 +35,7 @@
     make some assertions about things working and being registered,
     like there being a valid player data entity, city entities, 
     train, etc
+* Knockback
 
 **** CLEAN UP **** 
 
@@ -53,13 +54,9 @@
 
 * Combat: 
   * Fix reload time on player gun3
-  * Fix at some point player stops taking any damage? Some of the bullets are getting collided with,
-    but none are damaging player
   * Add other temporary upgrades
-    * max shield increase 
-    * add piercing 
     * add knockback 
-    * add homing 
+    * add piercing 
   * Add a system that kicks player out after the first 'boss' 
     and an interface for them to return to the first floor 
     or to the same difficulty if they've paid the unlcok price
@@ -82,6 +79,8 @@
   * Add OnDeath traits
     * Enemy that splits a couple of times, like slime 
   * Add a few harder enemies and layouts for floors 25-60
+  * Put homing updates outside of bullet trait registry and have them 
+    re-query if the entity is no longer valid
 
 **** NEXT SPRINT **** 
 

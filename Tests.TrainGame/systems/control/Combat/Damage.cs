@@ -20,8 +20,7 @@ public class DamageSystemTest {
     private (World, int) init(int damage = 1) {
         World w = WorldFactory.Build(); 
 
-        PlayerWrap.AddTest(w);
-        int playerEnt = PlayerWrap.Draw(Vector2.Zero, w);
+        int playerEnt = PlayerWrap.AddTest(w);
         
         int bulletEnt = EntityFactory.AddUI(w, Vector2.Zero, 2, 2);
         w.SetComponent<Bullet>(bulletEnt, new Bullet(damage)); 
@@ -42,7 +41,7 @@ public class DamageSystemTest {
 
     [Fact]
     public void DamageSystem_ArmorShouldReduceIncomingDamageByItsDefense() {
-        (World w, int playerEnt) = init(); 
+        (World w, int playerEnt) = init(damage: 1); 
 
         w.SetComponent<Armor>(playerEnt, new Armor(1)); 
         w.Update(); 
@@ -56,6 +55,7 @@ public class DamageSystemTest {
         Parrier p = new Parrier(); 
         p.Parrying = true;
         w.SetComponent<Parrier>(playerEnt, p);
+        VirtualMouse.RightPress();
         w.Update(); 
         Assert.Equal(Constants.PlayerHP, w.GetComponent<Health>(playerEnt).HP); 
     }

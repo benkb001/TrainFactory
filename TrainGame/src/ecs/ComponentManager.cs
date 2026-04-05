@@ -97,7 +97,7 @@ class ComponentManager {
         EnsureTypeRegistered<T>(); 
         return ((ComponentArray<T>)GetComponentArray<T>()).EntityCount();  
     }
-
+    
     public int GetComponentTypeCount() {
         return components.Count; 
     }

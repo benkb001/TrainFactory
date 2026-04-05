@@ -14,7 +14,7 @@ using TrainGame.Constants;
 
 public static class SetTrainProgramClickSystem {
     public static void Register(World w) {
-        ClickSystem.Register([typeof(SetTrainProgramButton), typeof(Inventory)], w, (w, e) => {
+        ClickSystem.Register([typeof(SetTrainProgramButton)], w, (w, e) => {
             SetTrainProgramButton btn = w.GetComponent<SetTrainProgramButton>(e); 
 
             Train t = btn.GetTrain(); 

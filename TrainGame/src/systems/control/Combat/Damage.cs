@@ -58,7 +58,8 @@ public static class DamageSystem {
     public static void RegisterArmor(World w) {
         w.AddSystem([typeof(ReceiveDamageMessage), typeof(Armor), typeof(Active)], (w, e) => {
             int defense = w.GetComponent<Armor>(e).Defense;
-            w.GetComponent<ReceiveDamageMessage>(e).ReduceDamage(defense); 
+            ReceiveDamageMessage dm = w.GetComponent<ReceiveDamageMessage>(e);
+            dm.ReduceDamage(defense); 
         });
     }
 
@@ -66,11 +67,13 @@ public static class DamageSystem {
         w.AddSystem([typeof(ReceiveDamageMessage), typeof(Parrier), typeof(Active)], (w, e) => {
             Parrier p = w.GetComponent<Parrier>(e);
             ReceiveDamageMessage msg = w.GetComponent<ReceiveDamageMessage>(e);
-            if (p.Parrying) {
-                p.GetHealth().ReceiveDamage(msg.DMG); 
-                msg.SetDamage(0); 
-            } else {
-                msg.SetDamage(1);
+            if (msg.DMG > 0) {
+                if (p.Parrying) {
+                    p.GetHealth().ReceiveDamage(msg.DMG); 
+                    msg.SetDamage(0); 
+                } else {
+                    msg.SetDamage(1);
+                }
             }
         });
     }

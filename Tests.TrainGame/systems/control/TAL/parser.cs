@@ -11,7 +11,7 @@ public class TALParserTest {
 
     private (City, int, Train, int, World) init() {
         World w = WorldFactory.Build(); 
-        Inventory inv = new Inventory("Test", 1, 1); 
+        Inventory inv = new Inventory("Test", 2, 2); 
         City c = new City(CityID.Factory, inv); 
         Train t = new Train(inv, Vector2.Zero, new Dictionary<CartType, Inventory>(), "TestTrain");
         City mine = new City(CityID.Mine, inv); 
@@ -53,18 +53,17 @@ public class TALParserTest {
         tokens = TALLexer.Tokenize($"{CityID.Factory}.{ItemID.Wood}"); 
         e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
         TALAccessCityExpression<City> accCityExp = Assert.IsType<TALAccessCityExpression<City>>(e);
+        Assert.Equal(woodCount, c.Inv.ItemCount(ItemID.Wood));
         Assert.Equal(woodCount, (int)accCityExp.Evaluate());
     }
 
     [Fact]
     public void TALParser_ParseIntExpressionShouldHandleNestedOperations() {
         (City c, int cEnt, Train t, int tEnt, World w) = init();
-        t.Inv.Add(ItemID.Iron, 10); 
-        c.Inv.Add(ItemID.Wood, 20);
-        List<TALToken> tokens = TALLexer.Tokenize($"({t.Id}.{ItemID.Iron} + {c.Id}.{ItemID.Wood}) * (10 - (100 / 2))"); 
+        List<TALToken> tokens = TALLexer.Tokenize($"(10 + 20) * (10 - (100 / 2))"); 
         ITALExpression e = TALParser.ParseIntExp<Train, City>(tokens, new TrainWorld(w), t); 
         TALMultiplyExpression multExp = Assert.IsType<TALMultiplyExpression>(e);
-        Assert.Equal(-120, (int)multExp.Evaluate());
+        Assert.Equal(-1200, (int)multExp.Evaluate());
     }
 
     [Fact]
@@ -144,8 +143,6 @@ public class TALParserTest {
         c.Inv.TakeAll(ItemID.Fuel);
         string program = $"({c.ID}.Fuel > 10) OR ({c.ID}.Glass < 100)";
         List<TALToken> toks = TALLexer.Tokenize(program);
-        Console.WriteLine($"num toks: {toks.Count}");
-        Console.WriteLine($"toks: {TALLexer.ToksToString(toks)}");
         ITALExpression e = TALParser.ParseConditionalExp<Train, City>(toks, new TrainWorld(w), t);
         TALOrExpression orExp = Assert.IsType<TALOrExpression>(e);
         Assert.False((bool)orExp.Evaluate());

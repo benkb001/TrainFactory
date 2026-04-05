@@ -19,9 +19,10 @@ public class Health {
     private int hp; 
     private int maxHP; 
     public int TempHP = 0; 
+    public int TempMaxHP = 0;
     public int InvincibleFrames = 0;
     public int HP => hp + TempHP; 
-    public int MaxHP => maxHP; 
+    public int MaxHP => maxHP + TempMaxHP; 
 
     public Health(int maxHP) {
         this.hp = maxHP;
@@ -38,12 +39,13 @@ public class Health {
 
     public void AddHP(int increase) {
         hp += increase; 
-        hp = Math.Min(hp, maxHP); 
+        hp = Math.Min(hp, MaxHP); 
     }
 
     public void ResetHP() {
         hp = maxHP; 
         TempHP = 0; 
+        TempMaxHP = 0;
     }
 
     public void SetHP(int hp) {

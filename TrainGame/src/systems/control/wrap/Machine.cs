@@ -20,4 +20,9 @@ public class MachineWrap {
 
         return res;
     }
+
+    public static Machine GetTest() {
+        Inventory inv = new Inventory("Default", 1, 1); 
+        return new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
+    }
 }

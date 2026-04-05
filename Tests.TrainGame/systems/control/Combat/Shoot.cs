@@ -20,24 +20,21 @@ public class ShootSystemTest {
         VirtualMouse.Reset(); 
 
         World w = WorldFactory.Build(); 
-        Inventory.Item i = new Inventory.Item(ItemId: EquipmentSlot<PlayerGun>.EquipmentMap.ToList()[0].Key, Count: 1); 
         int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         (int _, Inventory inv) = InventoryWrap.Add(w, "test", 1, 1); 
-        inv.Add(i); 
-        InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 100, 100);
+        w.SetComponent<Shooter>(e, new Shooter()); 
+        w.SetComponent<DefaultShootPattern>(e, new DefaultShootPattern(new BulletContainer(new Bullet(1))));
+        w.SetComponent<Player>(e, new Player());
+        //ICKY: Should we have a dedicated component to separate player cuz bullets can be shooters now 
+        w.SetComponent<Health>(e, new Health(1));
 
         //dont love it but must for it to work, could try to decouple 
         //heldItem and inventory a little, or heldItem and shooting a little, 
         //but they are kinda naturally coupled 
-       
-        w.SetComponent<HeldItem>(e, new HeldItem(inv, invView.GetInventoryEntity())); 
-
         w.Update();
         VirtualMouse.SetCoordinates(new Vector2(1, 1)); 
         VirtualMouse.LeftPress();
         w.Update();
-
-        Assert.Equal("Gun", w.GetComponent<HeldItem>(e).ItemId); 
 
         List<int> bulletEnts = w.GetMatchingEntities([typeof(Bullet), typeof(Velocity), typeof(Active)]);
         Assert.Single(bulletEnts); 

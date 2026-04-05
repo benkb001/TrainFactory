@@ -243,9 +243,4 @@ public class Machine : IID {
         float maxProductsPerMinute = (float)(productCount * (level + 1)) / craftTimeMinutes; 
         return (maxProductsPerMinute + (4 * productsPerMinute)) / 5f; 
     }
-
-    public static Machine GetDefault() {
-        Inventory inv = new Inventory("Default", 1, 1); 
-        return new Machine(inv, new Dictionary<string, int>(), "", 0, minTicks: 1); 
-    }
 }

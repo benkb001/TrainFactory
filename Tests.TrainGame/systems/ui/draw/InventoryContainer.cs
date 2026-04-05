@@ -45,6 +45,6 @@ public class DrawInventoryContainerSystemTest {
     public void DrawInventoryContainerSystem_DrawShouldReturnAnEntityWithAnInventoryComponent() {
         (World w, Inventory inv, City c, Train t, DrawInventoryContainerMessage<Train> dm) = init(); 
         InventoryContainer<Train> invContainer = DrawInventoryContainerSystem.Draw<Train>(dm, w); 
-        Assert.Equal(inv, invContainer.GetCur()); 
+        Assert.Equal(t.Inv, invContainer.GetCur()); 
     }
 }
