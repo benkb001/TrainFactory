@@ -3,15 +3,18 @@ namespace TrainGame.Components;
 using TrainGame.Systems;
 
 public class VendorInterfaceData : IInterfaceData {
-    private City city; 
+    private City city;
     private string vendorID; 
 
     public string VendorID => vendorID; 
-    public City GetCity() => city; 
+    public Inventory Source; 
+    public Inventory Destination;
     
-    public VendorInterfaceData(City city, string vendorID) {
-        this.city = city; 
+    public VendorInterfaceData(string vendorID, Inventory Source, Inventory Destination, City city) {
         this.vendorID = vendorID; 
+        this.Source = Source;
+        this.Destination = Destination; 
+        this.city = city;
     }
 
     public SceneType GetSceneType() {

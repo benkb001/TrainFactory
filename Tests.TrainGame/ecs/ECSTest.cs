@@ -1,5 +1,6 @@
-﻿namespace TrainGame.ECS;
-
+﻿using Xunit;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+namespace TrainGame.ECS;
 using TrainGame.Components; 
 
 public class Test {

@@ -20,7 +20,7 @@ public class ShootSystemTest {
         VirtualMouse.Reset(); 
 
         World w = WorldFactory.Build(); 
-        Inventory.Item i = new Inventory.Item(ItemId: Weapons.GunMap.ToList()[0].Key, Count: 1); 
+        Inventory.Item i = new Inventory.Item(ItemId: EquipmentSlot<PlayerGun>.EquipmentMap.ToList()[0].Key, Count: 1); 
         int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         (int _, Inventory inv) = InventoryWrap.Add(w, "test", 1, 1); 
         inv.Add(i); 

@@ -35,7 +35,6 @@ public static class DamageSystem {
 
                 foreach (int iEnt in intersectingEnts) {
                     if (potentialReceivers.Contains(iEnt)) {
-                        Console.WriteLine($"tried to damage {iEnt}");
                         w.SetComponent<HitMessage>(e, new HitMessage(iEnt));
                         //TODO: should enemies be able to be hit multiple times in the same frame? 
                         //for now probably doesn't matter but if we add a gun that has a 
@@ -68,7 +67,7 @@ public static class DamageSystem {
             Parrier p = w.GetComponent<Parrier>(e);
             ReceiveDamageMessage msg = w.GetComponent<ReceiveDamageMessage>(e);
             if (p.Parrying) {
-                p.HP = Math.Max(0, p.HP - msg.DMG);
+                p.GetHealth().ReceiveDamage(msg.DMG); 
                 msg.SetDamage(0); 
             } else {
                 msg.SetDamage(1);
@@ -101,7 +100,7 @@ public static class DamageSystem {
             (Parrier p, bool hasParrier) = w.GetComponentSafe<Parrier>(shotByEntity); 
             
             if (hasHealth && hasParrier && h.HP < 1) {
-                p.HP = Math.Min(p.MaxHP, p.HP + h.MaxHP);
+                p.GetHealth().AddHP(h.MaxHP);
             }
         });
     }

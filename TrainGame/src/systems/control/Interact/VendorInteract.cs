@@ -19,13 +19,44 @@ public class VendorInteractSystem {
     }
 }
 
+
+
 public class VendorWrap {
-    public static int Draw(World w, Vector2 pos, City city, string vendorID) {
+    private static VendorInterfaceData getData(World w, string vendorID) {
+        Inventory Source;
+        Inventory Destination; 
+        City city; 
+        switch (vendorID) {
+            case VendorID.ArmorCraftsman:
+            case VendorID.WeaponCraftsman:
+                //TODO: Change this to be a known inv for weapons
+                //We will also need to make it so we don't include the already purchased 
+                //weapons in the vendor
+                city = CityWrap.GetCityWithPlayer(w);
+                Source = city.Inv;
+                Destination = city.Inv; 
+
+                break;
+            case VendorID.MineralCollector: 
+                city = CityWrap.GetCityWithPlayer(w);
+                Source = city.Inv;
+                Destination = city.Inv;
+                break;
+            default: 
+                throw new InvalidOperationException($"Vendor ID {vendorID} not handled");
+        }
+            
+        return new VendorInterfaceData(vendorID, Source, Destination, city);
+    }
+
+    //ICKY: Can we pass the VendorInterfaceData here? 
+    //Currently not doing so because this is called from layout
+    public static int Draw(World w, Vector2 pos, string vendorID) {
+        VendorInterfaceData data = getData(w, vendorID);
         int vendorEnt = EntityFactory.AddUI(w, pos, Constants.TileWidth, Constants.TileWidth, 
         setOutline: true, setInteractable: true, setCollidable: true, text: vendorID);
         EnterInterfaceInteractable<VendorInterfaceData> interactable = 
-            new EnterInterfaceInteractable<VendorInterfaceData>(
-                new VendorInterfaceData(city, vendorID));
+            new EnterInterfaceInteractable<VendorInterfaceData>(data);
         w.SetComponent<EnterInterfaceInteractable<VendorInterfaceData>>(vendorEnt, interactable); 
         return vendorEnt; 
     }

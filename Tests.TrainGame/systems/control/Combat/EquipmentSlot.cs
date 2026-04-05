@@ -18,28 +18,23 @@ using TrainGame.Callbacks;
 
 public class EquipSystemTest {
     [Fact]
-    public void EquipSystem_ShouldSetEquippedItemToAllEntitiesWithThatEquipmentSlot() {
-
-        World w = WorldFactory.Build(); 
-        EquipmentID.InitMaps(); 
+    public void EquipSystem_EquipGunShouldSetShooterToAllEntitiesWithThatEquipmentSlot() {
+        World w = WorldFactory.Build();
 
         Inventory inv = InventoryWrap.GetDefault(); 
-        EquipmentSlot<Armor> slot = new EquipmentSlot<Armor>(inv);
-        EquipmentUI eUI = new EquipmentUI(); 
+        inv.Add("Test", 1); 
+        EquipmentSlot<PlayerGun> slot = new EquipmentSlot<PlayerGun>(inv);
         int slotEnt = EntityFactory.Add(w); 
-        w.SetComponent<Inventory>(slotEnt, inv); 
-        w.SetComponent<EquipmentSlot<Armor>>(slotEnt, slot); 
-        w.SetComponent<EquipmentUI>(slotEnt, eUI); 
+        w.SetComponent<EquipmentSlot<PlayerGun>>(slotEnt, slot); 
+        w.SetComponent<EquipmentData>(slotEnt, new EquipmentData()); 
+        w.SetComponent<InventoryUpdatedFlag>(slotEnt, new InventoryUpdatedFlag());
+        w.SetComponent<Data>(slotEnt, new Data());
 
         int playerEnt = EntityFactory.Add(w); 
-        w.SetComponent<EquipmentSlot<Armor>>(playerEnt, slot); 
+        w.SetComponent<EquipmentSlot<PlayerGun>>(playerEnt, slot); 
 
         w.Update(); 
 
-        inv.Add(ItemID.Armor2, 1); 
-
-        w.Update(); 
-
-        Assert.Equal(EquipmentSlot<Armor>.EquipmentMap[ItemID.Armor2], w.GetComponent<Armor>(playerEnt)); 
+        Assert.Equal(w.GetComponent<Shooter>(slotEnt), w.GetComponent<Shooter>(playerEnt)); 
     }
 }

@@ -45,7 +45,8 @@ public class EnemyWrap {
 
         if (e.LootDist != null) {
             (string itemID, int count) = e.LootDist.GetRandom(); 
-            w.SetComponent<Loot>(enemyEnt, new Loot(itemID, count, dest));
+            w.SetComponent<Loot>(enemyEnt, new Loot(itemID, count));
+            w.SetComponent<Inventory>(enemyEnt, LootWrap.GetDestination(w));
         }
         
         return new EnemyWrap(enemyEnt, h, armor);

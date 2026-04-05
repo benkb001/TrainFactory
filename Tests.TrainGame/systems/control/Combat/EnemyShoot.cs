@@ -23,19 +23,13 @@ public class EnemyShootSystemTest {
         for (int i = 0; i < num_enemies; i++) {
             int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
             w.SetComponent<Enemy>(e, new Enemy()); 
-            w.SetComponent<Shooter>(e, 
-                new Shooter(
-                    new DefaultShootPattern(
-                        new BulletContainer(
-                            new Bullet(1)
-                        )
-                    )
-                )
-            );
+            w.SetComponent<Shooter>(e, new Shooter());
+            w.SetComponent<DefaultShootPattern>(e, new DefaultShootPattern(new BulletContainer(new Bullet(1))));
         }
-        int playerEnt = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
-        w.SetComponent<Player>(playerEnt, new Player());
-        w.SetComponent<Health>(playerEnt, new Health(10)); 
+
+        int targetEnt = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
+        w.SetComponent<Targetable>(targetEnt, new Targetable());
+        w.SetComponent<Player>(targetEnt, new Player());
 
         w.Update(); 
 

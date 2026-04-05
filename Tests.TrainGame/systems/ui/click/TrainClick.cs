@@ -30,11 +30,6 @@ public class TrainClickSystemTest {
         w.SetComponent<ComingFromCity>(trainEnt, new ComingFromCity(c));
         
         w.Update(); 
-
-        List<int> es = w.GetMatchingEntities([typeof(Inventory), typeof(LinearLayout)]); 
-        
-        Assert.Equal(2, es.Count);
-        Assert.Single(es, e => w.GetComponent<Inventory>(e) == trainInv);
-        Assert.Single(es, e => w.GetComponent<Inventory>(e) == cityInv); 
+        Assert.Equal(SceneType.TrainInterface, SceneSystem.CurrentScene);
     }
 }

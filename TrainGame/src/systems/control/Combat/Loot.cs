@@ -17,13 +17,13 @@ using TrainGame.Constants;
 
 public static class LootSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Loot), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Loot), typeof(Inventory), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
             if (w.GetComponent<Health>(e).HP <= 0) {
                 Loot loot = w.GetComponent<Loot>(e);
-                int transferred = loot.Transfer(); 
-                string itemID = loot.GetItemID(); 
+                Inventory inv = w.GetComponent<Inventory>(e);
+                int transferred = LootWrap.Transfer(w, loot, inv);
                 Vector2 pos = w.GetComponent<Frame>(e).Position; 
-                int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {itemID}!");
+                int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {loot.ItemID}!");
                 w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));
             }
         });

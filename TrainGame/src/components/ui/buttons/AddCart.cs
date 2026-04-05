@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 
 using TrainGame.ECS; 
 
+//Cartdest and src could be interfaces here but
+//this is so low prio like when will this ever need to be generalized 
 public class AddCartButton {
     public readonly Train CartDest; 
     public readonly City CartSource; 

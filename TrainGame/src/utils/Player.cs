@@ -37,7 +37,7 @@ public static class PlayerWrap {
                 Constants.PlayerInvRows, Constants.PlayerInvCols);
 
         Health h = new Health(Constants.PlayerHP);
-        Parrier p = new Parrier(100);
+        Parrier p = new Parrier(Constants.PlayerParrierHP);
         playerInv.Add(ItemID.Pistol, 1); 
         int e = AddData(w, playerInv, h, p);
         addEquipSlot<PlayerGun>(w, e); 
@@ -170,7 +170,6 @@ public static class PlayerWrap {
             ShootPatternRegistry.Add(w, sp, playerEntity); 
         }
 
-        w.SetComponent<Damage>(playerEntity, new Damage(0)); 
         w.SetComponent<Targetable>(playerEntity, new Targetable());
 
         w.UnlockCameraPan(); 

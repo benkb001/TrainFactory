@@ -17,11 +17,11 @@ public static class DrawVendorInterfaceSystem {
     public static void Register(World w) {
         DrawInterfaceSystem.Register<VendorInterfaceData>(w, (w, e) => {
             VendorInterfaceData data = w.GetComponent<DrawInterfaceMessage<VendorInterfaceData>>(e).Data; 
-            City c = data.GetCity(); 
             string vendorID = data.VendorID; 
-            Inventory inv = c.Inv; 
+            Inventory src = data.Source;
+            Inventory dest = data.Destination;
 
-            (float invWidth, float invHeight) = InventoryWrap.GetUI(inv, 0.8f);
+            (float invWidth, float invHeight) = InventoryWrap.GetUI(src, 0.8f);
 
             //make outer container 
             LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w);
@@ -38,40 +38,13 @@ public static class DrawVendorInterfaceSystem {
                 childrenPerPage: 3
             );
 
+            RegisterBuyableContext ctx = new RegisterBuyableContext(w, src, dest);
+
             foreach (PurchaseInfo purchaseInfo in VendorID.ProductMap[vendorID]) {
                 IBuyable buyable = purchaseInfo.Buyable; 
-                int btnEnt = -1;
-                
-                if (buyable is PurchaseItem item) {
-                    PurchaseButton<PurchaseItem> pb = new PurchaseButton<PurchaseItem>(item);
-                    btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, 
-                    text: $"Purchase {item.Count} {item.ItemID}?\n {Util.FormatMap(item.GetCost())}", 
-                        setOutline: true, setButton: true);
-                    w.SetComponent<PurchaseButton<PurchaseItem>>(btnEnt, pb);
-                } else if (buyable is ResetHP _) {
-                    //this is very gross but whatever, 
-                    //basically just use the resetHP as the type check 
-                    //and then here we can calculate the price and pass this 
-                    //to the button. We can't calculate the price from the constant
-                    
-                    Inventory dest = CityWrap.GetCityWithPlayer(w).Inv; 
-                    Health playerHP = PlayerWrap.GetHP(w);
-                    
-                    int credits = VendorID.GetResetHPCost(dest, playerHP);
-                    PurchaseButton<ResetHP> pb = new PurchaseButton<ResetHP>(new ResetHP(credits, dest));
-                    Dictionary<string, int> cost = new() {
-                        [ItemID.Credit] = credits
-                    };
-
-                    btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, 
-                        text: $"Reset HP?\n{Util.FormatMap(cost)}", setOutline: true, 
-                        setButton: true);
-                    w.SetComponent<PurchaseButton<ResetHP>>(btnEnt, pb);
-                } else {
-                    throw new InvalidOperationException("Unimplemented purchase button type");
-                }
-                
-                vendor.AddChild(btnEnt, w); 
+                int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, setOutline: true, setButton: true);
+                BuyableRegistry.Add(ctx, buyable, btnEnt); 
+                vendor.AddChild(btnEnt, w);
             }
 
             vendor.ResizeChildren(w); 
@@ -79,10 +52,46 @@ public static class DrawVendorInterfaceSystem {
 
             //add city inv to bottom
             
-            InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, 
+            InventoryView invView = DrawInventoryCallback.Draw(w, src, Vector2.Zero, 
                 invWidth, invHeight, DrawLabel: true);
             outer.AddChild(invView.GetParentEntity(), w); 
 
         });
+    }
+}
+
+public class RegisterBuyableContext {
+    public World W;
+    public Inventory Source;
+    public Inventory Destination; 
+
+    public RegisterBuyableContext(World w, Inventory Source, Inventory Destination) {
+        this.W = w; 
+        this.Source = Source;
+        this.Destination = Destination;
+    }
+}
+
+public static class RegisterBuyableCallbacks {
+    public static void All() {
+        BuyableRegistry.Register<PurchaseItem>((ctx, item, e) => {
+            World w = ctx.W;
+            PurchaseButton<PurchaseItem> pb = new PurchaseButton<PurchaseItem>(item);
+            w.SetComponent<PurchaseButton<PurchaseItem>>(e, pb);
+            Inventory src = ctx.Source;
+            Inventory dest = ctx.Destination;
+            w.SetComponent<ItemTransaction>(e, new ItemTransaction(src, dest));
+            w.SetComponent<TextBox>(e, new TextBox($"Purchase {item.Count} {item.ItemID}?\n {Util.FormatMap(item.GetCost())}"));
+        });
+    }
+}
+
+public static class BuyableRegistry {
+    private static CallbackRegistry<RegisterBuyableContext, IBuyable, int> registry = new();
+    public static void Register<T>(Action<RegisterBuyableContext, T, int> cb) where T : IBuyable {
+        registry.Register<T>(cb);
+    }
+    public static void Add(RegisterBuyableContext w, IBuyable b, int e) {
+        registry.Callback(w, b, e); 
     }
 }

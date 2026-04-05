@@ -37,7 +37,12 @@ public class EquipmentSlot<T> where T : IEquippable {
         inv.Whitelist(EquipmentMap.Keys);
         this.inv = inv; 
         this.itemID = itemID; 
-        this.equipment = EquipmentMap[itemID];
+        if (EquipmentMap.ContainsKey(itemID)) {
+            this.equipment = EquipmentMap[itemID];
+        } else {
+            this.equipment = default(T);
+        }
+        
     }
 
     public void Equip() {

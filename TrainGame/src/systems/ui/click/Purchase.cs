@@ -13,21 +13,34 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 using TrainGame.Callbacks; 
 
+public class ItemTransaction {
+    public readonly Inventory Source; 
+    public readonly Inventory Destination; 
+
+    public ItemTransaction(Inventory src, Inventory dest) {
+        this.Source = src; 
+        this.Destination = dest; 
+    }
+}
+
 public static class PurchaseClickSystem {
     public static void Register(World w) {
         ClickAndHoldSystem.Register<PurchaseButton<PurchaseItem>>(w, (w, e, btn) => {
+            ItemTransaction transaction = w.GetComponent<ItemTransaction>(e); 
+            Inventory src = transaction.Source;
+            Inventory dest = transaction.Destination;
 
             PurchaseItem i = w.GetComponent<PurchaseButton<PurchaseItem>>(e).Buyable; 
-            Inventory dest = CityWrap.GetCityWithPlayer(w).Inv;
+
             int count = i.Count; 
             string itemID = i.ItemID; 
 
             int addAttempt = dest.Add(itemID, count);
 
-            if (addAttempt != count || !dest.TakeRecipe(btn.Cost)) {
+            if (addAttempt != count || !src.TakeRecipe(btn.Cost)) {
                 dest.Take(itemID, addAttempt); 
             } 
-        });
+        }, [typeof(ItemTransaction)]);
     }
 
     public static void RegisterResetHP(World w) {

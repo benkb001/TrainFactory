@@ -56,10 +56,10 @@ public class PurchaseInfo {
 public static class VendorID {
     public const string ArmorCraftsman = "Armor Craftsman"; 
     public const string WeaponCraftsman = "Weapon Craftsman"; 
-    public const string HPPVendor = "HPP Vendor"; 
+    public const string MineralCollector = "Mineral Collector"; 
 
     public static List<string> All = new() {
-        ArmorCraftsman, WeaponCraftsman, HPPVendor
+        ArmorCraftsman, WeaponCraftsman, MineralCollector
     };
 
     public static Dictionary<string, List<PurchaseInfo>> ProductMap = new() {
@@ -98,8 +98,7 @@ public static class VendorID {
                 [ItemID.Lubricant] = 100
             }),
         },
-        [HPPVendor] = new() {
-            PurchaseInfo.AddResetHP(),
+        [MineralCollector] = new() {
             PurchaseInfo.AddItemInfo(ItemID.Iron, 100, new() {
                 [ItemID.Credit] = 100
             }),
@@ -111,10 +110,4 @@ public static class VendorID {
             })
         }
     };
-
-    public static int GetResetHPCost(Inventory dest, Health playerHP) {
-        float proportionMissing = 1f - ((float)playerHP.HP / playerHP.MaxHP);
-        int cost = (int)(proportionMissing * 0.5 * (1000 + dest.ItemCount(ItemID.Credit)));
-        return cost; 
-    }
 }

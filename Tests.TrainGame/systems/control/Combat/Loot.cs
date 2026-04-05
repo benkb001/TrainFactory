@@ -23,7 +23,8 @@ public class LootSystemTest {
         int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10); 
         w.SetComponent<Health>(e, new Health(0)); 
         Inventory inv = InventoryWrap.GetDefault(); 
-        w.SetComponent<Loot>(e, new Loot(ItemID.Iron, 10, inv));
+        w.SetComponent<Loot>(e, new Loot(ItemID.Iron, 10));
+        w.SetComponent<Inventory>(e, inv);
 
         w.Update(); 
 

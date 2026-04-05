@@ -49,7 +49,6 @@ public static class RegisterComponents {
         r<ConnectCitiesButton>();
         r<CurrentInventory>();
         r<CyclicalMovePattern>();
-        r<Damage>(); 
         r<DamagePotion>(); 
         r<Data>(); 
         r<DefaultMovePattern>();
@@ -113,6 +112,7 @@ public static class RegisterComponents {
         r<InventoryPosition>();
         r<InventoryUpdatedFlag>();
         r<IShootPattern>();
+        r<ItemTransaction>();
         r<Ladder>();
         r<Machine>(); 
         r<MachineHeader>();

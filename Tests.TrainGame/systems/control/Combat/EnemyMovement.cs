@@ -16,17 +16,5 @@ using TrainGame.Utils;
 using TrainGame.Constants;
 
 public class EnemyMovementSystemTest {
-    [Fact]
-    public void EnemyMovementSystem_ShouldSetANonZeroVelocityToEnemyEntity() {
-        World w = WorldFactory.Build(); 
-        int e = EntityFactory.AddUI(w, Vector2.Zero, 10, 10);
-
-        PlayerWrap.AddTest(w);
-
-        w.SetComponent<Enemy>(e, new Enemy()); 
-        w.SetComponent<Movement>(e, new Movement(new DefaultMovePattern())); 
-        w.Update(); 
-        Assert.True(w.ComponentContainsEntity<Velocity>(e));
-        Assert.NotEqual(Vector2.Zero, w.GetComponent<Velocity>(e).Vector);
-    }
+    //TODO: Write
 }

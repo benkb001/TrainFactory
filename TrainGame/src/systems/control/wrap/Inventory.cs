@@ -39,6 +39,10 @@ public static class InventoryWrap {
         return new Inventory("Test", 2, 2); 
     }
 
+    public static Inventory GetTest() {
+        return GetDefault();
+    }
+
     public static Inventory GetPlayerInv(World w) {
         return GetByID(w, Constants.PlayerInvID); 
     }

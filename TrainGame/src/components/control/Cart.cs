@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 using TrainGame.Constants;
+using TrainGame.Systems;
 
 public class Cart {
     public readonly CartType Type; 
@@ -17,5 +18,14 @@ public class Cart {
 
     public Cart(CartType type) {
         this.Type = type; 
+    }
+}
+
+public class CartWrap {
+    public static Dictionary<CartType, Inventory> GetTestInventories() {
+        return new(){
+            [CartType.Freight] = InventoryWrap.GetTest(),
+            [CartType.Liquid] = InventoryWrap.GetTest()
+        };
     }
 }

@@ -27,7 +27,8 @@ public class PurchaseClickSystemTest {
         Inventory inv = new Inventory("Test", 2, 2); 
         
         PurchaseInfo pb = PurchaseInfo.AddItemInfo(productID, 1, cost);
-        w.SetComponent<PurchaseButton<PurchaseItem>>(btnEnt, new PurchaseButton<PurchaseItem>((PurchaseItem)pb.Buyable)); 
+        w.SetComponent<PurchaseButton<PurchaseItem>>(btnEnt, new PurchaseButton<PurchaseItem>((PurchaseItem)pb.Buyable));
+        w.SetComponent<ItemTransaction>(btnEnt, new ItemTransaction(inv, inv)); 
         return (w, btnEnt, inv); 
     }
 

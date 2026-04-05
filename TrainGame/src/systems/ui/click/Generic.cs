@@ -16,8 +16,11 @@ public static class ClickAndHoldSystem {
     public static int NumTicksBeforeFast = 30; 
     public static int NumTicksPerFastUpdate = 2; 
 
-    public static void Register<T>(World w, Action<World, int, T> onHold) {
-        w.AddSystem([typeof(Button), typeof(Active), typeof(T)], (w, e) => {
+    public static void Register<T>(World w, Action<World, int, T> onHold, Type[] dependencies = null) {
+        Type[] basics = [typeof(Button), typeof(Active), typeof(T)];
+        Type[] ts = dependencies == null ? basics : basics.Concat(dependencies).ToArray();
+
+        w.AddSystem(ts, (w, e) => {
             Button b = w.GetComponent<Button>(e); 
             if (b.Clicked || (b.TicksHeld >= NumTicksBeforeFast && b.TicksHeld % NumTicksPerFastUpdate == 0)) {
                 onHold(w, e, w.GetComponent<T>(e)); 

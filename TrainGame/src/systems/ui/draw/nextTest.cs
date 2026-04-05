@@ -456,7 +456,7 @@ public static class NextDrawTestUISystem {
         [25] = (w) => {
             Inventory inv = new Inventory("Test", 2, 2); 
             City c = new City("Test", inv); 
-            VendorInterfaceData d = new VendorInterfaceData(c, VendorID.WeaponCraftsman);
+            VendorInterfaceData d = new VendorInterfaceData(VendorID.WeaponCraftsman, inv, inv, c);
             DrawInterfaceMessage<VendorInterfaceData> dm = new DrawInterfaceMessage<VendorInterfaceData>(d); 
             MakeMessage.Add<DrawInterfaceMessage<VendorInterfaceData>>(w, dm); 
         }

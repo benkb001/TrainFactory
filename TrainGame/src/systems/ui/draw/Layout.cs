@@ -62,7 +62,7 @@ public static class Layout {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, v[VendorID.ArmorCraftsman], g, v[VendorID.WeaponCraftsman], g, 
-                     v[VendorID.HPPVendor], g, g, g, g, g, g, g, g, g, g, g, w},
+                     v[VendorID.MineralCollector], g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, w},
@@ -132,7 +132,7 @@ public static class Layout {
                         LadderWrap.AddMessage(w, tilePos, 1);
                         break;
                     case TileType.Vendor: 
-                        VendorWrap.Draw(w, tilePos, CityWrap.GetCityWithPlayer(w), t.ID);
+                        VendorWrap.Draw(w, tilePos, t.ID);
                         break;
                     case TileType.TrainYard: 
                         TrainYardWrap.Draw(w, tilePos);

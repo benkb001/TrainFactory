@@ -18,10 +18,7 @@ using TrainGame.Constants;
 
 public static class TrainWrap {
     public static Train GetTestTrain() {
-        Inventory inv = new Inventory("Test", 1, 1); 
-        City c = new City("Test", inv); 
-        string id = ID.GetNext("Train ");
-        return new Train(inv, c.RealPosition, new Dictionary<CartType, Inventory>(), id); 
+        return Assemble(new City("Test", new Inventory("Test", 1, 1)));
     }
 
     public static Train GetTest() => GetTestTrain();

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq; 
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 using TrainGame.ECS;  
 using TrainGame.Components; 
@@ -21,7 +20,13 @@ public static class AddCartClickSystem {
             CartType type = btn.TypeToAdd; 
             btn.CartDest.AddCart(type); 
             btn.CartSource.RemoveCart(type); 
-            MakeMessage.Add<DrawTrainInterfaceMessage>(w, new DrawTrainInterfaceMessage(btn.CartDest, btn.TrainEntity)); 
         }); 
+
+        ClickSystem.Register([typeof(AddCartButton), typeof(TextBox)], w, (w, e) => {
+            AddCartButton btn = w.GetComponent<AddCartButton>(e); 
+            TextBox tb = w.GetComponent<TextBox>(e); 
+            CartType type = btn.TypeToAdd;
+            tb.Text = Buttons.AddCartLabel(type.ToString(), btn.CartSource.NumCarts(type));
+        });
     }
 }

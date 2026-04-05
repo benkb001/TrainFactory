@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 using TrainGame.ECS;  
 using TrainGame.Components; 
@@ -54,7 +53,7 @@ public static class DrawAddCartInterfaceSystem {
         foreach (CartType type in Cart.AllTypes) {
             int numCarts = CartSource.NumCarts(type);
 
-            string btnLabel = $"{type}: {numCarts}";
+            string btnLabel = Buttons.AddCartLabel(type.ToString(), numCarts);
 
             int cEntity = EntityFactory.Add(w); 
             w.SetComponent<Outline>(cEntity, new Outline()); 

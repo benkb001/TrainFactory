@@ -37,9 +37,8 @@ public static class DrawWriteProgramInterfaceSystem {
             w.SetComponent<SetPlayerProgramButton>(btnEnt, 
                 new SetPlayerProgramButton(inputContainer.GetLabelInput(), inputContainer.GetTextInput())); 
             
-            w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(data.ProgramName, data.GetTrain(), 
-                data.TrainEntity, data.Program));
-            
+            w.SetComponent<SetTrainProgramButton>(btnEnt, new SetTrainProgramButton(data.ProgramName, 
+                data.GetTrain(), data.TrainEntity, data.Program));
 
             llc.AddChild(btnEnt, w); 
         });

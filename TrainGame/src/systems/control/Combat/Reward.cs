@@ -82,7 +82,8 @@ public static class LootInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<Loot>(w, (w, e, interactorEntity) => {
             Loot l = w.GetComponent<Loot>(e); 
-            l.Transfer();
+            Inventory inv = w.GetComponent<Inventory>(e);
+            LootWrap.Transfer(w, l, inv);
         });
     }
 }
@@ -204,7 +205,8 @@ public static class RewardSpawnSystem {
     private static Action<World, int> setLoot = (w, e) => {
         (string itemID, int count) = lootDist.GetRandom(); 
         w.SetComponent<TextBox>(e, new TextBox($"+{count} {itemID}"));
-        w.SetComponent<Loot>(e, new Loot(itemID, count, LootWrap.GetDestination(w)));
+        w.SetComponent<Loot>(e, new Loot(itemID, count));
+        w.SetComponent<Inventory>(e, LootWrap.GetDestination(w));
     };
 
     private static Action<World, int> setMaxAmmo = (w, e) => {

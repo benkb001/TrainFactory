@@ -1,18 +1,21 @@
 namespace TrainGame.Components;
 
 using TrainGame.Utils;
+using TrainGame.Constants;
 
 public class Parrier {
     public bool Parrying;
-    public readonly int MaxHP;
-    public int HP;
+    private Health health;
+    public Health GetHealth() => health;
+    public int MaxHP => health.MaxHP;
+    public int HP => health.HP;
 
-    public Parrier(int MaxHP, int HP = -1) {
-        this.MaxHP = MaxHP; 
-        this.HP = HP == -1 ? MaxHP : HP; 
+    public Parrier(int MaxHP = Constants.PlayerParrierHP, int HP = Constants.PlayerParrierHP) {
+        this.health = new Health(MaxHP); 
+        health.SetHP(HP);
     }
 
     public void Reset() {
-        this.HP = this.MaxHP; 
+        health.ResetHP();
     }
 }

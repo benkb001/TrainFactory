@@ -19,6 +19,7 @@ public static class RegisterSystems {
         RegisterShootPatterns.All();
         RegisterEnemyTraits.All();
         RegisterEquipmentCallbacks.All();
+        RegisterBuyableCallbacks.All();
 
         CardinalMovementSystem.Register(w); 
         ParametricMovementSystem.Register(w);

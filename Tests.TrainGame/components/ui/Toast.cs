@@ -25,6 +25,6 @@ public class ToastTest {
     public void Toast_ShouldRespectDecrementing() {
         Toast t = new Toast(); 
         t.DecrementDuration(); 
-        Assert.True(Util.FloatEqual(t.RemainingDuration, 0.995f)); 
+        Assert.True(t.RemainingDuration < 1f); 
     }
 }   

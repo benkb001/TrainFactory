@@ -172,7 +172,6 @@ public static class PersistentState {
 
     public static void Load(World w, string filepath) {
         w.Clear(); 
-        EquipmentID.InitMaps(); 
 
         WorldTime WorldTimeFromJSONObject(JsonObject wtData) {
             return new WorldTime(

@@ -54,7 +54,7 @@ public class DamageSystemTest {
         (World w, int playerEnt) = init(10); 
         
         Parrier p = new Parrier(); 
-        p.StartParry(w.Time); 
+        p.Parrying = true;
         w.SetComponent<Parrier>(playerEnt, p);
         w.Update(); 
         Assert.Equal(Constants.PlayerHP, w.GetComponent<Health>(playerEnt).HP); 

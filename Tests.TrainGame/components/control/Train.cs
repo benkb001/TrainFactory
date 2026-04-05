@@ -16,7 +16,7 @@ public class TrainTest {
 
     private static (Inventory, Train) init() {
         Inventory inv = new Inventory("Test", 1, 1); 
-        Dictionary<CartType, Inventory> carts = new();
+        Dictionary<CartType, Inventory> carts = CartWrap.GetTestInventories();
         Train t = new Train(inv, Vector2.Zero, carts, "TestTrain", 0f, 1f, 1f, 1000f);
         return (inv, t);
     }
@@ -75,7 +75,10 @@ public class TrainTest {
     [Fact]
     public void Train_ShouldSetMPHBasedOnPowerAndMass() {
         (Inventory inv, Train _) = init();
-        Train t = new Train(inv, Vector2.Zero, new Dictionary<CartType, Inventory>(), "TestTrain", power: 100f, mass: 10f); 
+        Dictionary<CartType, Inventory> carts = new(){
+            [CartType.Freight] = inv
+        };
+        Train t = new Train(inv, Vector2.Zero, carts, "TestTrain", power: 100f, mass: 10f); 
         Assert.Equal(10f, t.MilesPerHour);
         t.UpgradePower(900f); 
         Assert.Equal(100f, t.MilesPerHour); 
@@ -89,8 +92,9 @@ public class TrainTest {
     [Fact]
     public void Train_AddCartShouldAddCart() {
         (Inventory inv, Train t) = init();
+        int prevLevel = t.Carts[CartType.Freight].Level;
         t.AddCart(CartType.Freight); 
-        Assert.Equal(1, t.Carts[CartType.Freight].Level); 
+        Assert.Equal(prevLevel + 1, t.Carts[CartType.Freight].Level); 
     }
 
     [Fact]

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class ReceiveDamageMessage {
     private List<int> damageSources = new();
 
-    public int DMG => damageSources.Aggregate(0, (acc, cur) => acc + cur); 
+    public int DMG => Math.Max(0, damageSources.Aggregate(0, (acc, cur) => acc + cur)); 
     public int FirstSourceDMG => damageSources[0]; 
 
     public ReceiveDamageMessage(int dmg) {
@@ -19,7 +19,7 @@ public class ReceiveDamageMessage {
     }
 
     public void ReduceDamage(int dmg) {
-        damageSources.Add(-dmg);
+        damageSources.Add(dmg < 0 ? dmg : -dmg);
     }
 
     public void SetDamage(int dmg) {

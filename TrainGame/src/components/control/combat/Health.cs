@@ -30,6 +30,9 @@ public class Health {
 
     public void ReceiveDamage(int damage) {
         damage = InvincibleFrames > 0 ? 0 : Math.Max(0, damage); 
+        int damageToTemp = Math.Min(damage, TempHP);
+        TempHP -= damageToTemp;
+        damage -= damageToTemp;
         hp = Math.Max(0, hp - damage); 
     }
 
@@ -46,6 +49,7 @@ public class Health {
     public void SetHP(int hp) {
         this.hp = Math.Max(0, hp); 
         this.hp = Math.Min(hp, maxHP);
+        this.TempHP = Math.Max(0, hp - this.hp);
     }
 }
 
