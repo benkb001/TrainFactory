@@ -27,9 +27,7 @@ public static class HomingSystem {
                 Vector2 dv = w.GetComponent<Velocity>(e);
 
                 Vector2 targetVelocity = otherFrame.Position - f.Position;
-                float dx = (targetVelocity.X - dv.X) / 2f; 
-                float dy = (targetVelocity.Y - dv.Y) / 2f; 
-                Vector2 newVelocity = Vector2.Normalize(new Vector2(dx, dy)) * h.Speed;
+                Vector2 newVelocity = Vector2.Normalize(dv + (targetVelocity * 0.005f)) * h.Speed;
                 w.SetComponent<Velocity>(e, new Velocity(newVelocity));
             } else {
                 w.RemoveComponent<Homing>(e);

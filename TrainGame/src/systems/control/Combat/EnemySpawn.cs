@@ -64,11 +64,13 @@ public static class FloorSystem {
 public static class EnemySpawnSystem {
     private static void spawn(World w, EnemySpawner spawn) {
         int sumDifficulties = spawn.Difficulty; 
-        int maxDifficulty = (int)Math.Cbrt(sumDifficulties); 
-
-        double difficultyD = 1d + (maxDifficulty - 1d)*Math.Pow(Util.NextDoublePositive(), 1d/maxDifficulty);
-        int difficulty = Math.Min(12, (int)difficultyD); 
-        spawn.TargetNumActive = Math.Max(spawn.TargetNumActive, (int)(difficultyD * 1.75d)); 
+        double maxDifficultyD = Math.Cbrt(sumDifficulties / 2); 
+        int maxDifficulty = (int)maxDifficultyD;
+        spawn.TargetNumActive = Math.Max(spawn.TargetNumActive, (int)(maxDifficultyD * 1.5d)); 
+        int difficulty = 1 + Util.NextInt(maxDifficulty);
+        //double difficultyD = 1d + (maxDifficulty - 1d)*Math.Pow(Util.NextDoublePositive(), 1d/maxDifficulty);
+        //int difficulty = (int)difficultyD;
+        
         int numToSpawn = spawn.NumActive < spawn.TargetNumActive - 1 ? 2 : 1;
 
         for (int i = 0; i < numToSpawn; i++) {

@@ -22,7 +22,7 @@ public class Inventory : IID {
     private int rows; 
     private int cols; 
     private int level; 
-    private HashSet<string> whitelist;
+    private HashSet<string> whitelist = new();
     private bool filtered = false; 
     private CartType filter; 
 
@@ -31,7 +31,8 @@ public class Inventory : IID {
     public string ID => inventoryId;
     public int Rows => rows; 
     public int Cols => cols; 
-    public CartType Filter => filter; 
+    public CartType Filter => filter;
+    public IEnumerable<string> GetWhitelist() => whitelist; 
 
     public Inventory(string id, int r, int c, int level = 1, CartType type = CartType.General) {
         inventoryId = id;

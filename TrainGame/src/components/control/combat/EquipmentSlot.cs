@@ -58,6 +58,7 @@ public class EquipmentSlotWrap {
         EquipmentSlot<T> equip = new EquipmentSlot<T>(inv);
         w.SetComponent<EquipmentData>(e, new EquipmentData()); 
         w.SetComponent<EquipmentSlot<T>>(e, equip); 
+        w.SetComponent<InventoryUpdatedFlag>(e, InventoryUpdatedFlag.Get());
         return equip;
     }
 }

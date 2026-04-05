@@ -31,6 +31,12 @@ public class InventoryFastTransferSystem {
                     if (invOther != default(Inventory)) {
                         invClicked.TransferAllTo(invOther, itemID);
                     }
+
+                    Inventory[] invs = [invOther, invClicked]; 
+                    foreach (Inventory inv in invs) {
+                        w.SetComponentSafe<InventoryUpdatedFlag>(
+                            InventoryWrap.GetEntity(inv.ID, w), InventoryUpdatedFlag.Get());
+                    }
                 }
             }
         }); 

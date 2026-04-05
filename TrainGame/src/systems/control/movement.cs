@@ -33,6 +33,7 @@ public class SpatialHash {
     private List<HashSet<int>> psCur; 
 
     private RectangleF bounds;
+    public RectangleF Bounds => bounds;
     private float cellWidth; 
     private int cellsPerRow; 
 
@@ -171,6 +172,7 @@ public class SpatialHash {
 public static class MovementSystem {
     private static float baseLen = 1000f; 
     private static int cellsPerRow = 10; 
+    private static bool partitionInvalid;
     private static SpatialHash setPartition(Vector2 center) {
         
         RectangleF bounds = new RectangleF(
@@ -258,11 +260,13 @@ public static class MovementSystem {
                     w.SetComponent<MovementBounds>(e, mb);
                 }
 
-                if (!s2 || v.Length() > 0) {
+                if (!s2 || v.Length() > 0 || partitionInvalid) {
                     updatePartition(w, mb, e);
                 }
 
             });
+
+            partitionInvalid = false;
 
             if (VirtualKeyboard.IsClicked(Keys.B)) {
                 DrawBounds(w);
@@ -370,6 +374,16 @@ public static class MovementSystem {
             Frame f = w.GetComponent<Frame>(e); 
             Velocity v = w.GetComponent<Velocity>(e); 
             f.SetCoordinates(f.Position + v.Vector);
+        });
+    }
+
+    public static void RegisterRecenterPartition(World w) {
+        w.AddSystem((w) => {
+            Vector2 topleft = w.GetCameraTopLeft();
+            if (!partition.Bounds.Contains(new PointF(topleft.X, topleft.Y))) {
+                partition = setPartition(topleft);
+                partitionInvalid = true;
+            }
         });
     }
 

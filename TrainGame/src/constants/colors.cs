@@ -1,6 +1,7 @@
 namespace TrainGame.Constants;
 
 using Microsoft.Xna.Framework;
+using TrainGame.Components;
 
 public static class Colors {
     public static readonly Color Placebo = Color.DarkGray; 
@@ -15,4 +16,15 @@ public static class Colors {
 
     public static readonly Color Warning = Color.Red; 
     public static readonly Color Vampiric = Color.Purple;
+    public static readonly Color PlayerBullet = new Color(203, 243, 249);
+    public static readonly Color EnemyBullet = new Color(255, 255, 255);
+
+    public static Color GetBulletColor<U>() {
+        if (typeof(U) == typeof(Player)) {
+            return PlayerBullet;
+        } else if (typeof(U) == typeof(Enemy)) {
+            return EnemyBullet;
+        }
+        return Color.White;
+    }
 }

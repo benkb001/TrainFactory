@@ -83,13 +83,6 @@ public static class Layout {
             }
         }
 
-        for (int i = 0; i < width; i++) {
-            res[i][0] = w;
-            res[i][width - 1] = w; 
-            res[0][i] = w; 
-            res[width - 1][i] = w; 
-        }
-
         res[width/2][width/2] = p;
 
         return res; 
@@ -154,13 +147,5 @@ public static class Layout {
 
     public static void DrawCombat(World w) {
         Draw(w, Combat);
-        Vector2 topleft = w.GetCameraTopLeft();
-        float width = (Combat.Count - 2) * Constants.TileWidth; 
-        w.SetCameraBounds(
-            topleft.Y + (2 * Constants.TileWidth), 
-            topleft.X + width, 
-            topleft.Y + width, 
-            topleft.X + (2 * Constants.TileWidth)
-        );
     }
 }

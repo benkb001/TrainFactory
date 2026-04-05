@@ -20,6 +20,8 @@ public static class RegisterSystems {
         RegisterEnemyTraits.All();
         RegisterEquipmentCallbacks.All();
         RegisterBuyableCallbacks.All();
+        
+        MovementSystem.RegisterRecenterPartition(w);
 
         CardinalMovementSystem.Register(w); 
         ParametricMovementSystem.Register(w);

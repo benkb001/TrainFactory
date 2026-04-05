@@ -15,10 +15,11 @@ using TrainGame.Callbacks;
 using TrainGame.Systems;
 
 public static class PlayerWrap {
-    private static void addEquipSlot<T>(World w, int dataEnt) where T : IEquippable {
+    private static EquipmentSlot<T> addEquipSlot<T>(World w, int dataEnt) where T : IEquippable {
         (int invEnt, Inventory equipInv) = InventoryWrap.Add(w, Constants.EquipmentInvID<T>(), 1, 1);
         EquipmentSlot<T> equip = EquipmentSlotWrap.Add<T>(w, equipInv, invEnt);
         w.SetComponent<EquipmentSlot<T>>(dataEnt, equip); 
+        return equip; 
     }
 
     public static int GetEntity(World w) {
@@ -38,9 +39,9 @@ public static class PlayerWrap {
 
         Health h = new Health(Constants.PlayerHP);
         Parrier p = new Parrier(Constants.PlayerParrierHP);
-        playerInv.Add(ItemID.Pistol, 1); 
         int e = AddData(w, playerInv, h, p);
-        addEquipSlot<PlayerGun>(w, e); 
+        EquipmentSlot<PlayerGun> slot = addEquipSlot<PlayerGun>(w, e); 
+        slot.GetInventory().Add(ItemID.Pistol, 1);
     }
     
     //This code runs when we load from persistent state
@@ -166,7 +167,6 @@ public static class PlayerWrap {
         }
 
         if (hasSP) {
-            w.SetComponent<IShootPattern>(playerEntity, sp); 
             ShootPatternRegistry.Add(w, sp, playerEntity); 
         }
 

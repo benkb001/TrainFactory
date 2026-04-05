@@ -18,7 +18,7 @@ using TrainGame.Callbacks;
 
 public static class EquipSystem {
     public static void Register<T>(World w) where T : IEquippable {
-        Type[] ts = { typeof(EquipmentSlot<T>), typeof(EquipmentData), typeof(Data), typeof(InventoryUpdatedFlag) };
+        Type[] ts = { typeof(EquipmentSlot<T>), typeof(EquipmentData), typeof(InventoryUpdatedFlag) };
         
         w.AddSystem(ts, (w, e) => {
             EquipmentSlot<T> slot = w.GetComponent<EquipmentSlot<T>>(e); 
@@ -37,7 +37,6 @@ public static class EquipPlayerGunSystem {
 
             foreach (int e in w.GetMatchingEntities([typeof(EquipmentSlot<PlayerGun>)])) {
                 w.SetComponent<Shooter>(e, shooter);
-                w.SetComponent<IShootPattern>(e, sp); 
                 ShootPatternRegistry.Add(w, sp, e); 
             }
         }); 
@@ -71,39 +70,32 @@ public class EquipmentInterfaceData : IInterfaceData {
 public static class DrawEquipmentInterfaceSystem {
     public static void Register(World w) {
         DrawInterfaceSystem.Register<EquipmentInterfaceData>(w, (w, e) => {
-            int playerDataEnt = PlayerWrap.GetEntity(w); 
-            Inventory playerInv = w.GetComponent<Inventory>(playerDataEnt); 
-            (EquipmentSlot<PlayerGun> gunSlot, bool hasGunSlot) = w.GetComponentSafe<EquipmentSlot<PlayerGun>>(playerDataEnt); 
-            if (hasGunSlot) {
-                Inventory gunInv = gunSlot.GetInventory(); 
-                LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w); 
+            Inventory playerInv = InventoryWrap.GetByID(w, Constants.WeaponsInvID);
+            Inventory gunInv = InventoryWrap.GetByID(w, Constants.EquipmentInvID<PlayerGun>());
 
-                (float invWidth, float invHeight) = InventoryWrap.GetUI(playerInv);
-                InventoryView playerInvView = DrawInventoryCallback.Draw(
-                    w, 
-                    playerInv,
-                    Vector2.Zero, 
-                    invWidth, 
-                    invHeight
-                ); 
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w); 
 
-                (float armorWidth, float armorHeight) = InventoryWrap.GetUI(gunInv); 
-                InventoryView gunInvView = DrawInventoryCallback.Draw(
-                    w, 
-                    gunInv, 
-                    Vector2.Zero,
-                    armorWidth, 
-                    armorHeight,
-                    DrawLabel: true
-                );
+            (float invWidth, float invHeight) = InventoryWrap.GetUI(playerInv);
+            InventoryView playerInvView = DrawInventoryCallback.Draw(
+                w, 
+                playerInv,
+                Vector2.Zero, 
+                invWidth, 
+                invHeight
+            ); 
 
-                int gunInvEnt = gunInvView.GetInventoryEntity();
-                w.SetComponent<EquipmentSlot<PlayerGun>>(gunInvEnt, gunSlot); 
-                w.SetComponent<EquipmentData>(gunInvEnt, new EquipmentData()); 
+            (float armorWidth, float armorHeight) = InventoryWrap.GetUI(gunInv); 
+            InventoryView gunInvView = DrawInventoryCallback.Draw(
+                w, 
+                gunInv, 
+                Vector2.Zero,
+                armorWidth, 
+                armorHeight,
+                DrawLabel: true
+            );
 
-                outer.AddChild(gunInvView.GetParentEntity(), w); 
-                outer.AddChild(playerInvView.GetParentEntity(), w); 
-            }
+            outer.AddChild(gunInvView.GetParentEntity(), w); 
+            outer.AddChild(playerInvView.GetParentEntity(), w); 
         });
     }
 }

@@ -17,11 +17,11 @@ public static class ShootPatternRegistry {
     }
 
     public static void Add(World w, IShootPattern p, int e) {
-        registry.Callback(w, p.Clone(), e);
-    }
-
-    public static void Remove(World w, IShootPattern p, int e) {
-        remove.Callback(w, p, e); 
+        if (w.ComponentContainsEntity<IShootPattern>(e)) {
+            remove.Callback(w, w.GetComponent<IShootPattern>(e), e);
+        }
+        registry.Callback(w, p, e);
+        w.SetComponent<IShootPattern>(e, p);
     }
 }
 

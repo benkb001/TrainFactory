@@ -180,7 +180,7 @@ public static class AddExplosionInteractSystem {
                         new Split(
                             new MeleeShootPattern(
                                 new BulletContainer(
-                                    new Bullet(3, maxFramesActive: 10),
+                                    new Bullet(1, maxFramesActive: 10),
                                     new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2)
                                 )
                             )
@@ -311,18 +311,18 @@ public static class RewardSpawnSystem {
 
     private static Distribution<Type, Action<World, int>> rewardDist = new Distribution<Type, Action<World, int>>(
         new Dictionary<Type, int>(){
-            [typeof(Loot)] = 10,
-            [typeof(MaxAmmo)] = 10,
-            [typeof(HealthPotion)] = 10,
+            [typeof(Loot)] = 15,
+            [typeof(HealthPotion)] = 12,
+            [typeof(AddShield)] = 10,
             [typeof(DamagePotion)] = 10,
-            [typeof(BulletSizeIncrease)] = 10,
-            [typeof(BulletSpeedIncrease)] = 10,
-            [typeof(UnloadSpeedIncrease)] = 10,
             [typeof(ReloadSpeedIncrease)] = 10,
             [typeof(AddExplosion)] = 10,
-            [typeof(AddHoming)] = 10,
-            [typeof(AddShield)] = 10,
-            [typeof(AddKnockback)] = 1000
+            [typeof(MaxAmmo)] = 10,
+            [typeof(UnloadSpeedIncrease)] = 8,
+            [typeof(BulletSpeedIncrease)] = 4,
+            [typeof(BulletSizeIncrease)] = 4,
+            [typeof(AddKnockback)] = 4,
+            [typeof(AddHoming)] = 3
         },
         new Dictionary<Type, Action<World, int>>(){
             [typeof(Loot)] = setLoot,

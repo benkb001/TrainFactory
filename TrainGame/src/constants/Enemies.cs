@@ -31,8 +31,8 @@ public static class EnemyID {
     public static readonly Dictionary<EnemyType, EnemyConst> Enemies = new() {
         [EnemyType.Artillery] = new EnemyConst(
             new Shooter(
-                ammo: 4, 
-                ticksPerShot: 100, 
+                ammo: 1, 
+                ticksPerShot: 300, 
                 reloadTicks: 300
             ),
             new DefaultShootPattern(
@@ -40,18 +40,14 @@ public static class EnemyID {
                     new Bullet(15, maxFramesActive: 600),
                     bFrame(),
                     traits: new List<IBulletTrait>(){
-                        new Homing(Speed: Constants.PlayerSpeed / 2f),
+                        new Homing(Speed: Constants.PlayerSpeed / 4f),
                         new RemoveOnCollision()
                     }
                 )
             ), 
-            new DefaultMovePattern(
-                ticksToMove: 60, 
-                ticksToWait: 60,
-                speed: 0.5f
-            ),
+            new ChaseMovePattern(Speed: 0.5f, SecondsToChase: 3),
             Type: EnemyType.Artillery, 
-            HP: 15, 
+            HP: 12, 
             Size: Constants.TileWidth * 2,
             Difficulty: 2,
             Dist: new LootDistribution(
@@ -85,7 +81,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Barbarian, 
-            HP: 20, 
+            HP: 15, 
             Size: Constants.TileWidth,
             Difficulty: 2,
             Dist: new LootDistribution(
@@ -160,7 +156,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.ExplodeOnDeath,
-            HP: 20,
+            HP: 15,
             traits: new List<IEnemyTrait>(){
                 new Split(
                     new MeleeShootPattern(
@@ -322,7 +318,7 @@ public static class EnemyID {
             ),
             new DefaultMovePattern(speed: 0f),
             Type: EnemyType.Skeleton,
-            HP: 100,
+            HP: 20,
             Difficulty: 5,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
@@ -389,7 +385,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Sniper, 
-            HP: 25,
+            HP: 15,
             Difficulty: 3,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
@@ -436,7 +432,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Splitter,
-            HP: 60,
+            HP: 20,
             Difficulty: 4,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
@@ -473,7 +469,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Volley, 
-            HP: 25,
+            HP: 15,
             Difficulty: 4,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
@@ -517,7 +513,7 @@ public static class EnemyID {
                 Speed: 8f
             ),
             Type: EnemyType.Vampire,
-            HP: 100,
+            HP: 20,
             Size: Constants.TileWidth * 1.5f,
             Difficulty: 5,
             Dist: new LootDistribution(
@@ -551,7 +547,7 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Warrior, 
-            HP: 40,
+            HP: 25,
             Size: Constants.TileWidth * 2,
             Difficulty: 3,
             Dist: new LootDistribution(
@@ -599,7 +595,7 @@ public static class EnemyID {
             ),
             new DefaultMovePattern(0),
             Type: EnemyType.Wizard,
-            HP: 40,
+            HP: 25,
             Size: Constants.TileWidth,
             Difficulty: 4,
             Dist: new LootDistribution(

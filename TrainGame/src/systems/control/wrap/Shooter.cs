@@ -33,7 +33,13 @@ public static class ShooterWrap {
         w.SetComponent<Velocity>(e, new Velocity(Aim(pos, targetPos, bc.Speed)));
         w.SetComponent<Bullet>(e, bc.GetBullet());
         w.SetComponent<U>(e, U.Get());
-        w.SetComponent<ShotBy>(e, new ShotBy(shooterEnt));
+        
+        if (w.ComponentContainsEntity<ShotBy>(shooterEnt)) {
+            w.SetComponent<ShotBy>(e, w.GetComponent<ShotBy>(shooterEnt));
+        } else {
+            w.SetComponent<ShotBy>(e, new ShotBy(shooterEnt));
+        }
+        w.SetComponent<Outline>(e, new Outline(Colors.GetBulletColor<U>()));
 
         foreach (IBulletTrait bt in bc.GetBulletTraits()) {
             BulletTraitRegistry.Add(w, bt, e);

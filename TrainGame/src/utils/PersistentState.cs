@@ -109,7 +109,7 @@ public static class PersistentState {
 
             return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
                 ["cols"] = inv.Cols, 
-                ["filter"] = Convert.ToInt32(inv.Filter),
+                ["whitelist"] = new JsonArray(inv.GetWhitelist().Select(s => (JsonNode)s).ToArray()),
                 ["items"] = itemsJson,
                 ["level"] = inv.Level,
                 ["rows"] = inv.Rows
@@ -198,10 +198,13 @@ public static class PersistentState {
         foreach (KeyValuePair<string, JsonNode> kvp in dom["inventories"].AsObject()) {
             string invID = kvp.Key; 
             JsonObject invData = kvp.Value.AsObject(); 
-            CartType filter = JsonSerializer.Deserialize<CartType>((int)invData["filter"]);
 
             (int e, Inventory inv) = InventoryWrap.Add(w, invID, (int)invData["rows"], (int)invData["cols"], 
-                (int)invData["level"], filter); 
+                (int)invData["level"]); 
+
+            foreach (string s in JsonSerializer.Deserialize<IEnumerable<string>>(invData["whitelist"])) {
+                inv.Whitelist(s);
+            }
             foreach (string itemID in ItemID.All) {
                 inv.Add(itemID, (int)invData["items"][itemID]);
             }
