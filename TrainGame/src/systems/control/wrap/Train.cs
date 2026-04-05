@@ -35,7 +35,6 @@ public static class TrainWrap {
         }
 
         Train t = new Train(inv, origin.RealPosition, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
-        origin.AddTrain(t);
         return t;
     }
 
@@ -60,7 +59,6 @@ public static class TrainWrap {
 
         w.SetComponent<ComingFromCity>(tEnt, new ComingFromCity(c));
         w.SetComponent<GoingToCity>(tEnt, new GoingToCity(c));
-        c.AddTrain(t);
 
         return tEnt; 
     }
@@ -89,7 +87,6 @@ public static class TrainWrap {
             t.Embark(dest.RealPosition, left); 
             MakeMessage.Add<TrainEmbarkedMessage>(w, new TrainEmbarkedMessage(t)); 
             w.SetComponent<GoingToCity>(trainEnt, new GoingToCity(dest));
-            dest.SendTrain(t, comingFrom);
         }
     }
 

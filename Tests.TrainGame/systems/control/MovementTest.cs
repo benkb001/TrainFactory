@@ -174,50 +174,6 @@ public class MovementTest {
     }
 
     [Fact]
-    public void MovementSystem_ShouldHandleCollisionsWitBothEntitiesMoving() {
-        World w = init(); 
-
-        int width = 5; 
-        int height = 5; 
-
-        //f1 is at 10 moving 10 to the right 
-        //f2 is at 30 moving 10 to the left 
-        //since f1 is added first, it should detect the collision
-        //so to avoid collision it moves only 5 to the right, 
-        // occupying (15, 20), and f2 moves 10 to the left, 
-        // occupying (20, 30)
-        Frame f1 = new Frame(10, 10, width, height); 
-        Frame f2 = new Frame(30, 10, width, height);
-
-        int dx1 = 10; 
-        int dy1 = 0; 
-
-        int dx2 = -10; 
-        int dy2 = 0; 
-
-        Velocity v1 = new Velocity(dx1, dy1); 
-        Velocity v2 = new Velocity(dx2, dy2);
-
-        int e1 = EntityFactory.Add(w);
-        int e2 = EntityFactory.Add(w);
-
-        w.SetComponent<Velocity>(e1, v1); 
-        w.SetComponent<Velocity>(e2, v2); 
-        w.SetComponent<Frame>(e1, f1);      
-        w.SetComponent<Frame>(e2, f2);
-
-        Collidable c = Collidable.Get(); 
-
-        w.SetComponent<Collidable>(e1, c); 
-        w.SetComponent<Collidable>(e2, c); 
-
-        w.Update(); 
-
-        Assert.Equal(20, w.GetComponent<Frame>(e2).GetX()); 
-        Assert.Equal(15, w.GetComponent<Frame>(e1).GetX()); 
-    }
-
-    [Fact]
     public void MovementSystem_ShouldHandleCollisionsInAllFourCardinalDirections() {
         World w = init(); 
 

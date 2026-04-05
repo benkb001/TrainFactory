@@ -37,17 +37,11 @@ public class City : IID, ICity, INode<City> {
     public static float UIWidth = 50f; 
     public static float UIHeight = 50f;
     public bool HasPlayer = false; 
-    
-    private Dictionary<string, Train> trains = new();
-    public Dictionary<string, Train> Trains => trains; 
 
     private Dictionary<string, Machine> machines = new(); 
     public Dictionary<string, Machine> Machines => machines; 
 
     private Dictionary<CartType, int> carts = new(); 
-
-    private Dictionary<City, List<Train>> trainsEnRoute = new();
-    public Dictionary<City, List<Train>> TrainsEnRoute => trainsEnRoute; 
 
     public Vector2 Position => realPosition;
     
@@ -72,12 +66,10 @@ public class City : IID, ICity, INode<City> {
     public void AddConnection(City c) {
         if (!AdjacentCities.Contains(c)) {
             AdjacentCities.Add(c); 
-            trainsEnRoute[c] = new();
         }
 
         if (!c.AdjacentCities.Contains(this)) {
             c.AdjacentCities.Add(this); 
-            c.trainsEnRoute[this] = new();
         }
     }
 
@@ -86,32 +78,12 @@ public class City : IID, ICity, INode<City> {
         machines[m.Id] = m; 
     }
 
-    //todo: test
-    public void AddTrain(Train t) {
-        trains[t.Id] = t; 
-    }
-
     public void AddCart(CartType type) {
         carts[type] += 1; 
     }
 
     public void RemoveCart(CartType type) {
         carts[type] -= 1; 
-    }
-
-    public void ReceiveTrain(Train t, City comingFrom) {
-        trainsEnRoute[comingFrom].Remove(t);
-        AddTrain(t);
-    }
-
-    //todo: test
-    public void RemoveTrain(Train t) {
-        trains.Remove(t.Id); 
-    }
-
-    public void SendTrain(Train t, City comingFrom) {
-        comingFrom.RemoveTrain(t);
-        trainsEnRoute[comingFrom].Add(t);
     }
 
     public string GetID() {

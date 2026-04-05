@@ -25,7 +25,6 @@ public static class TrainTravelSystem {
             City goingTo = w.GetComponent<GoingToCity>(e);
 
             if (comingFrom != goingTo) {
-                goingTo.ReceiveTrain(t, comingFrom);
                 w.SetComponent<ComingFromCity>(e, new ComingFromCity(goingTo));
             }
 
@@ -48,14 +47,18 @@ public static class TrainTravelSystem {
         world.AddSystem(ts, tf); 
     }
 
-    //ICKY: City controlling train moving, idk. 
     public static void RegisterMove(World w) {
-        w.AddSystem([typeof(City), typeof(Data)], (w, e) => {
-            City c = w.GetComponent<City>(e); 
-            Dictionary<City, List<Train>> tsDict = c.TrainsEnRoute; 
-            
-            foreach(KeyValuePair<City, List<Train>> kvp in tsDict) {
-                List<Train> ts = kvp.Value;
+        w.AddSystem((w) => {
+            foreach ( List<Train> ts in 
+            w.GetMatchingEntities([typeof(Train), typeof(Data), typeof(ComingFromCity), typeof(GoingToCity)])
+            .Select(ent => new Tuple<Train, City, City>(w.GetComponent<Train>(ent), 
+                w.GetComponent<ComingFromCity>(ent), w.GetComponent<GoingToCity>(ent)))
+            .Where(tup => !tup.Item2.Equals(tup.Item3))
+            .GroupBy(
+                tup => (tup.Item2, tup.Item3),
+                tup => tup.Item1
+            )
+            .Select(g => g.OrderByDescending(t => t.JourneyCompletion).ToList())) {
 
                 for (int i = ts.Count - 1; i > 0; i--) {
                     Train cur = ts[i]; 

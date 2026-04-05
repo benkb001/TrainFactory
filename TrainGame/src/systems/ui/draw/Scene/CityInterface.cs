@@ -51,22 +51,13 @@ public static class DrawCityInterfaceSystem {
                 childrenPerPage: 4
             );
 
-            //ICKY: ui system querying data here
-            Dictionary<string, (Train, City, City)> ts = new(); 
-            foreach (KeyValuePair<City, List<Train>> kvp in city.TrainsEnRoute) {
-                City goingTo = kvp.Key;
-                foreach (Train train in kvp.Value) {
-                    ts[train.ID] = (train, city, goingTo);
-                }
-            }
+            foreach(Tuple<Train, City, City> tcc in 
+                w.GetMatchingEntities([typeof(Train), typeof(Data), typeof(ComingFromCity), typeof(GoingToCity)])
+                .Select(ent => new Tuple<Train, City, City>(w.GetComponent<Train>(ent), w.GetComponent<ComingFromCity>(ent), w.GetComponent<GoingToCity>(ent)))
+                .Where(threetup => threetup.Item2.Equals(city) && threetup.Item3.Equals(city))
+            ) {
+                (Train train, City comingFrom, City goingTo) = tcc;
 
-            foreach (KeyValuePair<string, Train> kvp in city.Trains) {
-                if (!ts.ContainsKey(kvp.Key)) {
-                    ts[kvp.Key] = (kvp.Value, city, city);
-                }
-            }
-
-            foreach ((Train train, City comingFrom, City goingTo) in ts.Values) {
                 int tEnt = EntityFactory.Add(w); 
                 int trainDataEnt = ComponentID.GetEntity<Train>(train.ID, w);
                 trainsView.AddChild(tEnt, w); 
@@ -75,7 +66,7 @@ public static class DrawCityInterfaceSystem {
                 w.SetComponent<Button>(tEnt, new Button());
                 w.SetComponent<Frame>(tEnt, new Frame(w.GetCameraTopLeft(), 100, 100));  
                 w.SetComponent<Outline>(tEnt, new Outline()); 
-            }
+            }   
 
             mainRow.AddChild(trainsView.GetParentEntity(), w); 
 
