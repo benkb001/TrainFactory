@@ -34,7 +34,9 @@ public static class TrainWrap {
             carts[type] = curInv; 
         }
 
-        return new Train(inv, origin.RealPosition, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
+        Train t = new Train(inv, origin.RealPosition, carts, id, power: Constants.TrainDefaultPower, mass: Constants.TrainDefaultMass);
+        origin.AddTrain(t);
+        return t;
     }
 
     public static int AssembleToWorld(World w, City c) {

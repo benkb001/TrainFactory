@@ -55,7 +55,7 @@ public static class ItemID {
     public static readonly List<string> All = [
         Accelerator, Adamantite, AdamantiteDrill, AirResistor, AntiGravity, Armor1, Armor2, 
         Armor3, Assembler, Boomerang, Cobalt, CobaltDrill, Credit, DepotUpgrade,
-        Drill, Duplicator, Engine, Excavator, Fuel, Gasifier, Greenhouse,
+        Drill, Duplicator, Engine, Excavator, Fuel, Gasifier, Glass, Greenhouse,
         Iron, Kiln, Laser, Lubricant, MachineUpgrade, Motherboard, Mythril, MythrilDrill, Oil, 
         OilRig, Petroleum, Pistol, PocketDimension, Pump, Rail, Refinery, Ring, Sand, 
         Shotgun, SmartAssembler, Tentacles, TimeCrystal, Water, Wood

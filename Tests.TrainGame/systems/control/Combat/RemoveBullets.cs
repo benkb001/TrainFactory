@@ -42,6 +42,7 @@ public class RemoveBulletSystemTest {
         int bulletEnt = EntityFactory.AddUI(w, new Vector2(1, 1), 10, 10); 
         w.SetComponent<Bullet>(bulletEnt, new Bullet(1)); 
         w.SetComponent<Collidable>(wallEnt, new Collidable()); 
+        w.SetComponent<RemoveOnCollision>(bulletEnt, new RemoveOnCollision());
 
         w.Update(); 
 

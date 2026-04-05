@@ -51,12 +51,26 @@ public static class DrawCityInterfaceSystem {
                 childrenPerPage: 4
             );
 
-            foreach (Train train in city.Trains.Values) {
+            //ICKY: ui system querying data here
+            Dictionary<string, (Train, City, City)> ts = new(); 
+            foreach (KeyValuePair<City, List<Train>> kvp in city.TrainsEnRoute) {
+                City goingTo = kvp.Key;
+                foreach (Train train in kvp.Value) {
+                    ts[train.ID] = (train, city, goingTo);
+                }
+            }
+
+            foreach (KeyValuePair<string, Train> kvp in city.Trains) {
+                if (!ts.ContainsKey(kvp.Key)) {
+                    ts[kvp.Key] = (kvp.Value, city, city);
+                }
+            }
+
+            foreach ((Train train, City comingFrom, City goingTo) in ts.Values) {
                 int tEnt = EntityFactory.Add(w); 
-                //ICKY, can we pass entity nums into drawCityInterfaceMessage?
                 int trainDataEnt = ComponentID.GetEntity<Train>(train.ID, w);
                 trainsView.AddChild(tEnt, w); 
-                w.SetComponent<TrainUI>(tEnt, new TrainUI(train, trainDataEnt)); 
+                w.SetComponent<TrainUI>(tEnt, new TrainUI(train, trainDataEnt, city, goingTo)); 
                 w.SetComponent<TextBox>(tEnt, new TextBox(train.Id)); 
                 w.SetComponent<Button>(tEnt, new Button());
                 w.SetComponent<Frame>(tEnt, new Frame(w.GetCameraTopLeft(), 100, 100));  

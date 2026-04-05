@@ -47,8 +47,8 @@ public class Health {
     }
 
     public void SetHP(int hp) {
-        this.hp = Math.Max(0, hp); 
         this.hp = Math.Min(hp, maxHP);
+        this.hp = Math.Max(0, this.hp); 
         this.TempHP = Math.Max(0, hp - this.hp);
     }
 }

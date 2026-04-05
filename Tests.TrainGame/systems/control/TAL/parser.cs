@@ -144,6 +144,8 @@ public class TALParserTest {
         c.Inv.TakeAll(ItemID.Fuel);
         string program = $"({c.ID}.Fuel > 10) OR ({c.ID}.Glass < 100)";
         List<TALToken> toks = TALLexer.Tokenize(program);
+        Console.WriteLine($"num toks: {toks.Count}");
+        Console.WriteLine($"toks: {TALLexer.ToksToString(toks)}");
         ITALExpression e = TALParser.ParseConditionalExp<Train, City>(toks, new TrainWorld(w), t);
         TALOrExpression orExp = Assert.IsType<TALOrExpression>(e);
         Assert.False((bool)orExp.Evaluate());

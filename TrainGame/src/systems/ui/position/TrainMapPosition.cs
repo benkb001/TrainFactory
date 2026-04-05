@@ -17,17 +17,10 @@ public static class TrainMapPositionSystem {
         Action<World, int> tf = (w, e) => {
             TrainUI tUI = w.GetComponent<TrainUI>(e);
             Train t = tUI.GetTrain(); 
-            int trainEnt = tUI.TrainEntity;
 
             float completion = t.JourneyCompletion;
-
-            (City comingFrom, bool hasComingFrom) = TrainWrap.GetComingFrom(w, trainEnt); 
-            (City goingTo, bool hasGoingTo) = TrainWrap.GetGoingTo(w, trainEnt);
-
-            if (!hasComingFrom || !hasGoingTo) {
-                w.RemoveEntity(e);
-                return;
-            }
+            City comingFrom = tUI.ComingFrom;
+            City goingTo = tUI.GoingTo;
 
             Vector2 comingFromMapPosition = comingFrom.MapPosition;
             Vector2 goingToMapPosition = goingTo.MapPosition;

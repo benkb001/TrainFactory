@@ -12,7 +12,7 @@ using TrainGame.Systems;
 
 public static class Bootstrap {
     public static void InitWorld(World w) {
-        
+        EquipmentID.InitMaps();
         Dictionary<string, (int, City)> cities = new(); 
         Dictionary<string, (int, Machine)> machines = new(); 
 

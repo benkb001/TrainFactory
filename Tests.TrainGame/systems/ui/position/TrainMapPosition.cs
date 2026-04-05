@@ -13,19 +13,27 @@ using TrainGame.Utils;
 public class TrainMapPositionSystemTest {
     [Fact]
     public void TrainMapPositionSystem_ShouldSetTrainsToTheCorrectPositionBasedOnTimePassed() {
-        World w = WorldFactory.Build(); 
+        World w = new World();
+        RegisterComponents.All(w);
+        TrainMapPositionSystem.Register(w);
 
         Train train = TrainWrap.GetTest();
+        train.SetPosition(0f, 0f);
         int trainDataEntity = EntityFactory.AddData<Train>(w, train);
         
         train.Embark(new Vector2(100, 0), new WorldTime()); 
 
         int trainUIEntity = EntityFactory.Add(w); 
-        TrainUI tUI = new TrainUI(train, trainDataEntity); 
+        City start = new City("start", new Inventory("test",1,1));
+        City end = new City("end", new Inventory("test",1,1), 100f, 100f, 100f, 100f);
+        TrainUI tUI = new TrainUI(train, trainDataEntity, start, end); 
+
         w.SetComponent<TrainUI>(trainUIEntity, tUI); 
         w.SetComponent<MapUIFlag>(trainUIEntity, MapUIFlag.Get());
         w.SetComponent<Frame>(trainUIEntity, new Frame(0, 0, 10, 10)); 
-        w.PassTime(new WorldTime(minutes: 1)); 
+        w.SetComponent<ComingFromCity>(trainUIEntity, new ComingFromCity(start));
+        w.SetComponent<GoingToCity>(trainUIEntity, new GoingToCity(end));
+        train.Move(new WorldTime(minutes: 1));
         w.Update(); 
 
         //train is moving to right so the ui component should've moved to the right

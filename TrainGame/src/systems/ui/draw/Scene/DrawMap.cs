@@ -55,12 +55,15 @@ public static class DrawMapSystem {
             }
 
             //draw moving trains
-            List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Data)]); 
+            List<int> trainDataEntities = w.GetMatchingEntities([typeof(Train), typeof(Data), 
+                typeof(ComingFromCity), typeof(GoingToCity)]); 
             foreach (int trainDataEntity in trainDataEntities) {
                 Train train = w.GetComponent<Train>(trainDataEntity); 
                 int trainDrawnEntity = EntityFactory.Add(w); 
+                City comingFrom = w.GetComponent<ComingFromCity>(trainDataEntity);
+                City goingTo = w.GetComponent<GoingToCity>(trainDataEntity);
             
-                w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train, trainDataEntity)); 
+                w.SetComponent<TrainUI>(trainDrawnEntity, new TrainUI(train, trainDataEntity, comingFrom, goingTo)); 
                 w.SetComponent<MapUIFlag>(trainDrawnEntity, MapUIFlag.Get()); 
                 Frame f = new Frame(0, 0, TrainUI.Width, TrainUI.Height); 
                 w.SetComponent<Frame>(trainDrawnEntity, f); 
