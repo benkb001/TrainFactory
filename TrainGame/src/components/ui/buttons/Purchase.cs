@@ -15,9 +15,12 @@ using TrainGame.Callbacks;
 public class PurchaseButton<T> where T : IBuyable {
 
     public readonly T Buyable;
-    public Dictionary<string, int> Cost => Buyable.GetCost(); 
+    public Dictionary<string, int> Cost;
+    public readonly Inventory Source;
 
-    public PurchaseButton(T Buyable) {
+    public PurchaseButton(T Buyable, Dictionary<string, int> Cost, Inventory Source) {
         this.Buyable = Buyable;
+        this.Cost = Cost;
+        this.Source = Source;
     }
 }

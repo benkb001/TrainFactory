@@ -2,6 +2,7 @@ namespace TrainGame.Systems;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 
@@ -46,5 +47,94 @@ public static class ShooterWrap {
         }
 
         return e; 
+    }
+
+    public static void UpgradeDamage(IShootPattern p, int dmg = 1) {
+        foreach (BulletContainer bc in p.GetBulletContainers()) {
+            bc.AddDamage(dmg); 
+        }
+    }
+
+    public static void UpgradeBulletSize(IShootPattern sp) {
+        foreach (BulletContainer bc in sp.GetBulletContainers()) {
+            bc.Width += Constants.BulletSizeIncrease;
+            bc.Height += Constants.BulletSizeIncrease;
+        }
+    }
+
+    public static void UpgradeBulletSpeed(IShootPattern sp) {
+        foreach (BulletContainer bc in sp.GetBulletContainers()) {
+            bc.Speed += Constants.BulletSpeedIncrease;
+        }
+    }
+
+    public static void AddExplosion(IShootPattern sp) {
+        foreach (BulletContainer bc in sp.GetBulletContainers()) {
+            bool hasExplosion = false; 
+            foreach (IBulletTrait bt in bc.GetTraits()) {
+                if (bt is Split split && split.Pattern is MeleeShootPattern msp) {
+                    foreach (BulletContainer innerBC in msp.GetBulletContainers()) {
+                        innerBC.AddDamage(1);
+                    }
+                    hasExplosion = true;
+                    break;
+                }
+            }
+            
+            if (!hasExplosion) {
+                bc.AddTrait(
+                    new Split(
+                        new MeleeShootPattern(
+                            new BulletContainer(
+                                new Bullet(1, maxFramesActive: 10),
+                                new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2)
+                            )
+                        )
+                    )
+                );
+            }
+        }
+    }
+
+    public static void AddHoming(IShootPattern sp) {
+        foreach (BulletContainer bc in sp.GetBulletContainers()) {
+            if (!bc.GetTraits().Any(t => t.GetType() == typeof(Homing))) {
+                bc.AddTrait(new Homing(Speed: bc.Speed));
+            }
+        }
+    }
+
+    public static void AddKnockback(IShootPattern sp) {
+
+        foreach (BulletContainer bc in sp.GetBulletContainers()) {
+            bool hasKnockback = false;
+            foreach (IBulletTrait t in bc.GetTraits()) {
+                if (t is AppliesKnockback applies) {
+                    applies.Multiplier += 1f; 
+                    hasKnockback = true;
+                }
+            }
+            if (!hasKnockback) {
+                bc.AddTrait(new AppliesKnockback());
+            }
+        }
+    }
+
+    public static void UpgradeUnloadSpeed(Shooter s) {
+        s.TimeBetweenShots -= Constants.TicksBetweenShotDecrement;
+        if (s.TimeBetweenShots.InTicks() < 1) {
+            s.TimeBetweenShots = new WorldTime(ticks: 1);
+        }
+    }
+
+    public static void UpgradeReloadSpeed(Shooter s) {
+        s.ReloadTime -= Constants.ReloadTicksDecrement;
+        if (s.ReloadTime.InTicks() < 1) {
+            s.ReloadTime = new WorldTime(ticks: 1);
+        }
+    }
+
+    public static void UpgradeMaxAmmo(Shooter s) {
+        s.MaxAmmo += s.BaseMaxAmmo;
     }
 }

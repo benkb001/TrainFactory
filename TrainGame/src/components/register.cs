@@ -116,7 +116,6 @@ public static class RegisterComponents {
         r<InventoryPosition>();
         r<InventoryUpdatedFlag>();
         r<IShootPattern>();
-        r<ItemTransaction>();
         r<Ladder>();
         r<Knockback>();
         r<Machine>(); 
@@ -150,7 +149,7 @@ public static class RegisterComponents {
         r<PlayerHUD>(); 
         r<ProgressBar>(); 
         r<PurchaseButton<PurchaseItem>>();
-        r<PurchaseButton<ResetHP>>();
+        r<PurchaseButton<PurchaseUpgradeGunDamage>>();
         r<RadialShootPattern>();
         r<RandomShotgunShootPattern>();
         r<ReceiveDamageMessage>(); 

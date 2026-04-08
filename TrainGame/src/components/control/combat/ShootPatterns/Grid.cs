@@ -26,7 +26,7 @@ public class GridShootPattern : IShootPattern {
         this.Direction = direction;
     }
 
-    public IShootPattern Clone() => new GridShootPattern(BulletX, BulletY, Dx, Dy, 
+    public IShootPattern Clone() => new GridShootPattern(BulletX.Clone(), BulletY.Clone(), Dx, Dy, 
         NumBulletsX, NumBulletsY, Direction, PatternLength);
 
     public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ BulletX, BulletY };

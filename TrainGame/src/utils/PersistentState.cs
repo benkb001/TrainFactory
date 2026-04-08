@@ -167,6 +167,15 @@ public static class PersistentState {
             });
         })));
 
+        dom.Add("playerGuns", new JsonObject(EquipmentSlot<PlayerGun>.EquipmentMap.Select(kvp => {
+            string id = kvp.Key; 
+            PlayerGun gun = kvp.Value; 
+
+            return new KeyValuePair<string, JsonNode>(id, new JsonObject() {
+                ["damageLevel"] = gun.DamageLevel
+            });
+        })));
+
         File.WriteAllText(filepath, dom.ToString());
     }
 
@@ -315,6 +324,17 @@ public static class PersistentState {
                 City goingTo = cities[goingToID];
                 WorldTime left = WorldTimeFromJSONObject(trainData["left"].AsObject()); 
                 TrainWrap.Embark(t, trainEnt, goingTo, w, left);
+            }
+        }
+
+        foreach (KeyValuePair<string, JsonNode> kvp in dom["playerGuns"].AsObject()) {
+
+            string gunID = kvp.Key; 
+            JsonObject gunData = kvp.Value.AsObject(); 
+            int damageLevel = (int)gunData["damageLevel"];
+            
+            for (int i = 0; i < damageLevel; i++) {
+                EquipmentSlot<PlayerGun>.EquipmentMap[gunID].UpgradeDamage();
             }
         }
 

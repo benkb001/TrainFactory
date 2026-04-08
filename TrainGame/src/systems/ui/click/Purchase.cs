@@ -13,24 +13,22 @@ using TrainGame.Utils;
 using TrainGame.Constants; 
 using TrainGame.Callbacks; 
 
-public class ItemTransaction {
-    public readonly Inventory Source; 
-    public readonly Inventory Destination; 
-
-    public ItemTransaction(Inventory src, Inventory dest) {
-        this.Source = src; 
-        this.Destination = dest; 
-    }
-}
-
 public static class PurchaseClickSystem {
-    public static void Register(World w) {
+    private static void register<T>(World w, Action<World, int, PurchaseButton<T>> tf) where T : IBuyable {
+        ClickSystem.Register<PurchaseButton<T>>(w, (w, e, btn) => {
+            Inventory src = btn.Source;
+            Dictionary<string, int> cost = btn.Cost; 
+            if (src.TakeRecipe(cost)) {
+                tf(w, e, btn);
+            }
+        });
+    }
+    
+    private static void registerPurchaseItem(World w) {
         ClickAndHoldSystem.Register<PurchaseButton<PurchaseItem>>(w, (w, e, btn) => {
-            ItemTransaction transaction = w.GetComponent<ItemTransaction>(e); 
-            Inventory src = transaction.Source;
-            Inventory dest = transaction.Destination;
-
-            PurchaseItem i = w.GetComponent<PurchaseButton<PurchaseItem>>(e).Buyable; 
+            PurchaseItem i = btn.Buyable;
+            Inventory src = btn.Source;
+            Inventory dest = i.Destination;
 
             int count = i.Count; 
             string itemID = i.ItemID; 
@@ -40,24 +38,22 @@ public static class PurchaseClickSystem {
             if (addAttempt != count || !src.TakeRecipe(btn.Cost)) {
                 dest.Take(itemID, addAttempt); 
             } 
-        }, [typeof(ItemTransaction)]);
+        });
     }
 
-    public static void RegisterResetHP(World w) {
-        ClickSystem.Register<PurchaseButton<ResetHP>>(w, (w, e, btn) => {
-            ResetHP r = w.GetComponent<PurchaseButton<ResetHP>>(e).Buyable; 
-            Inventory dest = r.Dest; 
-            int credits = r.Credits; 
-
-            Dictionary<string, int> cost = new() {
-                [ItemID.Credit] = credits
-            };
-
-            if (dest.TakeRecipe(cost)) {
-                PlayerWrap.ResetStats(w);
-                //TODO: probably should not be this given it might not be a text box in the future 
-                w.RemoveComponent<TextBox>(e);
-            }
+    private static void registerPurchaseGunUpgrade(World w) {
+        register<PurchaseUpgradeGunDamage>(w, (w, e, btn) => {
+            PurchaseUpgradeGunDamage upgrade = btn.Buyable; 
+            PlayerGun pg = EquipmentSlot<PlayerGun>.EquipmentMap[upgrade.ID];
+            pg.UpgradeDamage();
+            BuyableRegistry.Add(new RegisterBuyableContext(w, btn.Source, btn.Source), upgrade, e);
+            EquipmentRegistry.Add(w, pg, -1);
         });
+    }
+
+
+    public static void Register(World w) {
+        registerPurchaseItem(w);
+        registerPurchaseGunUpgrade(w);
     }
 }

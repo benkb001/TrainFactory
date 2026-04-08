@@ -16,6 +16,6 @@ public class MeleeShootPattern : IShootPattern {
         this.Bullet = Bullet;
     }
 
-    public IShootPattern Clone() => new MeleeShootPattern(Bullet);
+    public IShootPattern Clone() => new MeleeShootPattern(Bullet.Clone());
     public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ Bullet };
 }

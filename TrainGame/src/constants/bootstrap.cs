@@ -65,6 +65,7 @@ public static class Bootstrap {
 
         //add some fuel to factory
         factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
+        factory.Inv.Add(VendorID.UpgradeGunDamageCost("", 1));
 
         //add weapons inv
 

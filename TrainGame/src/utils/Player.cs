@@ -184,8 +184,7 @@ public static class PlayerWrap {
         Armor armor = w.GetComponent<Armor>(e); 
         armor.ResetTempDefense(); 
         w.GetComponent<Parrier>(e).Reset();
-        //TODO: We will need to reset shooter and ishootpattern here, 
-        //which will involve plugging into or making modular the equipment slot code        
+        EquipmentRegistry.Add(w, w.GetComponent<EquipmentSlot<PlayerGun>>(e).GetEquipment(), e);
     }
 
     public static int AddTest(World w) {

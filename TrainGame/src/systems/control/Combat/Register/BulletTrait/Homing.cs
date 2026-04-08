@@ -11,7 +11,7 @@ using TrainGame.Constants;
 
 public static class HomingWrap {
     public static void RegisterTrait() {
-        BulletTraitRegistry.Register<Homing>((w, sp, e) => {
+        BulletTraitRegistry.Register<Homing>((w, homing, e) => {
             //ICKY: we could have a component that returns a targetable 
             //entity
 
@@ -28,8 +28,7 @@ public static class HomingWrap {
                 trackedEntity = TargetableWrap.GetFirst(w);
             }
 
-            sp.TrackedEntity = trackedEntity;
-            w.SetComponent<Homing>(e, sp);
+            w.SetComponent<Homing>(e, new Homing(trackedEntity, homing.Speed));
         });
     }
 }

@@ -41,7 +41,7 @@ public class BulletContainer {
     }
 
     public BulletContainer Clone() {
-        return new BulletContainer(b.Clone(), new Frame(Width, Height), Speed, traits);
+        return new BulletContainer(b.Clone(), new Frame(Width, Height), Speed, new List<IBulletTrait>(traits));
     }
 
     public List<IBulletTrait> GetBulletTraits() {

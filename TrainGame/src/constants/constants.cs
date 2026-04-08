@@ -91,7 +91,7 @@ public static class Constants {
     public const float ExponentialMilesPerFuelUpgradeFactor = 1.1f;
     public const float ExponentialTrainPowerUpgradeFactor = 1.1f; 
     public const float ExponentialProductCountUpgradeFactor = 1.1f; 
-    public const float RewardChance = 0.2f;
+    public const float RewardChance = 1f;
     public const int RewardLifetimeSeconds = 10;
     public static WorldTime TicksBetweenShotDecrement = new WorldTime(ticks: 5);
     public static WorldTime ReloadTicksDecrement = new WorldTime(ticks: 10); 

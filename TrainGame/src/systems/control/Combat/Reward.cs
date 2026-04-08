@@ -93,26 +93,16 @@ public static class LootInteractSystem {
 
 public static class DamagePotionInteractSystem {
     public static void Register(World w) {
-        RewardInteractSystem.Register<DamagePotion>(w, (w, e, interactorEntity) => {
-            (IShootPattern p, bool hasSP) = w.GetComponentSafe<IShootPattern>(interactorEntity);
-            if (hasSP) {
-                int dmg = w.GetComponent<DamagePotion>(e).DMG;
-            
-                foreach (BulletContainer bc in p.GetBulletContainers()) {
-                    bc.AddDamage(dmg); 
-                }
-            }
+        RewardInteractSystem.Register<DamagePotion, IShootPattern>(w, (w, dmgPot, sp, _) => {
+            ShooterWrap.UpgradeDamage(sp, dmgPot.DMG);
         });
     }
 }
 
 public static class MaxAmmoInteractSystem {
     public static void Register(World w) {
-        RewardInteractSystem.Register<MaxAmmo>(w, (w, e, interactorEntity) => {
-            (Shooter s, bool hasShooter) = w.GetComponentSafe<Shooter>(interactorEntity); 
-            if (hasShooter) {
-                s.MaxAmmo += s.BaseMaxAmmo;
-            }
+        RewardInteractSystem.Register<MaxAmmo, Shooter>(w, (w, _, s, _) => {
+            ShooterWrap.UpgradeMaxAmmo(s);
         });
     }
 }
@@ -120,10 +110,7 @@ public static class MaxAmmoInteractSystem {
 public static class BulletSizeIncreaseInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<BulletSizeIncrease, IShootPattern>(w, (w, _, sp, _) => {
-            foreach (BulletContainer bc in sp.GetBulletContainers()) {
-                bc.Width += Constants.BulletSizeIncrease;
-                bc.Height += Constants.BulletSizeIncrease;
-            }
+            ShooterWrap.UpgradeBulletSize(sp);
         });
     }
 }
@@ -131,9 +118,7 @@ public static class BulletSizeIncreaseInteractSystem {
 public static class BulletSpeedIncreaseInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<BulletSpeedIncrease, IShootPattern>(w, (w, _, sp, _) => {
-            foreach (BulletContainer bc in sp.GetBulletContainers()) {
-                bc.Speed += Constants.BulletSpeedIncrease;
-            }
+            ShooterWrap.UpgradeBulletSpeed(sp);
         });
     }
 }
@@ -141,10 +126,7 @@ public static class BulletSpeedIncreaseInteractSystem {
 public static class UnloadSpeedIncreaseInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<UnloadSpeedIncrease, Shooter>(w, (w, _, shooter, _) => {
-            shooter.TimeBetweenShots -= Constants.TicksBetweenShotDecrement;
-            if (shooter.TimeBetweenShots.InTicks() < 1) {
-                shooter.TimeBetweenShots = new WorldTime(ticks: 1);
-            }
+            ShooterWrap.UpgradeUnloadSpeed(shooter);
         });
     }
 }
@@ -152,10 +134,7 @@ public static class UnloadSpeedIncreaseInteractSystem {
 public static class ReloadSpeedIncreaseInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<ReloadSpeedIncrease, Shooter>(w, (w, _, shooter, _) => {
-            shooter.ReloadTime -= Constants.ReloadTicksDecrement;
-            if (shooter.ReloadTime.InTicks() < 1) {
-                shooter.ReloadTime = new WorldTime(ticks: 1);
-            }
+            ShooterWrap.UpgradeReloadSpeed(shooter);
         });
     }
 }
@@ -163,31 +142,7 @@ public static class ReloadSpeedIncreaseInteractSystem {
 public static class AddExplosionInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<AddExplosion, IShootPattern>(w, (w, _, sp, _) => {
-            foreach (BulletContainer bc in sp.GetBulletContainers()) {
-                bool hasExplosion = false; 
-                foreach (IBulletTrait bt in bc.GetTraits()) {
-                    if (bt is Split split && split.Pattern is MeleeShootPattern msp) {
-                        foreach (BulletContainer innerBC in msp.GetBulletContainers()) {
-                            innerBC.AddDamage(1);
-                        }
-                        hasExplosion = true;
-                        break;
-                    }
-                }
-                
-                if (!hasExplosion) {
-                    bc.AddTrait(
-                        new Split(
-                            new MeleeShootPattern(
-                                new BulletContainer(
-                                    new Bullet(1, maxFramesActive: 10),
-                                    new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2)
-                                )
-                            )
-                        )
-                    );
-                }
-            }
+            ShooterWrap.AddExplosion(sp);
         });
     }
 }
@@ -195,11 +150,7 @@ public static class AddExplosionInteractSystem {
 public static class AddHomingInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<AddHoming, IShootPattern>(w, (w, _, sp, _) => {
-            foreach (BulletContainer bc in sp.GetBulletContainers()) {
-                if (!bc.GetTraits().Any(t => t.GetType() == typeof(Homing))) {
-                    bc.AddTrait(new Homing(Speed: bc.Speed));
-                }
-            }
+            ShooterWrap.AddHoming(sp);
         });
     }
 }
@@ -217,19 +168,7 @@ public static class AddShieldInteractSystem {
 public static class AddKnockbackInteractSystem {
     public static void Register(World w) {
         RewardInteractSystem.Register<AddKnockback, IShootPattern>(w, (w, _, sp, _) => {
-            
-            foreach (BulletContainer bc in sp.GetBulletContainers()) {
-                bool hasKnockback = false;
-                foreach (IBulletTrait t in bc.GetTraits()) {
-                    if (t is AppliesKnockback applies) {
-                        applies.Multiplier += 1f; 
-                        hasKnockback = true;
-                    }
-                }
-                if (!hasKnockback) {
-                    bc.AddTrait(new AppliesKnockback());
-                }
-            }
+            ShooterWrap.AddKnockback(sp);
         });
     }
 }
@@ -316,7 +255,7 @@ public static class RewardSpawnSystem {
             [typeof(AddShield)] = 10,
             [typeof(DamagePotion)] = 10,
             [typeof(ReloadSpeedIncrease)] = 10,
-            [typeof(AddExplosion)] = 10,
+            [typeof(AddExplosion)] = 100000,
             [typeof(MaxAmmo)] = 10,
             [typeof(UnloadSpeedIncrease)] = 8,
             [typeof(BulletSpeedIncrease)] = 4,

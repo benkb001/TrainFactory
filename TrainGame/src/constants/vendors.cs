@@ -7,6 +7,7 @@ public class PurchaseItem : IBuyable {
     public readonly string ItemID; 
     public readonly int Count; 
     public readonly Dictionary<string, int> Cost; 
+    public Inventory Destination;
 
     public PurchaseItem(string ItemID, int Count, Dictionary<string, int> Cost) {
         this.ItemID = ItemID; 
@@ -19,37 +20,16 @@ public class PurchaseItem : IBuyable {
     }
 }
 
-public class ResetHP : IBuyable {
-    private static Dictionary<string, int> cost = new() {
-        [ItemID.Credit] = 1000, //TODO: make this dynamic ? 
-    };
-
-    public readonly int Credits;
-    public readonly Inventory Dest; 
-
-    public ResetHP(int Credits = 0, Inventory Dest = null) {
-        this.Credits = Credits; 
-        this.Dest = Dest; 
-    }
-
-    public Dictionary<string, int> GetCost() {
-        return cost;
-    }
-}
-
+//TODO: Can we just remove this class? 
 public class PurchaseInfo {
     public readonly IBuyable Buyable;
 
-    private PurchaseInfo(IBuyable Buyable) {
+    public PurchaseInfo(IBuyable Buyable) {
         this.Buyable = Buyable;
     }
 
     public static PurchaseInfo AddItemInfo(string ItemID, int Count, Dictionary<string, int> Cost) {
         return new PurchaseInfo(new PurchaseItem(ItemID, Count, Cost)); 
-    }
-
-    public static PurchaseInfo AddResetHP() {
-        return new PurchaseInfo(new ResetHP());
     }
 }
 
@@ -97,6 +77,7 @@ public static class VendorID {
                 [ItemID.Petroleum] = 500,
                 [ItemID.Lubricant] = 100
             }),
+            new PurchaseInfo(new PurchaseUpgradeGunDamage(ItemID.Pistol))
         },
         [MineralCollector] = new() {
             PurchaseInfo.AddItemInfo(ItemID.Iron, 100, new() {
@@ -110,4 +91,33 @@ public static class VendorID {
             })
         }
     };
+
+    public static List<Dictionary<string, int>> BaseGunDamageUpgradeCosts = new() {
+        new() {
+            [ItemID.Credit] = 1000,
+            [ItemID.Cobalt] = 1000,
+            [ItemID.Fuel] = 500
+        },
+        new() {
+            [ItemID.Credit] = 5000,
+            [ItemID.Cobalt] = 2500,
+            [ItemID.Mythril] = 500,
+            [ItemID.Petroleum] = 250,
+            [ItemID.Lubricant] = 250
+        },
+        new(){
+            [ItemID.Credit] = 15000,
+            [ItemID.Cobalt] = 5000,
+            [ItemID.Mythril] = 3000,
+            [ItemID.Adamantite] = 2500,
+            [ItemID.Duplicator] = 10,
+            [ItemID.PocketDimension] = 10,
+            [ItemID.AirResistor] = 10
+        }
+    };
+
+    //TODO: Different guns can have different upgrade costs to reflect when you unlock them
+    public static Dictionary<string, int> UpgradeGunDamageCost(string gunID, int level) {
+        return BaseGunDamageUpgradeCosts[level - 1];
+    }
 }

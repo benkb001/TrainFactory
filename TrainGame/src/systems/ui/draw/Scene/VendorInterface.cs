@@ -72,16 +72,39 @@ public class RegisterBuyableContext {
     }
 }
 
-public static class RegisterBuyableCallbacks {
-    public static void All() {
+public static class PurchaseItemCallback {
+    public static void Register() {
         BuyableRegistry.Register<PurchaseItem>((ctx, item, e) => {
             World w = ctx.W;
-            PurchaseButton<PurchaseItem> pb = new PurchaseButton<PurchaseItem>(item);
+            PurchaseButton<PurchaseItem> pb = new PurchaseButton<PurchaseItem>(item, item.GetCost(), ctx.Source);
             w.SetComponent<PurchaseButton<PurchaseItem>>(e, pb);
-            Inventory src = ctx.Source;
             Inventory dest = ctx.Destination;
-            w.SetComponent<ItemTransaction>(e, new ItemTransaction(src, dest));
+            item.Destination = dest; 
             w.SetComponent<TextBox>(e, new TextBox($"Purchase {item.Count} {item.ItemID}?\n {Util.FormatMap(item.GetCost())}"));
+        });
+    }
+}
+
+public static class RegisterBuyableCallbacks {
+    public static void All() {
+        PurchaseItemCallback.Register();
+        UpgradeDamageCallback.Register();
+    }
+}
+
+public static class UpgradeDamageCallback {
+    public static void Register() {
+        BuyableRegistry.Register<PurchaseUpgradeGunDamage>((ctx, upgrade, e) => {
+            World w = ctx.W; 
+            PlayerGun pg = EquipmentSlot<PlayerGun>.EquipmentMap[upgrade.ID];
+            Dictionary<string, int> cost = VendorID.UpgradeGunDamageCost(upgrade.ID, pg.DamageLevel);
+            PurchaseButton<PurchaseUpgradeGunDamage> pb = 
+                new PurchaseButton<PurchaseUpgradeGunDamage>(upgrade, cost, ctx.Source); 
+            w.SetComponent<PurchaseButton<PurchaseUpgradeGunDamage>>(e, pb); 
+            PurchaseUpgradeGunDamageWrap.SetPurchaseText(w, pg, upgrade.ID, e);
+            if (pg.DamageLevel >= pg.MaxDamageLevel) {
+                w.RemoveComponent<Button>(e);
+            }
         });
     }
 }

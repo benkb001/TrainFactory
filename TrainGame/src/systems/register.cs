@@ -134,7 +134,6 @@ public static class RegisterSystems {
         EnterInterfaceClickSystem.Register<MachineInterfaceData>(w);
         EnterInterfaceInteractSystem.Register<ElevatorInterfaceData>(w); 
         PurchaseClickSystem.Register(w); 
-        PurchaseClickSystem.RegisterResetHP(w);
         UpgradeDepotClickSystem.Register(w); 
         ConnectCitiesClickSystem.Register(w);
         UpgradeTrainClickSystem.Register<UpgradeTrainPowerButton>(w);
@@ -145,7 +144,7 @@ public static class RegisterSystems {
         CloseMenuClickSystem.Register(w); 
         PauseTrainProgramButtonClickSystem.Register(w); 
         ElevatorSystem.Register(w); 
-        ReturnToSurfaceSystem.Register(w); 
+        //ReturnToSurfaceSystem.Register(w); 
         
         TempArmorInteractSystem.Register(w); 
         HealthPotionInteractSystem.Register(w); 

@@ -15,7 +15,7 @@ public class ShotgunShootPattern : IShootPattern {
     }
 
     public IShootPattern Clone() {
-        return new ShotgunShootPattern(Bullet, BulletsPerShot, Radians);
+        return new ShotgunShootPattern(Bullet.Clone(), BulletsPerShot, Radians);
     }
     public IEnumerable<BulletContainer> GetBulletContainers() => new List<BulletContainer>(){ Bullet };
 }
