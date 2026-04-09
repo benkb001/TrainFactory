@@ -52,7 +52,6 @@
 * Combat: 
   * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
     look at Hades for other ideas. 
-    * HP at start
     * Per reward stuff: 
       * HP
       * Shield HP 

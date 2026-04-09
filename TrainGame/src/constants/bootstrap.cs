@@ -65,12 +65,11 @@ public static class Bootstrap {
 
         //add some fuel to factory
         factory.Inv.Add(new Inventory.Item(ItemId: ItemID.Fuel, Count: 50)); 
-        factory.Inv.Add(VendorID.UpgradeLootMultiplierCost[0]);
+        factory.Inv.Add(VendorID.UpgradeShieldHealAmountCost[0]);
 
         //add weapons inv
 
         InventoryWrap.Add(w, Constants.WeaponsInvID, 1, 6, level: 1);
-        
 
         //set assembler components
         (int locomotiveAssemblerEnt, Machine locomotiveAssembler) = machines[MachineID.LocomotiveAssembler]; 

@@ -102,11 +102,31 @@ public static class PurchaseLootMultiplierCallback {
     }
 }
 
+public static class PurchaseShieldHealAmountCallback {
+    public static void Register() {
+        BuyableRegistry.Register<PurchaseShieldHealAmount>((ctx, shieldHeal, e) => {
+            World w = ctx.W; 
+            CombatRewardSpawner spawn = PlayerWrap.GetCombatRewardSpawner(w); 
+            shieldHeal.RewardSpawner = spawn;
+            if (spawn.ShieldHealAmountLevel < Constants.MaxShieldHealAmountLevel && spawn.ShieldHealAmountLevel > 0) {
+                Dictionary<string, int> cost = VendorID.UpgradeShieldHealAmountCost[spawn.ShieldHealAmountLevel - 1]; 
+                PurchaseButton<PurchaseShieldHealAmount> pb = 
+                    new PurchaseButton<PurchaseShieldHealAmount>(shieldHeal, cost, ctx.Source);
+                w.SetComponent<PurchaseButton<PurchaseShieldHealAmount>>(e, pb); 
+                w.SetComponent<TextBox>(e, new TextBox($"Increase Shield Healing Per Enemy By {Constants.ShieldHealPerLevel}?"));
+            } else {
+                w.SetComponent<TextBox>(e, new TextBox($"Maxed Out Shield Heal Level!"));
+            }
+        });
+    }
+}
+
 public static class RegisterBuyableCallbacks {
     public static void All() {
         PurchaseItemCallback.Register();
         UpgradeDamageCallback.Register();
         PurchaseLootMultiplierCallback.Register();
+        PurchaseShieldHealAmountCallback.Register();
     }
 }
 

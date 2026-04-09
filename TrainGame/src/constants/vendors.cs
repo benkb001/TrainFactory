@@ -24,6 +24,10 @@ public class PurchaseLootMultiplier : IBuyable {
     public CombatRewardSpawner RewardSpawner;
 }
 
+public class PurchaseShieldHealAmount : IBuyable {
+    public CombatRewardSpawner RewardSpawner;
+}
+
 public static class VendorID {
     public const string ArmorCraftsman = "Armor Craftsman"; 
     public const string WeaponCraftsman = "Weapon Craftsman"; 
@@ -69,7 +73,8 @@ public static class VendorID {
                 [ItemID.Lubricant] = 100
             }),
             new PurchaseUpgradeGunDamage(ItemID.Pistol),
-            new PurchaseLootMultiplier()
+            new PurchaseLootMultiplier(),
+            new PurchaseShieldHealAmount()
         },
         [MineralCollector] = new() {
             new PurchaseItem(ItemID.Iron, 100, new() {
@@ -125,6 +130,30 @@ public static class VendorID {
             [ItemID.Mythril] = 7500,
             [ItemID.Cobalt] = 10000,
             [ItemID.Credit] = 10000
+        }
+    };
+
+    public static List<Dictionary<string, int>> UpgradeShieldHealAmountCost = new(){
+        new(){
+            [ItemID.Credit] = 2000,
+            [ItemID.Iron] = 1000,
+            [ItemID.Cobalt] = 500
+        },
+        new(){
+            [ItemID.Credit] = 4000,
+            [ItemID.Mythril] = 2000,
+            [ItemID.Oil] = 1000
+        },
+        new(){
+            [ItemID.Credit] = 6000,
+            [ItemID.Mythril] = 3000,
+            [ItemID.Cobalt] = 3000,
+            [ItemID.Lubricant] = 1000
+        },
+        new(){
+            [ItemID.Credit] = 10000,
+            [ItemID.Adamantite] = 4000,
+            [ItemID.Duplicator] = 100
         }
     };
 }

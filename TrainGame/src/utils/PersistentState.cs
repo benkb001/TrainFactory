@@ -179,6 +179,7 @@ public static class PersistentState {
         CombatRewardSpawner rewardSpawner = PlayerWrap.GetCombatRewardSpawner(w);
         JsonObject rewardSpawnerJSON = new JsonObject(); 
         rewardSpawnerJSON.Add("lootMultiplier", rewardSpawner.LootMultiplier);
+        rewardSpawnerJSON.Add("shieldHealAmountLevel", rewardSpawner.ShieldHealAmountLevel);
         dom.Add("rewardSpawner", rewardSpawnerJSON);
 
         File.WriteAllText(filepath, dom.ToString());
@@ -371,6 +372,9 @@ public static class PersistentState {
         CombatRewardSpawner spawner = new CombatRewardSpawner();
         JsonObject rewardSpawnerJSON = dom["rewardSpawner"].AsObject();
         spawner.LootMultiplier = (int)(rewardSpawnerJSON["lootMultiplier"]);
+        for (int i = spawner.ShieldHealAmountLevel; i < (int)(rewardSpawnerJSON["shieldHealAmountLevel"]); i++) {
+            spawner.UpgradeShieldHealAmount();
+        }
         w.SetComponent<CombatRewardSpawner>(playerDataEnt, spawner);
 
         string playerLocation = (string)dom["playerLocation"];

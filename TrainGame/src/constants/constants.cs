@@ -81,7 +81,10 @@ public static class Constants {
     public const float DefaultEnemySpeed = PlayerSpeed / 1.75f;
     public const float DefaultBulletSpeed = PlayerSpeed / 1.25f;
     public const int BulletSizeIncrease = 1; 
+
     public const float BulletSpeedIncrease = 1f;
+    public const int MaxShieldHealAmountLevel = 5; 
+    public const int ShieldHealPerLevel = 5;
 
     public const float EnemySize = 50f;
     public const int InvincibilityFrames = 60;

@@ -96,14 +96,17 @@ public static class DamageSystem {
     }
 
     public static void RegisterHealShield(World w) {
-        w.AddSystem([typeof(HitMessage), typeof(ShotBy), typeof(Active), typeof(Player)], (w, e) => {
-            int hitEntity = w.GetComponent<HitMessage>(e).Entity; 
-            int shotByEntity = w.GetComponent<ShotBy>(e).Entity; 
-            (Health h, bool hasHealth) = w.GetComponentSafe<Health>(hitEntity); 
-            (Parrier p, bool hasParrier) = w.GetComponentSafe<Parrier>(shotByEntity); 
-            
-            if (hasHealth && hasParrier && h.HP < 1) {
-                p.GetHealth().AddHP(h.MaxHP);
+        w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, spawnerEnt) => {
+            CombatRewardSpawner sp = w.GetComponent<CombatRewardSpawner>(spawnerEnt);
+            foreach (int e in w.GetMatchingEntities([typeof(HitMessage), typeof(ShotBy), typeof(Active), typeof(Player)])) {
+                int hitEntity = w.GetComponent<HitMessage>(e).Entity; 
+                int shotByEntity = w.GetComponent<ShotBy>(e).Entity; 
+                (Health h, bool hasHealth) = w.GetComponentSafe<Health>(hitEntity); 
+                (Parrier p, bool hasParrier) = w.GetComponentSafe<Parrier>(shotByEntity); 
+                
+                if (hasHealth && hasParrier && h.HP < 1) {
+                    p.GetHealth().AddHP(sp.ShieldHealAmount);
+                }
             }
         });
     }

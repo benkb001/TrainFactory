@@ -59,9 +59,18 @@ public static class PurchaseClickSystem {
         });
     }
 
+    private static void registerPurchaseShieldHealUpgrade(World w) {
+        register<PurchaseShieldHealAmount>(w, (w, e, btn) => {
+            CombatRewardSpawner spawn = btn.Buyable.RewardSpawner;
+            spawn.UpgradeShieldHealAmount(); 
+            BuyableRegistry.Add(new RegisterBuyableContext(w, btn.Source, btn.Source), btn.Buyable, e);
+        });
+    }
+
     public static void Register(World w) {
         registerPurchaseItem(w);
         registerPurchaseGunUpgrade(w);
         registerPurchaseLootMultiplier(w);
+        registerPurchaseShieldHealUpgrade(w);
     }
 }
