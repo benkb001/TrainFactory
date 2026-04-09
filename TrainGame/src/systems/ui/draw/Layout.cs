@@ -145,7 +145,10 @@ public static class Layout {
         }
     }
 
-    public static void DrawCombat(World w) {
+    public static void DrawCombat(World w, int floor = 1) {
         Draw(w, Combat);
+        int spawnEnt = EntityFactory.Add(w); 
+        w.SetComponent<EnemySpawner>(spawnEnt, new EnemySpawner(floor));
+        w.SetComponent<CombatRewardSpawner>(spawnEnt, PlayerWrap.GetCombatRewardSpawner(w));
     }
 }

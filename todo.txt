@@ -52,22 +52,23 @@
 * Combat: 
   * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
     look at Hades for other ideas. 
-    * First, the 'source of truth' for the equippments is in the EquipmentSlot<T>.EquipmentMap,
-      so for upgrading weapons, we can just put it here. 
-    * For hp, we can simply upgrade the maxHP, same for parrier
-    * We will need to store these upgrades in persistent data, though. I think 
-      it'd be easiest to represent the upgrades functionally and then store a 
-      mapping from string -> function. For example, we can have 'upgradeHealth: 3', 
-      and then we call the upgrade health on the player data health component 3 times. 
-      We can store a static Dictionary<string, Action<World>> in the persistent state class. 
-      
+    * HP at start
+    * Per reward stuff: 
+      * HP
+      * Shield HP 
+      * Reload speed 
+      * Bullet speed 
+
   * Add arrows that point to enemies offscreen, and bigger arrows that point to 
-    rewards offscreen
+    rewards offscreen, these arrows should have a progress bar associated to 
+    let player know how much longer they have to collect, and once on screen 
+    the items themselves should claim that bar. Could be good to add a wrapper 
+    that checks if an entity/frame is onscreen 
   * Add other temporary upgrades
     * add piercing 
-  * Draw progress bar for reward despawn
-  * Draw Reloading
-  * Make it so the temp upgrades get reset on death
+  * Draw Reloading, we will need a system that allows one entity to have 
+    multiple labels at different spots, we could just make it a stack for now.
+    Actually it could just be a single label entity that has a linear layout that grows upward? 
   * Add new shoot patterns: 
     * Vine, goes in a parametric curve, velocity is zero, 
       and has a small chance to set shooter onto any of the 

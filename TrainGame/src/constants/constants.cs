@@ -30,8 +30,7 @@ public static class Constants {
     public const int PlayerParrierHP = 100;
     public const int ShieldIncrement = 50;
 
-    public const int MaxFloorLevel1 = 20; 
-    public const int MaxFloorLevel2 = 40;
+    public const int MaxLootMultiplier = 3;
 
     public const int ButtonOutlineThickness = 1; 
     public const int ButtonHeldOutlineThickness = 2; 

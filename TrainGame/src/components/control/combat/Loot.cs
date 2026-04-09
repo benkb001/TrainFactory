@@ -46,7 +46,7 @@ public class LootWrap {
         return CityWrap.GetCityWithPlayer(w).Inv;
     }
 
-    public static int Transfer(World w, Loot l, Inventory dest) {
-        return dest.Add(l.ItemID, l.Count);
+    public static int Transfer(World w, Loot l, Inventory dest, int multiplier = 1) {
+        return dest.Add(l.ItemID, l.Count * multiplier);
     }
 }

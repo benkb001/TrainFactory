@@ -176,6 +176,11 @@ public static class PersistentState {
             });
         })));
 
+        CombatRewardSpawner rewardSpawner = PlayerWrap.GetCombatRewardSpawner(w);
+        JsonObject rewardSpawnerJSON = new JsonObject(); 
+        rewardSpawnerJSON.Add("lootMultiplier", rewardSpawner.LootMultiplier);
+        dom.Add("rewardSpawner", rewardSpawnerJSON);
+
         File.WriteAllText(filepath, dom.ToString());
     }
 
@@ -362,6 +367,11 @@ public static class PersistentState {
 
         registerEquipmentSlot<PlayerGun>();
         w.SetComponent<RespawnLocation>(playerDataEnt, new RespawnLocation(cities[CityID.Factory]));
+        
+        CombatRewardSpawner spawner = new CombatRewardSpawner();
+        JsonObject rewardSpawnerJSON = dom["rewardSpawner"].AsObject();
+        spawner.LootMultiplier = (int)(rewardSpawnerJSON["lootMultiplier"]);
+        w.SetComponent<CombatRewardSpawner>(playerDataEnt, spawner);
 
         string playerLocation = (string)dom["playerLocation"];
 

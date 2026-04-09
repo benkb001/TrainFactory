@@ -49,6 +49,7 @@ public static class RegisterComponents {
         r<Collided>();
         r<CombatReward>(); 
         r<CombatRewardCollectedMessage>(); 
+        r<CombatRewardSpawner>();
         r<ComingFromCity>();
         r<ConnectCitiesButton>();
         r<CurrentInventory>();
@@ -96,7 +97,6 @@ public static class RegisterComponents {
         r<EquipmentData>();
         r<EquipmentSlot<PlayerGun>>();
         r<Expired>();
-        r<Floor>();
         r<Frame>(); 
         r<GameClockView>();
         r<GoingToCity>();
@@ -149,6 +149,7 @@ public static class RegisterComponents {
         r<PlayerHUD>(); 
         r<ProgressBar>(); 
         r<PurchaseButton<PurchaseItem>>();
+        r<PurchaseButton<PurchaseLootMultiplier>>();
         r<PurchaseButton<PurchaseUpgradeGunDamage>>();
         r<RadialShootPattern>();
         r<RandomShotgunShootPattern>();

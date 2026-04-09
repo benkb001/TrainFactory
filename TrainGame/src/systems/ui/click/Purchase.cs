@@ -51,9 +51,17 @@ public static class PurchaseClickSystem {
         });
     }
 
+    private static void registerPurchaseLootMultiplier(World w) {
+        register<PurchaseLootMultiplier>(w, (w, e, btn) => {
+            CombatRewardSpawner spawn = btn.Buyable.RewardSpawner; 
+            spawn.LootMultiplier++;
+            BuyableRegistry.Add(new RegisterBuyableContext(w, btn.Source, btn.Source), btn.Buyable, e);
+        });
+    }
 
     public static void Register(World w) {
         registerPurchaseItem(w);
         registerPurchaseGunUpgrade(w);
+        registerPurchaseLootMultiplier(w);
     }
 }

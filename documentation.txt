@@ -1,7 +1,8 @@
 
-THINGS I MIGHT FORGET THAT ARE MAYBE IMPORTANT 
-
-The class PlayerAccessTrainButton is the button used to enter 
-a train as a player so they can ride it to another city, that 
-functionality might be removed but I'm writing it here in case 
-I decide to put it back. 
+In order to add a new combat perma upgrade type, we have to do the following: 
+1. Make a new IBuyable class 
+2. Register a callback that takes that class and makes a PurchaseButton<T>, 
+   it must somehow derive a cost, Dictionary<string, int> 
+3. Register a click system callback that runs on click in PurchaseClickSystem, 
+   to actually administer the upgrade 
+4. Update Persistent State to save this upgrade and re-run the callback for it

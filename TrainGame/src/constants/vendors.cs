@@ -20,17 +20,8 @@ public class PurchaseItem : IBuyable {
     }
 }
 
-//TODO: Can we just remove this class? 
-public class PurchaseInfo {
-    public readonly IBuyable Buyable;
-
-    public PurchaseInfo(IBuyable Buyable) {
-        this.Buyable = Buyable;
-    }
-
-    public static PurchaseInfo AddItemInfo(string ItemID, int Count, Dictionary<string, int> Cost) {
-        return new PurchaseInfo(new PurchaseItem(ItemID, Count, Cost)); 
-    }
+public class PurchaseLootMultiplier : IBuyable {
+    public CombatRewardSpawner RewardSpawner;
 }
 
 public static class VendorID {
@@ -42,20 +33,20 @@ public static class VendorID {
         ArmorCraftsman, WeaponCraftsman, MineralCollector
     };
 
-    public static Dictionary<string, List<PurchaseInfo>> ProductMap = new() {
+    public static Dictionary<string, List<IBuyable>> ProductMap = new() {
         [ArmorCraftsman] = new () {
-            PurchaseInfo.AddItemInfo(ItemID.Armor1, 1, new() {
+            new PurchaseItem(ItemID.Armor1, 1, new() {
                 [ItemID.Credit] = 50, 
                 [ItemID.Iron] = 50,
                 [ItemID.Cobalt] = 50
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Armor2, 1, new () {
+            new PurchaseItem(ItemID.Armor2, 1, new () {
                 [ItemID.Credit] = 1000, 
                 [ItemID.Iron] = 200, 
                 [ItemID.Cobalt] = 200,
                 [ItemID.Glass] = 100,
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Armor3, 1, new () {
+            new PurchaseItem(ItemID.Armor3, 1, new () {
                 [ItemID.Credit] = 3000,
                 [ItemID.Iron] = 2000, 
                 [ItemID.Oil] = 1000,
@@ -63,30 +54,31 @@ public static class VendorID {
             }),
         },
         [WeaponCraftsman] = new () {
-            PurchaseInfo.AddItemInfo(ItemID.Shotgun, 1, new () {
+            new PurchaseItem(ItemID.Shotgun, 1, new () {
                 [ItemID.Credit] = 1000, 
                 [ItemID.Water] = 1000,
                 [ItemID.Iron] = 500, 
                 [ItemID.Cobalt] = 500,
                 [ItemID.Fuel] = 500
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Ring, 1, new () {
+            new PurchaseItem(ItemID.Ring, 1, new () {
                 [ItemID.Credit] = 2000, 
                 [ItemID.Iron] = 2000,
                 [ItemID.Mythril] = 500,
                 [ItemID.Petroleum] = 500,
                 [ItemID.Lubricant] = 100
             }),
-            new PurchaseInfo(new PurchaseUpgradeGunDamage(ItemID.Pistol))
+            new PurchaseUpgradeGunDamage(ItemID.Pistol),
+            new PurchaseLootMultiplier()
         },
         [MineralCollector] = new() {
-            PurchaseInfo.AddItemInfo(ItemID.Iron, 100, new() {
+            new PurchaseItem(ItemID.Iron, 100, new() {
                 [ItemID.Credit] = 100
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Sand, 100, new() {
+            new PurchaseItem(ItemID.Sand, 100, new() {
                 [ItemID.Credit] = 100
             }),
-            PurchaseInfo.AddItemInfo(ItemID.Water, 100, new() {
+            new PurchaseItem(ItemID.Water, 100, new() {
                 [ItemID.Credit] = 100
             })
         }
@@ -120,4 +112,19 @@ public static class VendorID {
     public static Dictionary<string, int> UpgradeGunDamageCost(string gunID, int level) {
         return BaseGunDamageUpgradeCosts[level - 1];
     }
+
+    public static List<Dictionary<string, int>> UpgradeLootMultiplierCost = new() {
+        new() {
+            [ItemID.Credit] = 5000,
+            [ItemID.Fuel] = 3000,
+            [ItemID.Cobalt] = 1000
+        },
+        new() {
+            [ItemID.Duplicator] = 100,
+            [ItemID.Adamantite] = 5000,
+            [ItemID.Mythril] = 7500,
+            [ItemID.Cobalt] = 10000,
+            [ItemID.Credit] = 10000
+        }
+    };
 }

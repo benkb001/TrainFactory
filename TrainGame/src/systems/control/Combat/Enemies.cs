@@ -18,7 +18,7 @@ public class EnemyWrap {
 
     public static Type[] EnemySignature = [typeof(Enemy), typeof(Health), typeof(Active)];
 
-    public static EnemyWrap Draw(World w, Vector2 pos, EnemyType enemyType, Inventory dest) {
+    public static EnemyWrap Draw(World w, Vector2 pos, EnemyType enemyType, Inventory dest, int lootMultiplier = 1) {
         EnemyConst e = EnemyID.Enemies[enemyType];
 
         int enemyEnt = EntityFactory.AddUI(w, pos, e.Size, e.Size, setOutline: true); 
@@ -45,7 +45,7 @@ public class EnemyWrap {
 
         if (e.LootDist != null) {
             (string itemID, int count) = e.LootDist.GetRandom(); 
-            w.SetComponent<Loot>(enemyEnt, new Loot(itemID, count));
+            w.SetComponent<Loot>(enemyEnt, new Loot(itemID, count * lootMultiplier));
             w.SetComponent<Inventory>(enemyEnt, LootWrap.GetDestination(w));
         }
         

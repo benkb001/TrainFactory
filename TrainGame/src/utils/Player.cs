@@ -42,6 +42,7 @@ public static class PlayerWrap {
         int e = AddData(w, playerInv, h, p);
         EquipmentSlot<PlayerGun> slot = addEquipSlot<PlayerGun>(w, e); 
         slot.GetInventory().Add(ItemID.Pistol, 1);
+        w.SetComponent<CombatRewardSpawner>(e, new CombatRewardSpawner());
     }
     
     //This code runs when we load from persistent state
@@ -54,12 +55,7 @@ public static class PlayerWrap {
 
         Armor armor = new Armor(0); 
         w.SetComponent<Armor>(playerDataEnt, armor);
-        w.SetComponent<Floor>(playerDataEnt, new Floor()); 
         return playerDataEnt;
-    }
-
-    public static void SetFloor(World w, int f) {
-        w.SetComponent<Floor>(GetEntity(w), new Floor(f)); 
     }
 
     public static void SetRespawn(World w, City c) {
@@ -91,6 +87,10 @@ public static class PlayerWrap {
 
     public static Parrier GetParrier(World w) {
         return w.GetComponent<Parrier>(GetEntity(w));
+    }
+
+    public static CombatRewardSpawner GetCombatRewardSpawner(World w) {
+        return w.GetComponent<CombatRewardSpawner>(GetEntity(w));
     }
 
     public static string GetHeldItemID(World w) {

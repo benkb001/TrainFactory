@@ -23,6 +23,9 @@ public static class LadderInteractSystem {
     }
 }
 
+/*
+TODO: Will probably add this back in
+but should query for enemySpawner existing, not floor
 public static class ReturnToSurfaceSystem {
     public static void Register(World w) {
         w.AddSystem((w) => {
@@ -35,6 +38,7 @@ public static class ReturnToSurfaceSystem {
         });
     }
 }
+*/
 
 public class Floor {
     public int Value; 
@@ -52,12 +56,8 @@ public static class FloorSystem {
         if (floor == 0) {
             MakeMessage.Add<DrawCityMessage>(w, new DrawCityMessage(CityWrap.GetCityWithPlayer(w)));
         } else {
-            Layout.DrawCombat(w);
+            Layout.DrawCombat(w, floor);
         }
-
-        PlayerWrap.SetFloor(w, floor); 
-        int spawnEnt = EntityFactory.Add(w); 
-        w.SetComponent<EnemySpawner>(spawnEnt, new EnemySpawner(floor));
     }
 }
 

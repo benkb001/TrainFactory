@@ -17,14 +17,19 @@ using TrainGame.Constants;
 
 public static class LootSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Loot), typeof(Inventory), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
-            if (w.GetComponent<Health>(e).HP <= 0) {
-                Loot loot = w.GetComponent<Loot>(e);
-                Inventory inv = w.GetComponent<Inventory>(e);
-                int transferred = LootWrap.Transfer(w, loot, inv);
-                Vector2 pos = w.GetComponent<Frame>(e).Position; 
-                int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {loot.ItemID}!");
-                w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));
+        w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, spawnerEnt) => {
+            CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(spawnerEnt);
+
+            foreach (int e in w.GetMatchingEntities([typeof(Loot), typeof(Inventory), 
+            typeof(Health), typeof(Frame), typeof(Active)])) {
+                if (w.GetComponent<Health>(e).HP <= 0) {
+                    Loot loot = w.GetComponent<Loot>(e);
+                    Inventory inv = w.GetComponent<Inventory>(e);
+                    int transferred = LootWrap.Transfer(w, loot, inv, spawn.LootMultiplier);
+                    Vector2 pos = w.GetComponent<Frame>(e).Position; 
+                    int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {loot.ItemID}!");
+                    w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));
+                }
             }
         });
     }

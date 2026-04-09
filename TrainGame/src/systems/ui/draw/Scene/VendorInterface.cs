@@ -40,8 +40,7 @@ public static class DrawVendorInterfaceSystem {
 
             RegisterBuyableContext ctx = new RegisterBuyableContext(w, src, dest);
 
-            foreach (PurchaseInfo purchaseInfo in VendorID.ProductMap[vendorID]) {
-                IBuyable buyable = purchaseInfo.Buyable; 
+            foreach (IBuyable buyable in VendorID.ProductMap[vendorID]) {
                 int btnEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, setOutline: true, setButton: true);
                 BuyableRegistry.Add(ctx, buyable, btnEnt); 
                 vendor.AddChild(btnEnt, w);
@@ -85,10 +84,29 @@ public static class PurchaseItemCallback {
     }
 }
 
+public static class PurchaseLootMultiplierCallback {
+    public static void Register() {
+        BuyableRegistry.Register<PurchaseLootMultiplier>((ctx, lm, e) => {
+            World w = ctx.W; 
+            CombatRewardSpawner spawn = PlayerWrap.GetCombatRewardSpawner(w);
+            if (spawn.LootMultiplier <= VendorID.UpgradeLootMultiplierCost.Count && spawn.LootMultiplier > 0) {
+                Dictionary<string, int> cost = VendorID.UpgradeLootMultiplierCost[spawn.LootMultiplier - 1];
+                PurchaseButton<PurchaseLootMultiplier> pb = new PurchaseButton<PurchaseLootMultiplier>(lm, cost, ctx.Source);
+                lm.RewardSpawner = spawn;
+                w.SetComponent<PurchaseButton<PurchaseLootMultiplier>>(e, pb);
+                w.SetComponent<TextBox>(e, new TextBox($"Multiply All Combat Loot?\n{Util.FormatMap(cost)}"));
+            } else {
+                w.SetComponent<TextBox>(e, new TextBox($"Maxed Out Combat Loot Multiplier!"));
+            }
+        });
+    }
+}
+
 public static class RegisterBuyableCallbacks {
     public static void All() {
         PurchaseItemCallback.Register();
         UpgradeDamageCallback.Register();
+        PurchaseLootMultiplierCallback.Register();
     }
 }
 
