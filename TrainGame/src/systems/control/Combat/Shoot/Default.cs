@@ -12,7 +12,6 @@ public static class DefaultShootSystem {
             float offset = (float)(sp.Inaccuracy * Util.NextDouble()); 
             targetPosition += new Vector2(offset, offset); 
             ShooterWrap.Add<U>(w, f.Position, targetPosition, sp.Bullet, e);
-            Console.WriteLine($"Damage: {sp.Bullet.GetBullet().Damage}");
             return 1; 
         });
     }

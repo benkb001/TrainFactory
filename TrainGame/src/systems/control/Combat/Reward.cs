@@ -86,7 +86,7 @@ public static class LootInteractSystem {
         RewardInteractSystem.Register<Loot>(w, (w, e, interactorEntity) => {
             Loot l = w.GetComponent<Loot>(e); 
             Inventory inv = w.GetComponent<Inventory>(e);
-            LootWrap.Transfer(w, l, inv);
+            inv.Add(l.ItemID, l.Count);
         });
     }
 }

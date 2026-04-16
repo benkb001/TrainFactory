@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+//TODO: This should only take one type parameter
 public class Distribution<T, U> {
     private int chanceTotal; 
     private Dictionary<T, int> chances; 
     private Dictionary<T, U> events; 
+
+    private void setChanceTotal() {
+        this.chanceTotal = chances.Aggregate(0, (acc, cur) => acc + cur.Value);
+    }
 
     public Distribution(Dictionary<T, int> chances, Dictionary<T, U> events) {
         if (chances.Count != events.Count) {
@@ -22,7 +27,7 @@ public class Distribution<T, U> {
 
         this.chances = chances;
         this.events = events;
-        this.chanceTotal = chances.Aggregate(0, (acc, cur) => acc + cur.Value);
+        setChanceTotal();
     }
 
     public (T, U) GetRandom() {
@@ -43,5 +48,14 @@ public class Distribution<T, U> {
         }
 
         throw new InvalidOperationException("Error in LootDistribution.GetRandom");
+    }
+
+    public int GetChance(T eventKey) {
+        return chances[eventKey];
+    }
+
+    public void SetChance(T eventKey, int chance) {
+        chances[eventKey] = chance;
+        setChanceTotal();
     }
 }

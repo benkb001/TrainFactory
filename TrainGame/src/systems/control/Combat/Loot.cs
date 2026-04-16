@@ -20,15 +20,24 @@ public static class LootSystem {
         w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, spawnerEnt) => {
             CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(spawnerEnt);
 
-            foreach (int e in w.GetMatchingEntities([typeof(Loot), typeof(Inventory), 
+            foreach (int e in w.GetMatchingEntities([typeof(Enemy), typeof(Inventory), 
             typeof(Health), typeof(Frame), typeof(Active)])) {
                 if (w.GetComponent<Health>(e).HP <= 0) {
-                    Loot loot = w.GetComponent<Loot>(e);
-                    Inventory inv = w.GetComponent<Inventory>(e);
-                    int transferred = LootWrap.Transfer(w, loot, inv, spawn.LootMultiplier);
-                    Vector2 pos = w.GetComponent<Frame>(e).Position; 
-                    int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {loot.ItemID}!");
-                    w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));
+                    if (Util.NextFloat() < spawn.LootChance) {
+                        spawn.LootChance = 0.1f;
+                        EnemyType type = w.GetComponent<Enemy>(e).Type;
+                        int difficulty = EnemyID.Enemies[type].Difficulty;
+                        int rarity = spawn.GetLootRarity();
+                        (string itemID, int count) = CombatRewardDistribution.GetRandom(difficulty, rarity);
+                        Inventory inv = w.GetComponent<Inventory>(e);
+                        int transferred = inv.Add(itemID, count * spawn.LootMultiplier);
+
+                        Vector2 pos = w.GetComponent<Frame>(e).Position; 
+                        int toastEnt = EntityFactory.AddToast(w, pos, 100, 30, $"+{transferred} {itemID}!");
+                        w.SetComponent<Velocity>(toastEnt, new Velocity(0, -1));
+                    } else {
+                        spawn.LootChance += 0.1f;
+                    }
                 }
             }
         });

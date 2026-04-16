@@ -94,7 +94,7 @@ public static class CityID {
             }
         ),
         [CityID.Greenhouse] = new CityArg(
-            [MachineID.Greenhouse],
+            [MachineID.Greenhouse, MachineID.TimeForest],
             550f, 10f, 0f, -2.5f, 
             [CityID.Factory],
             new Dictionary<string, Dictionary<string, int>>() {

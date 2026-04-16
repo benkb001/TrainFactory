@@ -51,6 +51,10 @@
 * Later recipes shouldn't be drawn, will need to keep some sort of 
   mapping to which recipes we should draw based on which items the 
   player has found so far or something. 
+* Play through gungeon and think about how the shoot patterns of enemies 
+  get more difficult as you progress in a run, and validate that our enemies 
+  are getting increasingly difficult. Think about the complexity of movement 
+  required to dodge all bullets. 
 
 * Combat: 
   * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
@@ -224,6 +228,9 @@ systems aren't obsolete.
   time. Do they start coasting after programming is unlocked or not? 
 * Measure how much players engage with NPCs, if they watch or skip cutscenes, 
   if they complete quests. 
+* Measure resource bottlenecks- are players making smart RM decisions, 
+  but still ending up with a certain resource scarcity that leads to 
+  a longer period of stagnation?
 
 **** NICE TO HAVE LOW PRIORITY **** 
 

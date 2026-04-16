@@ -49,17 +49,7 @@ public static class EnemyID {
             Type: EnemyType.Artillery, 
             HP: 12, 
             Size: Constants.TileWidth * 2,
-            Difficulty: 2,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 4,
-                    [ItemID.Cobalt] = 60
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 10,
-                    [ItemID.Cobalt] = 5
-                }
-            )
+            Difficulty: 2
         ),
         [EnemyType.Barbarian] = new EnemyConst(
             new Shooter(
@@ -83,15 +73,7 @@ public static class EnemyID {
             Type: EnemyType.Barbarian, 
             HP: 15, 
             Size: Constants.TileWidth,
-            Difficulty: 2,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 1
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 15
-                }
-            )
+            Difficulty: 2
         ),
         [EnemyType.Default] = new EnemyConst(
             new Shooter(),
@@ -107,17 +89,7 @@ public static class EnemyID {
             new ChaseMovePattern(
                 Constants.PlayerSpeed / 2f
             ),
-            Difficulty: 1,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 90,
-                    [ItemID.Cobalt] = 10
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 5,
-                    [ItemID.Cobalt] = 5
-                }
-            )
+            Difficulty: 1
         ),
         [EnemyType.ExplodeOnDeath] = new EnemyConst(
             new Shooter(
@@ -170,19 +142,7 @@ public static class EnemyID {
                     )
                 )
             },
-            Difficulty: 5,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 30,
-                    [ItemID.Cobalt] = 30,
-                    [ItemID.Mythril] = 40
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 80,
-                    [ItemID.Cobalt] = 40,
-                    [ItemID.Mythril] = 20
-                }
-            )
+            Difficulty: 5
         ),
         [EnemyType.MachineGun] = new EnemyConst(
             new Shooter(
@@ -204,15 +164,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.MachineGun,
             HP: 12,
-            Difficulty: 3,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 1
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 10
-                }
-            )
+            Difficulty: 3
         ),
         [EnemyType.Ninja] = new EnemyConst(
             new Shooter(
@@ -236,17 +188,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Ninja, 
             HP: 6,
-            Difficulty: 1,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 80,
-                    [ItemID.Cobalt] = 20
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 15,
-                    [ItemID.Cobalt] = 5
-                }
-            )
+            Difficulty: 1
         ),
         [EnemyType.Robot] = new EnemyConst(
             new Shooter(
@@ -274,17 +216,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Robot, 
             HP: 8,
-            Difficulty: 2,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 70,
-                    [ItemID.Cobalt] = 30
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 15,
-                    [ItemID.Cobalt] = 10
-                }
-            )
+            Difficulty: 2
         ),
         [EnemyType.Skeleton] = new EnemyConst(
             new Shooter(
@@ -319,17 +251,7 @@ public static class EnemyID {
             new DefaultMovePattern(speed: 0f),
             Type: EnemyType.Skeleton,
             HP: 20,
-            Difficulty: 5,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 30,
-                    [ItemID.Mythril] = 70
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 50,
-                    [ItemID.Mythril] = 30
-                }
-            )
+            Difficulty: 5
         ),
         [EnemyType.Shotgun] = new EnemyConst(
             new Shooter(
@@ -353,17 +275,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Shotgun, 
             HP: 8,
-            Difficulty: 1,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 85,
-                    [ItemID.Cobalt] = 15
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 5,
-                    [ItemID.Cobalt] = 5
-                }
-            )
+            Difficulty: 1
         ),
         [EnemyType.Sniper] = new EnemyConst(
             new Shooter(
@@ -386,17 +298,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Sniper, 
             HP: 15,
-            Difficulty: 3,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 50,
-                    [ItemID.Cobalt] = 50
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 15,
-                    [ItemID.Cobalt] = 10
-                }
-            )
+            Difficulty: 3
         ),
         [EnemyType.Splitter] = new EnemyConst(
             new Shooter(
@@ -433,17 +335,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Splitter,
             HP: 20,
-            Difficulty: 4,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 50,
-                    [ItemID.Cobalt] = 50
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 30,
-                    [ItemID.Cobalt] = 15
-                }
-            )
+            Difficulty: 4
         ),
         [EnemyType.Volley] = new EnemyConst(
             new Shooter(
@@ -468,17 +360,7 @@ public static class EnemyID {
             ),
             Type: EnemyType.Volley, 
             HP: 15,
-            Difficulty: 4,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 70,
-                    [ItemID.Cobalt] = 30               
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 50,
-                    [ItemID.Cobalt] = 30
-                }
-            )
+            Difficulty: 4
         ),
         [EnemyType.Vampire] = new EnemyConst(
             new Shooter(
@@ -513,15 +395,7 @@ public static class EnemyID {
             Type: EnemyType.Vampire,
             HP: 20,
             Size: Constants.TileWidth * 1.5f,
-            Difficulty: 5,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Mythril] = 1
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Mythril] = 40
-                }
-            )
+            Difficulty: 5
         ),
         [EnemyType.Warrior] = new EnemyConst(
             new Shooter(
@@ -547,17 +421,7 @@ public static class EnemyID {
             Type: EnemyType.Warrior, 
             HP: 25,
             Size: Constants.TileWidth * 2,
-            Difficulty: 3,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 50,
-                    [ItemID.Cobalt] = 50
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 60,
-                    [ItemID.Cobalt] = 30
-                }
-            )
+            Difficulty: 3
         ),
         [EnemyType.Wizard] = new EnemyConst(
             new Shooter(
@@ -593,17 +457,7 @@ public static class EnemyID {
             Type: EnemyType.Wizard,
             HP: 25,
             Size: Constants.TileWidth,
-            Difficulty: 4,
-            Dist: new LootDistribution(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 50,
-                    [ItemID.Credit] = 50
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 40,
-                    [ItemID.Credit] = 20
-                }
-            )
+            Difficulty: 4
         )
     };
 

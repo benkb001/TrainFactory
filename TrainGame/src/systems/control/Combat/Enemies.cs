@@ -43,12 +43,7 @@ public class EnemyWrap {
             EnemyTraitRegistry.Add(w, trait, enemyEnt);
         }
 
-        if (e.LootDist != null) {
-            (string itemID, int count) = e.LootDist.GetRandom(); 
-            w.SetComponent<Loot>(enemyEnt, new Loot(itemID, count * lootMultiplier));
-            w.SetComponent<Inventory>(enemyEnt, LootWrap.GetDestination(w));
-        }
-        
+        w.SetComponent<Inventory>(enemyEnt, LootWrap.GetDestination(w));
         return new EnemyWrap(enemyEnt, h, armor);
     }
 

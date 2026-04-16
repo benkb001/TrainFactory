@@ -49,6 +49,7 @@ public static class ItemID {
     public const string SmartAssembler = "Smart Assembler";
     public const string Tentacles = "Tentacles";
     public const string TimeCrystal = "Time Crystal"; 
+    public const string TimeSeed = "Time Seed";
     public const string Water = "Water"; 
     public const string Wood = "Wood"; 
 
@@ -58,7 +59,7 @@ public static class ItemID {
         Drill, Duplicator, Engine, Excavator, Fuel, Gasifier, Glass, Greenhouse,
         Iron, Kiln, Laser, Lubricant, MachineUpgrade, Motherboard, Mythril, MythrilDrill, Oil, 
         OilRig, Petroleum, Pistol, PocketDimension, Pump, Rail, Refinery, Ring, Sand, 
-        Shotgun, SmartAssembler, Tentacles, TimeCrystal, Water, Wood
+        Shotgun, SmartAssembler, Tentacles, TimeCrystal, TimeSeed, Water, Wood
     ]; 
 
     public static readonly List<string> Liquids = [

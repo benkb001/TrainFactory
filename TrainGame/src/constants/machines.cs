@@ -42,6 +42,7 @@ public static class MachineID {
     public const string Pump = "Pump"; 
     public const string PumpAssembler = "Pump Assembler"; 
     public const string RefineryAssembler = "Refinery Assembler";
+    public const string TimeForest = "Time Forest";
 
     public static List<string> All = new() {
         AcceleratorAssembler, AdamantiteDrill, AdamantiteDrillAssembler, 
@@ -559,6 +560,17 @@ public static class Machines {
             StartFactor: 10,
             UpgradeItemID: ItemID.SmartAssembler, 
             Level: 0
+        ),
+        [MachineID.TimeForest] = new MachineArg(
+            ProductItemId: ItemID.TimeCrystal,
+            ProductCount: 1,
+            Recipe: new Dictionary<string, int>() {
+                [ItemID.Water] = 1000
+            },
+            MinTicks: 600, 
+            SlowFactor: 60000,
+            StartFactor: 10,
+            UpgradeItemID: ItemID.TimeSeed
         )
     }; 
 
