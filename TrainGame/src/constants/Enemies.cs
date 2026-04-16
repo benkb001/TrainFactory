@@ -52,12 +52,12 @@ public static class EnemyID {
             Difficulty: 2,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 40,
+                    [ItemID.Credit] = 4,
                     [ItemID.Cobalt] = 60
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 100,
-                    [ItemID.Cobalt] = 50
+                    [ItemID.Credit] = 10,
+                    [ItemID.Cobalt] = 5
                 }
             )
         ),
@@ -89,7 +89,7 @@ public static class EnemyID {
                     [ItemID.Credit] = 1
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 150
+                    [ItemID.Credit] = 15
                 }
             )
         ),
@@ -114,8 +114,8 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 10
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 10,
-                    [ItemID.Cobalt] = 10
+                    [ItemID.Credit] = 5,
+                    [ItemID.Cobalt] = 5
                 }
             )
         ),
@@ -178,9 +178,9 @@ public static class EnemyID {
                     [ItemID.Mythril] = 40
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 800,
-                    [ItemID.Cobalt] = 400,
-                    [ItemID.Mythril] = 200
+                    [ItemID.Credit] = 80,
+                    [ItemID.Cobalt] = 40,
+                    [ItemID.Mythril] = 20
                 }
             )
         ),
@@ -210,7 +210,7 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 1
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 100
+                    [ItemID.Cobalt] = 10
                 }
             )
         ),
@@ -243,8 +243,8 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 20
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 30,
-                    [ItemID.Cobalt] = 15
+                    [ItemID.Credit] = 15,
+                    [ItemID.Cobalt] = 5
                 }
             )
         ),
@@ -281,8 +281,8 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 30
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 100,
-                    [ItemID.Cobalt] = 50
+                    [ItemID.Credit] = 15,
+                    [ItemID.Cobalt] = 10
                 }
             )
         ),
@@ -326,8 +326,8 @@ public static class EnemyID {
                     [ItemID.Mythril] = 70
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 500,
-                    [ItemID.Mythril] = 300
+                    [ItemID.Cobalt] = 50,
+                    [ItemID.Mythril] = 30
                 }
             )
         ),
@@ -360,8 +360,8 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 15
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 15,
-                    [ItemID.Cobalt] = 15
+                    [ItemID.Credit] = 5,
+                    [ItemID.Cobalt] = 5
                 }
             )
         ),
@@ -393,8 +393,8 @@ public static class EnemyID {
                     [ItemID.Cobalt] = 50
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 150,
-                    [ItemID.Cobalt] = 75
+                    [ItemID.Credit] = 15,
+                    [ItemID.Cobalt] = 10
                 }
             )
         ),
@@ -436,14 +436,12 @@ public static class EnemyID {
             Difficulty: 4,
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 40,
-                    [ItemID.Cobalt] = 40,
-                    [ItemID.Mythril] = 20
+                    [ItemID.Credit] = 50,
+                    [ItemID.Cobalt] = 50
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 300,
-                    [ItemID.Cobalt] = 150,
-                    [ItemID.Mythril] = 75
+                    [ItemID.Credit] = 30,
+                    [ItemID.Cobalt] = 15
                 }
             )
         ),
@@ -474,11 +472,11 @@ public static class EnemyID {
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
                     [ItemID.Credit] = 70,
-                    [ItemID.Mythril] = 30
+                    [ItemID.Cobalt] = 30               
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 500,
-                    [ItemID.Mythril] = 300
+                    [ItemID.Credit] = 50,
+                    [ItemID.Cobalt] = 30
                 }
             )
         ),
@@ -521,7 +519,7 @@ public static class EnemyID {
                     [ItemID.Mythril] = 1
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Mythril] = 400
+                    [ItemID.Mythril] = 40
                 }
             )
         ),
@@ -553,13 +551,11 @@ public static class EnemyID {
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
                     [ItemID.Credit] = 50,
-                    [ItemID.Cobalt] = 30,
-                    [ItemID.Mythril] = 20
+                    [ItemID.Cobalt] = 50
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Credit] = 600,
-                    [ItemID.Cobalt] = 300,
-                    [ItemID.Mythril] = 150
+                    [ItemID.Credit] = 60,
+                    [ItemID.Cobalt] = 30
                 }
             )
         ),
@@ -571,20 +567,20 @@ public static class EnemyID {
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(60, maxFramesActive: 3600),
+                    new Bullet(60, maxFramesActive: 600),
                     bFrame(),
                     traits: new List<IBulletTrait>(){
                         new ParametricCurve(
                             //spiral
                             (t) => {
                                 t = t + 1; 
-                                float r = 10 + (t * 0.3f);
+                                float r = 20 + (t * 0.6f);
                                 float theta = MathF.Log(1 + t*5) * 5.0f;
                                 return (float)(r * MathF.Cos(theta));
                             },
                             (t) => {
                                 t = t + 1; 
-                                float r = 10 + (t * 0.3f);
+                                float r = 20 + (t * 0.6f);
                                 float theta =  MathF.Log(1 + t*5) * 5.0f;
                                 return (float)(r * MathF.Sin(theta));
                             }
@@ -601,11 +597,11 @@ public static class EnemyID {
             Dist: new LootDistribution(
                 new Dictionary<string, int>(){
                     [ItemID.Cobalt] = 50,
-                    [ItemID.Mythril] = 50
+                    [ItemID.Credit] = 50
                 },
                 new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 400,
-                    [ItemID.Mythril] = 200
+                    [ItemID.Cobalt] = 40,
+                    [ItemID.Credit] = 20
                 }
             )
         )

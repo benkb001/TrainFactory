@@ -182,6 +182,11 @@ public static class PersistentState {
         rewardSpawnerJSON.Add("shieldHealAmountLevel", rewardSpawner.ShieldHealAmountLevel);
         dom.Add("rewardSpawner", rewardSpawnerJSON);
 
+        EnemySpawner eSpawner = PlayerWrap.GetEnemySpawner(w);
+        JsonObject enemySpawnerJSON = new JsonObject();
+        enemySpawnerJSON.Add("maxDifficultyLevel", eSpawner.MaxDifficultyLevel);
+        dom.Add("enemySpawner", enemySpawnerJSON);
+
         File.WriteAllText(filepath, dom.ToString());
     }
 
@@ -339,7 +344,7 @@ public static class PersistentState {
             JsonObject gunData = kvp.Value.AsObject(); 
             int damageLevel = (int)gunData["damageLevel"];
             
-            for (int i = 0; i < damageLevel; i++) {
+            for (int i = 1; i < damageLevel; i++) {
                 EquipmentSlot<PlayerGun>.EquipmentMap[gunID].UpgradeDamage();
             }
         }
@@ -359,6 +364,12 @@ public static class PersistentState {
         playerHealth.SetHP(hp);
 
         int playerDataEnt = PlayerWrap.AddData(w, playerInv, playerHealth, playerParrier);
+
+        EnemySpawner eSpawn = new EnemySpawner();
+        JsonObject enemySpawnerJSON = dom["enemySpawner"].AsObject();
+        for (int i = eSpawn.MaxDifficultyLevel; i < (int)enemySpawnerJSON["maxDifficultyLevel"]; i++) {
+            eSpawn.UpgradeMaxDifficulty();
+        }
 
         void registerEquipmentSlot<T>() where T : IEquippable {
             Inventory inv = inventories[Constants.EquipmentInvID<T>()];

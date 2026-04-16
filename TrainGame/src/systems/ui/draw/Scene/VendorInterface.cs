@@ -113,9 +113,29 @@ public static class PurchaseShieldHealAmountCallback {
                 PurchaseButton<PurchaseShieldHealAmount> pb = 
                     new PurchaseButton<PurchaseShieldHealAmount>(shieldHeal, cost, ctx.Source);
                 w.SetComponent<PurchaseButton<PurchaseShieldHealAmount>>(e, pb); 
-                w.SetComponent<TextBox>(e, new TextBox($"Increase Shield Healing Per Enemy By {Constants.ShieldHealPerLevel}?"));
+                w.SetComponent<TextBox>(e, new TextBox(
+                    $"Increase Shield Healing Per Enemy By {Constants.ShieldHealPerLevel}?\n{Util.FormatMap(cost)}"));
             } else {
                 w.SetComponent<TextBox>(e, new TextBox($"Maxed Out Shield Heal Level!"));
+            }
+        });
+    }
+}
+
+public static class PurchaseMaxDifficultyUpgradeCallback {
+    public static void Register() {
+        BuyableRegistry.Register<PurchaseMaxDifficultyUpgrade>((ctx, upgrade, e) => {
+            World w = ctx.W; 
+            EnemySpawner spawn = PlayerWrap.GetEnemySpawner(w);
+            upgrade.Spawner = spawn; 
+            if (spawn.MaxDifficultyLevel > 0 && spawn.MaxDifficultyLevel < Constants.MaxMaxDifficultyLevel) {
+                Dictionary<string, int> cost = VendorID.UpgradeMaxDifficultyCost[spawn.MaxDifficultyLevel - 1];
+                PurchaseButton<PurchaseMaxDifficultyUpgrade> pb = 
+                    new PurchaseButton<PurchaseMaxDifficultyUpgrade>(upgrade, cost, ctx.Source);
+                w.SetComponent<PurchaseButton<PurchaseMaxDifficultyUpgrade>>(e, pb); 
+                w.SetComponent<TextBox>(e, new TextBox($"Increase Max Depth In Combat?\n{Util.FormatMap(cost)}"));
+            } else {
+                w.SetComponent<TextBox>(e, new TextBox($"Maxed Out Depth Limit"));
             }
         });
     }
@@ -127,6 +147,7 @@ public static class RegisterBuyableCallbacks {
         UpgradeDamageCallback.Register();
         PurchaseLootMultiplierCallback.Register();
         PurchaseShieldHealAmountCallback.Register();
+        PurchaseMaxDifficultyUpgradeCallback.Register();
     }
 }
 

@@ -48,38 +48,46 @@
 
 * Make railroad purchase button a 1x1 paged layout
 * Add a way to unpause train program from the regular train menu
+* Later recipes shouldn't be drawn, will need to keep some sort of 
+  mapping to which recipes we should draw based on which items the 
+  player has found so far or something. 
 
 * Combat: 
   * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
     look at Hades for other ideas. 
     * Per reward stuff: 
       * HP
-      * Shield HP 
       * Reload speed 
       * Bullet speed 
+      * XP? 
 
   * Add arrows that point to enemies offscreen, and bigger arrows that point to 
-    rewards offscreen, these arrows should have a progress bar associated to 
-    let player know how much longer they have to collect, and once on screen 
-    the items themselves should claim that bar. Could be good to add a wrapper 
-    that checks if an entity/frame is onscreen 
+    rewards offscreen, Could be good to add a wrapper 
+    that checks if an entity/frame is onscreen
+  * Change rewards to be from xp, level up, and have a screen that pauses for player
+    reward selection. 
+  * Amount of XP from enemies should be visualized and randomized, 
+    with a significant chance for zero xp. 
+  * There should also be a significant chance for enemies to not drop any loot. 
+  * There should be a very low chance for enemies to drop very powerful rewards
+    * Base Rate: 0.6% for 5-stars; 5.1% for 4-stars.
+    * Soft Pity: Starting around pull 74, the probability of a 5-star increases significantly with each pull.
+    * Hard Pity: Guaranteed 5-star at 90 pulls (character banner).
   * Add other temporary upgrades
     * add piercing 
   * Draw Reloading, we will need a system that allows one entity to have 
     multiple labels at different spots, we could just make it a stack for now.
     Actually it could just be a single label entity that has a linear layout that grows upward? 
   * Add new shoot patterns: 
-    * Vine, goes in a parametric curve, velocity is zero, 
-      and has a small chance to set shooter onto any of the 
-      spawned bullets but with an exponentially smaller 
-      chance to split
+    * Fractal
     * Shoot a square/circle/triangle/whatever
     * 1->3->9 split
   * Add new bullet traits: 
     * remove on hit (for bullets that aren't removed on collision ie grid)
+  * Fix intermittent bug where bullets aren't colliding with enemies, 
+  i'm guessing something to do with collision spatial hash 
+  * Buying new guns should be cheaper
   * Add enemy difficulties 6-12
-  * Put homing updates outside of bullet trait registry and have them 
-    re-query if the entity is no longer valid
 
 **** NEXT SPRINT **** 
 
@@ -162,13 +170,60 @@
 * Add a system to save game-state of temporary combat rewards if player 
   saves between rounds 
 * Make being able to shoot while shielding a perma upgrade player has to buy
+* Fix train screen appearing when you go to combat
+* Add some sort of price to start fighting
+* Add a display for XP 
+* Add a display for 'rage'
+* Add 'terror' system, which is unlocked after clearing the first 4 floors
+* Put homing updates outside of bullet trait registry and have them 
+  re-query if the entity is no longer valid
+* There needs to be a lot more variety to runs. Gun upgrades should 
+  vary greatly, and I want there to be a sense of synergy to certain 
+  upgrade combinations. Right now, it's mostly just try to get more damage 
+  and maybe explosive. Look at how gungeon does it. Terror and new guns should 
+  also help. 
+* There should also be more variety to the enemies. We only have 3 per 
+  difficulty, it should probably be between 2 and 5 times this. 
 
 **** FAR FUTURE FEATURES **** 
 
 * Augment Sprite/DrawSystem to handle animation/spritesheets
 * Add some tutorials/guides
 * Use OpenFileDialog class to let players submit a program file from their cpu
-* Add art, music, sounds, bosses, cutscenes, story, and clean UI
+* Add art, music, sounds, bosses, cutscenes, and clean UI
+
+**** PLAYTESTING **** 
+
+This is to validate players want to play the game, and that 
+systems aren't obsolete. 
+
+* Get friends to play it on stream, record these sessions. Some 
+  where they talk while they play, some where they talk after. 
+  Ask them to explain their thought process while playing the game, 
+  how they felt while playing it, if they enjoyed it. Follow up 
+  a week later and ask if they played the game any longer, outside of 
+  the initial session. 
+* Use Player Engagement Survey or similar measurements 
+* Record play data and do data analysis on it
+  * Measure how long a play session lasts, the time between 
+    sessions, how far into the game the player makes it, 
+    how much time they spend playing before fully dropping off. 
+    Do players make it past the tutorial? Where is the most common 
+    stopping point? 
+  * Measure how long an individual 'run' is, both in time 
+    and how far they make it
+  * Measure which upgrades get picked most often
+* Find a way to measure the quality of player decisions over time, 
+  we want the player to be learning/improving as they progress 
+* Measure which systems they're engaging with- are they actually 
+  programming their trains? Are they actually upgrading them or just 
+  making new ones? Are they unlocking new cities? Are they even 
+  upgrading their machines much? Once embassy and settlement are introduced, 
+  are they even engaging with them? 
+* Measure how often player is making meaningful resource decisions over 
+  time. Do they start coasting after programming is unlocked or not? 
+* Measure how much players engage with NPCs, if they watch or skip cutscenes, 
+  if they complete quests. 
 
 **** NICE TO HAVE LOW PRIORITY **** 
 

@@ -28,6 +28,10 @@ public class PurchaseShieldHealAmount : IBuyable {
     public CombatRewardSpawner RewardSpawner;
 }
 
+public class PurchaseMaxDifficultyUpgrade : IBuyable {
+    public EnemySpawner Spawner;
+}
+
 public static class VendorID {
     public const string ArmorCraftsman = "Armor Craftsman"; 
     public const string WeaponCraftsman = "Weapon Craftsman"; 
@@ -74,7 +78,8 @@ public static class VendorID {
             }),
             new PurchaseUpgradeGunDamage(ItemID.Pistol),
             new PurchaseLootMultiplier(),
-            new PurchaseShieldHealAmount()
+            new PurchaseShieldHealAmount(),
+            new PurchaseMaxDifficultyUpgrade()
         },
         [MineralCollector] = new() {
             new PurchaseItem(ItemID.Iron, 100, new() {
@@ -154,6 +159,20 @@ public static class VendorID {
             [ItemID.Credit] = 10000,
             [ItemID.Adamantite] = 4000,
             [ItemID.Duplicator] = 100
+        }
+    };
+
+    public static List<Dictionary<string, int>> UpgradeMaxDifficultyCost = new(){
+        new(){
+            [ItemID.Credit] = 10000,
+            [ItemID.Water] = 10000,
+            [ItemID.Cobalt] = 5000,
+            [ItemID.Fuel] = 5000
+        },
+        new(){
+            [ItemID.Credit] = 20000,
+            [ItemID.Oil] = 10000,
+            [ItemID.Mythril] = 5000
         }
     };
 }

@@ -22,6 +22,10 @@ public static class PlayerWrap {
         return equip; 
     }
 
+    private static T getComponent<T>(World w) {
+        return w.GetComponent<T>(GetEntity(w));
+    }
+
     public static int GetEntity(World w) {
         return w.GetMatchingEntities([typeof(Player), typeof(Health), typeof(Parrier), typeof(Data)])[0];
     }
@@ -55,6 +59,7 @@ public static class PlayerWrap {
 
         Armor armor = new Armor(0); 
         w.SetComponent<Armor>(playerDataEnt, armor);
+        w.SetComponent<EnemySpawner>(playerDataEnt, new EnemySpawner());
         return playerDataEnt;
     }
 
@@ -91,6 +96,10 @@ public static class PlayerWrap {
 
     public static CombatRewardSpawner GetCombatRewardSpawner(World w) {
         return w.GetComponent<CombatRewardSpawner>(GetEntity(w));
+    }
+
+    public static EnemySpawner GetEnemySpawner(World w) {
+        return getComponent<EnemySpawner>(w);
     }
 
     public static string GetHeldItemID(World w) {

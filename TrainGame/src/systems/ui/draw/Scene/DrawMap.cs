@@ -131,11 +131,11 @@ public static class DrawMapSystem {
             hud.AddChild(speedButtonRow.GetParentEntity(), w); 
 
             w.SetComponent<SlowTimeButton>(es[0], SlowTimeButton.Get()); 
-            w.SetComponent<TextBox>(es[0], new TextBox("Slow Time")); 
+            w.SetComponent<TextBox>(es[0], new TextBox("Start Time")); 
             w.SetComponent<PauseButton>(es[1], PauseButton.Get()); 
             w.SetComponent<TextBox>(es[1], new TextBox("Pause Time")); 
             w.SetComponent<SpeedTimeButton>(es[2], SpeedTimeButton.Get()); 
-            w.SetComponent<TextBox>(es[2], new TextBox("Fast Time"));
+            w.SetComponent<TextBox>(es[2], new TextBox("Fast Time (TODO: REMOVE)"));
 
             //add save button and equipment button to HUD 
 

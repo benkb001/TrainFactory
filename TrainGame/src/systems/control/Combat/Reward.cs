@@ -252,13 +252,12 @@ public static class RewardSpawnSystem {
     private static Distribution<Type, Action<World, CombatRewardSpawner, int>> rewardDist = 
     new Distribution<Type, Action<World, CombatRewardSpawner, int>>(
         new Dictionary<Type, int>(){
-            [typeof(Loot)] = 15,
-            [typeof(HealthPotion)] = 12,
-            [typeof(AddShield)] = 10,
-            [typeof(DamagePotion)] = 10,
-            [typeof(ReloadSpeedIncrease)] = 10,
+            [typeof(HealthPotion)] = 17,
+            [typeof(DamagePotion)] = 17,
+            [typeof(ReloadSpeedIncrease)] = 15,
             [typeof(AddExplosion)] = 10,
             [typeof(MaxAmmo)] = 10,
+            [typeof(AddShield)] = 8,
             [typeof(UnloadSpeedIncrease)] = 8,
             [typeof(BulletSpeedIncrease)] = 4,
             [typeof(BulletSizeIncrease)] = 4,
@@ -266,7 +265,6 @@ public static class RewardSpawnSystem {
             [typeof(AddHoming)] = 3
         },
         new Dictionary<Type, Action<World, CombatRewardSpawner, int>>(){
-            [typeof(Loot)] = setLoot,
             [typeof(MaxAmmo)] = setMaxAmmo,
             [typeof(HealthPotion)] = setHealthPotion,
             [typeof(DamagePotion)] = setDamagePotion,
@@ -291,31 +289,37 @@ public static class RewardSpawnSystem {
         w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, e) => {
             List<int> killedEnemyEnts = 
             w.GetMatchingEntities([typeof(Enemy), typeof(Health), typeof(Expired), typeof(Frame), typeof(Active)]);
+            CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(e);
 
-            if (killedEnemyEnts.Count > 0) {
-                CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(e);
-                bool rewardOnGround = w.GetMatchingEntities([typeof(CombatReward), typeof(Active)]).Count > 0; 
-                if (!rewardOnGround && Util.NextFloat() < spawn.RewardChance) {
+            foreach (int enemyEnt in killedEnemyEnts) {
+                EnemyType type = w.GetComponent<Enemy>(enemyEnt).Type; 
+                int diff = EnemyID.Enemies[type].Difficulty; 
+                spawn.XP += diff + spawn.ExtraXPPerKill; 
+            }
 
-                    int[] es = {-1, -1};
-                    List<Type> ts = new();
-                    Vector2 pos = w.GetComponent<Frame>(killedEnemyEnts[0]).Position;
+            if (spawn.XP >= spawn.XPToNextLevel) {
+                //TODO: Refine this growth function
+                spawn.XP -= spawn.XPToNextLevel;
+                spawn.XPToNextLevel += 5; 
+                
+                int[] es = {-1, -1};
+                List<Type> ts = new();
+                Vector2 pos = w.GetComponent<Frame>(killedEnemyEnts[0]).Position;
 
-                    for (int i = 0; i < 2; i++) {
-                        Vector2 curPos = pos + new Vector2(i * 2 * Constants.TileWidth, 0f);
-                        int rewardEnt = EntityFactory.AddUI(w, curPos, Constants.TileWidth, Constants.TileWidth, 
-                        setOutline: true, setInteractable: true);
-                        w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
-                        es[i] = rewardEnt;
-                        ts.Add(setReward(w, spawn, rewardEnt)); 
-                    }
+                for (int i = 0; i < 2; i++) {
+                    Vector2 curPos = pos + new Vector2(i * 2 * Constants.TileWidth, 0f);
+                    int rewardEnt = EntityFactory.AddUI(w, curPos, Constants.TileWidth, Constants.TileWidth, 
+                    setOutline: true, setInteractable: true);
+                    w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
+                    es[i] = rewardEnt;
+                    ts.Add(setReward(w, spawn, rewardEnt)); 
+                }
 
-                    if (ts[0] == ts[1]) {
-                        if (ts[0] != typeof(Loot)) {
-                            setLoot(w, spawn, es[0]); 
-                        } else {
-                            setMaxAmmo(w, spawn, es[0]);
-                        }
+                if (ts[0] == ts[1]) {
+                    if (ts[0] != typeof(Loot)) {
+                        setLoot(w, spawn, es[0]); 
+                    } else {
+                        setMaxAmmo(w, spawn, es[0]);
                     }
                 }
             }

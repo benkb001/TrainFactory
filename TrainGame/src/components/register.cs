@@ -150,6 +150,7 @@ public static class RegisterComponents {
         r<ProgressBar>(); 
         r<PurchaseButton<PurchaseItem>>();
         r<PurchaseButton<PurchaseLootMultiplier>>();
+        r<PurchaseButton<PurchaseMaxDifficultyUpgrade>>();
         r<PurchaseButton<PurchaseShieldHealAmount>>();
         r<PurchaseButton<PurchaseUpgradeGunDamage>>();
         r<RadialShootPattern>();

@@ -61,14 +61,13 @@ public static class Layout {
     public static List<List<Tile>> Factory = new() {
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, v[VendorID.ArmorCraftsman], g, v[VendorID.WeaponCraftsman], g, 
-                     v[VendorID.MineralCollector], g, g, g, g, g, g, g, g, g, g, g, w},
+        new() {w, g, v[VendorID.WeaponCraftsman], g, g, g, v[VendorID.MineralCollector], g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, g, g, g, g, g, g, g, p, g, g, g, g, g, g, g, g, w},
+        new() {w, g, ldDown, g, g, g, trainYard, g, g, p, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
-        new() {w, g, ldDown, g, g, g, g, elevator, g, g, g, g, g, g, g, g, trainYard, g, w},
+        new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, w},
         new() {w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w},
     };
@@ -148,7 +147,11 @@ public static class Layout {
     public static void DrawCombat(World w, int floor = 1) {
         Draw(w, Combat);
         int spawnEnt = EntityFactory.Add(w); 
-        w.SetComponent<EnemySpawner>(spawnEnt, new EnemySpawner(floor));
-        w.SetComponent<CombatRewardSpawner>(spawnEnt, PlayerWrap.GetCombatRewardSpawner(w));
+        EnemySpawner eSpawn = PlayerWrap.GetEnemySpawner(w);
+        CombatRewardSpawner cSpawn = PlayerWrap.GetCombatRewardSpawner(w);
+        cSpawn.Reset();
+        eSpawn.Reset();
+        w.SetComponent<EnemySpawner>(spawnEnt, eSpawn);
+        w.SetComponent<CombatRewardSpawner>(spawnEnt, cSpawn);
     }
 }

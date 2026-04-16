@@ -51,6 +51,8 @@ public class Floor {
     }
 }
 
+//TODO: floor is basically just a bool for surface/combat, 
+//could separate into two systems
 public static class FloorSystem {
     public static void GoToFloor(World w, int floor) {
         if (floor == 0) {
@@ -66,31 +68,36 @@ public static class EnemySpawnSystem {
         int sumDifficulties = spawn.Difficulty; 
         double maxDifficultyD = Math.Cbrt(sumDifficulties / 2); 
         int maxDifficulty = (int)maxDifficultyD;
-        spawn.TargetNumActive = Math.Max(spawn.TargetNumActive, (int)(maxDifficultyD * 1.5d)); 
-        int difficulty = 1 + Util.NextInt(maxDifficulty);
-        //double difficultyD = 1d + (maxDifficulty - 1d)*Math.Pow(Util.NextDoublePositive(), 1d/maxDifficulty);
-        //int difficulty = (int)difficultyD;
-        
-        int numToSpawn = spawn.NumActive < spawn.TargetNumActive - 1 ? 2 : 1;
 
-        for (int i = 0; i < numToSpawn; i++) {
-            EnemyType enemyType = EnemyID.GetRandomWithDifficulty(difficulty); 
-            Vector2 topleft = w.GetCameraTopLeft(); 
-            float cameraWidth = w.ScreenWidth; 
-            float cameraHeight = w.ScreenHeight;
+        if (maxDifficulty <= spawn.MaxDifficulty) {
+            spawn.TargetNumActive = Math.Max(spawn.TargetNumActive, (int)(maxDifficultyD * 1.5d)); 
+            int difficulty = 1 + Util.NextInt(maxDifficulty);
+            //double difficultyD = 1d + (maxDifficulty - 1d)*Math.Pow(Util.NextDoublePositive(), 1d/maxDifficulty);
+            //int difficulty = (int)difficultyD;
             
-            float addX = Util.NextInt(2) == 1 ? 0f : cameraWidth; 
-            float addY = Util.NextInt(2) == 1 ? 0f : cameraHeight; 
-            addX += Util.NextFloat() * Constants.TileWidth * (addX == 0 ? 1 : -1);
-            addY += Util.NextFloat() * Constants.TileWidth * (addY == 0 ? 1 : -1); 
+            int numToSpawn = spawn.NumActive < spawn.TargetNumActive - 1 ? 2 : 1;
+            for (int i = 0; i < numToSpawn; i++) {
+                EnemyType enemyType = EnemyID.GetRandomWithDifficulty(difficulty); 
+                Vector2 topleft = w.GetCameraTopLeft(); 
+                float cameraWidth = w.ScreenWidth; 
+                float cameraHeight = w.ScreenHeight;
+                
+                float addX = Util.NextInt(2) == 1 ? 0f : cameraWidth; 
+                float addY = Util.NextInt(2) == 1 ? 0f : cameraHeight; 
+                addX += Util.NextFloat() * Constants.TileWidth * (addX == 0 ? 1 : -1);
+                addY += Util.NextFloat() * Constants.TileWidth * (addY == 0 ? 1 : -1); 
 
-            EnemyWrap.Draw(w, topleft + new Vector2(addX, addY), enemyType, LootWrap.GetDestination(w));
+                EnemyWrap.Draw(w, topleft + new Vector2(addX, addY), enemyType, LootWrap.GetDestination(w));
 
-            spawn.Difficulty += difficulty; 
-            spawn.NumActive++; 
-        } 
-
-        Globals.MaxFloor = Math.Max(Globals.MaxFloor, spawn.Difficulty); 
+                spawn.Difficulty += difficulty; 
+                spawn.NumActive++; 
+            } 
+            Globals.MaxFloor = Math.Max(Globals.MaxFloor, spawn.Difficulty); 
+        } else {
+            PlayerWrap.ResetStats(w);
+            FloorSystem.GoToFloor(w, 0);
+            MakeMessage.Add<DrawToastMessage>(w, new DrawToastMessage("Upgrade Max Difficulty To Go Deeper", 120));
+        }
     }
 
     public static void Register(World w) {

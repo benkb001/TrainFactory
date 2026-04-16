@@ -418,6 +418,7 @@ public static class Machines {
             MinTicks: 3,
             SlowFactor: 6000,
             StartFactor: 10,
+            Level: 0,
             UpgradeItemID: ItemID.Assembler
         ),
         [MachineID.LiquidWagonAssembler] = new MachineArg(
@@ -537,8 +538,7 @@ public static class Machines {
             ProductItemId: ItemID.Pump, 
             ProductCount: 1, 
             Recipe: new Dictionary<string, int>() {
-                [ItemID.Iron] = 150, 
-                [ItemID.Glass] = 20
+                [ItemID.Iron] = 200
             },
             MinTicks: 3,
             SlowFactor: 6000,

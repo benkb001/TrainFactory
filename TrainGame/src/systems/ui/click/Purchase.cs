@@ -67,10 +67,19 @@ public static class PurchaseClickSystem {
         });
     }
 
+    private static void registerPurchaseMaxDifficultyUpgrade(World w) {
+        register<PurchaseMaxDifficultyUpgrade>(w, (w, e, btn) => {
+            EnemySpawner spawn = btn.Buyable.Spawner;
+            spawn.UpgradeMaxDifficulty();
+            BuyableRegistry.Add(new RegisterBuyableContext(w, btn.Source, btn.Source), btn.Buyable, e);
+        });
+    }
+
     public static void Register(World w) {
         registerPurchaseItem(w);
         registerPurchaseGunUpgrade(w);
         registerPurchaseLootMultiplier(w);
         registerPurchaseShieldHealUpgrade(w);
+        registerPurchaseMaxDifficultyUpgrade(w);
     }
 }

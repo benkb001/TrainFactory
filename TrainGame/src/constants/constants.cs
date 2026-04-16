@@ -85,6 +85,8 @@ public static class Constants {
     public const float BulletSpeedIncrease = 1f;
     public const int MaxShieldHealAmountLevel = 5; 
     public const int ShieldHealPerLevel = 5;
+    public const int MaxMaxDifficultyLevel = 3;
+    public const int MaxDifficultyPerUpgrade = 4; 
 
     public const float EnemySize = 50f;
     public const int InvincibilityFrames = 60;
@@ -93,7 +95,7 @@ public static class Constants {
     public const float ExponentialMilesPerFuelUpgradeFactor = 1.1f;
     public const float ExponentialTrainPowerUpgradeFactor = 1.1f; 
     public const float ExponentialProductCountUpgradeFactor = 1.1f; 
-    public const float RewardChance = 1f;
+    public const float RewardChance = 0.175f;
     public const int RewardLifetimeSeconds = 10;
     public static WorldTime TicksBetweenShotDecrement = new WorldTime(ticks: 5);
     public static WorldTime ReloadTicksDecrement = new WorldTime(ticks: 10); 
