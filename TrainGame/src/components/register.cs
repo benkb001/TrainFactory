@@ -133,6 +133,7 @@ public static class RegisterComponents {
         r<MovementBounds>();
         r<MoveTiming>(); 
         r<Label>(); 
+        r<LevelBar>();
         r<LinearLayout>(); 
         r<Lines>(); 
         r<LLChild>(); 

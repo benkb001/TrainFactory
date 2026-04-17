@@ -136,11 +136,6 @@ public static class PlayerWrap {
         );
         w.SetComponent<PlayerHUD>(playerHUD.GetParentEntity(), new PlayerHUD());
 
-        InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, Vector2.Zero, playerInvWidth, 
-            playerInvHeight, Padding: Constants.InventoryPadding, SetMenu: false, DrawLabel: false);
-        
-        playerHUD.AddChild(playerInvView.GetParentEntity(), w); 
-
         int hpEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "HP"); 
         w.SetComponent<Health>(hpEnt, w.GetComponent<Health>(playerDataEnt)); 
         //TODO: we should store the parrier hp in the data ent. 
@@ -151,13 +146,18 @@ public static class PlayerWrap {
         int ammoEnt = EntityFactory.AddUI(w, Vector2.Zero, 80, 80, setOutline: true, text: "Ammo"); 
         w.SetComponent<AmmoHUD>(ammoEnt, new AmmoHUD());
         playerHUD.AddChild(ammoEnt, w); 
+
+        int levelBarEnt =  DrawProgressBarCallback.Draw(w, Vector2.Zero, Constants.TileWidth * 2f, Constants.TileWidth / 2f); 
+        w.SetComponent<LevelBar>(levelBarEnt, new LevelBar(GetCombatRewardSpawner(w)));
+        int levelLabelEnt = EntityFactory.AddUI(w, Vector2.Zero, Constants.TileWidth / 2f, 
+            Constants.TileWidth / 2f, setOutline: true, text: "XP");
+        w.SetComponent<Label>(levelLabelEnt, new Label(levelBarEnt));
+        playerHUD.AddChild(levelBarEnt, w);
         
-        int playerInvEnt = playerInvView.GetInventoryEntity(); 
         w.SetComponent<Frame>(playerEntity, new Frame(position, Constants.PlayerWidth, Constants.PlayerHeight)); 
         w.SetComponent<Interactor>(playerEntity, Interactor.Get());
         w.SetComponent<CardinalMovement>(playerEntity, new CardinalMovement(Constants.PlayerSpeed)); 
         w.SetComponent<Collidable>(playerEntity, Collidable.Get()); 
-        w.SetComponent<HeldItem>(playerEntity, new HeldItem(playerInv, playerInvEnt)); 
         w.SetComponent<Outline>(playerEntity, 
             new Outline(Colors.PlayerOutline, Constants.PlayerOutlineThickness, Depth.PlayerOutline)); 
         w.SetComponent<Background>(playerEntity, new Background(Colors.PlayerBackground, Depth.PlayerBackground));

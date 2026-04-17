@@ -181,8 +181,15 @@ public static class RewardSpawnSystem {
             foreach (int enemyEnt in killedEnemyEnts) {
                 EnemyType type = w.GetComponent<Enemy>(enemyEnt).Type; 
                 int diff = EnemyID.Enemies[type].Difficulty; 
-
-                spawn.XP += diff + spawn.ExtraXPPerKill; 
+                int mult = spawn.GetXPMultiplier();
+                if (mult > 0) {
+                    int xpGained = (diff + spawn.ExtraXPPerKill) * mult;
+                    spawn.XP += xpGained;
+                    Vector2 pos = w.GetComponent<Frame>(enemyEnt).Position; 
+                    pos.X += Util.NextNeg1To1() * Constants.TileWidth;
+                    pos.Y += Util.NextNeg1To1() * Constants.TileWidth;
+                    EntityFactory.AddToast(w, pos, Constants.TileWidth, Constants.TileWidth, $"+{xpGained} XP");
+                }
             }
 
             if (spawn.XP >= spawn.XPToNextLevel) {

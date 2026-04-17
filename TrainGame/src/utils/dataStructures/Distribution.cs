@@ -6,6 +6,7 @@ using System.Linq;
 
 public class Distribution<T> {
     private int chanceTotal; 
+    private Dictionary<T, int> baseChances;
     private Dictionary<T, int> chances; 
 
     private void setChanceTotal() {
@@ -13,7 +14,8 @@ public class Distribution<T> {
     }
 
     public Distribution(Dictionary<T, int> chances) {
-        this.chances = chances;
+        this.baseChances = chances.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        this.chances = chances.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         setChanceTotal();
     }
 
@@ -43,5 +45,17 @@ public class Distribution<T> {
     public void SetChance(T eventKey, int chance) {
         chances[eventKey] = chance;
         setChanceTotal();
+    }
+
+    public void MoveChance(T from, T to, int amount) {
+        int fromChance = chances[from]; 
+        int amountRemoved = Math.Min(fromChance, amount);
+        chances[from] -= amountRemoved; 
+        chances[to] += amountRemoved;
+        setChanceTotal();
+    }
+
+    public void Reset() {
+        chances = baseChances.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 }

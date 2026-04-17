@@ -131,7 +131,7 @@ public static class CombatRewardDistribution {
     }
 }
 
-public class CombatRewardSpawner {
+public class CombatRewardSpawner : IExperienceTracker {
     public float LootChance = 0.1f;
     public int LootMultiplier = 1;
     public int ShieldHealAmount = 5;
@@ -140,19 +140,25 @@ public class CombatRewardSpawner {
     public int XPToNextLevel = 10;
     public int ExtraXPPerKill = 0;
 
-    public Dictionary<int, int> BaseRarityChances = new() {
-        [1] = 1000,
-        [2] = 100,
-        [3] = 10,
-        [4] = 1
-    };
+    public int GetXP() => XP; 
+    public int GetXPToNextLevel() => XPToNextLevel; 
 
-    public Distribution<int> RarityDistribution = new Distribution<int>(
+    private Distribution<int> rarityDistribution = new Distribution<int>(
         new (){
-            [1] = 1,
-            [2] = 1,
-            [3] = 1,
+            [1] = 1000,
+            [2] = 100,
+            [3] = 10,
             [4] = 1
+        }
+    );
+
+    private Distribution<int> xpMultiplierDistribution = new Distribution<int>(
+        new Dictionary<int, int>() {
+            [0] = 50,
+            [1] = 25,
+            [2] = 12,
+            [3] = 6,
+            [4] = 3
         }
     );
 
@@ -162,31 +168,33 @@ public class CombatRewardSpawner {
 
     public void Reset() {
         XP = 0; 
-        ResetRarityChances();
-    }
-
-    public void ResetRarityChances() {
-        for (int i = 1; i < 4; i++) {
-            RarityDistribution.SetChance(i, BaseRarityChances[i]);
-        }
+        rarityDistribution.Reset();
+        xpMultiplierDistribution.Reset();
     }
 
     public int GetLootRarity() {
-        int rarity = RarityDistribution.GetRandom();
+        int rarity = rarityDistribution.GetRandom();
         if (rarity == 4) {
-            ResetRarityChances();
+            rarityDistribution.Reset();
         } else {
             //Basically if you get something not 4, take one ball and move it up towards 4. 
             //If you get 4, reset
             //IDK if this is good because it is kinda like going on a streak, we won't move 
             //a lot of balls towards 4 until there are a lot of balls at 3, but if this ends 
             //up feeling too op we will change it 
-            int prevLowRarityChance = RarityDistribution.GetChance(rarity);
-            int prevHighRarityChance = RarityDistribution.GetChance(rarity + 1);
-            RarityDistribution.SetChance(rarity, prevLowRarityChance - 1);
-            RarityDistribution.SetChance(rarity + 1, prevHighRarityChance + 1);
+            rarityDistribution.MoveChance(rarity, rarity + 1, 1);
         }
         return rarity;
+    }
+
+    public int GetXPMultiplier() {
+        int mult = xpMultiplierDistribution.GetRandom();
+        if (mult == 4) {
+            xpMultiplierDistribution.Reset();
+        } else {
+            xpMultiplierDistribution.MoveChance(mult, mult + 1, 1);
+        }
+        return mult;
     }
 
     public void UpgradeShieldHealAmount() {

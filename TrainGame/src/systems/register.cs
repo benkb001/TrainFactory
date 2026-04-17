@@ -197,6 +197,7 @@ public static class RegisterSystems {
         ToastSystem.RegisterDraw(w);
         StopDrawingVampiredSystem.Register(w);
         PointToOffscreenEnemiesSystem.RegisterDraw(w);
+        LevelBarDrawSystem.Register(w);
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 

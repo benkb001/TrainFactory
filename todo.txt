@@ -55,8 +55,6 @@
       * Bullet speed 
       * XP? 
 
-  * Amount of XP from enemies should be visualized and randomized, similar to 
-    loot drops but more uniform between 0 - 4x difficulty
   * Combat Upgrade reward distributions should be done similar to loot drops 
     with rarity and pity
   * Add other temporary upgrades
