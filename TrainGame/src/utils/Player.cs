@@ -147,7 +147,7 @@ public static class PlayerWrap {
         w.SetComponent<AmmoHUD>(ammoEnt, new AmmoHUD());
         playerHUD.AddChild(ammoEnt, w); 
 
-        int levelBarEnt =  DrawProgressBarCallback.Draw(w, Vector2.Zero, Constants.TileWidth * 2f, Constants.TileWidth / 2f); 
+        int levelBarEnt = DrawProgressBarCallback.Draw(w, Vector2.Zero, Constants.TileWidth * 2f, Constants.TileWidth / 2f); 
         w.SetComponent<LevelBar>(levelBarEnt, new LevelBar(GetCombatRewardSpawner(w)));
         int levelLabelEnt = EntityFactory.AddUI(w, Vector2.Zero, Constants.TileWidth / 2f, 
             Constants.TileWidth / 2f, setOutline: true, text: "XP");
@@ -181,6 +181,15 @@ public static class PlayerWrap {
 
         w.SetComponent<Targetable>(playerEntity, new Targetable());
 
+        int statusBarsContainerEnt = EntityFactory.AddUI(w, Vector2.Zero, Constants.PlayerWidth, Constants.PlayerHeight);
+        LinearLayout statusBarsContainer = new LinearLayout(
+            "vertical",
+            "alignHigh"
+        );
+        w.SetComponent<Label>(statusBarsContainerEnt, new Label(playerEntity));
+        w.SetComponent<LinearLayout>(statusBarsContainerEnt, statusBarsContainer);
+        w.SetComponent<Body>(playerEntity, new Body(statusBarsContainerEnt));
+        
         w.UnlockCameraPan(); 
         w.TrackEntity(playerEntity); 
         return playerEntity; 

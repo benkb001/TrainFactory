@@ -36,6 +36,8 @@ public static class RegisterSystems {
 
         KnockbackSystem.RegisterRemove(w);
 
+        ShootSystem.RegisterEraseReloadCompletionBar(w);
+
         ParrySystem.RegisterStartParry(w); 
         ParrySystem.RegisterEndParry(w); 
         DamageSystem.RegisterShoot<Player, Enemy>(w); 
@@ -59,6 +61,7 @@ public static class RegisterSystems {
         RewardSpawnSystem.Register(w);
         
         SplitBulletSystem.Register(w);
+        ShootSystem.RegisterReload(w);
         PlayerShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
         DefaultShootSystem.Register<Enemy>(w);
@@ -198,6 +201,8 @@ public static class RegisterSystems {
         StopDrawingVampiredSystem.Register(w);
         PointToOffscreenEnemiesSystem.RegisterDraw(w);
         LevelBarDrawSystem.Register(w);
+        ShootSystem.RegisterDrawReload(w);
+        ShootSystem.RegisterDrawReloadCompletion(w);
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 

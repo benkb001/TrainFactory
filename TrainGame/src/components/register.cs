@@ -47,7 +47,6 @@ public static class RegisterComponents {
         r<CloseMenuMessage>(); 
         r<Collidable>(); 
         r<Collided>();
-        r<CombatReward>(); 
         r<CombatRewardButton>();
         r<CombatRewardCollectedMessage>(); 
         r<CombatRewardSpawner>();
@@ -159,6 +158,7 @@ public static class RegisterComponents {
         r<RadialShootPattern>();
         r<RandomShotgunShootPattern>();
         r<ReceiveDamageMessage>(); 
+        r<ReloadBar>();
         r<ReloadSpeedIncrease>();
         r<RemoveOnCollision>();
         r<RespawnLocation>(); 

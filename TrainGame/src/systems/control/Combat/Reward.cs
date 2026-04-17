@@ -294,25 +294,40 @@ public static class DrawRewardInterfaceSystem {
         w.SetComponent<TextBox>(e, new TextBox($"+1 Knockback"));
     };
 
-    private static Distribution<(Type, Action<World, CombatRewardSpawner, int>)> rewardDist = 
-    new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
-        new (){
-            [(typeof(HealthPotion), setHealthPotion)] = 17,
-            [(typeof(DamagePotion), setDamagePotion)] = 17,
-            [(typeof(ReloadSpeedIncrease), setReloadSpeedIncrease)] = 15,
-            [(typeof(AddExplosion), setAddExplosion)] = 10,
-            [(typeof(MaxAmmo), setMaxAmmo)] = 10,
-            [(typeof(AddShield), setAddShield)] = 8,
-            [(typeof(UnloadSpeedIncrease), setUnloadSpeedIncrease)] = 8,
-            [(typeof(BulletSpeedIncrease), setBulletSpeedIncrease)] = 4,
-            [(typeof(BulletSizeIncrease), setBulletSizeIncrease)] = 4,
-            [(typeof(AddKnockback), setAddKnockback)] = 4,
-            [(typeof(AddHoming), setAddHoming)] = 3
-        }
-    );
+    private static Dictionary<int, Distribution<(Type, Action<World, CombatRewardSpawner, int>)>> rewardDist = new(){
+        [1] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
+            new Dictionary<(Type, Action<World, CombatRewardSpawner, int>), int>(){
+                [(typeof(HealthPotion), setHealthPotion)] = 2,
+                [(typeof(Loot), setLoot)] = 2,
+                [(typeof(AddShield), setAddShield)] = 2,
+                [(typeof(AddKnockback), setAddKnockback)] = 2,
+                [(typeof(BulletSpeedIncrease), setBulletSpeedIncrease)] = 1,
+                [(typeof(BulletSizeIncrease), setBulletSizeIncrease)] = 1
+            }
+        ),
+        [2] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
+            new(){
+                [(typeof(DamagePotion), setDamagePotion)] = 1,
+                [(typeof(ReloadSpeedIncrease), setReloadSpeedIncrease)] = 1,
+            }
+        ),
+        [3] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
+            new(){
+                [(typeof(MaxAmmo), setMaxAmmo)] = 6,
+                [(typeof(UnloadSpeedIncrease), setUnloadSpeedIncrease)] = 3,
+                [(typeof(AddHoming), setAddHoming)] = 1
+            }
+        ),
+        [4] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
+            new(){
+                [(typeof(AddExplosion), setAddExplosion)] = 1
+            }
+        )
+    };
 
     private static Type setReward(World w, CombatRewardSpawner spawn, int e) {
-        (Type t, Action<World, CombatRewardSpawner, int> setter) = rewardDist.GetRandom(); 
+        int rarity = spawn.GetUpgradeRarity();
+        (Type t, Action<World, CombatRewardSpawner, int> setter) = rewardDist[rarity].GetRandom(); 
         setter(w, spawn, e); 
         return t; 
     }
@@ -327,7 +342,6 @@ public static class DrawRewardInterfaceSystem {
 
             for (int i = 0; i < 2; i++) {
                 int rewardEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, setOutline: true, setButton: true);
-                w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
                 es[i] = rewardEnt;
                 ts.Add(setReward(w, spawn, rewardEnt)); 
                 outer.AddChild(rewardEnt, w);

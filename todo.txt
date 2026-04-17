@@ -55,8 +55,6 @@
       * Bullet speed 
       * XP? 
 
-  * Combat Upgrade reward distributions should be done similar to loot drops 
-    with rarity and pity
   * Add other temporary upgrades
     * add piercing 
   * Draw Reloading, we will need a system that allows one entity to have 

@@ -132,6 +132,8 @@ public static class CombatRewardDistribution {
 }
 
 public class CombatRewardSpawner : IExperienceTracker {
+    private int maxRarity = 4; 
+
     public float LootChance = 0.1f;
     public int LootMultiplier = 1;
     public int ShieldHealAmount = 5;
@@ -162,6 +164,25 @@ public class CombatRewardSpawner : IExperienceTracker {
         }
     );
 
+    private Distribution<int> upgradeRarityDistribution = new Distribution<int>(
+        new Dictionary<int, int>(){
+            [1] = 75,
+            [2] = 20,
+            [3] = 4,
+            [4] = 1
+        }
+    );
+
+    private int getRarity(Distribution<int> dist) {
+        int rarity = dist.GetRandom(); 
+        if (rarity == maxRarity) {
+            dist.Reset();
+        } else {
+            dist.MoveChance(rarity, rarity + 1, 1);
+        }
+        return rarity; 
+    }
+
     public CombatRewardSpawner() {
         Reset();
     }
@@ -173,28 +194,15 @@ public class CombatRewardSpawner : IExperienceTracker {
     }
 
     public int GetLootRarity() {
-        int rarity = rarityDistribution.GetRandom();
-        if (rarity == 4) {
-            rarityDistribution.Reset();
-        } else {
-            //Basically if you get something not 4, take one ball and move it up towards 4. 
-            //If you get 4, reset
-            //IDK if this is good because it is kinda like going on a streak, we won't move 
-            //a lot of balls towards 4 until there are a lot of balls at 3, but if this ends 
-            //up feeling too op we will change it 
-            rarityDistribution.MoveChance(rarity, rarity + 1, 1);
-        }
-        return rarity;
+        return getRarity(rarityDistribution);
     }
 
     public int GetXPMultiplier() {
-        int mult = xpMultiplierDistribution.GetRandom();
-        if (mult == 4) {
-            xpMultiplierDistribution.Reset();
-        } else {
-            xpMultiplierDistribution.MoveChance(mult, mult + 1, 1);
-        }
-        return mult;
+        return getRarity(xpMultiplierDistribution);
+    }
+
+    public int GetUpgradeRarity() {
+        return getRarity(upgradeRarityDistribution);
     }
 
     public void UpgradeShieldHealAmount() {

@@ -24,11 +24,11 @@ public static class ParrySystem {
         w.AddSystem((w) => {
             if (VirtualMouse.RightPressed()) {
                 List<int> es = w.GetMatchingEntities([typeof(Player), 
-                typeof(CardinalMovement), typeof(Parrier), typeof(Background), typeof(Active)]);
+                typeof(CardinalMovement), typeof(Parrier), typeof(Background), typeof(Body), typeof(Active)]);
 
                 foreach(int e in es) {
                     Parrier p = w.GetComponent<Parrier>(e); 
-                    if (p.HP > 0) {
+                    if (p.HP > 0 && !p.Parrying) {
                         p.Parrying = true;
                         w.GetComponent<CardinalMovement>(e).Speed = Constants.ParryingSpeed;
 
@@ -40,8 +40,13 @@ public static class ParrySystem {
                         float pbHeight = pbWidth / 3f; 
                         
                         int pbEnt = DrawProgressBarCallback.Draw(w, Vector2.Zero, pbWidth, pbHeight);
-                        w.SetComponent<Label>(pbEnt, new Label(e)); 
                         w.SetComponent<ParryHPBar>(pbEnt, new ParryHPBar(p)); 
+
+                        int labelEnt = w.GetComponent<Body>(e).LabelEntity; 
+                        (LinearLayout ll, bool hasLL) = w.GetComponentSafe<LinearLayout>(labelEnt); 
+                        if (hasLL) {
+                            ll.AddChild(pbEnt);
+                        }
                     }
                 }
             }
@@ -50,16 +55,27 @@ public static class ParrySystem {
 
     public static void RegisterEndParry(World w) {
         w.AddSystem([typeof(Player), typeof(Parrier), 
-        typeof(CardinalMovement), typeof(Background), typeof(Active)], (w, e) => {
+        typeof(CardinalMovement), typeof(Background), typeof(Active), typeof(Body)], (w, e) => {
             Parrier p = w.GetComponent<Parrier>(e);
             if (p.HP < 1 || !VirtualMouse.RightPressed()) {
                 p.Parrying = false; 
                 w.GetComponent<CardinalMovement>(e).Speed = Constants.PlayerSpeed;
                 //ICKY: Should be in separate ui system
                 w.GetComponent<Background>(e).BackgroundColor = Color.White;
-                foreach (int barEnt in w.GetMatchingEntities([typeof(ParryHPBar), typeof(Active)])
-                .Where(ent => w.GetComponent<Label>(ent).BodyEntity == e)) {
-                    w.RemoveEntity(barEnt);
+                int labelEnt = w.GetComponent<Body>(e).LabelEntity; 
+                (LinearLayout ll, bool hasLL) = w.GetComponentSafe<LinearLayout>(labelEnt); 
+                List<int> childrenToRemove = new();
+                if (hasLL) {
+                    foreach (int childEnt in ll.GetChildren()) {
+                        if (w.ComponentContainsEntity<ParryHPBar>(childEnt)) {
+                            childrenToRemove.Add(childEnt);
+                        }
+                    }
+
+                    foreach (int childEnt in childrenToRemove) {
+                        ll.RemoveChild(childEnt); 
+                        w.RemoveEntity(childEnt);
+                    }
                 }
             }
         });
