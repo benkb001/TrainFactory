@@ -21,7 +21,7 @@ public static class BulletWarningShootSystem {
             BulletWarning warn = w.GetComponent<BulletWarning>(e);
             if (w.Time.IsAfterOrAt(warn.WhenToShoot)) {
                 int bulletEnt = warn.BulletEnt; 
-                w.SetComponent<Active>(bulletEnt, new Active()); 
+                w.SetComponentSafe<Active>(bulletEnt, new Active()); 
                 (Frame f, bool s) = w.GetComponentSafe<Frame>(bulletEnt); 
                 
                 if (s) {

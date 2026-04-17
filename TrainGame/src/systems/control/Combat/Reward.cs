@@ -24,39 +24,36 @@ public class AddHoming {}
 public class AddShield {}
 public class AddKnockback {}
 
+public class CombatRewardButton {
+    public int PlayerRPGEntity; 
+
+    public CombatRewardButton(int e) {
+        this.PlayerRPGEntity = e; 
+    }
+}
+
 public static class RewardInteractSystem {
     public static void Register<T>(World w, Action<World, int, int> tf) {
-        InteractSystem.Register<T>(w, (w, e) => {
-            int interactorEntity = w.GetComponent<Interactable>(e).InteractorEntity; 
-            tf(w, e, interactorEntity);
-            MakeMessage.Add<CombatRewardCollectedMessage>(w, new CombatRewardCollectedMessage()); 
+        ClickSystem.Register([typeof(CombatRewardButton), typeof(T)], w, (w, e) => {
+            int playerRPGEnt = w.GetComponent<CombatRewardButton>(e).PlayerRPGEntity;
+            tf(w, e, playerRPGEnt);
         });
     }
 
     public static void Register<T, U>(World w, Action<World, T, U, int> tf) {
-        InteractSystem.Register<T>(w, (w, e, t) => {
-            int interactorEntity = w.GetComponent<Interactable>(e).InteractorEntity; 
-            (U u, bool hasU) = w.GetComponentSafe<U>(interactorEntity); 
-            if (hasU) {
-                tf(w, t, u, interactorEntity);
-            }
-            MakeMessage.Add<CombatRewardCollectedMessage>(w, new CombatRewardCollectedMessage()); 
+        ClickSystem.Register([typeof(CombatRewardButton), typeof(T)], w, (w, e) => {
+            int playerRPGEnt = w.GetComponent<CombatRewardButton>(e).PlayerRPGEntity;
+            U u = w.GetComponent<U>(playerRPGEnt);
+            T t = w.GetComponent<T>(e);
+            tf(w, t, u, playerRPGEnt);
         });
     }
+}
 
-    public static void RegisterRemove(World w) {
-        w.AddSystem([typeof(CombatReward), typeof(Active)], (w, e) => {
-            if (w.Time.IsAfterOrAt(w.GetComponent<CombatReward>(e).Expire)) {
-                w.RemoveEntity(e);
-            }
-        });
-
-        w.AddSystem([typeof(CombatRewardCollectedMessage)], (w, e) => {
-            List<int> rewardEnts = w.GetMatchingEntities([typeof(CombatReward)]); 
-            rewardEnts.ForEach(ent => {
-                w.RemoveEntity(ent);
-            }); 
-            w.RemoveEntity(e); 
+public static class RewardClickSystem {
+    public static void Register(World w) {
+        ClickSystem.Register<CombatRewardButton>(w, (w, e) => {
+            CloseMenuSystem.AddMessage(w);
         });
     }
 }
@@ -174,7 +171,51 @@ public static class AddKnockbackInteractSystem {
 }
 
 public static class RewardSpawnSystem {
-    
+
+    public static void Register(World w) {
+        w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, e) => {
+            List<int> killedEnemyEnts = 
+            w.GetMatchingEntities([typeof(Enemy), typeof(Health), typeof(Expired), typeof(Frame), typeof(Active)]);
+            CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(e);
+
+            foreach (int enemyEnt in killedEnemyEnts) {
+                EnemyType type = w.GetComponent<Enemy>(enemyEnt).Type; 
+                int diff = EnemyID.Enemies[type].Difficulty; 
+                spawn.XP += diff + spawn.ExtraXPPerKill; 
+            }
+
+            if (spawn.XP >= spawn.XPToNextLevel) {
+                //TODO: Refine this growth function
+                spawn.XP -= spawn.XPToNextLevel;
+                spawn.XPToNextLevel += 5; 
+
+                MakeMessage.Add<DrawInterfaceMessage<RewardInterfaceData>>(w,
+                    new DrawInterfaceMessage<RewardInterfaceData>(
+                            new RewardInterfaceData(spawn, PlayerWrap.GetRPGEntity(w))
+                        )
+                    );
+            }
+        });
+    }
+}
+
+public class RewardInterfaceData : IInterfaceData {
+    private CombatRewardSpawner spawn; 
+    private int e; 
+    public int GetPlayerRPGEntity() => e; 
+    public CombatRewardSpawner GetCombatRewardSpawner() => spawn; 
+
+    public RewardInterfaceData(CombatRewardSpawner spawn, int ent) {
+        this.spawn = spawn; 
+        this.e = ent;
+    }
+
+    public SceneType GetSceneType() => SceneType.RewardInterface; 
+    public Menu GetMenu() => new Menu();
+}
+
+public static class DrawRewardInterfaceSystem {
+
     private static LootDistribution lootDist = new LootDistribution(
         new Dictionary<string, int>(){
             [ItemID.Credit] = 50,
@@ -286,41 +327,29 @@ public static class RewardSpawnSystem {
     }
 
     public static void Register(World w) {
-        w.AddSystem([typeof(CombatRewardSpawner), typeof(Active)], (w, e) => {
-            List<int> killedEnemyEnts = 
-            w.GetMatchingEntities([typeof(Enemy), typeof(Health), typeof(Expired), typeof(Frame), typeof(Active)]);
-            CombatRewardSpawner spawn = w.GetComponent<CombatRewardSpawner>(e);
+        DrawInterfaceSystem.Register<RewardInterfaceData>(w, (w, e, data) => {
+            int[] es = {-1, -1};
+            List<Type> ts = new();
+            CombatRewardSpawner spawn = data.GetCombatRewardSpawner();
+            int rpgEnt = data.GetPlayerRPGEntity();
+            LinearLayoutContainer outer = LinearLayoutContainer.AddOuter(w, "Leveled Up! Select A Reward");
 
-            foreach (int enemyEnt in killedEnemyEnts) {
-                EnemyType type = w.GetComponent<Enemy>(enemyEnt).Type; 
-                int diff = EnemyID.Enemies[type].Difficulty; 
-                spawn.XP += diff + spawn.ExtraXPPerKill; 
+            for (int i = 0; i < 2; i++) {
+                int rewardEnt = EntityFactory.AddUI(w, Vector2.Zero, 0, 0, setOutline: true, setButton: true);
+                w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
+                es[i] = rewardEnt;
+                ts.Add(setReward(w, spawn, rewardEnt)); 
+                outer.AddChild(rewardEnt, w);
+                w.SetComponent<CombatRewardButton>(rewardEnt, new CombatRewardButton(rpgEnt));
             }
 
-            if (spawn.XP >= spawn.XPToNextLevel) {
-                //TODO: Refine this growth function
-                spawn.XP -= spawn.XPToNextLevel;
-                spawn.XPToNextLevel += 5; 
-                
-                int[] es = {-1, -1};
-                List<Type> ts = new();
-                Vector2 pos = w.GetComponent<Frame>(killedEnemyEnts[0]).Position;
+            outer.ResizeChildren(w);
 
-                for (int i = 0; i < 2; i++) {
-                    Vector2 curPos = pos + new Vector2(i * 2 * Constants.TileWidth, 0f);
-                    int rewardEnt = EntityFactory.AddUI(w, curPos, Constants.TileWidth, Constants.TileWidth, 
-                    setOutline: true, setInteractable: true);
-                    w.SetComponent<CombatReward>(rewardEnt, new CombatReward(w.Time)); 
-                    es[i] = rewardEnt;
-                    ts.Add(setReward(w, spawn, rewardEnt)); 
-                }
-
-                if (ts[0] == ts[1]) {
-                    if (ts[0] != typeof(Loot)) {
-                        setLoot(w, spawn, es[0]); 
-                    } else {
-                        setMaxAmmo(w, spawn, es[0]);
-                    }
+            if (ts[0] == ts[1]) {
+                if (ts[0] != typeof(Loot)) {
+                    setLoot(w, spawn, es[0]); 
+                } else {
+                    setMaxAmmo(w, spawn, es[0]);
                 }
             }
         });

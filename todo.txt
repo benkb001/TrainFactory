@@ -65,18 +65,10 @@
       * Bullet speed 
       * XP? 
 
-  * Add arrows that point to enemies offscreen, and bigger arrows that point to 
-    rewards offscreen, Could be good to add a wrapper 
-    that checks if an entity/frame is onscreen
-  * Change rewards to be from xp, level up, and have a screen that pauses for player
-    reward selection. 
-  * Amount of XP from enemies should be visualized and randomized, 
-    with a significant chance for zero xp. 
-  * There should also be a significant chance for enemies to not drop any loot. 
-  * There should be a very low chance for enemies to drop very powerful rewards
-    * Base Rate: 0.6% for 5-stars; 5.1% for 4-stars.
-    * Soft Pity: Starting around pull 74, the probability of a 5-star increases significantly with each pull.
-    * Hard Pity: Guaranteed 5-star at 90 pulls (character banner).
+  * Amount of XP from enemies should be visualized and randomized, similar to 
+    loot drops but more uniform between 0 - 4x difficulty
+  * Combat Upgrade reward distributions should be done similar to loot drops 
+    with rarity and pity
   * Add other temporary upgrades
     * add piercing 
   * Draw Reloading, we will need a system that allows one entity to have 

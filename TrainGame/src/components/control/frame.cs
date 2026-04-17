@@ -21,6 +21,8 @@ public class Frame {
     private static float touchThreshold = 2f; 
 
     public Vector2 Position => new Vector2(x, y); 
+    public float X => x; 
+    public float Y => y; 
     public float Width => GetWidth(); 
     public float Height => GetHeight(); 
 

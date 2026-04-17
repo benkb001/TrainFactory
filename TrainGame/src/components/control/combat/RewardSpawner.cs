@@ -207,9 +207,9 @@ public class CombatRewardSpawner {
     public int ExtraXPPerKill = 0;
 
     public Dictionary<int, int> BaseRarityChances = new() {
-        [1] = 80,
-        [2] = 15,
-        [3] = 4,
+        [1] = 97,
+        [2] = 1,
+        [3] = 1,
         [4] = 1
     };
 

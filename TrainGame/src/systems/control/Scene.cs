@@ -27,7 +27,7 @@ public static class SceneSystem {
         [SceneType.MachineInterface] = new Vector2(3000, 3000),
         [SceneType.Map] = new Vector2(4000, 4000),
         [SceneType.ProgramInterface] = new Vector2(5000, 5000),
-        [SceneType.RPG] = new Vector2(6000, 6000),
+        [SceneType.RPG] = new Vector2(60000, 60000),
         [SceneType.TrainInterface] = new Vector2(7000, 7000),
         [SceneType.WriteProgramInterface] = new Vector2(8000, 8000),
         [SceneType.ViewProgramInterface] = new Vector2(9000, 9000),
@@ -35,7 +35,8 @@ public static class SceneSystem {
         [SceneType.EquipmentInterface] = new Vector2(11000, 11000),
         [SceneType.TravelingInterface] = new Vector2(12000, 12000),
         [SceneType.UpgradeTrainInterface] = new Vector2(13000, 13000),
-        [SceneType.ElevatorInterface] = new Vector2(14000, 14000)
+        [SceneType.ElevatorInterface] = new Vector2(14000, 14000),
+        [SceneType.RewardInterface] = new Vector2(15000, 15000)
     };
 
     public static Vector2 OffScreenPosition => CameraPositions[SceneType.OffScreen];

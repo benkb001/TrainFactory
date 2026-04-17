@@ -48,6 +48,7 @@ public static class RegisterComponents {
         r<Collidable>(); 
         r<Collided>();
         r<CombatReward>(); 
+        r<CombatRewardButton>();
         r<CombatRewardCollectedMessage>(); 
         r<CombatRewardSpawner>();
         r<ComingFromCity>();
@@ -74,6 +75,7 @@ public static class RegisterComponents {
         r<DrawInterfaceMessage<ViewProgramInterfaceData>>(); 
         r<DrawInterfaceMessage<VendorInterfaceData>>();
         r<DrawInterfaceMessage<WriteProgramInterfaceData>>(); 
+        r<DrawInterfaceMessage<RewardInterfaceData>>();
         r<DrawInventoryContainerMessage<Train>>();
         r<DrawLadderMessage>(); 
         r<DrawMachineRequestMessage>(); 
@@ -183,6 +185,7 @@ public static class RegisterComponents {
         r<TextBox>(); 
         r<TextInput>(); 
         r<Toast>(); 
+        r<TrackingOffScreen>();
         r<Train>(); 
         r<TrainAssembler>(); 
         r<TrainEmbarkedMessage>(); 

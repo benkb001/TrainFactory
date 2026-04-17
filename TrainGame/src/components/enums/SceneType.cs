@@ -9,6 +9,7 @@ public enum SceneType {
     Map,
     OffScreen,
     ProgramInterface,
+    RewardInterface,
     RPG,
     TrainInterface,
     TravelingInterface,

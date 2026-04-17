@@ -143,6 +143,7 @@ public static class RegisterSystems {
         UpgradeMachineProductCountClickSystem.Register(w);
         CloseMenuClickSystem.Register(w); 
         PauseTrainProgramButtonClickSystem.Register(w); 
+        RewardClickSystem.Register(w);
         ElevatorSystem.Register(w); 
         //ReturnToSurfaceSystem.Register(w); 
         
@@ -163,8 +164,6 @@ public static class RegisterSystems {
         
         VendorInteractSystem.Register(w);
         
-        RewardInteractSystem.RegisterRemove(w); 
-
         CloseMenuSystem.Register(w); 
 
         RedrawMapSystem.Register(w);
@@ -194,8 +193,10 @@ public static class RegisterSystems {
         SetMachineHeaderSystem.Register(w); 
         DrawLadderSystem.Register(w);
         DrawElevatorInterfaceSystem.Register(w); 
+        DrawRewardInterfaceSystem.Register(w);
         ToastSystem.RegisterDraw(w);
         StopDrawingVampiredSystem.Register(w);
+        PointToOffscreenEnemiesSystem.RegisterDraw(w);
 
         StepperButtonSystem.Register(w); 
         SetMachinePrioritySystem.Register(w); 
@@ -210,6 +211,7 @@ public static class RegisterSystems {
         
         PlayerHUDPositionSystem.Register(w); 
         DrawAmmoHUDSystem.Register(w); 
+        PointToOffscreenEnemiesSystem.RegisterPosition(w);
         
         ScreenAnchorSystem.Register(w);
         LinearLayoutSystem.Register(w);
