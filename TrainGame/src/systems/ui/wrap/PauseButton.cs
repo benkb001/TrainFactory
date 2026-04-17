@@ -12,7 +12,7 @@ public static class PauseTrainProgramButtonWrap {
     public static string PauseMessage = "Pause train program?"; 
     public static string UnpauseMessage = "Unpause train program?";
 
-    public static int Add(World w, TALBody<Train, City> exe, float width, float height) {
+    public static int Add(World w, TALBody<Train, City> exe, float width = 0f, float height = 0f) {
         
         bool paused = exe.Paused(); 
         string message = paused ? UnpauseMessage : PauseMessage; 

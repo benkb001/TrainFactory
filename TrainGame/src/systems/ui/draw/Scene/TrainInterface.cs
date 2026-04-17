@@ -56,6 +56,11 @@ public class DrawTrainInterfaceSystem {
         w.SetComponent<TextBox>(programBtn, new TextBox("Program train")); 
         w.SetComponent<Button>(programBtn, new Button()); 
         w.SetComponent<SetTrainProgramInterfaceButton>(programBtn, new SetTrainProgramInterfaceButton(t, trainEnt));
+        (TALBody<Train, City> exe, bool hasExe) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
+
+        if (hasExe) {
+            buttonsContainer.AddChild(PauseTrainProgramButtonWrap.Add(w, exe, buttonWidth, buttonHeight));
+        }
     }
 
     private static void addEmbark(LinearLayout container, int containerEnt, Train t, int trainEnt, City comingFrom, World w, float height) {

@@ -107,7 +107,7 @@ public static class CityID {
             350f, 210f, -2.5f, 0f, 
             [CityID.Factory],
             new Dictionary<string, Dictionary<string, int>>() {
-                
+                [CityID.Refinery] = railroadCosts[CityID.Refinery]
             }
         ),
         [CityID.Mine] = new CityArg(

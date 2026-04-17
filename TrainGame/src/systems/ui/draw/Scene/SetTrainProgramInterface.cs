@@ -47,29 +47,17 @@ public static class DrawSetTrainProgramInterfaceSystem {
                 prewrittenRow.AddChild(btnEnt, w); 
             }
 
-            LinearLayoutContainer playerRow =  LinearLayoutContainer.Add(w, Vector2.Zero, 0, 0, 
-                usePaging: true, childrenPerPage: 5, label: "Player-Written Scripts", outline: true); 
-            
-            List<KeyValuePair<string, string>> playerScripts = TAL.PlayerScripts.ToList(); 
-            playerScripts.Add(new KeyValuePair<string, string>("new", "")); 
-
-            foreach (KeyValuePair<string , string> kvp in playerScripts) {
-                string programName = kvp.Key; 
-                string program = kvp.Value; 
-                int btnEnt = EntityFactory.Add(w); 
-                w.SetComponent<Button>(btnEnt, new Button()); 
-                WriteProgramInterfaceData d = new WriteProgramInterfaceData(t, trainEnt, program, programName); 
-                w.SetComponent<EnterInterfaceButton<WriteProgramInterfaceData>>(btnEnt, 
-                    new EnterInterfaceButton<WriteProgramInterfaceData>(d));
-                w.SetComponent<Outline>(btnEnt, new Outline()); 
-                w.SetComponent<TextBox>(btnEnt, new TextBox($"{programName}"));
-                playerRow.AddChild(btnEnt, w); 
-            }
-
             outerContainer.AddChild(prewrittenRow.GetParentEntity(), w); 
-            outerContainer.AddChild(playerRow.GetParentEntity(), w);
             outerContainer.ResizeChildren(w, recurse: true); 
             w.RemoveEntity(e); 
         }); 
     }
 }
+
+/*
+(TALBody<Train, City> exe, bool hasExe) = w.GetComponentSafe<TALBody<Train, City>>(trainEnt);
+
+if (hasExe) {
+    pauseRow.AddChild(PauseTrainProgramButtonWrap.Add(w, exe));
+}
+*/

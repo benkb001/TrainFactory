@@ -7,186 +7,120 @@ using TrainGame.Utils;
 public static class CombatRewardDistribution {
     //dictionary<difficulty, dictionary<rarity, Distribution>>
     //1 is most common, 4 is most rare
-    private static Dictionary<int, Dictionary<int, Distribution<string, int>>> rewards = new(){
-        [1] = new Dictionary<int, Distribution<string, int>>() {
-            [1] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 100
-                }, 
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 50
+    private static Dictionary<int, Dictionary<int, Distribution<(string, int)>>> rewards = new(){
+        [1] = new Dictionary<int, Distribution<(string, int)>>() {
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 50)] = 1
                 }
             ), 
-            [2] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 100
-                }, 
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 50
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 100)] = 1
                 }
             ),
-            [3] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 10
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 10)] = 1
                 }
             ),
-            [4] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 1
-                } 
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
             )
         },
         [2] = new(){
-            [1] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 90,
-                    [ItemID.Cobalt] = 10
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 60,
-                    [ItemID.Cobalt] = 60
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 60)] = 90,
+                    [(ItemID.Cobalt, 60)] = 10
                 }
             ),
-            [2] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 20
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 120)] = 1
                 }
             ),
-            [3] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 15
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 15)] = 1
                 }
             ),
-            [4] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 1
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
                 }
             )
         },
         [3] = new(){
-            [1] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 80,
-                    [ItemID.Cobalt] = 20
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 100,
-                    [ItemID.Cobalt] = 100
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 100)] = 80,
+                    [(ItemID.Cobalt, 100)] = 20
                 }
             ),
-            [2] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 150
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 150)] = 100
                 }
             ),
-            [3] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 20
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 20)] = 100
                 }
             ),
-            [4] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 1
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
                 }
             )
         },
         [4] = new(){
-            [1] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 70,
-                    [ItemID.Cobalt] = 30
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 150,
-                    [ItemID.Cobalt] = 150
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 150)] = 70,
+                    [(ItemID.Cobalt, 150)] = 30
                 }
             ),
-            [2] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 40
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 200)] = 1
                 }
             ),
-            [3] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 20
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 20)] = 1
                 }
             ),
-            [4] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 1
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
                 }
             )
         },
         [5] = new(){
-            [1] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 60,
-                    [ItemID.Cobalt] = 40
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Credit] = 200,
-                    [ItemID.Cobalt] = 200
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 200)] = 60,
+                    [(ItemID.Cobalt, 200)] = 40
                 }
             ),
-            [2] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 70,
-                    [ItemID.Mythril] = 30
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.Cobalt] = 300,
-                    [ItemID.Mythril] = 150
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 300)] = 70,
+                    [(ItemID.Mythril, 150)] = 30
                 }
             ),
-            [3] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 90,
-                    [ItemID.Mythril] = 10
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeCrystal] = 30,
-                    [ItemID.Mythril] = 300
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 30)] = 90,
+                    [(ItemID.Mythril, 300)] = 10
                 }
             ),
-            [4] = new Distribution<string, int>(
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 100
-                },
-                new Dictionary<string, int>(){
-                    [ItemID.TimeSeed] = 1
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
                 }
             )
         }
@@ -207,24 +141,18 @@ public class CombatRewardSpawner {
     public int ExtraXPPerKill = 0;
 
     public Dictionary<int, int> BaseRarityChances = new() {
-        [1] = 97,
-        [2] = 1,
-        [3] = 1,
+        [1] = 1000,
+        [2] = 100,
+        [3] = 10,
         [4] = 1
     };
 
-    public Distribution<int, int> RarityDistribution = new Distribution<int, int>(
+    public Distribution<int> RarityDistribution = new Distribution<int>(
         new (){
             [1] = 1,
             [2] = 1,
             [3] = 1,
             [4] = 1
-        },
-        new (){
-            [1] = 1,
-            [2] = 2,
-            [3] = 3, 
-            [4] = 4
         }
     );
 
@@ -244,7 +172,7 @@ public class CombatRewardSpawner {
     }
 
     public int GetLootRarity() {
-        (int rarity, int _) = RarityDistribution.GetRandom();
+        int rarity = RarityDistribution.GetRandom();
         if (rarity == 4) {
             ResetRarityChances();
         } else {

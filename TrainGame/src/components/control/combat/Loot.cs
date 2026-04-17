@@ -17,18 +17,6 @@ using TrainGame.Constants;
 
 public class MaxAmmo {}
 
-public class LootDistribution {
-    private Distribution<string, int> dist; 
-
-    public LootDistribution(Dictionary<string, int> dropChances, Dictionary<string, int> dropCounts) {
-        this.dist = new Distribution<string, int>(dropChances, dropCounts); 
-    }
-
-    public (string, int) GetRandom() {
-        return dist.GetRandom(); 
-    }
-}
-
 public class Loot {
     private string itemID; 
     private int count; 

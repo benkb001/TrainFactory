@@ -23,7 +23,6 @@ public static class DrawCityInterfaceSystem {
 
             City city = w.GetComponent<DrawCityInterfaceMessage>(e).GetCity();
             Inventory inv = city.Inv;
-            Inventory playerInv = InventoryWrap.GetPlayerInv(w); 
 
             int mFlagEnt = EntityFactory.Add(w); 
             w.SetComponent<Menu>(mFlagEnt, new Menu(city: city)); 
@@ -101,13 +100,12 @@ public static class DrawCityInterfaceSystem {
 
             float invScale = 0.7f;
             (float invWidth, float invHeight) = InventoryWrap.GetUI(inv, invScale); 
-            (float playerInvWidth, float playerInvHeight) = InventoryWrap.GetUI(playerInv, invScale); 
 
             InventoryView invView = DrawInventoryCallback.Draw(w, inv, Vector2.Zero, invWidth, invHeight, 
                 Padding: Constants.InventoryPadding, DrawLabel: true); 
 
             float invRowWidth = outerContainer.LLWidth; 
-            float invRowHeight = Math.Max(playerInvHeight, invHeight) + 20f; 
+            float invRowHeight = invHeight + 20f; 
 
             LinearLayoutContainer invRow = LinearLayoutContainer.Add(
                 w, 
@@ -120,13 +118,6 @@ public static class DrawCityInterfaceSystem {
 
             invRow.AddChild(invView.GetParentEntity(), w); 
 
-            if (playerInv != null && city.HasPlayer) {
-                InventoryView playerInvView = DrawInventoryCallback.Draw(w, playerInv, 
-                    Vector2.Zero, playerInvWidth, playerInvHeight, DrawLabel: true);
-            
-                invRow.AddChild(playerInvView.GetParentEntity(), w); 
-            }
-
             int upgradeDepotBtnEnt = EntityFactory.AddUI(w, Vector2.Zero, invWidth / 2, invWidth / 4, 
                 setButton: true, setOutline: true, text: $"Upgrade {city.Id} Depot? Requires 1 Depot Upgrade");
             w.SetComponent<UpgradeDepotButton>(upgradeDepotBtnEnt, new UpgradeDepotButton(city)); 
@@ -138,7 +129,9 @@ public static class DrawCityInterfaceSystem {
                 invRowWidth / 4, 
                 invRowHeight, 
                 direction: "vertical", 
-                outline: false
+                outline: false,
+                usePaging: true, 
+                childrenPerPage: 1
             ); 
             invRow.AddChild(connectButtons.GetParentEntity(), w); 
 

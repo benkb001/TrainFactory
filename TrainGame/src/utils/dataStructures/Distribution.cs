@@ -4,33 +4,20 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-//TODO: This should only take one type parameter
-public class Distribution<T, U> {
+public class Distribution<T> {
     private int chanceTotal; 
     private Dictionary<T, int> chances; 
-    private Dictionary<T, U> events; 
 
     private void setChanceTotal() {
         this.chanceTotal = chances.Aggregate(0, (acc, cur) => acc + cur.Value);
     }
 
-    public Distribution(Dictionary<T, int> chances, Dictionary<T, U> events) {
-        if (chances.Count != events.Count) {
-            throw new InvalidOperationException($"A  distribution must have the same number of chance and event");
-        }
-
-        foreach (T key in chances.Keys) {
-            if (!events.ContainsKey(key)) {
-                throw new InvalidOperationException("A distribution must have all keys match in chances and events");
-            }
-        }
-
+    public Distribution(Dictionary<T, int> chances) {
         this.chances = chances;
-        this.events = events;
         setChanceTotal();
     }
 
-    public (T, U) GetRandom() {
+    public T GetRandom() {
         int r = Util.NextInt(chanceTotal); 
         int total = 0; 
 
@@ -42,8 +29,7 @@ public class Distribution<T, U> {
 
             
             if (total > r) {
-                U eve = events[key]; 
-                return (key, eve); 
+                return key; 
             }
         }
 

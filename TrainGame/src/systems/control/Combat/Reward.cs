@@ -181,6 +181,7 @@ public static class RewardSpawnSystem {
             foreach (int enemyEnt in killedEnemyEnts) {
                 EnemyType type = w.GetComponent<Enemy>(enemyEnt).Type; 
                 int diff = EnemyID.Enemies[type].Difficulty; 
+
                 spawn.XP += diff + spawn.ExtraXPPerKill; 
             }
 
@@ -216,14 +217,10 @@ public class RewardInterfaceData : IInterfaceData {
 
 public static class DrawRewardInterfaceSystem {
 
-    private static LootDistribution lootDist = new LootDistribution(
-        new Dictionary<string, int>(){
-            [ItemID.Credit] = 50,
-            [ItemID.Cobalt] = 50
-        },
-        new Dictionary<string, int>(){
-            [ItemID.Credit] = 100,
-            [ItemID.Cobalt] = 100
+    private static Distribution<(string, int)> lootDist = new Distribution<(string, int)>(
+        new Dictionary<(string, int), int>(){
+            [(ItemID.Credit, 200)] = 50,
+            [(ItemID.Cobalt, 100)] = 50
         }
     );
 
@@ -290,33 +287,20 @@ public static class DrawRewardInterfaceSystem {
         w.SetComponent<TextBox>(e, new TextBox($"+1 Knockback"));
     };
 
-    private static Distribution<Type, Action<World, CombatRewardSpawner, int>> rewardDist = 
-    new Distribution<Type, Action<World, CombatRewardSpawner, int>>(
-        new Dictionary<Type, int>(){
-            [typeof(HealthPotion)] = 17,
-            [typeof(DamagePotion)] = 17,
-            [typeof(ReloadSpeedIncrease)] = 15,
-            [typeof(AddExplosion)] = 10,
-            [typeof(MaxAmmo)] = 10,
-            [typeof(AddShield)] = 8,
-            [typeof(UnloadSpeedIncrease)] = 8,
-            [typeof(BulletSpeedIncrease)] = 4,
-            [typeof(BulletSizeIncrease)] = 4,
-            [typeof(AddKnockback)] = 4,
-            [typeof(AddHoming)] = 3
-        },
-        new Dictionary<Type, Action<World, CombatRewardSpawner, int>>(){
-            [typeof(MaxAmmo)] = setMaxAmmo,
-            [typeof(HealthPotion)] = setHealthPotion,
-            [typeof(DamagePotion)] = setDamagePotion,
-            [typeof(BulletSizeIncrease)] = setBulletSizeIncrease,
-            [typeof(BulletSpeedIncrease)] = setBulletSpeedIncrease,
-            [typeof(UnloadSpeedIncrease)] = setUnloadSpeedIncrease,
-            [typeof(ReloadSpeedIncrease)] = setReloadSpeedIncrease,
-            [typeof(AddExplosion)] = setAddExplosion,
-            [typeof(AddHoming)] = setAddHoming,
-            [typeof(AddShield)] = setAddShield,
-            [typeof(AddKnockback)] = setAddKnockback
+    private static Distribution<(Type, Action<World, CombatRewardSpawner, int>)> rewardDist = 
+    new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
+        new (){
+            [(typeof(HealthPotion), setHealthPotion)] = 17,
+            [(typeof(DamagePotion), setDamagePotion)] = 17,
+            [(typeof(ReloadSpeedIncrease), setReloadSpeedIncrease)] = 15,
+            [(typeof(AddExplosion), setAddExplosion)] = 10,
+            [(typeof(MaxAmmo), setMaxAmmo)] = 10,
+            [(typeof(AddShield), setAddShield)] = 8,
+            [(typeof(UnloadSpeedIncrease), setUnloadSpeedIncrease)] = 8,
+            [(typeof(BulletSpeedIncrease), setBulletSpeedIncrease)] = 4,
+            [(typeof(BulletSizeIncrease), setBulletSizeIncrease)] = 4,
+            [(typeof(AddKnockback), setAddKnockback)] = 4,
+            [(typeof(AddHoming), setAddHoming)] = 3
         }
     );
 

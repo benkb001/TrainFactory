@@ -46,16 +46,6 @@
 
 **** THIS SPRINT **** 
 
-* Make railroad purchase button a 1x1 paged layout
-* Add a way to unpause train program from the regular train menu
-* Later recipes shouldn't be drawn, will need to keep some sort of 
-  mapping to which recipes we should draw based on which items the 
-  player has found so far or something. 
-* Play through gungeon and think about how the shoot patterns of enemies 
-  get more difficult as you progress in a run, and validate that our enemies 
-  are getting increasingly difficult. Think about the complexity of movement 
-  required to dodge all bullets. 
-
 * Combat: 
   * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
     look at Hades for other ideas. 
@@ -180,6 +170,13 @@
   also help. 
 * There should also be more variety to the enemies. We only have 3 per 
   difficulty, it should probably be between 2 and 5 times this. 
+* Later recipes shouldn't be drawn, will need to keep some sort of 
+  mapping to which recipes we should draw based on which items the 
+  player has found so far or something. 
+* Play through gungeon and think about how the shoot patterns of enemies 
+  get more difficult as you progress in a run, and validate that our enemies 
+  are getting increasingly difficult. Think about the complexity of movement 
+  required to dodge all bullets. 
 
 **** FAR FUTURE FEATURES **** 
 
