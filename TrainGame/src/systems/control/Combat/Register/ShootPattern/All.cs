@@ -41,5 +41,6 @@ public static class RegisterShootPatterns {
         RegisterShootPattern.Default<ShotgunShootPattern>();
         RegisterShootPattern.Default<GridShootPattern>();
         RegisterShootPattern.Default<RandomShotgunShootPattern>();
+        RegisterShootPattern.Default<ShapeShootPattern>();
     }
 }

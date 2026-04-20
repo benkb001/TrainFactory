@@ -36,7 +36,9 @@ public static class RewardInteractSystem {
     public static void Register<T>(World w, Action<World, int, int> tf) {
         ClickSystem.Register([typeof(CombatRewardButton), typeof(T)], w, (w, e) => {
             int playerRPGEnt = w.GetComponent<CombatRewardButton>(e).PlayerRPGEntity;
-            tf(w, e, playerRPGEnt);
+            if (w.EntityExists(playerRPGEnt)) {
+                tf(w, e, playerRPGEnt);
+            }
         });
     }
 
@@ -195,7 +197,7 @@ public static class RewardSpawnSystem {
             if (spawn.XP >= spawn.XPToNextLevel) {
                 //TODO: Refine this growth function
                 spawn.XP -= spawn.XPToNextLevel;
-                spawn.XPToNextLevel += 5; 
+                spawn.XPToNextLevel += 3; 
 
                 MakeMessage.Add<DrawInterfaceMessage<RewardInterfaceData>>(w,
                     new DrawInterfaceMessage<RewardInterfaceData>(
@@ -297,12 +299,12 @@ public static class DrawRewardInterfaceSystem {
     private static Dictionary<int, Distribution<(Type, Action<World, CombatRewardSpawner, int>)>> rewardDist = new(){
         [1] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(
             new Dictionary<(Type, Action<World, CombatRewardSpawner, int>), int>(){
+                [(typeof(BulletSpeedIncrease), setBulletSpeedIncrease)] = 3,
                 [(typeof(HealthPotion), setHealthPotion)] = 2,
-                [(typeof(Loot), setLoot)] = 2,
                 [(typeof(AddShield), setAddShield)] = 2,
-                [(typeof(AddKnockback), setAddKnockback)] = 2,
-                [(typeof(BulletSpeedIncrease), setBulletSpeedIncrease)] = 1,
-                [(typeof(BulletSizeIncrease), setBulletSizeIncrease)] = 1
+                [(typeof(AddKnockback), setAddKnockback)] = 1,
+                [(typeof(BulletSizeIncrease), setBulletSizeIncrease)] = 1,
+                [(typeof(Loot), setLoot)] = 1
             }
         ),
         [2] = new Distribution<(Type, Action<World, CombatRewardSpawner, int>)>(

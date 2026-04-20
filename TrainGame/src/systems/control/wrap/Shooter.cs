@@ -18,6 +18,8 @@ public class ShotBy {
     }
 }
 
+public class BulletCreatedFlag {}
+
 public static class ShooterWrap {
     
     //returns the velocity needed to shoot at targetPos from pos with speed speed
@@ -40,6 +42,8 @@ public static class ShooterWrap {
         } else {
             w.SetComponent<ShotBy>(e, new ShotBy(shooterEnt));
         }
+
+        w.SetComponent<BulletCreatedFlag>(e, new BulletCreatedFlag());
         w.SetComponent<Outline>(e, new Outline(Colors.GetBulletColor<U>()));
 
         foreach (IBulletTrait bt in bc.GetBulletTraits()) {
@@ -135,6 +139,6 @@ public static class ShooterWrap {
     }
 
     public static void UpgradeMaxAmmo(Shooter s) {
-        s.MaxAmmo += s.BaseMaxAmmo;
+        s.MaxAmmo++;
     }
 }

@@ -285,7 +285,7 @@ public static class Machines {
                 [ItemID.Cobalt] = 500
             },
             MinTicks: 3,
-            SlowFactor: 6000,
+            SlowFactor: 24000,
             StartFactor: 10,
             UpgradeItemID: ItemID.Assembler
         ), 

@@ -17,12 +17,16 @@ using TrainGame.Utils;
 
 public class DrawProgressBarCallback {
     public static int Draw(World w, Vector2 Position, float Width, float Height) {
+        return Draw(w, Position, Width, Height, Color.Green);
+    }
+
+    public static int Draw(World w, Vector2 Position, float Width, float Height, Color c) {
         Frame pbFrame = new Frame(Position, Width, Height); 
         ProgressBar pb = new ProgressBar(Width); 
         
         Backgrounds bs = new Backgrounds(); 
         bs.Add(new Background(Colors.Placebo, 1f), pbFrame); 
-        bs.Add(new Background(Color.Green, 0.5f), pbFrame); 
+        bs.Add(new Background(c, 0.5f), pbFrame); 
 
         int pbEntity = EntityFactory.Add(w); 
         w.SetComponent<ProgressBar>(pbEntity, pb);

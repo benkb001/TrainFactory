@@ -60,10 +60,11 @@ public static class RegisterSystems {
         DecayBulletSystem.Register(w); 
         RewardSpawnSystem.Register(w);
         
-        SplitBulletSystem.Register(w);
         ShootSystem.RegisterReload(w);
         PlayerShootSystem.Register(w);
         EnemyShootSystem.Register(w); 
+        FractalSplitSystem.Register(w);
+        SplitBulletSystem.Register(w);
         DefaultShootSystem.Register<Enemy>(w);
         DefaultShootSystem.Register<Player>(w);
         MeleeShootSystem.Register<Enemy>(w);
@@ -76,6 +77,8 @@ public static class RegisterSystems {
         GridShootSystem.Register<Player>(w);
         RandomShotgunShootSystem.Register<Player>(w);
         RandomShotgunShootSystem.Register<Enemy>(w);
+        ShapeShootSystem.Register<Enemy>(w);
+        ShapeShootSystem.Register<Player>(w);
         BulletWarningShootSystem.Register(w); 
         HomingSystem.Register(w);
         
@@ -248,5 +251,6 @@ public static class RegisterSystems {
         RemoveInventoryUpdatedFlagSystem.Register(w);
         RemoveShotMessageSystem.Register(w);
         RemoveEndVampiredSystem.Register(w);
+        FractalSplitSystem.RegisterRemoveFlag(w);
     }
 }

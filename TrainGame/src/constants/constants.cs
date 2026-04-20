@@ -27,8 +27,8 @@ public static class Constants {
     public const float ParryingSpeed = 2f;
     public const int PlayerOutlineThickness = 1; 
     public const int PlayerHP = 5;
-    public const int PlayerParrierHP = 100;
-    public const int ShieldIncrement = 50;
+    public const int PlayerParrierHP = 40;
+    public const int ShieldIncrement = 20;
 
     public const int MaxLootMultiplier = 3;
 

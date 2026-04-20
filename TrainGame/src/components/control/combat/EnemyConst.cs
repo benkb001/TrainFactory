@@ -23,7 +23,7 @@ public class EnemyConst {
     public List<IEnemyTrait> Traits;
     public int Difficulty; 
 
-    public EnemyConst(Shooter shooter, IShootPattern shoot, IMovementType movement, EnemyType Type = EnemyType.Default, float Size = Constants.EnemySize, 
+    public EnemyConst(Shooter shooter, IShootPattern shoot, IMovementType movement, EnemyType Type, float Size = Constants.EnemySize, 
         int HP = 5, int Armor = 0, int Difficulty = 1, List<IEnemyTrait> traits = null) {
         
         this.shooter = shooter;

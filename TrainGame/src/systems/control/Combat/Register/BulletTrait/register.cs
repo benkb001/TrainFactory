@@ -6,7 +6,7 @@ using TrainGame.ECS;
 
 public static class RegisterBulletTraits {
     private static void register<T>() where T : IBulletTrait {
-        BulletTraitRegistry.Register<T>((w, sp, e) => w.SetComponent<T>(e, sp));
+        BulletTraitRegistry.Register<T>((w, bt, e) => w.SetComponent<T>(e, bt));
     }
 
     public static void All() {
@@ -15,6 +15,7 @@ public static class RegisterBulletTraits {
         RegisterParametricBullet.Register();
         VampiricBulletTrait.Register();
         AppliesKnockbackBulletTrait.Register();
+        FractalBulletTrait.Register();
         register<RemoveOnCollision>();
         register<Split>();
     }

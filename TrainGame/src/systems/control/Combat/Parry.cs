@@ -39,7 +39,7 @@ public static class ParrySystem {
                         float pbWidth = f.GetWidth(); 
                         float pbHeight = pbWidth / 3f; 
                         
-                        int pbEnt = DrawProgressBarCallback.Draw(w, Vector2.Zero, pbWidth, pbHeight);
+                        int pbEnt = DrawProgressBarCallback.Draw(w, Vector2.Zero, pbWidth, pbHeight, Color.Yellow);
                         w.SetComponent<ParryHPBar>(pbEnt, new ParryHPBar(p)); 
 
                         int labelEnt = w.GetComponent<Body>(e).LabelEntity; 

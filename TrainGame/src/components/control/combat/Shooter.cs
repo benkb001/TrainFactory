@@ -35,8 +35,8 @@ public class Shooter {
         this.CanShoot = new WorldTime();
     }
 
-    public void Update(WorldTime now, int shot = 1) {
-        Ammo-= shot; 
+    public void Update(WorldTime now) {
+        Ammo--;
         LastShot = now.Clone();
 
         if (Ammo <= 0) {

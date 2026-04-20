@@ -33,11 +33,11 @@ public static class ButtonSystem {
                 Button b = w.GetComponent<Button>(e); 
                 b.Hovered = true; 
 
-                if (VirtualMouse.LeftPushed()) {
+                if (VirtualMouse.LeftPushed() || (b.TicksHeld > 0 && VirtualMouse.LeftPressed())) {
                     b.TicksHeld++;
                 }
 
-                if (VirtualMouse.RightPushed()) {
+                if (VirtualMouse.RightPushed() || (b.RightTicksHeld > 0 && VirtualMouse.RightPressed())) {
                     b.RightTicksHeld++; 
                 }
             }

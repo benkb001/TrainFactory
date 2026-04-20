@@ -4,13 +4,11 @@
 
 * Fix randomly unlocking zoom
 * Camera lag when teleporting, exiting interfaces, basically entity tracking is
-  a bit wonky
-* Not decreasing received damage after picking up +1 armor
-  * Not sure if this is specific to tempArmor, try with perma armor too
+  a bit wonky, player slightly off center of the screen while moving 
 * If a machine is delivering and player saves/quits it doesn't deliver
 * Fix somehow negative items? 
 * Fix player invincibility frames shouldn't reset if they are currently invincible
-  
+
 **** TEST **** 
 
 * Partitioning, especially GetIntersectingEntities
@@ -36,6 +34,7 @@
     like there being a valid player data entity, city entities, 
     train, etc
 * Knockback
+* Distribution
 
 **** CLEAN UP **** 
 
@@ -46,30 +45,12 @@
 
 **** THIS SPRINT **** 
 
-* Combat: 
-  * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
-    look at Hades for other ideas. 
-    * Per reward stuff: 
-      * HP
-      * Reload speed 
-      * Bullet speed 
-      * XP? 
-
-  * Add other temporary upgrades
-    * add piercing 
-  * Draw Reloading, we will need a system that allows one entity to have 
-    multiple labels at different spots, we could just make it a stack for now.
-    Actually it could just be a single label entity that has a linear layout that grows upward? 
-  * Add new shoot patterns: 
-    * Fractal
-    * Shoot a square/circle/triangle/whatever
-    * 1->3->9 split
-  * Add new bullet traits: 
-    * remove on hit (for bullets that aren't removed on collision ie grid)
-  * Fix intermittent bug where bullets aren't colliding with enemies, 
-  i'm guessing something to do with collision spatial hash 
-  * Buying new guns should be cheaper
-  * Add enemy difficulties 6-12
+* Add new shoot patterns: 
+  * Throws a few long lasting, no velocity bullets on the ground
+  * ??
+* Add new bullet traits: 
+  * remove on hit (for bullets that aren't removed on collision ie grid)
+* Add enemy difficulties 8-11
 
 **** NEXT SPRINT **** 
 
@@ -94,8 +75,6 @@
       can give them early to allow player to grind out the earlier floors while 
       still working towards getting the quest rewards and learning some of the basic 
       gun patterns. 
-  * Need to add some way to prevent/deal with player forgetting to put a particular item 
-  in train cuz its quite frustrating ? 
 
 **** FUTURE FEATURES **** 
 
@@ -173,6 +152,21 @@
   get more difficult as you progress in a run, and validate that our enemies 
   are getting increasingly difficult. Think about the complexity of movement 
   required to dodge all bullets. 
+  * Add progressive upgrades (new guns, upgrading max hp and shield, etc), 
+    look at Hades for other ideas. 
+    * Unlocks being able to pause and manage trains from within combat
+    * Per reward stuff: 
+      * HP
+      * Reload speed 
+      * Bullet speed 
+      * XP? 
+
+  * Add other temporary upgrades
+    * add piercing 
+  * Fix intermittent bug where bullets aren't colliding with enemies, 
+    i'm guessing something to do with collision spatial hash 
+  * Need to add some way to prevent/deal with player forgetting to put a particular item 
+  in train cuz its quite frustrating ? 
 
 **** FAR FUTURE FEATURES **** 
 
@@ -180,6 +174,7 @@
 * Add some tutorials/guides
 * Use OpenFileDialog class to let players submit a program file from their cpu
 * Add art, music, sounds, bosses, cutscenes, and clean UI
+* Add desktop icon
 
 **** PLAYTESTING **** 
 

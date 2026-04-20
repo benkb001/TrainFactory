@@ -33,6 +33,7 @@ public static class RegisterComponents {
         r<Backgrounds>(); 
         r<Body>();
         r<Bullet>(); 
+        r<BulletCreatedFlag>();
         r<BulletSizeIncrease>();
         r<BulletSpeedIncrease>();
         r<BulletWarning>(); 
@@ -98,6 +99,8 @@ public static class RegisterComponents {
         r<EquipmentData>();
         r<EquipmentSlot<PlayerGun>>();
         r<Expired>();
+        r<Fractal>();
+        r<FractalSplitFlag>();
         r<Frame>(); 
         r<GameClockView>();
         r<GoingToCity>();
@@ -170,6 +173,7 @@ public static class RegisterComponents {
         r<SetTrainProgramButton>(); 
         r<SetTrainProgramInterfaceButton>(); 
         r<Shooter>(); 
+        r<ShapeShootPattern>();
         r<ShotgunShootPattern>();
         r<ShotBy>();
         r<ShotMessage>();

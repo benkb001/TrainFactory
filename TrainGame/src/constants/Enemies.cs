@@ -12,6 +12,7 @@ public enum EnemyType {
     Barbarian, //Melee attacks around it
     Default,
     ExplodeOnDeath,
+    Fractal, //Fractal random splitting
     MachineGun, //Shoots a lot of bullets
     Ninja, //Dashes around, shoots occasionally
     Robot, //moves left to right and shoots up/down in bursts
@@ -19,10 +20,13 @@ public enum EnemyType {
     Skeleton, //Spawns a moving grid 
     Sniper, //bullets are warned, travel far and fast and hit hard 
     Splitter, //bullets split when they collide
+    Square, //shoots a bunch of bullets that form a square 
+    Tripples, //1->3->9
     Vampire, //player gets slowly damaged until vampire is killed
     Volley, //Shoots in a large spread
     Warrior, //Shoots in a very wide spread, has high hp and damage, high reload time
-    Wizard //Shoots in a parametric curve 
+    Witch, //Shoots in a little circle that lasts a while
+    Wizard //Shoots in a spiral pattern 
 }
 
 public static class EnemyID {
@@ -37,30 +41,30 @@ public static class EnemyID {
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(15, maxFramesActive: 600),
+                    new Bullet(10, maxFramesActive: 600),
                     bFrame(),
                     traits: new List<IBulletTrait>(){
-                        new Homing(Speed: Constants.PlayerSpeed / 4f),
+                        new Homing(Speed: Constants.PlayerSpeed / 2f),
                         new RemoveOnCollision()
                     }
                 )
             ), 
-            new ChaseMovePattern(Speed: 0.5f, SecondsToChase: 3),
+            new ChaseMovePattern(Speed: 2f, SecondsToChase: 3),
             Type: EnemyType.Artillery, 
-            HP: 12, 
+            HP: 16, 
             Size: Constants.TileWidth * 2,
-            Difficulty: 2
+            Difficulty: 3
         ),
         [EnemyType.Barbarian] = new EnemyConst(
             new Shooter(
-                ticksPerShot: 200, 
-                reloadTicks: 200, 
+                ticksPerShot: 120, 
+                reloadTicks: 120, 
                 ammo: 1
             ),
             new MeleeShootPattern(
                 new BulletContainer(
-                    new Bullet(1, maxFramesActive: 10),
-                    new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2),
+                    new Bullet(10, maxFramesActive: 10),
+                    new Frame(Constants.TileWidth * 4, Constants.TileWidth * 4),
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 45)),
                         new RemoveOnCollision()
@@ -68,7 +72,8 @@ public static class EnemyID {
                 )
             ), 
             new ChaseMovePattern(
-                Constants.PlayerSpeed / 2f
+                Constants.PlayerSpeed / 1.25f,
+                SecondsToChase: 8
             ),
             Type: EnemyType.Barbarian, 
             HP: 15, 
@@ -89,24 +94,25 @@ public static class EnemyID {
             new ChaseMovePattern(
                 Constants.PlayerSpeed / 2f
             ),
+            Type: EnemyType.Default,
             Difficulty: 1
         ),
         [EnemyType.ExplodeOnDeath] = new EnemyConst(
             new Shooter(
-                ammo: 24,
+                ammo: 3,
                 reloadTicks: 240,
                 ticksPerShot: 40
             ),
             new RandomShotgunShootPattern(
                 new BulletContainer(
-                    new Bullet(50, maxFramesActive: 180),
+                    new Bullet(20, maxFramesActive: 180),
                     new Frame(Constants.TileWidth, Constants.TileWidth),
                     BulletSpeed: 1f,
                     traits: new List<IBulletTrait>(){
                         new Split(
                             new MeleeShootPattern(
                                 new BulletContainer(
-                                    new Bullet(50),
+                                    new Bullet(20),
                                     new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2),
                                     traits: new List<IBulletTrait>(){
                                         new Warned(new WorldTime(ticks: 15))
@@ -128,12 +134,12 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.ExplodeOnDeath,
-            HP: 15,
+            HP: 25,
             traits: new List<IEnemyTrait>(){
                 new Split(
                     new MeleeShootPattern(
                         new BulletContainer(
-                            new Bullet(50),
+                            new Bullet(20),
                             new Frame(Constants.TileWidth * 2, Constants.TileWidth * 2),
                             traits: new List<IBulletTrait>(){
                                 new Warned(new WorldTime(ticks: 30))
@@ -142,12 +148,52 @@ public static class EnemyID {
                     )
                 )
             },
-            Difficulty: 5
+            Difficulty: 6
+        ),
+        [EnemyType.Fractal] = new EnemyConst(
+            new Shooter(
+                ammo: 4,
+                reloadTicks: 60,
+                ticksPerShot: 10
+            ),
+            new RadialShootPattern(
+                2,
+                new BulletContainer(
+                    new Bullet(35, maxFramesActive: 15),
+                    bFrame(),
+                    BulletSpeed: Constants.PlayerSpeed / 1.25f,
+                    traits: new List<IBulletTrait>(){
+                        new Fractal(0.01f, 0.1f),
+                        new RemoveOnCollision(),
+                        new Split(
+                            new ShotgunShootPattern(
+                                new BulletContainer(
+                                    new Bullet(35, maxFramesActive: 15),
+                                    bFrame(),
+                                    BulletSpeed: Constants.PlayerSpeed / 1.25f,
+                                    traits: new List<IBulletTrait>(){
+                                        new RemoveOnCollision(),
+                                    }
+                                ),
+                                2,
+                                Math.PI / 5
+                            )
+                        )
+                    }
+                ),
+                Math.PI / 2
+            ),
+            new ChaseMovePattern(Constants.PlayerSpeed / 2f),
+            Type: EnemyType.Fractal,
+            HP: 35,
+            Difficulty: 8,
+            Size: Constants.TileWidth * 2f
         ),
         [EnemyType.MachineGun] = new EnemyConst(
             new Shooter(
                 ammo: 36, 
-                reloadTicks: 120
+                reloadTicks: 120,
+                ticksPerShot: 10
             ),
             new DefaultShootPattern(
                 new BulletContainer(
@@ -163,8 +209,8 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.MachineGun,
-            HP: 12,
-            Difficulty: 3
+            HP: 20,
+            Difficulty: 4
         ),
         [EnemyType.Ninja] = new EnemyConst(
             new Shooter(
@@ -187,19 +233,19 @@ public static class EnemyID {
                 SecondsToChase: 4
             ),
             Type: EnemyType.Ninja, 
-            HP: 6,
-            Difficulty: 1
+            HP: 12,
+            Difficulty: 2
         ),
         [EnemyType.Robot] = new EnemyConst(
             new Shooter(
-                ammo: 32, 
-                ticksPerShot: 4, 
+                ammo: 8, 
+                ticksPerShot: 8, 
                 reloadTicks: 60
             ),
             new RadialShootPattern(
                 2,
                 new BulletContainer(
-                    new Bullet(10),
+                    new Bullet(10, maxFramesActive: 60),
                     bFrame(),
                     BulletSpeed: 8f,
                     traits: new List<IBulletTrait>(){
@@ -215,18 +261,19 @@ public static class EnemyID {
                 1f
             ),
             Type: EnemyType.Robot, 
-            HP: 8,
-            Difficulty: 2
+            HP: 16,
+            Difficulty: 3
         ),
+        /*
         [EnemyType.Skeleton] = new EnemyConst(
             new Shooter(
-                ammo: 45,
+                ammo: 1,
                 ticksPerShot: 240,
                 reloadTicks: 720
             ),
             new GridShootPattern(
                 new BulletContainer(
-                    new Bullet(10, maxFramesActive: 10),
+                    new Bullet(50, maxFramesActive: 10),
                     new Frame(Constants.TileWidth / 4f, Constants.TileWidth * 25),
                     BulletSpeed: 0f,
                     traits: new List<IBulletTrait>(){
@@ -234,7 +281,7 @@ public static class EnemyID {
                     }
                 ),
                 new BulletContainer(
-                    new Bullet(10, maxFramesActive: 10),
+                    new Bullet(50, maxFramesActive: 10),
                     new Frame(Constants.TileWidth * 25, Constants.TileWidth / 4f),
                     BulletSpeed: 0f,
                     traits: new List<IBulletTrait>(){
@@ -250,18 +297,19 @@ public static class EnemyID {
             ),
             new DefaultMovePattern(speed: 0f),
             Type: EnemyType.Skeleton,
-            HP: 20,
-            Difficulty: 5
+            HP: 50,
+            Difficulty: 11
         ),
+        */
         [EnemyType.Shotgun] = new EnemyConst(
             new Shooter(
-                ammo: 12, 
+                ammo: 3, 
                 ticksPerShot: 120, 
                 reloadTicks: 240
             ),
             new ShotgunShootPattern(
                 new BulletContainer(
-                    new Bullet(10, maxFramesActive: 180),
+                    new Bullet(10, maxFramesActive: 90),
                     bFrame(),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision()
@@ -274,8 +322,8 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Shotgun, 
-            HP: 8,
-            Difficulty: 1
+            HP: 12,
+            Difficulty: 2
         ),
         [EnemyType.Sniper] = new EnemyConst(
             new Shooter(
@@ -297,20 +345,20 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Sniper, 
-            HP: 15,
-            Difficulty: 3
+            HP: 40,
+            Difficulty: 9
         ),
         [EnemyType.Splitter] = new EnemyConst(
             new Shooter(
-                ammo: 1,
-                reloadTicks: 700,
-                ticksPerShot: 700
+                ammo: 2,
+                reloadTicks: 600,
+                ticksPerShot: 60
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(50, maxFramesActive: 120),
+                    new Bullet(40, maxFramesActive: 60),
                     new Frame(Constants.TileWidth / 1.25f, Constants.TileWidth / 1.25f),
-                    BulletSpeed: Constants.TileWidth / 10f,
+                    BulletSpeed: Constants.TileWidth / 5f,
                     traits: new List<IBulletTrait>(){
                         new Warned(new WorldTime(ticks: 45)),
                         new RemoveOnCollision(),
@@ -318,9 +366,9 @@ public static class EnemyID {
                             new RadialShootPattern(
                                 20,
                                 new BulletContainer(
-                                    new Bullet(25, maxFramesActive: 300),
+                                    new Bullet(40, maxFramesActive: 60),
                                     new Frame(Constants.TileWidth / 8f, Constants.TileWidth / 8f),
-                                    BulletSpeed: Constants.TileWidth / 10f,
+                                    BulletSpeed: Constants.TileWidth / 5f,
                                     traits: new List<IBulletTrait>(){
                                         new RemoveOnCollision()
                                     }
@@ -334,8 +382,108 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Splitter,
-            HP: 20,
-            Difficulty: 4
+            HP: 40,
+            Difficulty: 10
+        ),
+        [EnemyType.Square] = new EnemyConst(
+            new Shooter(
+                ammo: 4,
+                reloadTicks: 180,
+                ticksPerShot: 45
+            ),
+            new ShapeShootPattern(
+                new BulletContainer(
+                    new Bullet(20),
+                    bFrame(),
+                    BulletSpeed: Constants.PlayerSpeed / 1.25f,
+                    traits: new List<IBulletTrait>(){
+                        new RemoveOnCollision(), new Warned(new WorldTime(ticks: 30))
+                    }
+                ),
+                new ParametricCurve(
+                    (t) => {
+                        float w = Constants.PlayerWidth * 2.5f;
+                        if (t < 25) {
+                            return ((float)t / 25f) * w;
+                        } else if (t < 50) {
+                            return w;
+                        } else if (t < 75) {
+                            return w - (((float)(t - 50) / 25f) * w); 
+                        } else {
+                            return 0f;
+                        }
+                    },
+                    (t) => {
+                        float w = Constants.PlayerWidth * 2.5f;
+                        if (t < 25) {
+                            return 0f; 
+                        } else if (t < 50) {
+                            return ((t - 25) / 25f) * w; 
+                        } else if (t < 75) {
+                            return w; 
+                        } else {
+                            return w - (((t - 75) / 25f) * w);
+                        }
+                    },
+                    100
+                ),
+                20
+            ),
+            new ChaseMovePattern(
+                Constants.PlayerSpeed / 2f
+            ),
+            Type: EnemyType.Square,
+            HP: 25,
+            Difficulty: 5
+        ),
+        [EnemyType.Tripples] = new EnemyConst(
+            new Shooter(
+                ammo: 3,
+                ticksPerShot: 120,
+                reloadTicks: 240
+            ),
+            new DefaultShootPattern(
+                new BulletContainer(
+                    new Bullet(30, maxFramesActive: 40),
+                    new Frame(Constants.TileWidth / 2f, Constants.TileWidth / 2f),
+                    BulletSpeed: Constants.PlayerSpeed / 1.1f,
+                    traits: new List<IBulletTrait>(){
+                        new Split(
+                            new ShotgunShootPattern(
+                                new BulletContainer(
+                                    new Bullet(30, maxFramesActive: 40),
+                                    new Frame(Constants.TileWidth / 4f, Constants.TileWidth / 4f),
+                                    BulletSpeed: Constants.PlayerSpeed / 1.1f,
+                                    traits: new List<IBulletTrait>(){
+                                        new Split(
+                                            new ShotgunShootPattern(
+                                                new BulletContainer(
+                                                    new Bullet(30, maxFramesActive: 40),
+                                                    bFrame(),
+                                                    BulletSpeed: Constants.PlayerSpeed / 1.1f,
+                                                    traits: new List<IBulletTrait>(){
+                                                        new RemoveOnCollision()
+                                                    }
+                                                ),
+                                                3,
+                                                Math.PI / 4
+                                            )
+                                        )
+                                    }
+                                ),
+                                3,
+                                Math.PI / 2
+                            )
+                        )
+                    }
+                )
+            ),
+            new ChaseMovePattern(
+                Constants.PlayerSpeed / 2f
+            ),
+            Type: EnemyType.Tripples,
+            HP: 30,
+            Difficulty: 7
         ),
         [EnemyType.Volley] = new EnemyConst(
             new Shooter(
@@ -345,7 +493,7 @@ public static class EnemyID {
             ),
             new ShotgunShootPattern(
                 new BulletContainer(
-                    new Bullet(40, maxFramesActive: 60),
+                    new Bullet(30, maxFramesActive: 60),
                     bFrame(),
                     BulletSpeed: 3f,
                     traits: new List<IBulletTrait>(){
@@ -359,8 +507,8 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Volley, 
-            HP: 15,
-            Difficulty: 4
+            HP: 30,
+            Difficulty: 7
         ),
         [EnemyType.Vampire] = new EnemyConst(
             new Shooter(
@@ -369,7 +517,7 @@ public static class EnemyID {
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(10, maxFramesActive: 600),
+                    new Bullet(60, maxFramesActive: 600),
                     new Frame(Constants.TileWidth / 2f),
                     traits: new List<IBulletTrait>(){
                         new RemoveOnCollision(),
@@ -393,22 +541,23 @@ public static class EnemyID {
                 Speed: 8f
             ),
             Type: EnemyType.Vampire,
-            HP: 20,
+            HP: 60,
             Size: Constants.TileWidth * 1.5f,
-            Difficulty: 5
+            Difficulty: 12
         ),
         [EnemyType.Warrior] = new EnemyConst(
             new Shooter(
-                ammo: 20, 
-                reloadTicks: 480
+                ammo: 3, 
+                reloadTicks: 240,
+                ticksPerShot: 20
             ),
             new ShotgunShootPattern(
                 new BulletContainer(
-                    new Bullet(60, maxFramesActive: 240),
+                    new Bullet(40, maxFramesActive: 60),
                     bFrame(),
-                    BulletSpeed: 4f,
+                    BulletSpeed: Constants.PlayerSpeed / 1.5f,
                     traits: new List<IBulletTrait>(){
-                        new Warned(new WorldTime(ticks: 30)),
+                        new Warned(new WorldTime(ticks: 45)),
                         new RemoveOnCollision()
                     }
                 ),
@@ -419,9 +568,36 @@ public static class EnemyID {
                 Constants.PlayerSpeed / 2f
             ),
             Type: EnemyType.Warrior, 
-            HP: 25,
+            HP: 60,
             Size: Constants.TileWidth * 2,
-            Difficulty: 3
+            Difficulty: 11
+        ),
+        [EnemyType.Witch] = new EnemyConst(
+            new Shooter(
+                ammo: 1,
+                ticksPerShot: 600,
+                reloadTicks: 600
+            ),
+            new DefaultShootPattern(
+                new BulletContainer(
+                    new Bullet(20, maxFramesActive: 600),
+                    bFrame(),
+                    traits: new List<IBulletTrait>(){
+                        new RemoveOnCollision(),
+                        new ParametricCurve(
+                            (t) => {
+                                float radius = Constants.TileWidth / 2f; 
+                                float theta = (float)t / 10f;
+                                return ((float)(radius * MathF.Cos(theta)), (float)(radius * MathF.Sin(theta)));
+                            }
+                        )
+                    }
+                )
+            ),
+            new ChaseMovePattern(Constants.PlayerSpeed / 2f),
+            Type: EnemyType.Witch,
+            HP: 30,
+            Difficulty: 6
         ),
         [EnemyType.Wizard] = new EnemyConst(
             new Shooter(
@@ -431,7 +607,7 @@ public static class EnemyID {
             ),
             new DefaultShootPattern(
                 new BulletContainer(
-                    new Bullet(60, maxFramesActive: 600),
+                    new Bullet(35, maxFramesActive: 600),
                     bFrame(),
                     traits: new List<IBulletTrait>(){
                         new ParametricCurve(
@@ -455,9 +631,9 @@ public static class EnemyID {
             ),
             new DefaultMovePattern(0),
             Type: EnemyType.Wizard,
-            HP: 25,
+            HP: 35,
             Size: Constants.TileWidth,
-            Difficulty: 4
+            Difficulty: 8
         )
     };
 
@@ -476,8 +652,8 @@ public static class EnemyID {
 
     public static EnemyType GetRandomWithDifficulty(int d) {
         if (!withDifficulty.ContainsKey(d)) {
-            Console.WriteLine($"difficulty {d} not specified, defaulting to max");
-            d = 5; 
+            Console.WriteLine($"difficulty {d} not specified, defaulting to 12");
+            d = 12; 
         }
 
         List<EnemyType> withD = withDifficulty[d]; 

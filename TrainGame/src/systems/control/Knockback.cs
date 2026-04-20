@@ -18,7 +18,7 @@ public static class KnockbackSystem {
         w.AddSystem([typeof(Knockback), typeof(Velocity), typeof(Active)], (w, e) => {
             Knockback kb = w.GetComponent<Knockback>(e); 
             w.GetComponent<Velocity>(e).Vector -= kb; 
-            kb.V *= 0.5f; 
+            kb.V *= 0.9f; 
             if (kb.V.Length() < 0.1f) {
                 w.RemoveComponent<Knockback>(e);
             }

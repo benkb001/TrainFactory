@@ -123,6 +123,172 @@ public static class CombatRewardDistribution {
                     [(ItemID.TimeSeed, 1)] = 1
                 }
             )
+        },
+        [6] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 200)] = 50,
+                    [(ItemID.Cobalt, 200)] = 40,
+                    [(ItemID.Mythril, 150)] = 10
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 350)] = 60,
+                    [(ItemID.Mythril, 200)] = 40
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 35)] = 90,
+                    [(ItemID.Mythril, 350)] = 10
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [7] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 250)] = 30,
+                    [(ItemID.Cobalt, 250)] = 50,
+                    [(ItemID.Mythril, 200)] = 20
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 400)] = 50,
+                    [(ItemID.Mythril, 300)] = 50
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 40)] = 90,
+                    [(ItemID.Mythril, 400)] = 10
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [8] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Credit, 300)] = 30,
+                    [(ItemID.Cobalt, 300)] = 40,
+                    [(ItemID.Mythril, 250)] = 30
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Cobalt, 450)] = 30,
+                    [(ItemID.Mythril, 350)] = 70
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeCrystal, 45)] = 90,
+                    [(ItemID.Mythril, 500)] = 10
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [9] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 50)] = 1
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 100)] = 1
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 150)] = 1
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [10] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 100)] = 1
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 150)] = 1
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 200)] = 1
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [11] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 300)] = 1
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 500)] = 1
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 700)] = 1
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
+        },
+        [12] = new(){
+            [1] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 1000)] = 1
+                }
+            ),
+            [2] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 2000)] = 1
+                }
+            ),
+            [3] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.Adamantite, 3000)] = 1
+                }
+            ),
+            [4] = new Distribution<(string, int)>(
+                new Dictionary<(string, int), int>(){
+                    [(ItemID.TimeSeed, 1)] = 1
+                }
+            )
         }
     };
 
@@ -156,20 +322,20 @@ public class CombatRewardSpawner : IExperienceTracker {
 
     private Distribution<int> xpMultiplierDistribution = new Distribution<int>(
         new Dictionary<int, int>() {
-            [0] = 50,
+            [0] = 35,
             [1] = 25,
-            [2] = 12,
-            [3] = 6,
-            [4] = 3
+            [2] = 20,
+            [3] = 15,
+            [4] = 5
         }
     );
 
     private Distribution<int> upgradeRarityDistribution = new Distribution<int>(
         new Dictionary<int, int>(){
-            [1] = 75,
-            [2] = 20,
-            [3] = 4,
-            [4] = 1
+            [1] = 60,
+            [2] = 30,
+            [3] = 8,
+            [4] = 2
         }
     );
 

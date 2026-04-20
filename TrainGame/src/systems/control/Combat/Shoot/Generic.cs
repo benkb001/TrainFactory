@@ -24,10 +24,10 @@ public static class ShootSystem {
             T t = w.GetComponent<T>(e);
             Vector2 targetPosition = w.GetComponent<ShotMessage>(e).TargetPosition; 
 
-            int bulletsShot = tf(w, t, f, targetPosition, e);
+            tf(w, t, f, targetPosition, e);
 
             Shooter shooter = w.GetComponent<Shooter>(e); 
-            shooter.Update(w.Time, bulletsShot);
+            shooter.Update(w.Time);
         });
     }
 

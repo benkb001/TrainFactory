@@ -17,7 +17,7 @@ using TrainGame.Constants;
 
 public static class EnemyShootSystem {
     public static void Register(World w) {
-        w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Frame), typeof(Active)], (w, e) => {
+        w.AddSystem([typeof(Enemy), typeof(Shooter), typeof(Health), typeof(Frame), typeof(Active)], (w, e) => {
             Shooter shooter = w.GetComponent<Shooter>(e);
             if (w.Time.IsAfterOrAt(shooter.CanShoot)) {
                 int targetableEnt = w.GetFirstMatchingEntity([typeof(Targetable), typeof(Frame), typeof(Active)]); 

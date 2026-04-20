@@ -41,7 +41,7 @@ public static class EquipmentID {
             ),
             [ItemID.Ring] = new PlayerGun(
                 new Shooter(
-                    ammo: 80,
+                    ammo: 5,
                     ticksPerShot: 20,
                     reloadTicks: 60
                 ),
@@ -58,7 +58,7 @@ public static class EquipmentID {
             ),
             [ItemID.Shotgun] = new PlayerGun(
                 new Shooter(
-                    ammo: 12,
+                    ammo: 2,
                     ticksPerShot: 60,
                     reloadTicks: 180
                 ),
