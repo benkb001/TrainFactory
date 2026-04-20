@@ -66,11 +66,11 @@ public static class FloorSystem {
 public static class EnemySpawnSystem {
     private static void spawn(World w, EnemySpawner spawn) {
         int sumDifficulties = spawn.Difficulty; 
-        double maxDifficultyD = Math.Cbrt(sumDifficulties / 2); 
+        double maxDifficultyD = Math.Cbrt(sumDifficulties); 
         int maxDifficulty = (int)maxDifficultyD;
 
-        //if (maxDifficulty <= spawn.MaxDifficulty) {
-            int ticksTillNextSpawn = (int)Math.Max(120, 300 - (int)(5 * (Math.Sqrt(sumDifficulties))));
+        if (maxDifficulty <= spawn.MaxDifficulty) {
+            int ticksTillNextSpawn = (int)Math.Max(90, 300 - (int)(5 * (Math.Sqrt(sumDifficulties))));
             spawn.NextSpawn = w.Time + new WorldTime(ticks: ticksTillNextSpawn);
             int difficulty = 1 + Util.NextInt(maxDifficulty);
             EnemyType enemyType = EnemyID.GetRandomWithDifficulty(difficulty); 
@@ -88,13 +88,11 @@ public static class EnemySpawnSystem {
             spawn.Difficulty += difficulty; 
            
             Globals.MaxFloor = Math.Max(Globals.MaxFloor, spawn.Difficulty); 
-        /*
         } else {
             PlayerWrap.ResetStats(w);
             FloorSystem.GoToFloor(w, 0);
             MakeMessage.Add<DrawToastMessage>(w, new DrawToastMessage("Upgrade Max Difficulty To Go Deeper", 120));
         }
-        */
     }
 
     public static void Register(World w) {

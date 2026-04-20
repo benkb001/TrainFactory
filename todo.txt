@@ -45,15 +45,6 @@
 
 **** THIS SPRINT **** 
 
-* Add new shoot patterns: 
-  * Throws a few long lasting, no velocity bullets on the ground
-  * ??
-* Add new bullet traits: 
-  * remove on hit (for bullets that aren't removed on collision ie grid)
-* Add enemy difficulties 8-11
-
-**** NEXT SPRINT **** 
-
 * Add NPCs
   * Interacting should activate dialogue unless there is none, then if there 
     is a vendor it should open it. 
